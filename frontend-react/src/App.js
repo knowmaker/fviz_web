@@ -111,7 +111,7 @@ function Table() {
                                             </div>
                                         )}
                                         {cellContent_symbol && (
-                                            <div>
+                                            <div className="su-pos">
                                                 <MathJax.Node inline formula={cellContent_symbol} />
                                                 {cellContent_unit && (
                                                     <>{',  '}<MathJax.Node inline formula={cellContent_unit} /></>
@@ -120,7 +120,7 @@ function Table() {
                                             </div>
                                         )}
                                         {cellContent_mlti && (
-                                            <div className="mt-auto">
+                                            <div className="mlti-pos">
                                                 <MathJax.Node inline formula={cellContent_mlti} />
                                             </div>
                                         )}

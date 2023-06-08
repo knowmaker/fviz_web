@@ -68,8 +68,14 @@
   opacity: 0.7;
 }
 
-.mt-auto {
+.mlti-pos {
   margin-top:  auto;
+  font-size: 18px;
+}
+
+.su-pos {
+  margin-top:  auto;
+  font-size: 20px;
 }
 
 
