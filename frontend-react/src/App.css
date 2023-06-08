@@ -60,7 +60,7 @@
   padding: 10px 27px 5px 25px;
   /*text-align: justify;*/
   justify-content: center;
-  word-break: break-word;
+  word-break: break-all;
   flex-direction: column;
 }
 
