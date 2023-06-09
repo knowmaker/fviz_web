@@ -13,22 +13,24 @@ function Table() {
         setIsLoading(true);
 
         // Запрос к API для получения данных из 'http://127.0.0.1:5000/api/represents'
-        axios.get('http://127.0.0.1:5000/api/represents')
-            .then(response => {
+        axios
+            .get('http://127.0.0.1:5000/api/represents')
+            .then((response) => {
                 setData(response.data);
                 setIsLoading(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
                 setIsLoading(false);
             });
 
         // Запрос к API для получения данных из 'http://127.0.0.1:5000/api/gk_settings'
-        axios.get('http://127.0.0.1:5000/api/gk_settings')
-            .then(response => {
+        axios
+            .get('http://127.0.0.1:5000/api/gk_settings')
+            .then((response) => {
                 setGkSettings(response.data);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
             });
     }, []);
