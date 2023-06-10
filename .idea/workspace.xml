@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d04f7ad4-1978-4c38-92c8-510e810e4139" name="Changes" comment="Active view">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/App.js" afterDir="false" />
-    </list>
+    <list default="true" id="d04f7ad4-1978-4c38-92c8-510e810e4139" name="Changes" comment="Active view" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -127,7 +123,7 @@
       <workItem from="1686254904648" duration="3834000" />
       <workItem from="1686304819333" duration="2841000" />
       <workItem from="1686340833133" duration="3992000" />
-      <workItem from="1686347253446" duration="4067000" />
+      <workItem from="1686347253446" duration="4386000" />
     </task>
     <task id="LOCAL-00001" summary="Initial">
       <created>1685983414101</created>
@@ -185,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686350641974</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Active view">
+      <created>1686351652008</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1686351652008</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

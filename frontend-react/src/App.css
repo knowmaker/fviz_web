@@ -37,6 +37,16 @@
 /*  }*/
 /*}*/
 
+.loading{
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
 
 .table {
   display: flex;
@@ -91,3 +101,16 @@
   word-break: break-word;
   /*opacity: 0;*/
 }
+
+.data-window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+

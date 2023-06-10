@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   scope 'api' do
     resources :represents
     resources :gk_settings
-    post 'cell', to: 'lts#get_quantity_by_cell_id'
+    get 'cell/:cellId', to: 'lts#get_quantity_by_cell_id'
   end
   # Defines the root path route ("/")
   # root "articles#index"
