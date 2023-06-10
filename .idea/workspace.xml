@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d04f7ad4-1978-4c38-92c8-510e810e4139" name="Changes" comment="Active view" />
+    <list default="true" id="d04f7ad4-1978-4c38-92c8-510e810e4139" name="Changes" comment="changing value">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/App.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -124,6 +127,10 @@
       <workItem from="1686304819333" duration="2841000" />
       <workItem from="1686340833133" duration="3992000" />
       <workItem from="1686347253446" duration="4386000" />
+      <workItem from="1686401624148" duration="5836000" />
+      <workItem from="1686429766005" duration="1406000" />
+      <workItem from="1686433408378" duration="3525000" />
+      <workItem from="1686437460651" duration="349000" />
     </task>
     <task id="LOCAL-00001" summary="Initial">
       <created>1685983414101</created>
@@ -188,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686351652008</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="changing value">
+      <created>1686408502908</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1686408502908</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,9 +223,10 @@
     <MESSAGE value="Initial" />
     <MESSAGE value="Initial model" />
     <MESSAGE value="Active view" />
-    <option name="LAST_COMMIT_MESSAGE" value="Active view" />
+    <MESSAGE value="changing value" />
+    <option name="LAST_COMMIT_MESSAGE" value="changing value" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1686351333341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1686437612400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>

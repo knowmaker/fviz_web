@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import MathJax from 'react-mathjax';
 import axios from 'axios';
@@ -9,6 +9,9 @@ function Table() {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
     const [ltData, setLtData] = useState([]);
+    const [isDataWindowVisible, setIsDataWindowVisible] = useState(false);
+    const [isTableReady, setIsTableReady] = useState(false); // Новое состояние для отслеживания готовности таблицы
+    const mathJaxRef = useRef(null);
 
     useEffect(() => {
         setIsLoading(true);
@@ -19,6 +22,7 @@ function Table() {
             .then((response) => {
                 setData(response.data);
                 setIsLoading(false);
+                setIsTableReady(true);
             })
             .catch((error) => {
                 console.error(error);
@@ -35,6 +39,20 @@ function Table() {
                 console.error(error);
             });
     }, []);
+
+    useEffect(() => {
+        // Обновление MathJax при открытии окна data-window
+        if (isDataWindowVisible && mathJaxRef.current) {
+            mathJaxRef.current.typeset();
+        }
+    }, [isDataWindowVisible]);
+
+    useEffect(() => {
+        // Обновление MathJax при готовности таблицы
+        if (isTableReady && mathJaxRef.current) {
+            mathJaxRef.current.typeset();
+        }
+    }, [isTableReady]);
 
     const convertColor = (color) => {
         if (color.length === 6) {
@@ -65,14 +83,40 @@ function Table() {
                 console.log(response.data);
                 setLtData(response.data);
                 setSelectedCell(cellId);
+                setIsDataWindowVisible(true);
+                setIsTableReady(false);
             })
             .catch((error) => {
                 console.error(error);
             });
     };
 
+    const handleCellClick = (event, extid) => {
+        event.preventDefault();
+
+        const cellData = ltData.find((item) => item.id_value === extid);
+        if (cellData) {
+            const updatedData = data.map((item) => {
+                if (item.id_lt === selectedCell) {
+                    return {
+                        ...item,
+                        ...cellData
+                    };
+                }
+                return item;
+            });
+
+            setData(updatedData);
+        }
+
+        setSelectedCell(null);
+        setLtData([]);
+        setIsDataWindowVisible(false);
+        setIsTableReady(true);
+    };
+
     const renderDataWindow = () => {
-        if (selectedCell && ltData && ltData.length > 0) {
+        if (isDataWindowVisible && selectedCell && ltData && ltData.length > 0) {
             return (
                 <div className="data-window">
                     {ltData.map((dataItem, index) => {
@@ -89,6 +133,7 @@ function Table() {
                                 className="cell"
                                 id={`extcell-${extid}`}
                                 style={{ backgroundColor: extcellColor }}
+                                onClick={(event) => handleCellClick(event, extid)}
                             >
                                 {extcellContent_name && (
                                     <div>
