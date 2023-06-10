@@ -167,7 +167,6 @@ function Table() {
         return null;
     };
 
-
     return (
         <MathJax.Provider>
             <div className="table">
