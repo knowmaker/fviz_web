@@ -10,26 +10,24 @@ function Table() {
     const [selectedCell, setSelectedCell] = useState(null);
     const [ltData, setLtData] = useState([]);
     const [isDataWindowVisible, setIsDataWindowVisible] = useState(false);
-    const [isTableReady, setIsTableReady] = useState(false); // Новое состояние для отслеживания готовности таблицы
+    const [undoStack, setUndoStack] = useState([]);
+    const [redoStack, setRedoStack] = useState([]);
     const mathJaxRef = useRef(null);
 
     useEffect(() => {
         setIsLoading(true);
 
-        // Запрос к API для получения данных из 'http://127.0.0.1:5000/api/represents'
         axios
             .get('http://127.0.0.1:5000/api/represents')
             .then((response) => {
                 setData(response.data);
                 setIsLoading(false);
-                setIsTableReady(true);
             })
             .catch((error) => {
                 console.error(error);
                 setIsLoading(false);
             });
 
-        // Запрос к API для получения данных из 'http://127.0.0.1:5000/api/gk_settings'
         axios
             .get('http://127.0.0.1:5000/api/gk_settings')
             .then((response) => {
@@ -41,18 +39,10 @@ function Table() {
     }, []);
 
     useEffect(() => {
-        // Обновление MathJax при открытии окна data-window
         if (isDataWindowVisible && mathJaxRef.current) {
             mathJaxRef.current.typeset();
         }
     }, [isDataWindowVisible]);
-
-    useEffect(() => {
-        // Обновление MathJax при готовности таблицы
-        if (isTableReady && mathJaxRef.current) {
-            mathJaxRef.current.typeset();
-        }
-    }, [isTableReady]);
 
     const convertColor = (color) => {
         if (color.length === 6) {
@@ -84,7 +74,6 @@ function Table() {
                 setLtData(response.data);
                 setSelectedCell(cellId);
                 setIsDataWindowVisible(true);
-                setIsTableReady(false);
             })
             .catch((error) => {
                 console.error(error);
@@ -106,13 +95,14 @@ function Table() {
                 return item;
             });
 
+            setUndoStack([...undoStack, data]);
+            setRedoStack([]);
             setData(updatedData);
         }
 
         setSelectedCell(null);
         setLtData([]);
         setIsDataWindowVisible(false);
-        setIsTableReady(true);
     };
 
     const renderDataWindow = () => {
@@ -167,8 +157,41 @@ function Table() {
         return null;
     };
 
+    const undo = () => {
+        if (undoStack.length > 0) {
+            const previousData = undoStack[undoStack.length - 1];
+            const currentData = data;
+
+            setRedoStack([...redoStack, currentData]);
+            setUndoStack(undoStack.slice(0, undoStack.length - 1));
+            setData(previousData);
+        }
+    };
+
+    const redo = () => {
+        if (redoStack.length > 0) {
+            const nextData = redoStack[redoStack.length - 1];
+            const currentData = data;
+
+            setUndoStack([...undoStack, currentData]);
+            setRedoStack(redoStack.slice(0, redoStack.length - 1));
+            setData(nextData);
+        }
+    };
+
     return (
         <MathJax.Provider>
+            <div className="navbar">
+                <div></div>
+                <div className="buttons">
+                    <button onClick={undo} disabled={undoStack.length === 0}>
+                        Undo
+                    </button>
+                    <button onClick={redo} disabled={redoStack.length === 0}>
+                        Redo
+                    </button>
+                </div>
+            </div>
             <div className="table">
                 {isLoading && (
                     <div className="loading">

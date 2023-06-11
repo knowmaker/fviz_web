@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d04f7ad4-1978-4c38-92c8-510e810e4139" name="Changes" comment="changing value">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -130,7 +131,8 @@
       <workItem from="1686401624148" duration="5836000" />
       <workItem from="1686429766005" duration="1406000" />
       <workItem from="1686433408378" duration="3525000" />
-      <workItem from="1686437460651" duration="349000" />
+      <workItem from="1686437460651" duration="823000" />
+      <workItem from="1686488962543" duration="4173000" />
     </task>
     <task id="LOCAL-00001" summary="Initial">
       <created>1685983414101</created>
@@ -202,7 +204,21 @@
       <option name="project" value="LOCAL" />
       <updated>1686408502908</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="changing value">
+      <created>1686438014850</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1686438014850</updated>
+    </task>
+    <task id="LOCAL-00012" summary="changing value">
+      <created>1686438053716</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1686438053716</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,6 +243,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="changing value" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1686437612400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1686488983806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>
