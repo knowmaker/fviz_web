@@ -4,15 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d04f7ad4-1978-4c38-92c8-510e810e4139" name="Changes" comment="changing value">
+    <list default="true" id="d04f7ad4-1978-4c38-92c8-510e810e4139" name="Changes" comment="undo redo buttons">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -132,7 +140,8 @@
       <workItem from="1686429766005" duration="1406000" />
       <workItem from="1686433408378" duration="3525000" />
       <workItem from="1686437460651" duration="823000" />
-      <workItem from="1686488962543" duration="4173000" />
+      <workItem from="1686488962543" duration="6890000" />
+      <workItem from="1687028060389" duration="3429000" />
     </task>
     <task id="LOCAL-00001" summary="Initial">
       <created>1685983414101</created>
@@ -218,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686438053716</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="undo redo buttons">
+      <created>1686494191674</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1686494191674</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,9 +256,10 @@
     <MESSAGE value="Initial model" />
     <MESSAGE value="Active view" />
     <MESSAGE value="changing value" />
-    <option name="LAST_COMMIT_MESSAGE" value="changing value" />
+    <MESSAGE value="undo redo buttons" />
+    <option name="LAST_COMMIT_MESSAGE" value="undo redo buttons" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1686488983806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1687031027294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>
