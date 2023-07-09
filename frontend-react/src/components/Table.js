@@ -27,6 +27,7 @@ function Table() {
                 console.error(error);
                 setIsLoading(false);
             });
+            
 
         axios
             .get('http://127.0.0.1:5000/api/gk_settings')
@@ -67,7 +68,7 @@ function Table() {
 
     const handleCellRightClick = (event, cellId) => {
         event.preventDefault();
-
+        console.log(cellId)
         axios.get(`http://127.0.0.1:5000/api/cell/${cellId}`)
             .then((response) => {
                 console.log(response.data);
