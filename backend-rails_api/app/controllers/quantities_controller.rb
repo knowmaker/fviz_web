@@ -7,27 +7,36 @@ class QuantitiesController < ApplicationController
     render json: @active_quantities.all
   end
 
+  def show
+    quantities = Quantity.where(id_lt: params[:id])
+    if quantities.any?
+      render json: quantities, status: :ok
+    else
+      render json: 'No quantities found for the given id_lt', status: :not_found
+    end
+  end
+
   def create
     quantity = Quantity.new(quantity_params)
 
     if quantity.save
-      render json: { message: 'Successfully created quantity', quantity: quantity }, status: :created
+      render json: quantity, status: :created
     else
-      render json: { error: 'Failed to create quantity', errors: quantity.errors.full_messages }, status: :unprocessable_entity
+      render json: 'Failed to create quantity', status: :unprocessable_entity
     end
   end
 
   def update
     if @quantity.update(quantity_params)
-      render json: { message: 'Successfully updated quantity', quantity: @quantity }, status: :ok
+      render json: @quantity, status: :ok
     else
-      render json: { error: 'Failed to update quantity', errors: @quantity.errors.full_messages }, status: :unprocessable_entity
+      render json: 'Failed to update quantity', status: :unprocessable_entity
     end
   end
 
   def destroy
     @quantity.destroy
-    render json: { message: 'Successfully deleted quantity' }, status: :ok
+    render json: 'Successfully deleted quantity', status: :ok
   end
 
   private

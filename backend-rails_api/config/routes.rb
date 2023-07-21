@@ -8,8 +8,7 @@ Rails.application.routes.draw do
   scope 'api' do
     resources :represents
     resources :gk_settings
-    resources :quantities, only: [:index, :create, :update, :destroy]
-    get 'cell/:cellId', to: 'lts#get_quantity_by_cell_id'
+    resources :quantities
   end
   # Defines the root path route ("/")
   # root "articles#index"

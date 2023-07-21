@@ -127,7 +127,7 @@ function Cell({cellFullId,cellData,cellColor, cellRightClick, selectedCells, tab
     if (cellRightClick) {
       event.preventDefault()
       console.log(cellId)
-      requestData(cellRightClick,`http://127.0.0.1:5000/api/cell/${cellId}`)
+      requestData(cellRightClick,`http://127.0.0.1:5000/api/quantities/${cellId}`)
     }
 
   };

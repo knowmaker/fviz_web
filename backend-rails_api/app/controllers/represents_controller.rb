@@ -3,34 +3,34 @@ class RepresentsController < ApplicationController
 
   def index
     represents = Represent.all
-    render json: { represents: represents }, status: :ok
+    render json: represents, status: :ok
   end
 
   def show
-    render json: { represent: @represent }, status: :ok
+    render json: @represent, status: :ok
   end
 
   def create
     represent = Represent.new(represent_params)
 
     if represent.save
-      render json: { message: 'Successfully created represent', represent: represent }, status: :created
+      render json: represent, status: :created
     else
-      render json: { error: 'Failed to create represent', errors: represent.errors.full_messages }, status: :unprocessable_entity
+      render json: 'Failed to create represent', status: :unprocessable_entity
     end
   end
 
   def update
     if @represent.update(represent_params)
-      render json: { message: 'Successfully updated represent', represent: @represent }, status: :ok
+      render json: @represent, status: :ok
     else
-      render json: { error: 'Failed to update represent', errors: @represent.errors.full_messages }, status: :unprocessable_entity
+      render json: 'Failed to update represent', status: :unprocessable_entity
     end
   end
 
   def destroy
     @represent.destroy
-    render json: { message: 'Successfully deleted represent' }, status: :ok
+    render json: 'Successfully deleted represent', status: :ok
   end
 
   private

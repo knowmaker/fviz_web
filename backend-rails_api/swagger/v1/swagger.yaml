@@ -4,16 +4,42 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/cell/{cellId}":
+  "/api/quantities":
+    get:
+      summary: list quantities
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create quantity
+      responses:
+        '200':
+          description: successful
+  "/api/quantities/{id}":
     parameters:
-    - name: cellId
+    - name: id
       in: path
-      description: cellId
+      description: id
       required: true
       schema:
         type: string
     get:
-      summary: get_quantity_by_cell_id lt
+      summary: show quantity
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update quantity
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update quantity
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete quantity
       responses:
         '200':
           description: successful
@@ -60,4 +86,4 @@ servers:
 - url: http://{defaultHost}
   variables:
     defaultHost:
-      default: 127.0.0.1:3000/
+      default: localhost:5000/
