@@ -4,6 +4,45 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/gk_settings":
+    get:
+      summary: list gk_settings
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create gk_setting
+      responses:
+        '200':
+          description: successful
+  "/api/gk_settings/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show gk_setting
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update gk_setting
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update gk_setting
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete gk_setting
+      responses:
+        '200':
+          description: successful
   "/api/quantities":
     get:
       summary: list quantities
