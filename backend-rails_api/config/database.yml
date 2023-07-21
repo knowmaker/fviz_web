@@ -21,7 +21,8 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: postgres
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  # if there is ENV password variable then it will use that, otherwise it will use 111111 as password
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "111111" } %>
   database: fviz
 
 development:

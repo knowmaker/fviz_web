@@ -28,7 +28,7 @@ export default function TableUI() {
   const revStates = {undoStack,setUndoStack,redoStack,setRedoStack}
 
   useEffect(() => {
-  requestData(setTableData,'http://127.0.0.1:5000/api/represents')
+  requestData(setTableData,'http://127.0.0.1:5000/api/quantities')
   requestData(setGkColors,'http://127.0.0.1:5000/api/gk_settings')
   }, []);
 
@@ -76,7 +76,7 @@ function Table2({tableData,gkColors,setSelectedCell}) {
 
 
 
-  //console.log(tableData)
+  console.log(tableData)
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0
 
