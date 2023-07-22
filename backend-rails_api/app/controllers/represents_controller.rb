@@ -21,7 +21,7 @@ class RepresentsController < ApplicationController
   end
 
   def update
-    if @represent.update(represent_params)
+    if @represent.update(represent_update_params)
       render json: @represent, status: :ok
     else
       render json: 'Failed to update represent', status: :unprocessable_entity
@@ -41,6 +41,10 @@ class RepresentsController < ApplicationController
 
   def represent_params
     params.require(:represent).permit(:title, :id_user, active_values: [])
+  end
+
+  def represent_update_params
+    params.require(:represent).permit(:title, active_values: [])
   end
 
 end

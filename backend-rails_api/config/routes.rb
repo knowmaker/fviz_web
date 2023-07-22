@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :represents
     resources :gk_settings, only: [:index, :update]
     resources :quantities
+    resources :laws
+    resources :law_types, only: [:index, :create, :update, :destroy]
   end
   # Defines the root path route ("/")
   # root "articles#index"

@@ -1,5 +1,5 @@
 class Represent < ApplicationRecord
   self.table_name = "represents"
-  alias_attribute :user_id, :id_user
-  belongs_to :user
+
+  belongs_to :user, foreign_key: "id_user"
 end

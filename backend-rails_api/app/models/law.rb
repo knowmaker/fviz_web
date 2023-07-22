@@ -1,8 +1,11 @@
 class Law < ApplicationRecord
   self.table_name = "laws"
-  alias_attribute :user_id, :id_user
-  alias_attribute :type_id, :id_type
-  belongs_to :user
-  belongs_to :law_type
-  belongs_to :quantity
+
+  belongs_to :law_type, foreign_key: "id_type"
+  belongs_to :user, foreign_key: "id_user"
+
+  belongs_to :first_element_quantity, class_name: "Quantity", foreign_key: "first_element"
+  belongs_to :second_element_quantity, class_name: "Quantity", foreign_key: "second_element"
+  belongs_to :third_element_quantity, class_name: "Quantity", foreign_key: "third_element"
+  belongs_to :fourth_element_quantity, class_name: "Quantity", foreign_key: "fourth_element"
 end

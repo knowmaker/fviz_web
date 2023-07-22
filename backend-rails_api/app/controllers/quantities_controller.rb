@@ -45,7 +45,7 @@ class QuantitiesController < ApplicationController
     @quantity = Quantity.find(params[:id])
   end
 
-  def quantity_params
+  def quantity_params  # and update_params too
     params.require(:quantity).permit(:val_name, :symbol, :M_indicate, :L_indicate, :T_indicate, :I_indicate, :unit, :id_lt, :id_gk)
   end
 end
