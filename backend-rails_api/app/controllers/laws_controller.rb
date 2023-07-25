@@ -20,14 +20,6 @@ class LawsController < ApplicationController
     end
   end
 
-  def update
-    if @law.update(law_update_params)
-      render json: @law, status: :ok
-    else
-      render json: 'Failed to update law', status: :unprocessable_entity
-    end
-  end
-
   def destroy
     @law.destroy
     render json: 'Successfully deleted law', status: :ok
@@ -43,7 +35,4 @@ class LawsController < ApplicationController
     params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_user, :id_type)
   end
 
-  def law_update_params
-    params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_type)
-  end
 end
