@@ -9,8 +9,12 @@ Rails.application.routes.draw do
     resources :represents
     resources :gk_settings, only: [:index, :update]
     resources :quantities
-    resources :laws
+    resources :laws, only: [:index, :show, :create, :destroy]
     resources :law_types, only: [:index, :create, :update, :destroy]
+    post '/signup', to: 'users#create'
+    post '/login', to: 'users#login'
+    put '/profile', to: 'users#update'
+
   end
   # Defines the root path route ("/")
   # root "articles#index"
