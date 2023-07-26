@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email, :password, :password_confirmation, :last_name, :first_name, :patronymic)
   end
 
   SECRET_KEY = Rails.application.credentials.secret_key_base
