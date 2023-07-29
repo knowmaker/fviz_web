@@ -1,7 +1,11 @@
 import React from 'react';
+import { TableContext } from './TableContext.js';
+import { useContext } from 'react';
 
-export default function Navbar({tableState,revStates}) {
+export default function Navbar({revStates}) {
   
+    const tableState = useContext(TableContext)
+    //console.log(tableState)
     const undoStack = revStates.undoStack
     const setUndoStack = revStates.setUndoStack
     const redoStack = revStates.redoStack
@@ -17,8 +21,6 @@ export default function Navbar({tableState,revStates}) {
             setRedoStack([...redoStack, currentData]);
             setUndoStack(undoStack.slice(0, undoStack.length - 1));
             setData(previousData);
-            console.log(revStates.undoStack)
-            console.log(revStates.redoStack)
         }
     };
 
@@ -30,22 +32,26 @@ export default function Navbar({tableState,revStates}) {
             setUndoStack([...undoStack, currentData]);
             setRedoStack(redoStack.slice(0, redoStack.length - 1));
             setData(nextData);
-            console.log(revStates.undoStack)
-            console.log(revStates.redoStack)
         }
     };
 
     return (
-        <div className="navbar">
-            <div className="buttons">
-                <button onClick={undo} disabled={undoStack.length === 0}>
-                    Undo
+        <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+            <div className="container-fluid">
+                <a className="navbar-brand" href="#">ФВиЗ</a>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
-                <button onClick={redo} disabled={redoStack.length === 0}>
-                    Redo
-                </button>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div className="navbar-nav">
+                        <div className="nav-link active" aria-current="page" onClick={undo} disabled={undoStack.length === 0}>↻Undo</div>
+                        <div className="nav-link active" aria-current="page" onClick={redo} disabled={redoStack.length === 0}>↺Redo</div>
+                        <div className="nav-link active" aria-current="page" href="#">Screenshot</div>
+                        <div className="nav-link active" aria-current="page" href="#">Screenshot</div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
     );
 }
 

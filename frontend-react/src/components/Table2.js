@@ -1,19 +1,11 @@
-import React, { useEffect, useState, createContext } from 'react';
-import MathJax from 'react-mathjax';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
-
+import Footbar from './FootBar';
+import { TableContext } from './TableContext.js';
 
 const rowCount = 20
 const cellCount = 20
-//const TableContext = createContext(null)
-
-//todo:
-//rewrite prev code .... done
-//refactor this code with "createContext"
-//add ability to redact elements
-//db saving??? 
-
 
 export default function TableUI() {
 
@@ -24,24 +16,38 @@ export default function TableUI() {
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
   const [selectedCell, setSelectedCell] = useState(null);
+  const [hoveredCell, setHoveredCell] = useState(null);
 
   const revStates = {undoStack,setUndoStack,redoStack,setRedoStack}
+  const tableState = {tableData,setTableData}
+  const hoveredCellState = {hoveredCell, setHoveredCell}
+  //const isLoaded = tableData.length !== 0 && gkColors.length !== 0
 
   useEffect(() => {
-  requestData(setTableData,'http://127.0.0.1:5000/api/quantities')
-  requestData(setGkColors,'http://127.0.0.1:5000/api/gk_settings')
+    requestData(setTableData,'http://127.0.0.1:5000/api/quantities')
+    requestData(setGkColors,'http://127.0.0.1:5000/api/gk_settings')
   }, []);
 
+  if (document.getElementById("cell-204") !== null) {
+    document.getElementById("cell-204").scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+  }
+  
+  console.log(hoveredCell)
+
   return (
-    <MathJax.Provider>
-      <Navbar tableState={{tableData,setTableData}} revStates={revStates} />
-      <CellOptions selectedCell={selectedCell} gkColors={gkColors} tableState={{tableData,setTableData}} revStates={revStates} setSelectedCell={setSelectedCell}/>
-      <Table2 tableData={tableData} gkColors={gkColors} setSelectedCell={setSelectedCell}/>
-    </MathJax.Provider>
+    <TableContext.Provider value={tableState}>
+      <Navbar revStates={revStates} />
+      <CellOptions selectedCellState={{selectedCell,setSelectedCell}} gkColors={gkColors} revStates={revStates} />
+      <Table2 gkColors={gkColors} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} />
+      <Footbar hoveredCell={hoveredCell}/>
+    </TableContext.Provider>
     );
 }
 
-function CellOptions({selectedCell,gkColors, tableState, revStates, setSelectedCell}) {
+function CellOptions({selectedCellState ,gkColors, revStates}) {
+
+  const selectedCell = selectedCellState.selectedCell
+  const setSelectedCell = selectedCellState.setSelectedCell
 
   if (selectedCell !== null) {
 
@@ -52,7 +58,13 @@ function CellOptions({selectedCell,gkColors, tableState, revStates, setSelectedC
       const cellColor = `#${gkColors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}`
 
       return (
-        <Cell key={cellFullId} cellFullId={cellFullId} cellData={cellData} cellColor={cellColor} selectedCells={selectedCell} tableState={tableState} revStates={revStates} cellRightClick={setSelectedCell}/>
+        <Cell 
+        key={cellFullId} 
+        cellFullData={{cellFullId,cellData,cellColor}}
+        selectedCells={selectedCell} 
+        revStates={revStates} 
+        cellRightClick={setSelectedCell}
+        />
       );
     })
 
@@ -70,21 +82,23 @@ function CellOptions({selectedCell,gkColors, tableState, revStates, setSelectedC
   
 }
 
-function Table2({tableData,gkColors,setSelectedCell}) {
+function Table2({gkColors,setSelectedCell,hoveredCellState}) {
 
+
+  const tableState = useContext(TableContext)
+  const tableData = tableState.tableData
   const fullTableData = { tableData: tableData, Colors: gkColors};
 
 
 
-  console.log(tableData)
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0
 
   if (isLoaded) {
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
-      return <Row key={rowId} rowId={rowId} fullTableData={fullTableData} setSelectedCell={setSelectedCell} />
+      return <Row key={rowId} rowId={rowId} fullTableData={fullTableData} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState}/>
     });
-     return <div className="table">{rowList}</div>
+      return <div className="tables">{rowList}</div>
   }
   else
   {
@@ -97,26 +111,42 @@ function Table2({tableData,gkColors,setSelectedCell}) {
 
 }
 
-function Row({rowId, fullTableData, setSelectedCell}) {
-  const cellList = Array.from({length: cellCount - 1 + (rowId % 2 === 0 ? 0 : 1)}, (_, cellId) => {
+function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
 
-    const cellFullId = rowId * 19 + (rowId % 2 === 0 ? 0 : 1) + cellId + 1 + Math.floor(rowId / 2)
+  const isEven = (rowId % 2 === 0 ? 0 : 1)
+
+  const cellList = Array.from({length: cellCount - 1 + isEven}, (_, cellId) => {
+
+    const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
     const cellColor = cellData ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}` : '';
 
-    return <Cell key={cellFullId} cellFullId={cellFullId} cellData={cellData} cellColor={cellColor} cellRightClick={setSelectedCell}/>
+    return <Cell key={cellFullId} cellFullData={{cellFullId,cellData,cellColor}} cellRightClick={setSelectedCell} hoveredCellState={hoveredCellState}/>
   });
 
-  return <div className="row">{cellList}</div>
+
+  if (isEven) {
+    return <div className="row"><div className="half-cell"></div>{cellList}</div>
+  } else {
+    return <div className="row">{cellList}</div>
+  }
+
+  
+
+
 }
 
-function Cell({cellFullId,cellData,cellColor, cellRightClick, selectedCells, tableState, revStates}) {
+function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState}) {
 
+  const cellFullId = cellFullData.cellFullId
+  const cellData = cellFullData.cellData
+  const cellColor = cellFullData.cellColor
+  const tableState = useContext(TableContext)
+  
   const splitLatexText = (text) => {
     return text.split(' ').map((word, index) => (
         <React.Fragment key={index}>
-            <MathJax.Node inline formula={word} />
-            {' '}
+            {word}
         </React.Fragment>
     ));
   };
@@ -126,7 +156,7 @@ function Cell({cellFullId,cellData,cellColor, cellRightClick, selectedCells, tab
     //need to fix this 
     if (cellRightClick) {
       event.preventDefault()
-      console.log(cellId)
+      //console.log(cellId)
       requestData(cellRightClick,`http://127.0.0.1:5000/api/quantities/${cellId}`)
     }
 
@@ -146,12 +176,20 @@ function Cell({cellFullId,cellData,cellColor, cellRightClick, selectedCells, tab
 
       revStates.setUndoStack([...revStates.undoStack, tableState.tableData]);
       revStates.setRedoStack([]);
-      console.log(revStates.undoStack)
-      console.log(revStates.redoStack)
+      //console.log(revStates.undoStack)
+      //console.log(revStates.redoStack)
       cellRightClick(null)
     }
 
   };
+
+  const handleCellHover = (event, cellId) => {
+      //need to fix this 
+      
+      if (hoveredCellState) {
+        hoveredCellState.setHoveredCell(cellId)
+      }
+  }
 
   if (cellData) {
 
@@ -170,38 +208,28 @@ function Cell({cellFullId,cellData,cellColor, cellRightClick, selectedCells, tab
           style={{ backgroundColor: cellColor }}
           onContextMenu={event => handleCellRightClick(event, cellFullId)}
           onClick={event => handleCellLeftClick(event, cellFullId)}
+          onMouseOver={event => handleCellHover(event, cellFullId)}
         >
           <div>
               {splitLatexText(cellContent_name)}
               <br />
           </div>
           <div className="su-pos">
-              <MathJax.Node inline formula={cellContent_symbol} />
+          {cellContent_symbol}
               {', '}
-              <MathJax.Node inline formula={cellContent_unit} />
+          {cellContent_unit} 
               <br />
           </div>
           <div className="mlti-pos">
-              <MathJax.Node inline formula={cellContent_mlti} />
+          {cellContent_mlti}
           </div>
         </div>
     );
   } else {
-    return <div className="cell-invisible"></div>
+    return <div className="cell-invisible cell"></div>
   }
   
 }
-
-function Formula({formula}) {
-  return (
-    <MathJax.Node inline formula={formula} />
-  );
-}
-
-
-// function calculateCellId(cellIndex,rowIndex) {
-//   return (rowIndex * 19 + (rowIndex % 2 === 0 ? 0 : 1) + cellIndex + 1 + Math.floor(rowIndex / 2))
-// }
 
 // interactions with database
 
@@ -217,4 +245,3 @@ function requestData(setStateFunction, adress) {
       });
 
 }
-

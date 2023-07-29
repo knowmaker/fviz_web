@@ -1,0 +1,207 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <style>
+
+    body {
+      padding-top: 40px;
+      padding-bottom: 40px;
+      padding-left: 200px;
+    }
+
+    .cell {
+      width: 180px;
+      height: 120px;
+      padding: 0%;
+      margin: 2px;
+      clip-path: polygon(20% 0, 80% 0, 100% 50%, 80% 100%, 20% 100%, 0% 50%);
+      background-color: #525252; /* border color */
+      z-index: -1;
+    }
+
+
+    /* border for hex */
+    .cell:before {
+      content: "";
+      display: block;
+      position: relative;
+      top: 1px;
+      left: 1px;
+      height: 118px;
+      width: 178px;
+      background-color: #8a91a0; /* inner color */
+      clip-path: inherit;
+    }
+
+    .tables {
+      width:max-content;
+      padding: 30px;
+    }
+
+    .half-cell {
+      opacity: 0%;
+      width: 80px;
+    }
+
+
+    .mlti-pos {
+      margin-top:  auto;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .su-pos {
+      margin-top:  auto;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .data-window {
+      position: fixed;
+      top: 60px;
+      left: 2px;
+      width: 200px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 0;
+    }
+
+    nav {
+      border: 1px solid #ccc;
+    }
+
+    .diminput {
+      display: block;
+      width: 90px;
+      height: 25px;
+      font-size: 15px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      background-color: white;
+      color: black;
+      border: 0.2vw solid black;
+      margin-right: 10px;
+    }
+
+
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">ФВиЗ</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav">
+          <div class="nav-link active" aria-current="page" href="#">↻Undo</div>
+          <div class="nav-link active" aria-current="page" href="#">↺Redo</div>
+          <div class="nav-link active" aria-current="page" href="#">Screenshot</div>
+          <div class="nav-link active" aria-current="page" href="#">Screenshot</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg fixed-bottom bg-body-tertiary" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <div class="navbar-nav">
+          <input class="diminput" type="text" id="outLT" placeholder="LT размерность" disabled="">
+          <input class="diminput" type="text" id="outLT" placeholder="GK размерность" disabled="">
+
+        </div>
+    </div>
+  </nav>
+
+  <div class="data-window">
+    <div class="cell"></div>
+    <div class="cell"></div>
+    <div class="cell"></div>
+  </div>
+  
+  <div class="tables">
+    <div class="row justify-content-start">
+      <div class="cell">
+        <div>
+          {splitLatexText(cellContent_name)}
+          <br />
+      </div>
+      <div class="su-pos">
+          {/**/}
+          {', '}
+          {/**/}
+          <br />
+      </div>
+      <div class="mlti-pos">
+          {/* */}
+      </div>
+      </div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <div class="row justify-content-start">
+      <div class="half-cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <div class="row justify-content-start">
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <div class="row justify-content-start">
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <div class="row justify-content-start">
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <div class="row justify-content-start">
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <div class="row justify-content-start">
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>
