@@ -119,7 +119,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
 
-  const cellList = Array.from({length: cellCount - 1}, (_, cellId) => {
+  const cellList = Array.from({length: cellCount - 1 - isEven}, (_, cellId) => {
 
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
