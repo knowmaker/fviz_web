@@ -26,12 +26,16 @@ export default function TableUI() {
   useEffect(() => {
     requestData(setTableData,'http://127.0.0.1:5000/api/quantities')
     requestData(setGkColors,'http://127.0.0.1:5000/api/gk_settings')
+
+
+
   }, []);
 
-  if (document.getElementById("cell-204") !== null) {
+  let once = true
+  if (document.getElementById("cell-204") !== null && once) {
     document.getElementById("cell-204").scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    once = false
   }
-  
   console.log(hoveredCell)
 
   return (
@@ -115,7 +119,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
 
-  const cellList = Array.from({length: cellCount - 1 + isEven}, (_, cellId) => {
+  const cellList = Array.from({length: cellCount - 1}, (_, cellId) => {
 
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)

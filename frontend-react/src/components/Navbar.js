@@ -44,8 +44,8 @@ export default function Navbar({revStates}) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className="navbar-nav">
-                        <div className="nav-link active" aria-current="page" onClick={undo} disabled={undoStack.length === 0}>↻Undo</div>
-                        <div className="nav-link active" aria-current="page" onClick={redo} disabled={redoStack.length === 0}>↺Redo</div>
+                        <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↻Undo</div>
+                        <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↺Redo</div>
                         <div className="nav-link active" aria-current="page" href="#">Screenshot</div>
                         <div className="nav-link active" aria-current="page" href="#">Screenshot</div>
                     </div>
