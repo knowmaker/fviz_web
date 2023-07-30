@@ -27,8 +27,6 @@ export default function TableUI() {
     requestData(setTableData,'http://127.0.0.1:5000/api/quantities')
     requestData(setGkColors,'http://127.0.0.1:5000/api/gk_settings')
 
-
-
   }, []);
 
   const [once, setOnce] = useState(true);
@@ -36,14 +34,13 @@ export default function TableUI() {
     document.getElementById("cell-204").scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
     setOnce(false)
   }
-  console.log(hoveredCell)
 
   return (
     <TableContext.Provider value={tableState}>
       <Navbar revStates={revStates} />
       <CellOptions selectedCellState={{selectedCell,setSelectedCell}} gkColors={gkColors} revStates={revStates} />
       <Table2 gkColors={gkColors} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} />
-      <Footbar hoveredCell={hoveredCell}/>
+      <Footbar hoveredCell={hoveredCell} gkColors={gkColors}/>
     </TableContext.Provider>
     );
 }
