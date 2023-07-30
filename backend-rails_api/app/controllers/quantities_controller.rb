@@ -8,7 +8,7 @@ class QuantitiesController < ApplicationController
   end
 
   def show
-    quantities = Quantity.where(id_lt: params[:id])
+    quantities = Quantity.where(id_lt: params[:id]).where.not(id_value: Represent.pluck(:active_values).flatten)
     if quantities.any?
       render json: quantities, status: :ok
     else
