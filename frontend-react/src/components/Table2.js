@@ -108,7 +108,7 @@ function Table2({gkColors,setSelectedCell,hoveredCellState}) {
   {
      return (
       <div className="loading">
-          <img src="/loading.gif" alt="Loading" />
+          <img src="/bee2.gif" alt="Loading" />
       </div>
      )
   }
