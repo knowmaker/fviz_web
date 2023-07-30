@@ -31,10 +31,10 @@ export default function TableUI() {
 
   }, []);
 
-  let once = true
+  const [once, setOnce] = useState(true);
   if (document.getElementById("cell-204") !== null && once) {
     document.getElementById("cell-204").scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
-    once = false
+    setOnce(false)
   }
   console.log(hoveredCell)
 
