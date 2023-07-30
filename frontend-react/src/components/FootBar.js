@@ -8,7 +8,7 @@ export default function Footbar({hoveredCell}) {
 
     const cellData = tableState ? tableState.tableData.find(cell => cell.id_lt === hoveredCell) : undefined
 
-    const cellLT = `L${cellData ? cellData.L_indicate : "?"}T${cellData ? cellData.T_indicate : "?"}` 
+    const cellLT = cellData ? cellData.lt_sign : "?"
     const cellGK = `No Data`
 
   return (
