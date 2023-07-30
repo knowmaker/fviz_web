@@ -2,7 +2,7 @@ class GkSettingsController < ApplicationController
   before_action :set_gk_setting, only: [:update]
 
   def index
-    gk_settings = GkSetting.all
+    gk_settings = GkSetting.joins(:gk).select("gk_settings.*, gk.gk_sign").all
     render json: gk_settings, status: :ok
   end
 
