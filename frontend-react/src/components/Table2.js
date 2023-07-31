@@ -143,14 +143,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
   const cellData = cellFullData.cellData
   const cellColor = cellFullData.cellColor
   const tableState = useContext(TableContext)
-  
-  const splitLatexText = (text) => {
-    return text.split(' ').map((word, index) => (
-        <React.Fragment key={index}>
-            {word}
-        </React.Fragment>
-    ));
-  };
+
   
   const handleCellRightClick = (event, cellId) => {
     
@@ -212,7 +205,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
           onMouseOver={event => handleCellHover(event, cellFullId)}
         >
           <div>
-              {splitLatexText(cellContent_name)}
+              {cellContent_name}
               <br />
           </div>
           <div className="su-pos">
