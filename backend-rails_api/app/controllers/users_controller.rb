@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_request, except: :create
+  #before_action :authorize_request, except: :create
   def create
     user = User.new(user_params)
     if user.save
@@ -10,8 +10,7 @@ class UsersController < ApplicationController
   end
   def login
     @user = User.find_by(email: params[:email])
-
-    if @user && @user.authenticate(params[:password])
+    if @user && @user.attributes.slice('password')["password"] == params[:password]
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(user_id: @user.id)
       render json: token, status: :ok
@@ -31,7 +30,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :last_name, :first_name, :patronymic)
+    params.require(:user).permit(:email, :password, :last_name, :first_name, :patronymic)
   end
 
   SECRET_KEY = Rails.application.credentials.secret_key_base
