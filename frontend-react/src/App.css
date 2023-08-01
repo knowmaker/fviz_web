@@ -62,6 +62,7 @@ body {
   clip-path: polygon(20% 0, 80% 0, 100% 50%, 80% 100%, 20% 100%, 0% 50%);
   background-color: #525252; /* default color */
   text-align: center;
+  overflow: hidden;
 }
 
 .cell:hover {
@@ -109,12 +110,13 @@ body {
   position: fixed;
   top: 60px;
   left: 2px;
-  width: 200px;
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
+  max-height: calc(100% - 105px);
+  overflow: auto;
 }
 
 nav {
@@ -137,4 +139,5 @@ nav {
   color: black;
   border: 1px solid black;
   margin-right: 10px;
+
 }

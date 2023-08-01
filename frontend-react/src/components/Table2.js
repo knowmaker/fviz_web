@@ -122,7 +122,12 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
     const cellColor = cellData ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}` : '';
 
-    return <Cell key={cellFullId} cellFullData={{cellFullId,cellData,cellColor}} cellRightClick={setSelectedCell} hoveredCellState={hoveredCellState}/>
+    return (<Cell 
+            key={cellFullId} 
+            cellFullData={{cellFullId,cellData,cellColor}} 
+            cellRightClick={setSelectedCell} 
+            hoveredCellState={hoveredCellState}
+            />);
   });
 
 
@@ -147,17 +152,28 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
   
   const handleCellRightClick = (event, cellId) => {
     
+    event.preventDefault()
+    cellRightClick(null)
+    console.log(cellId)
+
     //need to fix this 
     if (cellRightClick) {
-      event.preventDefault()
-      //console.log(cellId)
+
       requestData(cellRightClick,`http://127.0.0.1:5000/api/quantities/${cellId}`)
     }
 
   };
 
+  const handleEmptyCellRightClick = (event) => {
+    event.preventDefault()
+    cellRightClick(null)
+  }
+
   const handleCellLeftClick = (event, cellId) => {
     
+
+
+
     //need to fix this 
     if (selectedCells) {
 
@@ -184,6 +200,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
         hoveredCellState.setHoveredCell(cellId)
       }
   }
+
 
   if (cellData) {
 
@@ -220,7 +237,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
         </div>
     );
   } else {
-    return <div className="cell-invisible cell"></div>
+    return <div className="cell-invisible cell" onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)}></div>
   }
   
 }
