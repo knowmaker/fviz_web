@@ -1,6 +1,7 @@
 import React from 'react';
 import { TableContext } from './TableContext.js';
 import { useContext } from 'react';
+import { useDownloadableScreenshot } from './Screenshot';
 
 export default function Navbar({revStates}) {
   
@@ -35,6 +36,12 @@ export default function Navbar({revStates}) {
         }
     };
 
+    const { getImage } = useDownloadableScreenshot();
+
+    const handleButtonClick = () => {
+        getImage(); // Вызываем функцию getImage при нажатии на кнопку
+    };
+
     return (
         <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
             <div className="container-fluid">
@@ -46,8 +53,8 @@ export default function Navbar({revStates}) {
                     <div className="navbar-nav">
                         <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Undo()</div>
                         <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Redo</div>
-                        <div className="nav-link active" aria-current="page" href="#">Screenshot</div>
-                        <div className="nav-link active" aria-current="page" href="#">Screenshot</div>
+                        <div className="nav-link active" aria-current="page" href="#" onClick={handleButtonClick}>Screenshot</div>
+                        <div className="nav-link active" aria-current="page" href="#">Anyway</div>
                     </div>
                 </div>
             </div>

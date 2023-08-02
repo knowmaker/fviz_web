@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import Footbar from './FootBar';
 import { TableContext } from './TableContext.js';
+import { useDownloadableScreenshot } from './Screenshot';
 
 const rowCount = 20
 const cellCount = 20
@@ -90,7 +91,7 @@ function Table2({gkColors,setSelectedCell,hoveredCellState}) {
   const tableData = tableState.tableData
   const fullTableData = { tableData: tableData, Colors: gkColors};
 
-
+  const { ref} = useDownloadableScreenshot();
 
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0
@@ -105,7 +106,7 @@ function Table2({gkColors,setSelectedCell,hoveredCellState}) {
   {
      return (
       <div className="loading">
-          <img src="/bee2.gif" alt="Loading" />
+          <img src="/bee2.gif" alt="Loading" ref={ref}/>
       </div>
      )
   }
