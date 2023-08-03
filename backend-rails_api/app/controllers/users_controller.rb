@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
-  before_action :authorize_request, except: [:create, :login]
+  before_action :authorize_request, except: %i[create login]
   def create
     user = User.new(user_params)
     if user.save
@@ -8,9 +10,10 @@ class UsersController < ApplicationController
       render json: 'Registering error', status: :unprocessable_entity
     end
   end
+
   def login
     @user = User.find_by(email: params[:email])
-    if @user && @user.attributes.slice('password')["password"] == params[:password]
+    if @user && @user.attributes.slice('password')['password'] == params[:password]
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(user_id: @user.id)
       render json: token, status: :ok
@@ -39,5 +42,4 @@ class UsersController < ApplicationController
     payload[:exp] = exp.to_i
     JWT.encode(payload, SECRET_KEY)
   end
-
 end

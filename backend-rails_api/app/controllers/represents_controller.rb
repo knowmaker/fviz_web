@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class RepresentsController < ApplicationController
-  before_action :set_represent, only: [:show, :update, :destroy]
+  before_action :set_represent, only: %i[show update destroy]
 
   def index
     represents = Represent.all
@@ -46,5 +48,4 @@ class RepresentsController < ApplicationController
   def represent_update_params
     params.require(:represent).permit(:title, active_values: [])
   end
-
 end

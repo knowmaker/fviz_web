@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::API
+  attr_reader :current_user
+
   def authorize_request
     header = request.headers['Authorization']
     token = header.split(' ').last if header
@@ -12,6 +16,7 @@ class ApplicationController < ActionController::API
   end
 
   private
+
   SECRET_KEY = Rails.application.credentials.secret_key_base
   def decode(token)
     decoded = JWT.decode(token, SECRET_KEY)[0]

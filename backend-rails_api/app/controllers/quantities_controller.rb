@@ -1,10 +1,24 @@
+# frozen_string_literal: true
+
 class QuantitiesController < ApplicationController
-  before_action :set_quantity, only: [:update, :destroy]
+  # before_action :authorize_request
+  before_action :set_quantity, only: %i[update destroy]
 
   def index
-    @active_quantities = Quantity.where(id_value: Represent.select(:active_values).pluck(:active_values).flatten).left_joins(:lt).select("quantity.*, lt.*").order("quantity.id_lt")
+    active_quantities = Quantity
+                        .where(id_value: Represent.select(:active_values).pluck(:active_values).flatten)
+                        .left_joins(:lt)
+                        .select('quantity.id_value,
+                                 quantity.val_name,
+                                 quantity.symbol,
+                                 quantity.unit,
+                                 quantity.id_lt,
+                                 quantity.id_gk,
+                                 quantity.mlti_sign,
+                                 lt.lt_sign')
+                        .order('quantity.id_lt')
     # добавить where user
-    render json: @active_quantities.all
+    render json: active_quantities.all
   end
 
   def show
@@ -45,7 +59,9 @@ class QuantitiesController < ApplicationController
     @quantity = Quantity.find(params[:id])
   end
 
-  def quantity_params  # and update_params too
-    params.require(:quantity).permit(:val_name, :symbol, :M_indicate, :L_indicate, :T_indicate, :I_indicate, :unit, :id_lt, :id_gk)
+  # and update_params too
+  def quantity_params
+    params.require(:quantity).permit(:val_name, :symbol, :M_indicate, :L_indicate, :T_indicate, :I_indicate, :unit,
+                                     :id_lt, :id_gk)
   end
 end

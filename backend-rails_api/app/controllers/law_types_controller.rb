@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class LawTypesController < ApplicationController
-  before_action :set_law_type, only: [:update, :destroy]
+  before_action :set_law_type, only: %i[update destroy]
 
   def index
     law_types = LawType.all
@@ -35,8 +37,8 @@ class LawTypesController < ApplicationController
     @law_type = LawType.find(params[:id])
   end
 
-  def law_type_params # and update_params too
+  # and update_params too
+  def law_type_params
     params.require(:law_type).permit(:type_name)
   end
 end
-

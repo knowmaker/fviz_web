@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class LawsController < ApplicationController
-  before_action :set_law, only: [:show, :update, :destroy]
+  before_action :set_law, only: %i[show update destroy]
 
   def index
     laws = Law.all
@@ -32,7 +34,7 @@ class LawsController < ApplicationController
   end
 
   def law_params
-    params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_user, :id_type)
+    params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_user,
+                                :id_type)
   end
-
 end
