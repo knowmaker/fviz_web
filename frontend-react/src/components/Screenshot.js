@@ -1,27 +1,21 @@
-import { useEffect, createRef } from 'react';
-import { useScreenshot, createFileName } from 'use-react-screenshot';
+import {createRef} from 'react';
+import {createFileName} from 'use-react-screenshot';
+import {toJpeg} from "html-to-image";
 
 export const useDownloadableScreenshot = () => {
     const ref = createRef(null);
-    const [image, takeScreenShot] = useScreenshot();
+    const takeScreenShot = async (node) => {
+        return await toJpeg(node);
+    };
 
-    const download = (image, { name = 'img', extension = 'png' } = {}) => {
-        const a = document.createElement('a');
+    const download = (image, { name = "ФВиЗ_картина", extension = "jpg" } = {}) => {
+        const a = document.createElement("a");
         a.href = image;
         a.download = createFileName(extension, name);
         a.click();
     };
 
-    const getImage = () => {
-        console.log("trying to photo");
-        console.log(ref.current);
-        takeScreenShot(ref.current);}
-
-    useEffect(() => {
-        if (image) {
-            download(image, { name: 'lorem-ipsum', extension: 'png' });
-        }
-    }, [image]);
+    const getImage = () => takeScreenShot(ref.current).then(download);
 
     return { ref, getImage };
 };

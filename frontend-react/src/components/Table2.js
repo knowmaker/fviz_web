@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, forwardRef } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Footbar from './FootBar';
@@ -36,11 +36,13 @@ export default function TableUI() {
     setOnce(false)
   }
 
+  const { ref, getImage } = useDownloadableScreenshot();
+
   return (
     <TableContext.Provider value={tableState}>
-      <Navbar revStates={revStates} />
+      <Navbar revStates={revStates} getImage={getImage}/>
       <CellOptions selectedCellState={{selectedCell,setSelectedCell}} gkColors={gkColors} revStates={revStates} />
-      <Table2 gkColors={gkColors} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} />
+      <Table2 gkColors={gkColors} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} ref={ref}/>
       <Footbar hoveredCell={hoveredCell} gkColors={gkColors}/>
     </TableContext.Provider>
     );
@@ -84,14 +86,12 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-function Table2({gkColors,setSelectedCell,hoveredCellState}) {
+const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState }, ref) => {
 
 
   const tableState = useContext(TableContext)
   const tableData = tableState.tableData
   const fullTableData = { tableData: tableData, Colors: gkColors};
-
-  const { ref} = useDownloadableScreenshot();
 
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0
@@ -100,18 +100,18 @@ function Table2({gkColors,setSelectedCell,hoveredCellState}) {
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
       return <Row key={rowId} rowId={rowId} fullTableData={fullTableData} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState}/>
     });
-      return <div className="tables">{rowList}</div>
+      return <div className="tables" ref={ref}>{rowList}</div>
   }
   else
   {
      return (
       <div className="loading">
-          <img src="/bee2.gif" alt="Loading" ref={ref}/>
+          <img src="/bee2.gif" alt="Loading"/>
       </div>
      )
   }
 
-}
+})
 
 function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
 
