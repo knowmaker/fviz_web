@@ -18,11 +18,9 @@ class QuantitiesController < ApplicationController
   end
 
   def show
-    quantities = Quantity.where(id_lt: params[:id]).where.not(id_value: Represent.pluck(:active_values).flatten)
+    quantities = Quantity.where(id_lt: params[:id])
     if quantities.any?
       render json: quantities, status: :ok
-    elsif Lt.exists?(params[:id])
-      render json: [], status: :ok
     else
       render json: 'No quantities found for the given id_lt', status: :not_found
     end
