@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
+# Контроллер для получения активных ФВ представления (верхний слой), просмотра слоев, а также для работы с ФВ админом
 class QuantitiesController < ApplicationController
-  # before_action :authorize_request
+  before_action :authorize_request, except: %i[index show]
   before_action :set_quantity, only: %i[update destroy]
 
   def index
-    active_quantities = Quantity
-                        .where(id_value: Represent.select(:active_values).pluck(:active_values).flatten)
-                        .left_joins(:lt)
-                        .select('quantity.id_value,
+    if @current_user
+      represent_ids = @current_user.represents.first
+    else
+      represent_ids = 1 # ID представления, которое нужно использовать, когда нет текущего пользователя
+    end
+    quantity_ids = Represent.where(id_repr: represent_ids).pluck(:active_values).flatten
+    active_quantities = Quantity.where(id_value: quantity_ids)
+                                .left_joins(:lt)
+                                .select('quantity.id_value,
                                  quantity.val_name,
                                  quantity.symbol,
                                  quantity.unit,
@@ -16,8 +22,7 @@ class QuantitiesController < ApplicationController
                                  quantity.id_gk,
                                  quantity.mlti_sign,
                                  lt.lt_sign')
-                        .order('quantity.id_lt')
-    # добавить where user
+                                .order('quantity.id_lt')
     render json: active_quantities.all
   end
 
