@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Контроллер для получения и работы с настройками цвета слоев
 class GkSettingsController < ApplicationController
   before_action :authorize_request, except: %i[index]
   before_action :set_gk_setting, only: [:update]

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Контроллер для контроля обработки пользовательских регистраций и авторизаций
 class UsersController < ApplicationController
   before_action :authorize_request, except: %i[create login]
   def create

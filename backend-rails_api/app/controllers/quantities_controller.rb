@@ -6,22 +6,13 @@ class QuantitiesController < ApplicationController
   before_action :set_quantity, only: %i[update destroy]
 
   def index
-    represent_ids = if @current_user
-                      @current_user.represents.first
-                    else
-                      1 # ID представления, которое нужно использовать, когда нет текущего пользователя
-                    end
-    quantity_ids = Represent.where(id_repr: represent_ids).pluck(:active_values).flatten
+    represent_id = @current_user ? @current_user.represents.first : 1
+    quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_values).flatten
     active_quantities = Quantity.where(id_value: quantity_ids)
                                 .left_joins(:lt)
-                                .select('quantity.id_value,
-                                 quantity.val_name,
-                                 quantity.symbol,
-                                 quantity.unit,
-                                 quantity.id_lt,
-                                 quantity.id_gk,
-                                 quantity.mlti_sign,
-                                 lt.lt_sign')
+                                .select('quantity.id_value, quantity.val_name, quantity.symbol, quantity.unit,
+                                 quantity.id_lt, quantity.id_gk,
+                                 quantity.mlti_sign, lt.lt_sign')
                                 .order('quantity.id_lt')
     render json: active_quantities.all
   end

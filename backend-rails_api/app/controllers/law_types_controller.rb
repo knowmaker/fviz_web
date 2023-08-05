@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Контроллер для работы с типами закономерностей
 class LawTypesController < ApplicationController
   before_action :set_law_type, only: %i[update destroy]
 

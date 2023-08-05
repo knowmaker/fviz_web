@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Базовый контроллер приложения. Позволяет проверять автооризацию пользователя
 class ApplicationController < ActionController::API
   attr_reader :current_user
 

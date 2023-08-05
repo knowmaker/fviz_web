@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Контроллер для работы с представлениями ФВ
 class RepresentsController < ApplicationController
   before_action :authorize_request
   before_action :set_represent, only: %i[show update destroy]
