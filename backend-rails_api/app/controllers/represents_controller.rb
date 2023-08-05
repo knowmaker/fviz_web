@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class RepresentsController < ApplicationController
+  before_action :authorize_request
   before_action :set_represent, only: %i[show update destroy]
 
   def index
-    represents = Represent.all
+    represents = @current_user.represents
     render json: represents, status: :ok
   end
 
@@ -13,7 +14,7 @@ class RepresentsController < ApplicationController
   end
 
   def create
-    represent = Represent.new(represent_params)
+    represent = @current_user.represents.new(represent_params)
 
     if represent.save
       render json: represent, status: :created
@@ -23,7 +24,7 @@ class RepresentsController < ApplicationController
   end
 
   def update
-    if @represent.update(represent_update_params)
+    if @represent.update(represent_params)
       render json: @represent, status: :ok
     else
       render json: 'Failed to update represent', status: :unprocessable_entity
@@ -38,14 +39,11 @@ class RepresentsController < ApplicationController
   private
 
   def set_represent
-    @represent = Represent.find(params[:id])
+    @represent = @current_user.represents.find(params[:id])
   end
 
   def represent_params
-    params.require(:represent).permit(:title, :id_user, active_values: [])
-  end
-
-  def represent_update_params
     params.require(:represent).permit(:title, active_values: [])
   end
 end
+

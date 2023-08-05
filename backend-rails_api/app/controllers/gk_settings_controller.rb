@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class GkSettingsController < ApplicationController
+  before_action :authorize_request, except: %i[index]
   before_action :set_gk_setting, only: [:update]
 
   def index
@@ -19,7 +20,7 @@ class GkSettingsController < ApplicationController
   private
 
   def set_gk_setting
-    @gk_setting = GkSetting.find(params[:id])
+    @gk_setting = @current_user.gk_settings.find(params[:id])
   end
 
   def gk_setting_update_params
