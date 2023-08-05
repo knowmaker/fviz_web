@@ -46,4 +46,3 @@ class RepresentsController < ApplicationController
     params.require(:represent).permit(:title, active_values: [])
   end
 end
-
