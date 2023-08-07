@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user && @user.attributes.slice('password')['password'] == params[:password]
       # token = JsonWebToken.encode(user_id: @user.id)
-      token = encode({user_id: @user.id,email: @user.email})
+      token = encode(id_user: @user.id_user)
       render json: token, status: :ok
     else
       render json: 'Invalid credentials', status: :unauthorized

@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="rubymine settings">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6d6d4c09-8ebb-4c6d-bdd0-946b9ca99777.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6d6d4c09-8ebb-4c6d-bdd0-946b9ca99777/storage_v2/_src_/database/fviz.ASYwAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6d6d4c09-8ebb-4c6d-bdd0-946b9ca99777/storage_v2/_src_/database/fviz.ASYwAA/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6d6d4c09-8ebb-4c6d-bdd0-946b9ca99777/storage_v2/_src_/database/fviz.ASYwAA/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ff4e77ea-c922-4bde-b53d-d8fb856d3ee7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/ff4e77ea-c922-4bde-b53d-d8fb856d3ee7.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying jwt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +140,7 @@
       <workItem from="1691320356679" duration="2585000" />
       <workItem from="1691342007477" duration="694000" />
       <workItem from="1691352344327" duration="1485000" />
-      <workItem from="1691405519802" duration="7138000" />
+      <workItem from="1691405519802" duration="7797000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -160,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1691306876815</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="trying jwt">
+      <option name="closed" value="true" />
+      <created>1691414861249</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1691414861249</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,7 +177,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="rubymine settings" />
-    <option name="LAST_COMMIT_MESSAGE" value="rubymine settings" />
+    <MESSAGE value="trying jwt" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying jwt" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1691405641736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
