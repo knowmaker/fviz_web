@@ -4,18 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying jwt 2">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="new routes.rb">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/.env" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Ruby File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -63,7 +67,16 @@
     ]
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\app\helpers" />
+      <recent name="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\app\controllers" />
+    </key>
+  </component>
   <component name="RunManager" selected="Rails.backend-rails_api">
+    <configuration name="generated-requests | #6" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="6" requestIdentifier="#6" runType="Run single request">
+      <method v="2" />
+    </configuration>
     <configuration name="backend-rails_api" type="RailsRunConfigurationType" factoryName="Rails">
       <module name="backend-rails_api" />
       <predefined_log_file enabled="true" id="RUBY_RAILS_SERVER" />
@@ -126,10 +139,16 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="HTTP Request.generated-requests | #6" />
       <item itemvalue="Rails.backend-rails_api" />
       <item itemvalue="Rake.spec: backend-rails_api" />
       <item itemvalue="Rake.test: backend-rails_api" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="HTTP Request.generated-requests | #6" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SpringUtil" SPRING_PRE_LOADER_OPTION="true" RAKE_SPRING_PRE_LOADER_OPTION="true" RAILS_SPRING_PRE_LOADER_OPTION="true" />
@@ -146,7 +165,7 @@
       <workItem from="1691342007477" duration="694000" />
       <workItem from="1691352344327" duration="1485000" />
       <workItem from="1691405519802" duration="8190000" />
-      <workItem from="1691433565911" duration="1362000" />
+      <workItem from="1691433565911" duration="7232000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -172,7 +191,23 @@
       <option name="project" value="LOCAL" />
       <updated>1691415776017</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="update controllers">
+      <option name="closed" value="true" />
+      <created>1691435311996</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1691435311996</updated>
+    </task>
+    <task id="LOCAL-00005" summary="new routes.rb">
+      <option name="closed" value="true" />
+      <created>1691435678142</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1691435678142</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,7 +228,9 @@
     <MESSAGE value="rubymine settings" />
     <MESSAGE value="trying jwt" />
     <MESSAGE value="trying jwt 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying jwt 2" />
+    <MESSAGE value="update controllers" />
+    <MESSAGE value="new routes.rb" />
+    <option name="LAST_COMMIT_MESSAGE" value="new routes.rb" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1691434490234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

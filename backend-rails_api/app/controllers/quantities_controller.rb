@@ -2,6 +2,7 @@
 
 # Контроллер для получения активных ФВ представления (верхний слой), просмотра слоев, а также для работы с ФВ админом
 class QuantitiesController < ApplicationController
+  include QuantitiesHelper
   before_action :authorize_request
   before_action :set_quantity, only: %i[show update destroy]
 
@@ -11,8 +12,11 @@ class QuantitiesController < ApplicationController
       return
     end
 
-    quantities = Quantity.all
-    render json: quantities, status: :ok
+    @quantities = Quantity.all
+
+    html_content = generate_html_table(@quantities)
+    send_data html_content, filename: 'quantities_table.html', type: 'text/html' and return
+    render json: 'Successfully downloaded', status: :ok
   end
 
   def show
@@ -81,4 +85,5 @@ class QuantitiesController < ApplicationController
 
     quantity_params
   end
+
 end
