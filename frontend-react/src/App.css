@@ -29,7 +29,6 @@ body {
   background-color: #525252; /* default color */
   text-align: center;
   overflow: hidden;
-  z-index: -100;
 }
 
 .cell:hover {

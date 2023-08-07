@@ -12,8 +12,11 @@ export default function Footbar({hoveredCell,gkColors}) {
     const cellLT = cellData ? cellData.lt_sign : "?"
     const cellGK = cellDataGK ? cellDataGK.gk_sign : "?"
 
+    console.log(cellLT)
+    console.log(cellData)
+
   return (
-    <nav className="navbar navbar-expand-lg fixed-bottom bg-body-tertiary">
+  <nav className="navbar navbar-expand-lg fixed-bottom bg-body-tertiary">
     <div className="container-fluid">
         <div className="navbar-nav">
           <input className="diminput" type="text" id="outLT" placeholder="LT размерность" value={cellLT} readOnly={true}/> 
