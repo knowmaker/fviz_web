@@ -46,7 +46,7 @@ export default function Home() {
       });
 
       const headers = {
-        Authorization: `Basic ${token}`
+        Authorization: `Bearer ${token}`
       }
 
       putData(setUserProfile, 'http://localhost:5000/api/profile',undefined, headers )
