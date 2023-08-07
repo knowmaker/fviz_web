@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying jwt">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying jwt 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/.env" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,29 +40,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "alpha-signup",
-    "last_opened_file_path": "C:/Users/Alexander/Desktop/BMSTU_works/kursaches/fviz_web",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ruby.rails.projectView.checked": "true",
-    "ruby.structure.view.model.defaults.configured": "true",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.uml",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;alpha-signup&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alexander/Desktop/BMSTU_works/kursaches/fviz_web&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;,
+    &quot;ruby.structure.view.model.defaults.configured&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Rails.backend-rails_api">
     <configuration name="backend-rails_api" type="RailsRunConfigurationType" factoryName="Rails">
       <module name="backend-rails_api" />
@@ -140,7 +145,8 @@
       <workItem from="1691320356679" duration="2585000" />
       <workItem from="1691342007477" duration="694000" />
       <workItem from="1691352344327" duration="1485000" />
-      <workItem from="1691405519802" duration="7797000" />
+      <workItem from="1691405519802" duration="8190000" />
+      <workItem from="1691433565911" duration="1362000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -158,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1691414861249</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="trying jwt 2">
+      <option name="closed" value="true" />
+      <created>1691415776017</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1691415776017</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,9 +192,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="rubymine settings" />
     <MESSAGE value="trying jwt" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying jwt" />
+    <MESSAGE value="trying jwt 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying jwt 2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1691405641736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1691434490234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>

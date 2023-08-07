@@ -2,28 +2,26 @@
 
 # Контроллер для получения активных ФВ представления (верхний слой), просмотра слоев, а также для работы с ФВ админом
 class QuantitiesController < ApplicationController
-  before_action :authorize_request, except: %i[index show]
-  before_action :set_quantity, only: %i[update destroy]
+  before_action :authorize_request
+  before_action :set_quantity, only: %i[show update destroy]
 
   def index
-    represent_id = @current_user ? @current_user.represents.first : 1
-    quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_values).flatten
-    active_quantities = Quantity.where(id_value: quantity_ids)
-                                .left_joins(:lt)
-                                .select('quantity.id_value, quantity.val_name, quantity.symbol, quantity.unit,
-                                 quantity.id_lt, quantity.id_gk,
-                                 quantity.mlti_sign, lt.lt_sign')
-                                .order('quantity.id_lt')
-    render json: active_quantities.all
+    unless @current_user.role
+      render json: 'Only admins can see all quantities list', status: :unauthorized
+      return
+    end
+
+    quantities = Quantity.all
+    render json: quantities, status: :ok
   end
 
   def show
-    quantities = Quantity.where(id_lt: params[:id])
-    if quantities.any?
-      render json: quantities, status: :ok
-    else
-      render json: 'No quantities found for the given id_lt', status: :not_found
+    unless @current_user.role
+      render json: 'Only admins can see to quantity', status: :unauthorized
+      return
     end
+
+    render json: @quantity, status: :ok
   end
 
   def create
