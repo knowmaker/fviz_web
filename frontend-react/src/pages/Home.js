@@ -17,6 +17,7 @@ export default function Home() {
     const [userProfile, setUserProfile] = useState(null)
 
     const afterRegister = (userData) => {
+
       setRegModalVisibility(false)
       toast.success('Registration successful', {
         position: "top-center",
@@ -28,7 +29,7 @@ export default function Home() {
         theme: "colored",
         });
 
-      postData(setUserToken, 'http://localhost:5000/api/login', userData, undefined, afterLogin)
+      postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userData, undefined, afterLogin)
     }
 
     const afterLogin = (token) => {
@@ -49,7 +50,7 @@ export default function Home() {
         Authorization: `Bearer ${token}`
       }
 
-      putData(setUserProfile, 'http://localhost:5000/api/profile',undefined, headers )
+      putData(setUserProfile, process.env.REACT_APP_GK_PROFILE_LINK, undefined, headers )
     }
 
     console.log(userProfile)
@@ -71,26 +72,27 @@ export default function Home() {
 
 
 
-        postData(undefined, 'http://localhost:5000/api/signup', userData, undefined, afterRegister)
+        postData(undefined, process.env.REACT_APP_GK_REGISTER_LINK, userData, undefined, afterRegister)
         
 
     }
 
     const login = () => {
+
+
       const email = document.getElementById("InputEmail2").value
       const password = document.getElementById("InputPassword2").value
-
       const userLoginData = {
         email: email,
         password: password,
       }
 
-      postData(setUserToken, 'http://localhost:5000/api/login', userLoginData, undefined, afterLogin)
+      postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userLoginData, undefined, afterLogin)
     }
 
     return (
             <>
-
+              
                 <TableUI modalsVisibility={modalsVisibility}/>
 
                 <div id="modal-mask" className="hidden">
@@ -126,19 +128,17 @@ export default function Home() {
                         <div className="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab" tabIndex="0">
 
                             <div className="modal-content2">
-                            <label htmlFor="InputEmail1" className="form-label">Email address</label>
-                            <input type="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="name@example.com"/>
-                            <label htmlFor="InputPassword1" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="InputPassword1"/>
-                            <div id="passwordHelpBlock" className="form-text">
-                                Your password must be 8-20 characters long.
-                            </div>
-
+                                <label htmlFor="InputEmail1" className="form-label">Email address</label>
+                                <input type="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="name@example.com"/>
+                                <label htmlFor="InputPassword1" className="form-label">Password</label>
+                                <input type="password" className="form-control" id="InputPassword1"/>
+                                <div id="passwordHelpBlock" className="form-text">
+                                    Your password must be 8-20 characters long.
+                                </div>
                             </div>
 
 
                             <div className="modal-footer2">
-
                                 <button type="button" className="btn btn-secondary" onClick={() => setRegModalVisibility(false)}>Close</button>
                                 <button type="button" className="btn btn-primary" onClick={() => register()}>Send</button>
                             </div>
