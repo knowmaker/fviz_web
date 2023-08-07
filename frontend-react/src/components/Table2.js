@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext, forwardRef } from 'react';
-import axios from 'axios';
 import Navbar from './Navbar';
 import Footbar from './FootBar';
-import { TableContext } from './TableContext.js';
+import { TableContext } from './Contexts.js';
 import { useDownloadableScreenshot } from './Screenshot';
+import getData from './api';
 
 const rowCount = 20
 const cellCount = 20
 
-export default function TableUI() {
+export default function TableUI({modalsVisibility}) {
 
 
   const [tableData, setTableData] = useState([]);
@@ -25,8 +25,8 @@ export default function TableUI() {
   //const isLoaded = tableData.length !== 0 && gkColors.length !== 0
 
   useEffect(() => {
-    requestData(setTableData,'http://127.0.0.1:5000/api/quantities')
-    requestData(setGkColors,'http://127.0.0.1:5000/api/gk_settings')
+    getData(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
+    getData(setGkColors,process.env.REACT_APP_GK_SETTINGS_LINK)
 
   }, []);
 
@@ -40,7 +40,7 @@ export default function TableUI() {
 
   return (
     <TableContext.Provider value={tableState}>
-      <Navbar revStates={revStates} getImage={getImage}/>
+      <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility}/>
       <CellOptions selectedCellState={{selectedCell,setSelectedCell}} gkColors={gkColors} revStates={revStates} />
       <Table2 gkColors={gkColors} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} ref={ref}/>
       <Footbar hoveredCell={hoveredCell} gkColors={gkColors}/>
@@ -160,7 +160,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
     //need to fix this 
     if (cellRightClick) {
 
-      requestData(cellRightClick,`http://127.0.0.1:5000/api/quantities/${cellId}`)
+      getData(cellRightClick,`http://127.0.0.1:5000/api/quantities/${cellId}`)
     }
 
   };
@@ -243,17 +243,3 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
   
 }
 
-// interactions with database
-
-function requestData(setStateFunction, adress) {
-
-  axios
-      .get(adress)
-      .then((response) => {
-          setStateFunction(response.data);
-      })
-      .catch((error) => {
-          console.error(error);
-      });
-
-}

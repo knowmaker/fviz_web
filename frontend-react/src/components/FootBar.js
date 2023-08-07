@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableContext } from './TableContext.js';
+import { TableContext } from './Contexts.js';
 import { useContext } from 'react';
 
 export default function Footbar({hoveredCell,gkColors}) {
