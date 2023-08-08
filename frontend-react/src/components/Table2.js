@@ -180,15 +180,15 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
 
       event.preventDefault()
       const cellData = selectedCells.find(cell => cell.id_value === cellId);
-      //console.log(cellData)
-      //console.log(tableState.tableData)
+
+      cellData.lt_sign = tableState.tableData.find(cell => cell.id_lt !== cellData.id_lt).lt_sign
+
       tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
-      //console.log(tableState.tableData)
+
 
       revStates.setUndoStack([...revStates.undoStack, tableState.tableData]);
       revStates.setRedoStack([]);
-      //console.log(revStates.undoStack)
-      //console.log(revStates.redoStack)
+
       cellRightClick(null)
     }
 

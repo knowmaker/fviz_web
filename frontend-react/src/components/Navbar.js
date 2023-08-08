@@ -1,12 +1,13 @@
 import React,{useEffect,useState} from 'react';
-import { TableContext } from './Contexts.js';
+import { TableContext, UserProfile } from './Contexts.js';
 import { useContext } from 'react';
+import { toast } from 'react-toastify';
 
 
 export default function Navbar({revStates, getImage, modalsVisibility}) {
   
     const tableState = useContext(TableContext)
-    //console.log(tableState)
+
     const undoStack = revStates.undoStack
     const setUndoStack = revStates.setUndoStack
     const redoStack = revStates.redoStack
@@ -47,6 +48,55 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
         modalsVisibility.regModalVisibility.setVisibility(true)
     }
 
+    const userInfo = useContext(UserProfile)    
+
+    const signOut = () => {
+
+        userInfo.setUserProfile(null)
+        userInfo.setUserToken(null)
+
+        toast.success('successfully logged off', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            progress: undefined,
+            theme: "colored",
+          });
+
+    }
+
+    const openProfileForm = () => {
+
+
+        
+    }
+
+
+    //console.log(userProfile)
+    let loginButtons;
+
+    if (userInfo.userProfile) {
+        loginButtons = (
+            <>
+                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email}</span>
+                <span style={{margin:10}}>/</span>
+                <span onClick={() => signOut()} style={{cursor: "pointer"}}>Sign out</span>
+            </>
+        )
+    }   
+    else
+    {
+        loginButtons = (
+            <>
+                <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}>Login</span>
+                <span style={{margin:10}}>/</span>
+                <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}>Register</span>
+            </>
+        )
+    }
+
     return (
         <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
 
@@ -64,9 +114,7 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
                     </div>
                 </div>
                 <div className="navbar-text">
-                    <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}>Login</span>
-                    <span style={{margin:10}}>/</span>
-                    <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}>Register</span>
+                    {loginButtons}
                 </div>
             </div>
         </nav>
