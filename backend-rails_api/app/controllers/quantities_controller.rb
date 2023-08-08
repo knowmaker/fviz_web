@@ -3,16 +3,16 @@
 # Контроллер для получения активных ФВ представления (верхний слой), просмотра слоев, а также для работы с ФВ админом
 class QuantitiesController < ApplicationController
   include QuantitiesHelper
-  before_action :authorize_request
+  # before_action :authorize_request
   before_action :set_quantity, only: %i[show update destroy]
 
   def index
-    unless @current_user.role
-      render json: 'Only admins can see all quantities list', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can see all quantities list', status: :unauthorized
+    #   return
+    # end
 
-    @quantities = Quantity.all
+    @quantities = Quantity.joins(:gk).joins(:lt).select('quantity.*, gk.*, lt.*')
 
     html_content = generate_html_table(@quantities)
     send_data html_content, filename: 'quantities_table.html', type: 'text/html' and return
@@ -20,19 +20,19 @@ class QuantitiesController < ApplicationController
   end
 
   def show
-    unless @current_user.role
-      render json: 'Only admins can see to quantity', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can see to quantity', status: :unauthorized
+    #   return
+    # end
 
     render json: @quantity, status: :ok
   end
 
   def create
-    unless @current_user.role
-      render json: 'Only admins can create quantities', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can create quantities', status: :unauthorized
+    #   return
+    # end
 
     quantity = Quantity.new(quantity_params)
 
@@ -44,10 +44,10 @@ class QuantitiesController < ApplicationController
   end
 
   def update
-    unless @current_user.role
-      render json: 'Only admins can update quantities', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can update quantities', status: :unauthorized
+    #   return
+    # end
 
     if @quantity.update(quantity_params)
       render json: @quantity, status: :ok
@@ -57,10 +57,10 @@ class QuantitiesController < ApplicationController
   end
 
   def destroy
-    unless @current_user.role
-      render json: 'Only admins can delete quantities', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can delete quantities', status: :unauthorized
+    #   return
+    # end
 
     @quantity.destroy
     render json: 'Successfully deleted quantity', status: :ok
