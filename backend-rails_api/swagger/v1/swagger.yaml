@@ -92,13 +92,58 @@ paths:
         '200':
           description: successful
   "/api/quantities":
-    get:
-      summary: list quantities
-      responses:
-        '200':
-          description: successful
     post:
       summary: create quantity
+      tags:
+      - Quantities
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                val_name:
+                  type: string
+                symbol:
+                  type: string
+                M_indicate:
+                  type: string
+                L_indicate:
+                  type: string
+                T_indicate:
+                  type: string
+                I_indicate:
+                  type: string
+                unit:
+                  type: string
+                l_indicate:
+                  type: string
+                t_indicate:
+                  type: string
+                g_indicate:
+                  type: string
+                k_indicate:
+                  type: string
+              required:
+              - val_name
+              - symbol
+              - M_indicate
+              - L_indicate
+              - T_indicate
+              - I_indicate
+              - unit
+              - l_indicate
+              - t_indicate
+              - g_indicate
+              - k_indicate
+    get:
+      summary: list quantities
+      tags:
+      - Quantities
       responses:
         '200':
           description: successful
@@ -112,21 +157,51 @@ paths:
         type: string
     get:
       summary: show quantity
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update quantity
+      tags:
+      - Quantities
       responses:
         '200':
           description: successful
     put:
       summary: update quantity
+      tags:
+      - Quantities
+      parameters: []
       responses:
         '200':
           description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                val_name:
+                  type: string
+                symbol:
+                  type: string
+                M_indicate:
+                  type: string
+                L_indicate:
+                  type: string
+                T_indicate:
+                  type: string
+                I_indicate:
+                  type: string
+                unit:
+                  type: string
+                l_indicate:
+                  type: string
+                t_indicate:
+                  type: string
+                g_indicate:
+                  type: string
+                k_indicate:
+                  type: string
     delete:
       summary: delete quantity
+      tags:
+      - Quantities
       responses:
         '200':
           description: successful
