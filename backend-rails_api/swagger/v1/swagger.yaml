@@ -244,30 +244,107 @@ paths:
       responses:
         '200':
           description: successful
-  "/api/signup":
-    post:
-      summary: create user
-      responses:
-        '200':
-          description: successful
   "/api/login":
     post:
-      summary: login user
+      summary: login
+      tags:
+      - Users
+      parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: successful
-  "/api/profile":
-    put:
-      summary: show user
-      responses:
-        '200':
-          description: successful
-  "/api/update":
+  "/api/users":
     post:
-      summary: update user
+      summary: create user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                last_name:
+                  type: string
+                first_name:
+                  type: string
+                patronymic:
+                  type: string
+              required:
+              - email
+              - password
+              - last_name
+              - first_name
+              - patronymic
+  "/api/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show user
+      tags:
+      - Users
       responses:
         '200':
           description: successful
+    put:
+      summary: update user
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                last_name:
+                  type: string
+                first_name:
+                  type: string
+                patronymic:
+                  type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 servers:
 - url: http://{defaultHost}
   variables:
