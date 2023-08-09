@@ -10,11 +10,6 @@ paths:
       responses:
         '200':
           description: successful
-    post:
-      summary: create gk_setting
-      responses:
-        '200':
-          description: successful
   "/api/gk_settings/{id}":
     parameters:
     - name: id
@@ -23,11 +18,6 @@ paths:
       required: true
       schema:
         type: string
-    get:
-      summary: show gk_setting
-      responses:
-        '200':
-          description: successful
     patch:
       summary: update gk_setting
       responses:
@@ -38,8 +28,66 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/law_types":
+    get:
+      summary: list law_types
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create law_type
+      responses:
+        '200':
+          description: successful
+  "/api/law_types/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update law_type
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update law_type
+      responses:
+        '200':
+          description: successful
     delete:
-      summary: delete gk_setting
+      summary: delete law_type
+      responses:
+        '200':
+          description: successful
+  "/api/laws":
+    get:
+      summary: list laws
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create law
+      responses:
+        '200':
+          description: successful
+  "/api/laws/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show law
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete law
       responses:
         '200':
           description: successful
@@ -118,6 +166,30 @@ paths:
           description: successful
     delete:
       summary: delete represent
+      responses:
+        '200':
+          description: successful
+  "/api/signup":
+    post:
+      summary: create user
+      responses:
+        '200':
+          description: successful
+  "/api/login":
+    post:
+      summary: login user
+      responses:
+        '200':
+          description: successful
+  "/api/profile":
+    put:
+      summary: show user
+      responses:
+        '200':
+          description: successful
+  "/api/update":
+    post:
+      summary: update user
       responses:
         '200':
           description: successful

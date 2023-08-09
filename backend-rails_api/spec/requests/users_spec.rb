@@ -1,25 +1,72 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe "Users", type: :request do
-  describe "GET /show" do
-    it "returns http success" do
-      get "/users/show"
-      expect(response).to have_http_status(:success)
+RSpec.describe 'users', type: :request do
+
+  path '/api/signup' do
+
+    post('create user') do
+      response(200, 'successful') do
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
     end
   end
 
-  describe "GET /create" do
-    it "returns http success" do
-      get "/users/create"
-      expect(response).to have_http_status(:success)
+  path '/api/login' do
+
+    post('login user') do
+      response(200, 'successful') do
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
     end
   end
 
-  describe "GET /update" do
-    it "returns http success" do
-      get "/users/update"
-      expect(response).to have_http_status(:success)
+  path '/api/profile' do
+
+    put('show user') do
+      response(200, 'successful') do
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
     end
   end
 
+  path '/api/update' do
+
+    post('update user') do
+      response(200, 'successful') do
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
+    end
+  end
 end

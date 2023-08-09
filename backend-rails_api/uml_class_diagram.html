@@ -67,12 +67,12 @@
 ]
 [<class> RepresentsController |
    |
-  +index; +show; +create; +update; +destroy; -set_represent; -represent_params |
+  +index; +create; +update; +destroy; +represent_view_index; +represent_view_show; +lt_values; -set_represent; -represent_params |
   
 ]
 [<class> UsersController |
    |
-  +create; +login; +update; -user_params; -encode(payload, exp) |
+  +create; +login; +show; +update; -user_params; -encode(payload, exp) |
   
 ]
 [<class> ApplicationJob |
@@ -134,6 +134,14 @@
    |
   
 ]
+[<module> ApplicationHelper |
+   |
+  
+]
+[<module> QuantitiesHelper |
+  +generate_html_table(quantities) |
+  
+]
 [Channel] inherits <:- [Base]
 [Connection] inherits <:- [Base]
 [ApplicationController] inherits <:- [API]
@@ -141,6 +149,7 @@
 [LawTypesController] inherits <:- [ApplicationController]
 [LawsController] inherits <:- [ApplicationController]
 [QuantitiesController] inherits <:- [ApplicationController]
+[QuantitiesController] includes <- [QuantitiesHelper]
 [RepresentsController] inherits <:- [ApplicationController]
 [UsersController] inherits <:- [ApplicationController]
 [ApplicationJob] inherits <:- [Base]
