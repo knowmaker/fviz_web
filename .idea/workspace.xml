@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="api interface">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying api interface USER">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/swagger_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/swagger_helper.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -168,7 +168,8 @@
       <workItem from="1691433565911" duration="7706000" />
       <workItem from="1691475919982" duration="623000" />
       <workItem from="1691492520363" duration="1624000" />
-      <workItem from="1691582337828" duration="2520000" />
+      <workItem from="1691582337828" duration="4209000" />
+      <workItem from="1691652080635" duration="696000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -226,7 +227,23 @@
       <option name="project" value="LOCAL" />
       <updated>1691583114602</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="api interface QUANTITY">
+      <option name="closed" value="true" />
+      <created>1691585079544</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1691585079544</updated>
+    </task>
+    <task id="LOCAL-00009" summary="trying api interface USER">
+      <option name="closed" value="true" />
+      <created>1691586529578</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1691586529578</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,9 +268,11 @@
     <MESSAGE value="new routes.rb" />
     <MESSAGE value="quantity index file" />
     <MESSAGE value="api interface" />
-    <option name="LAST_COMMIT_MESSAGE" value="api interface" />
+    <MESSAGE value="api interface QUANTITY" />
+    <MESSAGE value="trying api interface USER" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying api interface USER" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1691582568456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1691652312418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>

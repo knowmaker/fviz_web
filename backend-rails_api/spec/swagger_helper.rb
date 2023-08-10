@@ -31,6 +31,7 @@ RSpec.configure do |config|
           }
         }
       },
+      security: [{ bearerAuth: [] }], # Добавляем схему безопасности к документу
       servers: [
         {
           url: 'http://{defaultHost}',
