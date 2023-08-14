@@ -6,9 +6,10 @@ class GkSettingsController < ApplicationController
   before_action :set_gk_setting, only: [:update]
 
   def index
-    gk_settings = GkSetting.joins(:gk).select('gk_settings.*, gk.gk_sign, gk.gk_name').all
+    gk_settings = GkSetting.joins(:gk).select('gk_settings.*, gk.*').all
     render json: gk_settings, status: :ok
   end
+  #TODO: сделать по аналогии с represent index для авториз. и неавторизован. пользователей
 
   def update
     if @gk_setting.update(gk_setting_update_params)
