@@ -8,27 +8,21 @@ import getData from './api';
 const rowCount = 20
 const cellCount = 20
 
-export default function TableUI({modalsVisibility}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates}) {
 
 
-  const [tableData, setTableData] = useState([]);
-  const [gkColors, setGkColors] = useState([]);
+  // const [tableData, setTableData] = useState([]);
+  // const [gkColors, setGkColors] = useState([]);
   
-  const [undoStack, setUndoStack] = useState([]);
-  const [redoStack, setRedoStack] = useState([]);
-  const [selectedCell, setSelectedCell] = useState(null);
+  // const [undoStack, setUndoStack] = useState([]);
+  // const [redoStack, setRedoStack] = useState([]);
+  // const [selectedCell, setSelectedCell] = useState(null);
   const [hoveredCell, setHoveredCell] = useState(null);
 
-  const revStates = {undoStack,setUndoStack,redoStack,setRedoStack}
-  const tableState = {tableData,setTableData}
+
+
   const hoveredCellState = {hoveredCell, setHoveredCell}
   //const isLoaded = tableData.length !== 0 && gkColors.length !== 0
-
-  useEffect(() => {
-    getData(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
-    getData(setGkColors,process.env.REACT_APP_GK_SETTINGS_LINK)
-
-  }, []);
 
   const [once, setOnce] = useState(true);
   if (document.getElementById("cell-204") !== null && once) {
@@ -39,12 +33,12 @@ export default function TableUI({modalsVisibility}) {
   const { ref, getImage } = useDownloadableScreenshot();
 
   return (
-    <TableContext.Provider value={tableState}>
-      <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility}/>
-      <CellOptions selectedCellState={{selectedCell,setSelectedCell}} gkColors={gkColors} revStates={revStates} />
-      <Table2 gkColors={gkColors} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} ref={ref}/>
-      <Footbar hoveredCell={hoveredCell} gkColors={gkColors}/>
-    </TableContext.Provider>
+    <>
+      <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
+      <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
+      <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} ref={ref}/>
+      <Footbar hoveredCell={hoveredCell} gkColors={gkState.gkColors}/>
+    </>  
     );
 }
 

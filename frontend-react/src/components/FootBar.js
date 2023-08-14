@@ -14,7 +14,7 @@ export default function Footbar({hoveredCell,gkColors}) {
 
 
   return (
-  <nav className="navbar navbar-expand-lg fixed-bottom bg-body-tertiary">
+  <nav className="navbar navbar-expand fixed-bottom bg-body-tertiary">
     <div className="container-fluid">
         <div className="navbar-nav">
           <input className="diminput" type="text" id="outLT" placeholder="LT размерность" value={cellLT} readOnly={true}/> 

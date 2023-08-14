@@ -1,3 +1,7 @@
+html {
+  overflow: hidden;
+}
+
 .loading {
   background-color: white;
   position: absolute;
@@ -6,18 +10,6 @@
   margin-right: -50%;
   transform: translate(-50%, -50%);
   z-index: 100;
-}
-
-html {
-  height: 100%;
-}
-
-body {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  padding-left: 200px;
-  width: fit-content;
-  height: 100%;
 }
 
 .cell {
@@ -29,6 +21,7 @@ body {
   background-color: #525252; /* default color */
   text-align: center;
   overflow: hidden;
+
 }
 
 .cell:hover {
@@ -37,7 +30,7 @@ body {
 
 
 /* border for hex */
-/* .cell:before {
+.inner-cell {
   content: "";
   display: block;
   position: relative;
@@ -47,11 +40,25 @@ body {
   width: 178px;
   background-color: #8a91a0; 
   clip-path: inherit;
-} */
+}
+
+
 
 .tables {
+  max-height: calc(100vh - 101px);
+  margin-top: 58px;
+  /* margin-bottom: 43px; */
+  overflow-y: scroll;
+  overflow-x: scroll;
+  padding-left: 230px;
+
+  padding-right: 5px;  
+}
+
+div.tables div.row {
   width: max-content;
-  padding: 30px;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .half-cell {
@@ -81,12 +88,13 @@ body {
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  max-height: calc(100% - 105px);
+  max-height: calc(100% - 108px);
   overflow: auto;
 }
 
 .navbar {
   border: 1px solid #ccc;
+  z-index: -10;
 }
 
 .nav-link {
@@ -120,7 +128,6 @@ body {
 
 .drag-modal {
   margin: 10px;
-  max-width: 500px;
   background-color: white;
   border: 1px solid #ccc;
 }
@@ -167,5 +174,18 @@ body {
   left:0;
   right:0;
   bottom:0;
-  z-index: 10000;
+
+}
+
+.public-DraftStyleDefault-block {
+  margin: 0 !important;
+}
+
+.toolbar-class {
+  border: 1px solid #dee2e6 !important;
+  border-radius: 0.375rem !important;
+}
+
+.rdw-option-wrapper {
+  border-radius: 0.375rem !important;
 }

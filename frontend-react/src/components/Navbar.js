@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import { TableContext, UserProfile } from './Contexts.js';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
+import { getTextFromState, getStateFromText} from '../pages/Home.js'
 
 
 export default function Navbar({revStates, getImage, modalsVisibility}) {
@@ -68,13 +69,15 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
     }
 
     const openProfileForm = () => {
+        modalsVisibility.editProfileModalVisibility.setVisibility(true)
+    }
 
+    const openEditForm = () => {
+        modalsVisibility.editCellModalVisibility.setVisibility(true)
 
-        
     }
 
 
-    //console.log(userProfile)
     let loginButtons;
 
     if (userInfo.userProfile) {
@@ -110,7 +113,7 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
                         <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Undo</div>
                         <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Redo</div>
                         <div className="nav-link active" aria-current="page" onClick={getImage}>Screenshot</div>
-                        <div className="nav-link active" aria-current="page">Anyway</div>
+                        <div className="nav-link active" aria-current="page" onClick={openEditForm}>Edit</div>
                     </div>
                 </div>
                 <div className="navbar-text">
