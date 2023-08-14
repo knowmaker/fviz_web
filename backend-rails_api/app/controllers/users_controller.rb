@@ -4,11 +4,15 @@
 class UsersController < ApplicationController
   before_action :authorize_request, except: %i[create login]
   def create
-    user = User.new(user_params)
-    if user.save
-      render json: user, status: :created
+    if User.exists?(email: params[:user][:email])
+      render json: 'User already exists', status: :unprocessable_entity
     else
-      render json: 'Registering error', status: :unprocessable_entity
+      user = User.new(user_params)
+      if user.save
+        render json: user, status: :created
+      else
+        render json: 'Registering error', status: :unprocessable_entity
+      end
     end
   end
 
