@@ -25,7 +25,7 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    render json: @quantity, status: :ok
+    render json: @quantity.joins(:gk).joins(:lt).select('quantity.*, gk.*, lt.*'), status: :ok
   end
 
   def create
