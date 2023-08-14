@@ -69,10 +69,11 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "users", primary_key: "id_user", id: :serial, force: :cascade do |t|
     t.string "email", limit: 100, null: false
     t.string "password", limit: 50, null: false
-    t.string "last_name", limit: 100, null: false
-    t.string "first_name", limit: 100, null: false
+    t.string "last_name", limit: 100
+    t.string "first_name", limit: 100
     t.string "patronymic", limit: 100
     t.boolean "role", default: false, null: false
+    t.index ["email"], name: "unique_email", unique: true
   end
 
   add_foreign_key "gk_settings", "gk", column: "id_gk", primary_key: "id_gk", name: "gk_settings_id_gk_fkey", on_update: :cascade, on_delete: :cascade
