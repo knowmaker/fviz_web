@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying api interface USER">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user anti double register">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/swagger_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/swagger_helper.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,6 +138,22 @@
       <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_OPTION_TESTOPTS" VALUE="" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="SwaggerCodegen">
+      <option name="activeConfigurationType" value="FILE" />
+      <option name="configurationPath" value="" />
+      <option name="customJreEnabled" value="false" />
+      <option name="customTemplatesPath" value="" />
+      <option name="enableDebugLogging" value="false" />
+      <option name="generateToPath" value="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\gen" />
+      <option name="generationParameters">
+        <list />
+      </option>
+      <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar" />
+      <option name="jdkPath" value="" />
+      <option name="language" value="java" />
+      <option name="specificationPath" value="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\swagger\v1\swagger.yaml" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="HTTP Request.generated-requests | #6" />
       <item itemvalue="Rails.backend-rails_api" />
@@ -169,7 +185,12 @@
       <workItem from="1691475919982" duration="623000" />
       <workItem from="1691492520363" duration="1624000" />
       <workItem from="1691582337828" duration="4209000" />
-      <workItem from="1691652080635" duration="696000" />
+      <workItem from="1691652080635" duration="1659000" />
+      <workItem from="1691666789659" duration="604000" />
+      <workItem from="1692003696730" duration="29000" />
+      <workItem from="1692003741402" duration="27000" />
+      <workItem from="1692003811332" duration="9251000" />
+      <workItem from="1692095006563" duration="1691000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -243,7 +264,71 @@
       <option name="project" value="LOCAL" />
       <updated>1691586529578</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="AUTH done">
+      <option name="closed" value="true" />
+      <created>1691653348737</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1691653348737</updated>
+    </task>
+    <task id="LOCAL-00011" summary="+gk_name in api">
+      <option name="closed" value="true" />
+      <created>1692005189449</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1692005189449</updated>
+    </task>
+    <task id="LOCAL-00012" summary="gk_settings">
+      <option name="closed" value="true" />
+      <created>1692005686647</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1692005686647</updated>
+    </task>
+    <task id="LOCAL-00013" summary="quantity">
+      <option name="closed" value="true" />
+      <created>1692005962659</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1692005962659</updated>
+    </task>
+    <task id="LOCAL-00014" summary="gk_settings">
+      <option name="closed" value="true" />
+      <created>1692006014978</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1692006014978</updated>
+    </task>
+    <task id="LOCAL-00015" summary="gk_settings for unauth and auth users">
+      <option name="closed" value="true" />
+      <created>1692009141882</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1692009141882</updated>
+    </task>
+    <task id="LOCAL-00016" summary="db:migrate">
+      <option name="closed" value="true" />
+      <created>1692015056437</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1692015056437</updated>
+    </task>
+    <task id="LOCAL-00017" summary="user anti double register">
+      <option name="closed" value="true" />
+      <created>1692039974088</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1692039974088</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,9 +355,16 @@
     <MESSAGE value="api interface" />
     <MESSAGE value="api interface QUANTITY" />
     <MESSAGE value="trying api interface USER" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying api interface USER" />
+    <MESSAGE value="AUTH done" />
+    <MESSAGE value="+gk_name in api" />
+    <MESSAGE value="quantity" />
+    <MESSAGE value="gk_settings" />
+    <MESSAGE value="gk_settings for unauth and auth users" />
+    <MESSAGE value="db:migrate" />
+    <MESSAGE value="user anti double register" />
+    <option name="LAST_COMMIT_MESSAGE" value="user anti double register" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1691652312418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1692096960759" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>

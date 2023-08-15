@@ -75,13 +75,11 @@ class QuantitiesController < ApplicationController
   def quantity_params
     quantity_params = params.require(:quantity).permit(:val_name, :symbol,
                                                        :M_indicate, :L_indicate, :T_indicate, :I_indicate,
-                                                       :unit, :l_indicate, :t_indicate, :g_indicate, :k_indicate)
+                                                       :unit, :l_indicate, :t_indicate, :id_gk)
 
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])
-    gk = Gk.find_by(g_indicate: quantity_params[:g_indicate], k_indicate: quantity_params[:k_indicate])
 
     quantity_params[:id_lt] = lt.id_lt if lt
-    quantity_params[:id_gk] = gk.id_gk if gk
 
     quantity_params
   end
