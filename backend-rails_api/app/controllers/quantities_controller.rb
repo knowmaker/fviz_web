@@ -15,8 +15,8 @@ class QuantitiesController < ApplicationController
     @quantities = Quantity.joins(:gk).joins(:lt).select('quantity.*, gk.*, lt.*')
 
     html_content = generate_html_table(@quantities)
-    send_data html_content, filename: 'quantities_table.html', type: 'text/html' and return
-    render json: 'Successfully downloaded', status: :ok
+    send_data html_content, filename: 'quantities_table.html', type: 'text/html', disposition: 'attachment'
+
   end
 
   def show

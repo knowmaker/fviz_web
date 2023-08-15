@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user anti double register">
-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="debug after text meet">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,7 +189,7 @@
       <workItem from="1692003696730" duration="29000" />
       <workItem from="1692003741402" duration="27000" />
       <workItem from="1692003811332" duration="9251000" />
-      <workItem from="1692095006563" duration="1691000" />
+      <workItem from="1692095006563" duration="4790000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -328,7 +327,15 @@
       <option name="project" value="LOCAL" />
       <updated>1692039974088</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="debug after text meet">
+      <option name="closed" value="true" />
+      <created>1692097309156</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1692097309156</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -362,7 +369,8 @@
     <MESSAGE value="gk_settings for unauth and auth users" />
     <MESSAGE value="db:migrate" />
     <MESSAGE value="user anti double register" />
-    <option name="LAST_COMMIT_MESSAGE" value="user anti double register" />
+    <MESSAGE value="debug after text meet" />
+    <option name="LAST_COMMIT_MESSAGE" value="debug after text meet" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1692096960759" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
