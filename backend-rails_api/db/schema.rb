@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.string "gk_sign", limit: 50
   end
 
-  create_table "gk_settings", id: :serial, force: :cascade do |t|
+  create_table "gk_settings", primary_key: "id_gk_set", id: :serial, force: :cascade do |t|
     t.integer "id_gk", null: false
     t.integer "id_user", null: false
     t.string "gk_color", limit: 20, null: false
