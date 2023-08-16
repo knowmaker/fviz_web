@@ -3,16 +3,18 @@
 write-host "Running..."
 
 $job =Start-Job -ScriptBlock {
-  Set-location 'C:\cw\fviz_web\frontend-react'
+  Set-Location $using:PWD
+  Set-location 'frontend-react'
   # npm i 
   # npm update 
   npm start
 }
 
 $job2 =Start-Job -ScriptBlock {
-  Set-location 'C:\cw\fviz_web\backend-rails_api'
+  Set-Location $using:PWD
+  Set-location "backend-rails_api"
   # bundle update
-  shutup
+  shutup # gem install shutup
   rails s -p 5000        
 }
 

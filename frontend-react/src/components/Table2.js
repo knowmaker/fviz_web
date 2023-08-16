@@ -10,19 +10,11 @@ const cellCount = 20
 
 export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates}) {
 
-
-  // const [tableData, setTableData] = useState([]);
-  // const [gkColors, setGkColors] = useState([]);
-  
-  // const [undoStack, setUndoStack] = useState([]);
-  // const [redoStack, setRedoStack] = useState([]);
-  // const [selectedCell, setSelectedCell] = useState(null);
   const [hoveredCell, setHoveredCell] = useState(null);
 
 
 
   const hoveredCellState = {hoveredCell, setHoveredCell}
-  //const isLoaded = tableData.length !== 0 && gkColors.length !== 0
 
   const [once, setOnce] = useState(true);
   if (document.getElementById("cell-204") !== null && once) {
@@ -47,10 +39,17 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   const selectedCell = selectedCellState.selectedCell
   const setSelectedCell = selectedCellState.setSelectedCell
 
-  if (selectedCell !== null) {
+  const [cellAlternatives, setCellAlternatives] = useState(null);
 
+  useEffect(() => {
+    if (selectedCell) {
+      getData(setCellAlternatives,`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`) 
+    } else {setCellAlternatives(null)}
+  }, [selectedCell]);
 
-    const cells = selectedCell.map(cellData => {
+  if (cellAlternatives !== null && selectedCell !== null) {
+
+    const cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
 
       const cellFullId = cellData.id_value
       const cellColor = `#${gkColors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}`
@@ -59,19 +58,26 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
         <Cell 
         key={cellFullId} 
         cellFullData={{cellFullId,cellData,cellColor}}
-        selectedCells={selectedCell} 
+        selectedCells={cellAlternatives} 
         revStates={revStates} 
         cellRightClick={setSelectedCell}
         />
-      );
+      )
+
+
     })
 
 
+    const cellOptions = cells.length !== 0 ? cells : "no cells to show"
+
     return (
       <div className="data-window">
-        {cells}
+        {cellOptions}
       </div>
     );
+
+
+
 
   } else {
     return null
@@ -154,7 +160,8 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
     //need to fix this 
     if (cellRightClick) {
 
-      getData(cellRightClick,`http://127.0.0.1:5000/api/layers/${cellId}`)
+      //getData(cellRightClick,`http://127.0.0.1:5000/api/layers/${cellId}`)
+      cellRightClick(cellData)
     }
 
   };
@@ -166,12 +173,6 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
 
   const handleCellLeftClick = (event, cellId) => {
     
-
-
-
-    //need to fix this 
-    if (selectedCells) {
-
       event.preventDefault()
       const cellData = selectedCells.find(cell => cell.id_value === cellId);
 
@@ -184,16 +185,15 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
       revStates.setRedoStack([]);
 
       cellRightClick(null)
-    }
 
   };
 
   const handleCellHover = (event, cellId) => {
       //need to fix this 
       
-      if (hoveredCellState) {
+
         hoveredCellState.setHoveredCell(cellId)
-      }
+
   }
 
 
@@ -212,22 +212,22 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
           className="cell"
           id={`cell-${cellFullId}`}
           style={{ backgroundColor: cellColor }}
-          onContextMenu={event => handleCellRightClick(event, cellFullId)}
-          onClick={event => handleCellLeftClick(event, cellFullId)}
-          onMouseOver={event => handleCellHover(event, cellFullId)}
+          onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
+          onClick={event => selectedCells ? handleCellLeftClick(event, cellFullId) : {}}
+          onMouseOver={event => hoveredCellState ? handleCellHover(event, cellFullId) : {}}
         >
-          <div>
-              {cellContent_name}
+          <div className='cell-name'>
+          <span dangerouslySetInnerHTML={{__html: cellContent_name}}></span>
               <br />
           </div>
-          <div className="su-pos">
-          {cellContent_symbol}
+          <div className="su-pos" >
+          <span dangerouslySetInnerHTML={{__html: cellContent_symbol}}></span>
               {', '}
-          {cellContent_unit} 
+          <span dangerouslySetInnerHTML={{__html: cellContent_unit}}></span>   
               <br />
           </div>
           <div className="mlti-pos">
-          {cellContent_mlti}
+          <span dangerouslySetInnerHTML={{__html: cellContent_mlti}}></span>   
           </div>
         </div>
     );
