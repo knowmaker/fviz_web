@@ -4,7 +4,7 @@
 class QuantitiesController < ApplicationController
   include QuantitiesHelper
   # before_action :authorize_request
-  before_action :set_quantity, only: %i[show update destroy]
+  before_action :set_quantity, only: %i[update destroy]
 
   def index
     # unless @current_user.role
@@ -12,7 +12,7 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    @quantities = Quantity.joins(:gk).joins(:lt).select('quantity.*, gk.*, lt.*')
+    @quantities = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*')
 
     html_content = generate_html_table(@quantities)
     send_data html_content, filename: 'quantities_table.html', type: 'text/html', disposition: 'attachment'
@@ -25,7 +25,8 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    render json: @quantity.joins(:gk).joins(:lt).select('quantity.*, gk.*, lt.*'), status: :ok
+    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(params[:id])
+    render json: @quantity, status: :ok
   end
 
   def create
