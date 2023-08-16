@@ -27,15 +27,15 @@ RSpec.describe 'quantities', type: :request do
         properties: {
           val_name: { type: :string },
           symbol: { type: :string },
-          M_indicate: { type: :string },
-          L_indicate: { type: :string },
-          T_indicate: { type: :string },
-          I_indicate: { type: :string },
+          M_indicate: { type: :integer },
+          L_indicate: { type: :integer },
+          T_indicate: { type: :integer },
+          I_indicate: { type: :integer },
           unit: { type: :string },
-          l_indicate: { type: :string },
-          t_indicate: { type: :string },
-          g_indicate: { type: :string },
-          k_indicate: { type: :string }
+          l_indicate: { type: :integer },
+          t_indicate: { type: :integer },
+          g_indicate: { type: :integer },
+          k_indicate: { type: :integer }
         },
         required: ['val_name', 'symbol', 'M_indicate', 'L_indicate', 'T_indicate', 'I_indicate', 'unit',
                    'l_indicate', 't_indicate', 'g_indicate', 'k_indicate']
@@ -46,11 +46,19 @@ RSpec.describe 'quantities', type: :request do
 
         run_test!
       end
+
+      response(422, 'unprocessable entity') do
+        run_test!
+      end
     end
 
     get('list quantities') do
       tags 'Quantities'
       response(200, 'successful') do
+        run_test!
+      end
+
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -66,6 +74,10 @@ RSpec.describe 'quantities', type: :request do
 
         run_test!
       end
+
+      response(404, 'not found') do
+        run_test!
+      end
     end
 
     put('update quantity') do
@@ -76,15 +88,15 @@ RSpec.describe 'quantities', type: :request do
         properties: {
           val_name: { type: :string },
           symbol: { type: :string },
-          M_indicate: { type: :string },
-          L_indicate: { type: :string },
-          T_indicate: { type: :string },
-          I_indicate: { type: :string },
+          M_indicate: { type: :integer },
+          L_indicate: { type: :integer },
+          T_indicate: { type: :integer },
+          I_indicate: { type: :integer },
           unit: { type: :string },
-          l_indicate: { type: :string },
-          t_indicate: { type: :string },
-          g_indicate: { type: :string },
-          k_indicate: { type: :string }
+          l_indicate: { type: :integer },
+          t_indicate: { type: :integer },
+          g_indicate: { type: :integer },
+          k_indicate: { type: :integer }
         }
       }
 
@@ -94,6 +106,14 @@ RSpec.describe 'quantities', type: :request do
 
         run_test!
       end
+
+      response(404, 'not found') do
+        run_test!
+      end
+
+      response(422, 'unprocessable entity') do
+        run_test!
+      end
     end
 
     delete('delete quantity') do
@@ -101,6 +121,10 @@ RSpec.describe 'quantities', type: :request do
       response(200, 'successful') do
         let(:id) { '123' }
 
+        run_test!
+      end
+
+      response(404, 'not found') do
         run_test!
       end
     end

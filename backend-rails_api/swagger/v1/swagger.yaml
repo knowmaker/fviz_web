@@ -100,6 +100,8 @@ paths:
       responses:
         '201':
           description: created
+        '422':
+          description: unprocessable entity
       requestBody:
         content:
           application/json:
@@ -111,23 +113,23 @@ paths:
                 symbol:
                   type: string
                 M_indicate:
-                  type: string
+                  type: integer
                 L_indicate:
-                  type: string
+                  type: integer
                 T_indicate:
-                  type: string
+                  type: integer
                 I_indicate:
-                  type: string
+                  type: integer
                 unit:
                   type: string
                 l_indicate:
-                  type: string
+                  type: integer
                 t_indicate:
-                  type: string
+                  type: integer
                 g_indicate:
-                  type: string
+                  type: integer
                 k_indicate:
-                  type: string
+                  type: integer
               required:
               - val_name
               - symbol
@@ -147,6 +149,8 @@ paths:
       responses:
         '200':
           description: successful
+        '500':
+          description: server error
   "/api/quantities/{id}":
     parameters:
     - name: id
@@ -162,6 +166,8 @@ paths:
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
     put:
       summary: update quantity
       tags:
@@ -170,6 +176,10 @@ paths:
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
       requestBody:
         content:
           application/json:
@@ -181,23 +191,23 @@ paths:
                 symbol:
                   type: string
                 M_indicate:
-                  type: string
+                  type: integer
                 L_indicate:
-                  type: string
+                  type: integer
                 T_indicate:
-                  type: string
+                  type: integer
                 I_indicate:
-                  type: string
+                  type: integer
                 unit:
                   type: string
                 l_indicate:
-                  type: string
+                  type: integer
                 t_indicate:
-                  type: string
+                  type: integer
                 g_indicate:
-                  type: string
+                  type: integer
                 k_indicate:
-                  type: string
+                  type: integer
     delete:
       summary: delete quantity
       tags:
@@ -205,6 +215,8 @@ paths:
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
   "/api/represents":
     get:
       summary: list represents
