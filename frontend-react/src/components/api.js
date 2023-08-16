@@ -1,11 +1,16 @@
 import axios from 'axios';
 
-export default function getData(setStateFunction, adress) {
+export default function getData(setStateFunction, adress, afterRequestFunction) {
 
   axios
       .get(adress)
       .then((response) => {
+        if (setStateFunction) {
           setStateFunction(response.data);
+        } else {return response.data}
+        if (afterRequestFunction !== undefined) {
+          afterRequestFunction(response.data);
+        }
       })
       .catch((error) => {
           console.error(error);

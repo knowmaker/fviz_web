@@ -4,11 +4,11 @@ import Draggable from 'react-draggable';
 import getData, { postData, putData} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
-import { EditorState, convertToRaw,  convertFromRaw  } from 'draft-js';
+import { EditorState, convertToRaw,  convertFromRaw , ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 import { TableContext } from '../components/Contexts.js';
+import { stateToMarkdown } from "draft-js-export-markdown";
+import { stateFromMarkdown } from 'draft-js-import-markdown';
 
 
 export default function Home() {
@@ -48,6 +48,53 @@ export default function Home() {
 
 
 
+    const [cellNameEditor, setCellNameEditor] = useState(EditorState.createEmpty());
+    const cellNameEditorState = {value: cellNameEditor, set: setCellNameEditor}
+    const [cellSymbolEditor, setCellSymbolEditor] = useState(EditorState.createEmpty());
+    const cellSymbolEditorState = {value: cellSymbolEditor, set: setCellSymbolEditor}
+    const [cellUnitEditor, setCellUnitEditor] = useState(EditorState.createEmpty());
+    const cellUnitEditorState = {value: cellUnitEditor, set: setCellUnitEditor}
+    const [cellMLTIEditor, setCellMLTIEditor] = useState(EditorState.createEmpty());
+    const cellMLTIEditorState = {value: cellMLTIEditor, set: setCellMLTIEditor}
+
+    const [cellLEditor, setCellLEditor] = useState(0)
+    const cellLEditorState = {value: cellLEditor, set: setCellLEditor}
+    const [cellTEditor, setCellTEditor] = useState(0)
+    const cellTEditorState = {value: cellTEditor, set: setCellTEditor}
+    const cellEditorsStates = {cellNameEditorState,cellSymbolEditorState,cellUnitEditorState,cellLEditorState,cellTEditorState,cellMLTIEditorState}
+
+
+
+    useEffect(() => {
+      setEditorFromSelectedCell()
+  
+    }, [selectedCell]);
+
+    const setEditorFromSelectedCell = () => {
+
+
+      console.log(selectedCell)
+
+      convertMarkdownToEditorState(setCellNameEditor, selectedCell ? selectedCell.val_name : "") 
+      convertMarkdownToEditorState(setCellSymbolEditor,  selectedCell ? selectedCell.symbol : "") 
+      convertMarkdownToEditorState(setCellUnitEditor, selectedCell ? selectedCell.unit : "") 
+
+      
+    }
+
+    const setEditorFromSelectedCellAfterQuery = (cellData) => {
+
+      document.getElementById("inputL3").value = selectedCell.unit
+
+    }
+
+    const convertMarkdownToEditorState = (stateFunction, markdown) => {
+
+      const contentState = stateFromMarkdown(markdown)
+      stateFunction(EditorState.createWithContent(contentState))
+
+    }
+
     const [userToken, setUserToken] = useState(null)
     const [userProfile, setUserProfile] = useState(null)
     
@@ -61,7 +108,7 @@ export default function Home() {
                 <div id="modal-mask" className='hidden'></div>                  
                   <RegModal modalsVisibility={modalsVisibility} setUserToken={setUserToken} setUserProfile={setUserProfile}/>               
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
-                  <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell}/>
+                  <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates}/>
             
 
                 <ToastContainer />
@@ -70,51 +117,97 @@ export default function Home() {
     );
 }
 
-function EditCellModal({modalsVisibility, selectedCell}) {
+function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates}) {
 
 
-  const [cellNameEditor, setCellNameEditor] = useState(EditorState.createEmpty());
-  const [cellSymbolEditor, setCellSymbolEditor] = useState(EditorState.createEmpty());
-  const [cellUnitEditor, setCellUnitEditor] = useState(EditorState.createEmpty());
 
   
+  const applyChangesToCell = () => {
 
-  console.log(getTextFromState(cellNameEditor))
+    const newCell = {
+      id_value: selectedCell.id_value,
+      val_name: cellEditorsStates.cellNameEditorState.value,
+      symbol: cellEditorsStates.cellSymbolEditorState.value,
+      unit: cellEditorsStates.cellUnitEditorState.value,
+      id_lt: selectedCell.id_lt,
+      id_gk: selectedCell.id_gk,
+      mlti_sign: selectedCell.mlti_sign,
+      lt_sign: selectedCell.lt_sign,
+    }
+
+    putData(null, )
+  }
+
+  const afterChangesToCell = () => {
+
+
+
+    // cellData.lt_sign = tableState.tableData.find(cell => cell.id_lt !== cellData.id_lt).lt_sign
+
+    // tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
+  }
+
+  //console.log(getTextFromState(cellNameEditor))
+
+
 
   return  (  
     <Modal
     modalVisibility={modalsVisibility.editCellModalVisibility}
-    title={"Edit profile"}
+    title={"Edit cell"}
     hasBackground={false}
-    sizeX={750}
+    sizeX={450}
     >
     <div className="modal-content2">
 
-      <label className="form-label">Name</label>
-      <CellEditor editorState={cellNameEditor} setEditorState={setCellNameEditor}/>
-      <label className="form-label">Symbol</label>
-      <CellEditor editorState={cellSymbolEditor} setEditorState={setCellSymbolEditor}/>
+      <div className="row">
+      <div className="col">
+        <label className="form-label">Name</label>
+        <CellEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set}/>
+      </div>
+      <div className="col">
+        <label className="form-label">Symbol</label>
+        <CellEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set}/>
+      </div>
+      </div>
+      <div className="row">
+      <div className="col">
       <label htmlFor="InputFirstName3" className="form-label">Unit</label>
-      <CellEditor editorState={cellUnitEditor} setEditorState={setCellUnitEditor}/>
-          
+      <CellEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set}/>
+      </div>
+      <div className="col">
+      <label htmlFor="InputFirstName3" className="form-label">GK level</label>
+      <select class="form-select" aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+
+      </div>
+
+      </div>
+      <div className="row">
+      <div className="col">
+      <label className="form-label">L</label>
+      <input type="number" min="-10" step="1" class="form-control" id="inputL3"/>
+      </div>
+
+      <div className="col">
+      <label className="form-label">T</label>
+      <input type="number" min="-10" step="1" class="form-control" id="inputT3"/>
+      </div>
+
+      </div>
+
+    </div>
+    <div className="modal-footer2">
+      <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setCellModalVisibility(false)}>Close</button>
+      <button type="button" className="btn btn-primary" onClick={() => applyChangesToCell()}>Edit</button>
     </div>
 
     </Modal>
   )
-}
-
-export function getTextFromState(editorState) {
-  return draftToHtml(convertToRaw(editorState.getCurrentContent()))
-}
-
-export function getStateFromText(html) {
-
-  const blocksFromHtml = htmlToDraft(html);
-  const { contentBlocks, entityMap } = blocksFromHtml;
-  const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-  const editorState = EditorState.createWithContent(contentState);
-
-  return editorState
 }
 
 function CellEditor({editorState,setEditorState}) {
@@ -135,7 +228,7 @@ function CellEditor({editorState,setEditorState}) {
           editorClassName="form-control"
           toolbarClassName="toolbar-class"
          
-          toolbarOnFocus
+          // toolbarOnFocus
           toolbar={{
             options: ['inline', 'emoji', 'remove', 'history'],
             inline: {

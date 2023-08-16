@@ -28,6 +28,10 @@ html {
   opacity: 0.7;
 }
 
+.cell-invisible {
+  opacity: 0.1;
+}
+
 
 /* border for hex */
 .inner-cell {
@@ -66,6 +70,11 @@ div.tables div.row {
   width: 90px;
 }
 
+.cell-name {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
 
 .mlti-pos {
   margin-top:  auto;
