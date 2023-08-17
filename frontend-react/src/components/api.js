@@ -7,10 +7,11 @@ export default function getData(setStateFunction, adress, afterRequestFunction) 
       .then((response) => {
         if (setStateFunction) {
           setStateFunction(response.data);
-        } else {return response.data}
+        } 
         if (afterRequestFunction !== undefined) {
           afterRequestFunction(response.data);
         }
+        if (!setStateFunction) {return response.data}
       })
       .catch((error) => {
           console.error(error);
@@ -38,7 +39,7 @@ export function putData(setStateFunction, adress, data, headers, afterRequestFun
 
   axios.put(adress, data, {headers: headers})
   .then((response) => {
-    if (setStateFunction !== undefined) {
+    if (setStateFunction) {
       setStateFunction(response.data);
     }
     if (afterRequestFunction !== undefined) {

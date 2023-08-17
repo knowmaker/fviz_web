@@ -155,7 +155,6 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
     
     event.preventDefault()
     cellRightClick(null)
-    console.log(cellId)
 
     //need to fix this 
     if (cellRightClick) {

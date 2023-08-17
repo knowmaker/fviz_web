@@ -12,6 +12,8 @@ export default function Footbar({hoveredCell,gkColors}) {
     const cellLT = cellData ? cellData.lt_sign : "?"
     const cellGK = cellDataGK ? cellDataGK.gk_sign : "?"
 
+    
+
 
   return (
   <nav className="navbar navbar-expand fixed-bottom bg-body-tertiary">

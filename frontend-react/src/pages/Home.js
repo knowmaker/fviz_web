@@ -65,26 +65,27 @@ export default function Home() {
 
 
 
+    
+
     useEffect(() => {
-      setEditorFromSelectedCell()
+
+
+      if (selectedCell) {
+        // console.log(selectedCell.id_value)
+        getData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, setEditorFromSelectedCell)
+      }
+
   
     }, [selectedCell]);
 
-    const setEditorFromSelectedCell = () => {
+    const setEditorFromSelectedCell = (cellData) => {
 
-
-      console.log(selectedCell)
-
-      convertMarkdownToEditorState(setCellNameEditor, selectedCell ? selectedCell.val_name : "") 
-      convertMarkdownToEditorState(setCellSymbolEditor,  selectedCell ? selectedCell.symbol : "") 
-      convertMarkdownToEditorState(setCellUnitEditor, selectedCell ? selectedCell.unit : "") 
-
-      
-    }
-
-    const setEditorFromSelectedCellAfterQuery = (cellData) => {
-
-      document.getElementById("inputL3").value = selectedCell.unit
+      convertMarkdownToEditorState(setCellNameEditor, cellData.val_name) 
+      convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
+      convertMarkdownToEditorState(setCellUnitEditor, cellData.unit) 
+      document.getElementById("inputL3").value = cellData.l_indicate
+      document.getElementById("inputT3").value = cellData.t_indicate
+      document.getElementById("inputGK3").value = cellData.id_gk
 
     }
 
@@ -108,7 +109,7 @@ export default function Home() {
                 <div id="modal-mask" className='hidden'></div>                  
                   <RegModal modalsVisibility={modalsVisibility} setUserToken={setUserToken} setUserProfile={setUserProfile}/>               
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
-                  <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates}/>
+                  <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
             
 
                 <ToastContainer />
@@ -117,39 +118,73 @@ export default function Home() {
     );
 }
 
-function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates}) {
+function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkColors}) {
 
+  const tableState = useContext(TableContext)
 
+  const convertMarkdownFromEditorState = (state) => {
 
-  
+    const markdown = stateToMarkdown(state.getCurrentContent())
+    return markdown
+  }
+
   const applyChangesToCell = () => {
 
+    const id_gk = parseInt(document.getElementById("inputGK3").value)
+
+  
+    const G_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).g_indicate
+    const K_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).k_indicate
+    const l_indicate = parseInt(document.getElementById("inputL3").value)
+    const t_indicate = parseInt(document.getElementById("inputT3").value)
+
+    const M_indicate = G_indicate*-1+K_indicate
+    const L_indicate = G_indicate*3+l_indicate
+    const T_indicate = G_indicate*-2+t_indicate
+    const I_indicate = K_indicate*-1
+
     const newCell = {
-      id_value: selectedCell.id_value,
-      val_name: cellEditorsStates.cellNameEditorState.value,
-      symbol: cellEditorsStates.cellSymbolEditorState.value,
-      unit: cellEditorsStates.cellUnitEditorState.value,
-      id_lt: selectedCell.id_lt,
-      id_gk: selectedCell.id_gk,
-      mlti_sign: selectedCell.mlti_sign,
-      lt_sign: selectedCell.lt_sign,
+      val_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
+      symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
+      unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
+      l_indicate: l_indicate,
+      t_indicate: t_indicate,
+      id_gk: id_gk,
+      M_indicate: M_indicate,
+      L_indicate: L_indicate,
+      T_indicate: T_indicate,
+      I_indicate: I_indicate,
     }
 
-    putData(null, )
+    console.log(newCell)
+    putData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, newCell, null, afterChangesToCell)
   }
 
-  const afterChangesToCell = () => {
+  const afterChangesToCell = (cellData) => {
+
+    console.log(cellData)
+    getData(null, `http://localhost:5000/api/quantities/${cellData.id_value}`, setNewCell)
 
 
-
-    // cellData.lt_sign = tableState.tableData.find(cell => cell.id_lt !== cellData.id_lt).lt_sign
-
-    // tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
+   
   }
 
-  //console.log(getTextFromState(cellNameEditor))
+  const setNewCell = (cellData) => {
+      console.log(cellData)
+      tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
+  }
 
+  const cellList = gkColors.map(gkLevel => {
 
+    return (
+      <option key={gkLevel.id_gk} value={gkLevel.id_gk}>
+      <span dangerouslySetInnerHTML={{__html: gkLevel.gk_name}}></span>   
+      <span>  </span>   
+      <span dangerouslySetInnerHTML={{__html: gkLevel.gk_sign}}></span>   
+    </option>
+    );
+
+  });
 
   return  (  
     <Modal
@@ -177,11 +212,8 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates}) {
       </div>
       <div className="col">
       <label htmlFor="InputFirstName3" className="form-label">GK level</label>
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+      <select className="form-select" aria-label="Default select example" id='inputGK3'>
+        {cellList}
       </select>
 
       </div>
@@ -190,12 +222,12 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates}) {
       <div className="row">
       <div className="col">
       <label className="form-label">L</label>
-      <input type="number" min="-10" step="1" class="form-control" id="inputL3"/>
+      <input type="number" min="-10" max="10" step="1" className="form-control" id="inputL3"/>
       </div>
 
       <div className="col">
       <label className="form-label">T</label>
-      <input type="number" min="-10" step="1" class="form-control" id="inputT3"/>
+      <input type="number" min="-10" step="1" className="form-control" id="inputT3"/>
       </div>
 
       </div>
