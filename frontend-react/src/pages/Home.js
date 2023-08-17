@@ -260,17 +260,22 @@ function CellEditor({editorState,setEditorState}) {
           wrapperClassName=""
           editorClassName="form-control"
           toolbarClassName="toolbar-class"
-         
-          // toolbarOnFocus
+
           toolbar={{
-            options: ['inline', 'emoji', 'remove', 'history'],
+            options: ['inline', 'emoji', 'remove'],
             inline: {
               options: ['superscript', 'subscript'],
             },
             emoji: {
-            emojis: [
-              "Α", "α" , "Β", "β" // someone please write greek alphabet here
-            ],
+                icon: '/svg.svg',
+                title: 'Алфавит',
+                emojis: [
+                    "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ",
+                    "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω",
+                    "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ",
+                    "ν", "ξ", "ο", "π", "ρ", "ς", "σ", "τ", "υ", "φ", "χ", "ψ", "ω",
+                    "∀", "∁", "∂", "∃", "∄", "∅", "∆", "∇"
+                ],
             }
         }}
         />
