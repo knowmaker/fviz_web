@@ -176,12 +176,10 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
 
   const cellList = gkColors.map(gkLevel => {
 
+    const shownText = `${gkLevel.gk_name}  ${gkLevel.gk_sign}`
+
     return (
-      <option key={gkLevel.id_gk} value={gkLevel.id_gk}>
-      <span dangerouslySetInnerHTML={{__html: gkLevel.gk_name}}></span>   
-      <span>  </span>   
-      <span dangerouslySetInnerHTML={{__html: gkLevel.gk_sign}}></span>   
-    </option>
+      <option key={gkLevel.id_gk} value={gkLevel.id_gk} dangerouslySetInnerHTML={{__html: shownText}}/>
     );
 
   });
