@@ -7,9 +7,9 @@ import { UserProfile } from '../components/Contexts.js';
 import { EditorState, convertToRaw,  convertFromRaw , ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { TableContext } from '../components/Contexts.js';
-import { stateToMarkdown } from "draft-js-export-markdown";
-import { stateFromMarkdown } from 'draft-js-import-markdown';
 
+import draftToMarkdown from 'draftjs-to-markdown';
+import htmlToDraft from 'html-to-draftjs';
 
 export default function Home() {
 
@@ -91,7 +91,11 @@ export default function Home() {
 
     const convertMarkdownToEditorState = (stateFunction, markdown) => {
 
-      const contentState = stateFromMarkdown(markdown)
+
+      console.log(markdown)
+      const blocksFromHtml = htmlToDraft(markdown);
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
       stateFunction(EditorState.createWithContent(contentState))
 
     }
@@ -124,8 +128,8 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
 
   const convertMarkdownFromEditorState = (state) => {
 
-    const markdown = stateToMarkdown(state.getCurrentContent())
-    return markdown
+    let html = draftToMarkdown(convertToRaw(state.getCurrentContent()));
+    return html
   }
 
   const applyChangesToCell = () => {
@@ -142,6 +146,9 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     const L_indicate = G_indicate*3+l_indicate
     const T_indicate = G_indicate*-2+t_indicate
     const I_indicate = K_indicate*-1
+
+    // console.log(cellEditorsStates.cellNameEditorState.value)
+    // console.log(convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value))
 
     const newCell = {
       val_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
