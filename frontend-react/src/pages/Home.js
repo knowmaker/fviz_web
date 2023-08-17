@@ -235,7 +235,7 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
 
     </div>
     <div className="modal-footer2">
-      <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setCellModalVisibility(false)}>Close</button>
+      {/* <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setCellModalVisibility(false)}>Close</button> */}
       <button type="button" className="btn btn-primary" onClick={() => applyChangesToCell()}>Edit</button>
     </div>
 
@@ -265,7 +265,7 @@ function CellEditor({editorState,setEditorState}) {
           toolbar={{
             options: ['inline', 'emoji', 'remove', 'history'],
             inline: {
-              options: ['bold', 'italic', 'underline','superscript', 'subscript'],
+              options: ['superscript', 'subscript'],
             },
             emoji: {
             emojis: [

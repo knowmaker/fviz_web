@@ -82,10 +82,14 @@ div.tables div.row {
   text-align: center;
 }
 
+
+
 .su-pos {
   margin-top:  auto;
   font-size: 20px;
   text-align: center;
+  font-style: italic;
+  font-size:small;
 }
 
 .data-window {

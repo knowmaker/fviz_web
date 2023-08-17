@@ -16,7 +16,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
 
   const hoveredCellState = {hoveredCell, setHoveredCell}
 
-  
+
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
 
