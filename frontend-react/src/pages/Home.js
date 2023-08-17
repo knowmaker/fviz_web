@@ -156,6 +156,7 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
       I_indicate: I_indicate,
     }
 
+
     console.log(newCell)
     putData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, newCell, null, afterChangesToCell)
   }
@@ -163,15 +164,10 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
   const afterChangesToCell = (cellData) => {
 
     console.log(cellData)
-    getData(null, `http://localhost:5000/api/quantities/${cellData.id_value}`, setNewCell)
+    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
 
    
-  }
-
-  const setNewCell = (cellData) => {
-      console.log(cellData)
-      tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
   }
 
   const cellList = gkColors.map(gkLevel => {
