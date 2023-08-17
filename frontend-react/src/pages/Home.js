@@ -142,10 +142,10 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     const l_indicate = parseInt(document.getElementById("inputL3").value)
     const t_indicate = parseInt(document.getElementById("inputT3").value)
 
-    const M_indicate = G_indicate*-1+K_indicate
-    const L_indicate = G_indicate*3+l_indicate
-    const T_indicate = G_indicate*-2+t_indicate
-    const I_indicate = K_indicate*-1
+    const M_indicate = 0 - (G_indicate*-1+K_indicate)
+    const L_indicate = l_indicate - G_indicate*3
+    const T_indicate = t_indicate - G_indicate*-2
+    const I_indicate = 0 - K_indicate*-1
 
     // console.log(cellEditorsStates.cellNameEditorState.value)
     // console.log(convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value))
