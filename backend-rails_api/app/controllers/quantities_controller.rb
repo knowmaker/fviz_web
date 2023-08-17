@@ -4,7 +4,7 @@
 class QuantitiesController < ApplicationController
   include QuantitiesHelper
   # before_action :authorize_request
-  before_action :set_quantity, only: %i[update destroy]
+  before_action :set_quantity, only: %i[show update]
 
   def index
     # unless @current_user.role
@@ -25,7 +25,6 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(params[:id])
     render json: @quantity, status: :ok
   end
 
@@ -38,7 +37,8 @@ class QuantitiesController < ApplicationController
     quantity = Quantity.new(quantity_params)
 
     if quantity.save
-      render json: quantity, status: :created
+      merged_quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(quantity.id)
+      render json: merged_quantity, status: :created
     else
       render json: 'Failed to create quantity', status: :unprocessable_entity
     end
@@ -62,6 +62,7 @@ class QuantitiesController < ApplicationController
     #   render json: 'Only admins can delete quantities', status: :unauthorized
     #   return
     # end
+    @quantity = Quantity.find(params[:id])
 
     @quantity.destroy
     render json: 'Successfully deleted quantity', status: :ok
@@ -70,7 +71,7 @@ class QuantitiesController < ApplicationController
   private
 
   def set_quantity
-    @quantity = Quantity.find(params[:id])
+    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(params[:id])
   end
 
   def quantity_params
