@@ -16,11 +16,20 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
 
   const hoveredCellState = {hoveredCell, setHoveredCell}
 
+  
   const [once, setOnce] = useState(true);
+  const tableState = useContext(TableContext)
+
+  useEffect(() => {
+
   if (document.getElementById("cell-204") !== null && once) {
     document.getElementById("cell-204").scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
     setOnce(false)
   }
+
+  }, [tableState]);
+
+
 
   const { ref, getImage } = useDownloadableScreenshot();
 
