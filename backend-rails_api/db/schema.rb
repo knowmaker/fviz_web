@@ -48,8 +48,8 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   create_table "quantity", primary_key: "id_value", id: :serial, force: :cascade do |t|
-    t.string "val_name", limit: 100
-    t.string "symbol", limit: 50
+    t.string "val_name", limit: 200
+    t.string "symbol", limit: 100
     t.integer "M_indicate", limit: 2, null: false
     t.integer "L_indicate", limit: 2, null: false
     t.integer "T_indicate", limit: 2, null: false
