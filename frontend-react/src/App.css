@@ -125,6 +125,11 @@ div.tables div.row {
 
 }
 
+.diminput sup {
+  display:inline-flex;
+  min-width: 10px;
+}
+
 
 
 .modal-drag-area {
