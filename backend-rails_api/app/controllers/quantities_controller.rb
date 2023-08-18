@@ -76,7 +76,7 @@ class QuantitiesController < ApplicationController
 
   def quantity_params
     quantity_params = params.require(:quantity).permit(:val_name, :symbol,
-                                                       :M_indicate, :L_indicate, :T_indicate, :I_indicate,
+                                                       :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto,
                                                        :unit, :l_indicate, :t_indicate, :id_gk)
 
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])

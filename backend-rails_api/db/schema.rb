@@ -50,10 +50,10 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "quantity", primary_key: "id_value", id: :serial, force: :cascade do |t|
     t.string "val_name", limit: 200
     t.string "symbol", limit: 100
-    t.integer "m_indicate", limit: 2, null: false
-    t.integer "l_indicate", limit: 2, null: false
-    t.integer "t_indicate", limit: 2, null: false
-    t.integer "i_indicate", limit: 2, null: false
+    t.integer "m_indicate_auto", limit: 2, null: false
+    t.integer "l_indicate_auto", limit: 2, null: false
+    t.integer "t_indicate_auto", limit: 2, null: false
+    t.integer "i_indicate_auto", limit: 2, null: false
     t.string "unit", limit: 200
     t.integer "id_lt", null: false
     t.integer "id_gk", null: false
