@@ -5,16 +5,15 @@ RSpec.describe 'quantities', type: :request do
   let(:quantity_params) do
     {
       val_name: 'Sample Value',
-      symbol: 'SV',
-      M_indicate: 'M_value',
-      L_indicate: 'L_value',
-      T_indicate: 'T_value',
-      I_indicate: 'I_value',
+      symbol: 'symbol',
+      m_indicate_auto: 0,
+      l_indicate_auto: 1,
+      t_indicate_auto: 2,
+      i_indicate_auto: 3,
       unit: 'Unit',
-      l_indicate: 'l_value',
-      t_indicate: 't_value',
-      g_indicate: 'g_value',
-      k_indicate: 'k_value'
+      l_indicate: 1,
+      t_indicate: 2,
+      id_gk: 1
     }
   end
 
@@ -27,18 +26,17 @@ RSpec.describe 'quantities', type: :request do
         properties: {
           val_name: { type: :string },
           symbol: { type: :string },
-          M_indicate: { type: :integer },
-          L_indicate: { type: :integer },
-          T_indicate: { type: :integer },
-          I_indicate: { type: :integer },
+          m_indicate_auto: { type: :integer },
+          l_indicate_auto: { type: :integer },
+          t_indicate_auto: { type: :integer },
+          i_indicate_auto: { type: :integer },
           unit: { type: :string },
           l_indicate: { type: :integer },
           t_indicate: { type: :integer },
-          g_indicate: { type: :integer },
-          k_indicate: { type: :integer }
+          id_gk: { type: :integer }
         },
-        required: ['val_name', 'symbol', 'M_indicate', 'L_indicate', 'T_indicate', 'I_indicate', 'unit',
-                   'l_indicate', 't_indicate', 'g_indicate', 'k_indicate']
+        required: ['val_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
+                   'l_indicate', 't_indicate', 'id_gk']
       }
 
       response(201, 'created') do
@@ -88,15 +86,14 @@ RSpec.describe 'quantities', type: :request do
         properties: {
           val_name: { type: :string },
           symbol: { type: :string },
-          M_indicate: { type: :integer },
-          L_indicate: { type: :integer },
-          T_indicate: { type: :integer },
-          I_indicate: { type: :integer },
+          m_indicate_auto: { type: :integer },
+          l_indicate_auto: { type: :integer },
+          t_indicate_auto: { type: :integer },
+          i_indicate_auto: { type: :integer },
           unit: { type: :string },
           l_indicate: { type: :integer },
           t_indicate: { type: :integer },
-          g_indicate: { type: :integer },
-          k_indicate: { type: :integer }
+          id_gk: { type: :integer }
         }
       }
 

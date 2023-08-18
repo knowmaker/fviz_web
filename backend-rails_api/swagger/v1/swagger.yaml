@@ -112,13 +112,13 @@ paths:
                   type: string
                 symbol:
                   type: string
-                M_indicate:
+                m_indicate_auto:
                   type: integer
-                L_indicate:
+                l_indicate_auto:
                   type: integer
-                T_indicate:
+                t_indicate_auto:
                   type: integer
-                I_indicate:
+                i_indicate_auto:
                   type: integer
                 unit:
                   type: string
@@ -126,22 +126,19 @@ paths:
                   type: integer
                 t_indicate:
                   type: integer
-                g_indicate:
-                  type: integer
-                k_indicate:
+                id_gk:
                   type: integer
               required:
               - val_name
               - symbol
-              - M_indicate
-              - L_indicate
-              - T_indicate
-              - I_indicate
+              - m_indicate_auto
+              - l_indicate_auto
+              - t_indicate_auto
+              - i_indicate_auto
               - unit
               - l_indicate
               - t_indicate
-              - g_indicate
-              - k_indicate
+              - id_gk
     get:
       summary: list quantities
       tags:
@@ -190,13 +187,13 @@ paths:
                   type: string
                 symbol:
                   type: string
-                M_indicate:
+                m_indicate_auto:
                   type: integer
-                L_indicate:
+                l_indicate_auto:
                   type: integer
-                T_indicate:
+                t_indicate_auto:
                   type: integer
-                I_indicate:
+                i_indicate_auto:
                   type: integer
                 unit:
                   type: string
@@ -204,9 +201,7 @@ paths:
                   type: integer
                 t_indicate:
                   type: integer
-                g_indicate:
-                  type: integer
-                k_indicate:
+                id_gk:
                   type: integer
     delete:
       summary: delete quantity
