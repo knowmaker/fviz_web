@@ -171,7 +171,7 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
   const afterChangesToCell = (cellData) => {
 
     console.log(cellData)
-    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).filter(cell => cell.id_lt !== selectedCell.id_lt).concat(cellData))
+    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).filter(cell => cell.id_value !== selectedCell.id_value).concat(cellData))
 
 
    
