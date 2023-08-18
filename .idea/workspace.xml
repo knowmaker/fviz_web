@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="db v_new2" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="db v_new3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -191,6 +194,7 @@
       <workItem from="1692179947075" duration="4529000" />
       <workItem from="1692208024526" duration="3013000" />
       <workItem from="1692257260195" duration="11229000" />
+      <workItem from="1692347424624" duration="1577000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -448,7 +452,15 @@
       <option name="project" value="LOCAL" />
       <updated>1692308483811</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="db v_new3">
+      <option name="closed" value="true" />
+      <created>1692347623307</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1692347623307</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -466,7 +478,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="api interface" />
     <MESSAGE value="api interface QUANTITY" />
     <MESSAGE value="trying api interface USER" />
     <MESSAGE value="AUTH done" />
@@ -491,9 +502,10 @@
     <MESSAGE value="db v_new1" />
     <MESSAGE value="db v_new1,5" />
     <MESSAGE value="db v_new2" />
-    <option name="LAST_COMMIT_MESSAGE" value="db v_new2" />
+    <MESSAGE value="db v_new3" />
+    <option name="LAST_COMMIT_MESSAGE" value="db v_new3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1692257272711" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1692347451781" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>
