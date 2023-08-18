@@ -69,7 +69,6 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
         cellFullData={{cellFullId,cellData,cellColor}}
         selectedCells={cellAlternatives} 
         revStates={revStates} 
-        cellRightClick={setSelectedCell}
         />
       )
 
@@ -192,7 +191,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
       revStates.setUndoStack([...revStates.undoStack, tableState.tableData]);
       revStates.setRedoStack([]);
 
-      cellRightClick(null)
+      //cellRightClick(null)
 
   };
 

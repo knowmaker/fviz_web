@@ -192,22 +192,22 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     modalVisibility={modalsVisibility.editCellModalVisibility}
     title={"Edit cell"}
     hasBackground={false}
-    sizeX={450}
+    sizeX={650}
     >
     <div className="modal-content2">
 
       <div className="row">
-      <div className="col">
+      <div className="col-6">
         <label className="form-label">Name</label>
         <CellEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set}/>
       </div>
-      <div className="col">
+      <div className="col-6">
         <label className="form-label">Symbol</label>
         <CellEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set}/>
       </div>
       </div>
       <div className="row">
-      <div className="col">
+      <div className="col-6">
       <label htmlFor="InputFirstName3" className="form-label">Unit</label>
       <CellEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set}/>
       </div>

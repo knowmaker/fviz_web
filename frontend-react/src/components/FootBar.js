@@ -19,8 +19,8 @@ export default function Footbar({hoveredCell,gkColors}) {
   <nav className="navbar navbar-expand fixed-bottom bg-body-tertiary">
     <div className="container-fluid">
         <div className="navbar-nav">
-          <div className="diminput" id="outLT" dangerouslySetInnerHTML={{__html: cellGK}}/> 
-          <div className="diminput" id="outLT" dangerouslySetInnerHTML={{__html: cellGK}}/> 
+          <div className="diminput" id="outLT" dangerouslySetInnerHTML={{__html: cellLT}}/> 
+          <div className="diminput" id="outGK" dangerouslySetInnerHTML={{__html: cellGK}}/> 
         </div>
     </div>
   </nav>
