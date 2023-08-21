@@ -21,7 +21,7 @@ html {
   background-color: #525252; /* default color */
   text-align: center;
   overflow: hidden;
-
+  display: inline;
 }
 
 .cell:hover {
@@ -77,12 +77,15 @@ div.tables div.row {
 }
 
 .mlti-pos {
+  display: inline;
   margin-top:  auto;
   font-size: 18px;
   text-align: center;
 }
 
-
+sup, sub {
+  font-style: normal;
+}
 
 .su-pos {
   margin-top:  auto;
@@ -102,6 +105,14 @@ div.tables div.row {
   z-index: 1;
   max-height: calc(100% - 108px);
   overflow: auto;
+}
+
+.data-window-top {
+  display: flex;
+  padding: 1rem;
+  font-size: 1.25rem;
+  justify-content: space-between;
+
 }
 
 .navbar {
@@ -144,9 +155,11 @@ div.tables div.row {
 }
 
 .drag-modal {
+  position: relative;
   margin: 10px;
   background-color: white;
   border: 1px solid #ccc;
+  z-index: 10;
 }
 
 
@@ -158,7 +171,7 @@ div.tables div.row {
   font-size: 1.25rem;
   background-color: #0d6efd;
   color: white;
-  justify-content:space-between;
+  justify-content: space-between;
 
 }
 

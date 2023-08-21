@@ -157,10 +157,10 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
       l_indicate: l_indicate,
       t_indicate: t_indicate,
       id_gk: id_gk,
-      M_indicate: M_indicate,
-      L_indicate: L_indicate,
-      T_indicate: T_indicate,
-      I_indicate: I_indicate,
+      M_indicate_auto: M_indicate,
+      L_indicate_auto: L_indicate,
+      T_indicate_auto: T_indicate,
+      I_indicate_auto: I_indicate,
     }
 
 

@@ -69,6 +69,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
         cellFullData={{cellFullId,cellData,cellColor}}
         selectedCells={cellAlternatives} 
         revStates={revStates} 
+        setSelectedCell={setSelectedCell}
         />
       )
 
@@ -80,6 +81,10 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
     return (
       <div className="data-window">
+        <div className="data-window-top">
+        <span>Choose cell</span>
+        <button type="button" className="btn-close" onClick={() => setSelectedCell(null)}></button>
+        </div>
         {cellOptions}
       </div>
     );
@@ -151,7 +156,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
 
 }
 
-function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState}) {
+function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -164,12 +169,9 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
     event.preventDefault()
     cellRightClick(null)
 
-    //need to fix this 
-    if (cellRightClick) {
 
       //getData(cellRightClick,`http://127.0.0.1:5000/api/layers/${cellId}`)
       cellRightClick(cellData)
-    }
 
   };
 
@@ -191,16 +193,15 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
       revStates.setUndoStack([...revStates.undoStack, tableState.tableData]);
       revStates.setRedoStack([]);
 
-      //cellRightClick(null)
+
+
+      setSelectedCell(null)
 
   };
 
   const handleCellHover = (event, cellId) => {
-      //need to fix this 
-      
 
-        hoveredCellState.setHoveredCell(cellId)
-
+    hoveredCellState.setHoveredCell(cellId)
   }
 
 
