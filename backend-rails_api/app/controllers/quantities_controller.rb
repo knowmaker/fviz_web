@@ -51,6 +51,7 @@ class QuantitiesController < ApplicationController
     # end
 
     if @quantity.update(quantity_params)
+      @quantity.reload
       render json: @quantity, status: :ok
     else
       render json: 'Failed to update quantity', status: :unprocessable_entity
@@ -82,6 +83,11 @@ class QuantitiesController < ApplicationController
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])
 
     quantity_params[:id_lt] = lt.id_lt if lt
+
+    # if Quantity.exists?(id_lt: quantity_params[:id_lt], id_gk: quantity_params[:id_gk])
+    #   render json: { error: 'Combination of id_lt and id_gk already exists' }, status: :unprocessable_entity
+    #   return
+    # end
 
     quantity_params
   end

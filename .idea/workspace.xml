@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="db v_new4">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="quantity spec update after debug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +194,9 @@
       <workItem from="1692179947075" duration="4529000" />
       <workItem from="1692208024526" duration="3013000" />
       <workItem from="1692257260195" duration="11229000" />
-      <workItem from="1692347424624" duration="2221000" />
+      <workItem from="1692347424624" duration="10129000" />
+      <workItem from="1692558035494" duration="594000" />
+      <workItem from="1692694859281" duration="5229000" />
     </task>
     <task id="LOCAL-00001" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -467,7 +470,31 @@
       <option name="project" value="LOCAL" />
       <updated>1692350248780</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="db v_new_final-today">
+      <option name="closed" value="true" />
+      <created>1692354791602</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1692354791602</updated>
+    </task>
+    <task id="LOCAL-00036" summary="db v_new_final-today2">
+      <option name="closed" value="true" />
+      <created>1692363008113</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1692363008113</updated>
+    </task>
+    <task id="LOCAL-00037" summary="quantity spec update after debug">
+      <option name="closed" value="true" />
+      <created>1692382420791</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1692382420791</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -485,9 +512,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="trying api interface USER" />
-    <MESSAGE value="AUTH done" />
-    <MESSAGE value="+gk_name in api" />
     <MESSAGE value="quantity" />
     <MESSAGE value="gk_settings" />
     <MESSAGE value="gk_settings for unauth and auth users" />
@@ -510,9 +534,12 @@
     <MESSAGE value="db v_new2" />
     <MESSAGE value="db v_new3" />
     <MESSAGE value="db v_new4" />
-    <option name="LAST_COMMIT_MESSAGE" value="db v_new4" />
+    <MESSAGE value="db v_new_final-today" />
+    <MESSAGE value="db v_new_final-today2" />
+    <MESSAGE value="quantity spec update after debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="quantity spec update after debug" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1692347451781" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1692695153635" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>
