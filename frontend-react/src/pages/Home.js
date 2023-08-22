@@ -134,6 +134,8 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
 
   const applyChangesToCell = () => {
 
+    modalsVisibility.editCellModalVisibility.setVisibility(false)
+
     const id_gk = parseInt(document.getElementById("inputGK3").value)
 
   

@@ -21,7 +21,6 @@ html {
   background-color: #525252; /* default color */
   text-align: center;
   overflow: hidden;
-  display: inline;
   position: relative;
 }
 
@@ -87,6 +86,7 @@ div.tables div.row {
   left: 0;
   width: 100%;
   font-weight: bold;
+  font-family:'Times New Roman', Times, serif;
 }
 
 sup, sub {
