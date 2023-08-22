@@ -153,16 +153,19 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     // console.log(convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value))
 
     const newCell = {
-      val_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
-      symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
-      unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
-      l_indicate: l_indicate,
-      t_indicate: t_indicate,
-      id_gk: id_gk,
-      m_indicate_auto: M_indicate,
-      l_indicate_auto: L_indicate,
-      t_indicate_auto: T_indicate,
-      i_indicate_auto: I_indicate,
+      quantity: {
+        val_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
+        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
+        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
+        l_indicate: l_indicate,
+        t_indicate: t_indicate,
+        id_gk: id_gk,
+        m_indicate_auto: M_indicate,
+        l_indicate_auto: L_indicate,
+        t_indicate_auto: T_indicate,
+        i_indicate_auto: I_indicate,
+      }
+
     }
 
 
