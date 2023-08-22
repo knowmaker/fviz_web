@@ -83,7 +83,7 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
     if (userInfo.userProfile) {
         loginButtons = (
             <>
-                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email}</span>
+                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (Profile)</span>
                 <span style={{margin:10}}>/</span>
                 <span onClick={() => signOut()} style={{cursor: "pointer"}}>Sign out</span>
             </>

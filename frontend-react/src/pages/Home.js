@@ -69,14 +69,14 @@ export default function Home() {
 
     useEffect(() => {
 
-
       if (selectedCell) {
-        // console.log(selectedCell.id_value)
+
         getData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, setEditorFromSelectedCell)
       }
 
-  
     }, [selectedCell]);
+
+
 
     const setEditorFromSelectedCell = (cellData) => {
 
@@ -91,8 +91,6 @@ export default function Home() {
 
     const convertMarkdownToEditorState = (stateFunction, markdown) => {
 
-
-      console.log(markdown)
       const blocksFromHtml = htmlToDraft(markdown);
       const { contentBlocks, entityMap } = blocksFromHtml;
       const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
@@ -105,6 +103,18 @@ export default function Home() {
     
     const userInfoState = {userToken, setUserToken,userProfile, setUserProfile}
 
+    useEffect(() => {
+
+      if (userProfile) {
+        document.getElementById("InputEmail3").value = userProfile.email
+        document.getElementById("InputPassword3").value = userProfile.password
+        document.getElementById("InputFirstName3").value = userProfile.first_name
+        document.getElementById("InputLastName3").value = userProfile.last_name
+        document.getElementById("InputPatronymic3").value = userProfile.patronymic
+      }
+
+    }, [userProfile]);
+
     return (
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
@@ -114,7 +124,7 @@ export default function Home() {
                   <RegModal modalsVisibility={modalsVisibility} setUserToken={setUserToken} setUserProfile={setUserProfile}/>               
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
                   <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
-            
+                  <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
 
                 <ToastContainer />
           </TableContext.Provider>
@@ -148,9 +158,6 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     const L_indicate = l_indicate - G_indicate*3
     const T_indicate = t_indicate - G_indicate*-2
     const I_indicate = 0 - K_indicate*-1
-
-    // console.log(cellEditorsStates.cellNameEditorState.value)
-    // console.log(convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value))
 
     const newCell = {
       quantity: {
@@ -287,8 +294,44 @@ function CellEditor({editorState,setEditorState}) {
   )
 }
 
-function EditProfileModal({modalsVisibility}) {
+function EditProfileModal({modalsVisibility, userInfoState}) {
 
+
+  const editProfile = () => {
+
+
+    const email = document.getElementById("InputEmail3").value 
+    const password = document.getElementById("InputPassword3").value
+    const firstName = document.getElementById("InputFirstName3").value
+    const lastName = document.getElementById("InputLastName3").value 
+    const patronymic = document.getElementById("InputPatronymic3").value
+
+    const newUserData = {
+      users: {
+        email: email,
+        password:password,
+        last_name: firstName,
+        first_name: lastName,
+        patronymic: patronymic,
+      }
+
+    }
+
+    const headers = {
+      Authorization: `Bearer ${userInfoState.userToken}`
+    }
+
+    console.log(headers)
+    console.log(newUserData)
+    postData(userInfoState.setUserProfile,`http://localhost:5000/api/update`,userInfoState, headers , afterEditProfile)
+
+  }
+
+  const afterEditProfile = (newUserData) => {
+
+    modalsVisibility.editProfileModalVisibility.setVisibility(false)
+
+  }
 
   return (
     <Modal
@@ -301,14 +344,18 @@ function EditProfileModal({modalsVisibility}) {
         <label htmlFor="InputEmail3" className="form-label">Email address</label>
         <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com"/>
         <label htmlFor="InputPassword3" className="form-label">Password</label>
-        <input type="password" className="form-control" id="InputPassword3"/>
-        <label htmlFor="InputFirstName3" className="form-label">First name</label>
-        <input type="text" className="form-control" id="InputFirstName3"/>
+        <input type="password" className="form-control" id="InputPassword3" />
         <label htmlFor="InputLastName3" className="form-label">Last name</label>
-        <input type="text" className="form-control" id="InputLastName3"/>
+        <input type="text" className="form-control" id="InputLastName3" placeholder="Воронин"/>
+        <label htmlFor="InputFirstName3" className="form-label">First name</label>
+        <input type="text" className="form-control" id="InputFirstName3" placeholder="Александр"/>
         <label htmlFor="InputPatronymic3" className="form-label">Patronymic</label>
-        <input type="text" className="form-control" id="InputPatronymic3"/>
+        <input type="text" className="form-control" id="InputPatronymic3" placeholder="Максимович"/>
             
+      </div>
+      <div className="modal-footer2">
+                  {/* <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button> */}
+                  <button type="button" className="btn btn-primary" onClick={() => editProfile()}>Edit</button>
       </div>
 
       </Modal>
@@ -370,9 +417,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
         user: {
           email: email,
           password: password,
-          last_name: "test",
-          first_name: "test",
-          patronymic: "test"
+
         }
       }
 
