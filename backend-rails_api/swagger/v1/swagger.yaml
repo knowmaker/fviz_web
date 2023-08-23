@@ -86,25 +86,28 @@ paths:
             schema:
               type: object
               properties:
-                law_name:
-                  type: string
-                first_element:
-                  type: integer
-                second_element:
-                  type: integer
-                third_element:
-                  type: integer
-                fourth_element:
-                  type: integer
-                id_type:
-                  type: integer
-              required:
-              - law_name
-              - first_element
-              - second_element
-              - third_element
-              - fourth_element
-              - id_type
+                law:
+                  type: object
+                  properties:
+                    law_name:
+                      type: string
+                    first_element:
+                      type: integer
+                    second_element:
+                      type: integer
+                    third_element:
+                      type: integer
+                    fourth_element:
+                      type: integer
+                    id_type:
+                      type: integer
+                  required:
+                  - law_name
+                  - first_element
+                  - second_element
+                  - third_element
+                  - fourth_element
+                  - id_type
   "/api/laws/{id}":
     parameters:
     - name: id
@@ -140,18 +143,21 @@ paths:
             schema:
               type: object
               properties:
-                law_name:
-                  type: string
-                first_element:
-                  type: integer
-                second_element:
-                  type: integer
-                third_element:
-                  type: integer
-                fourth_element:
-                  type: integer
-                id_type:
-                  type: integer
+                law:
+                  type: object
+                  properties:
+                    law_name:
+                      type: string
+                    first_element:
+                      type: integer
+                    second_element:
+                      type: integer
+                    third_element:
+                      type: integer
+                    fourth_element:
+                      type: integer
+                    id_type:
+                      type: integer
     delete:
       summary: delete law
       tags:
@@ -178,37 +184,40 @@ paths:
             schema:
               type: object
               properties:
-                val_name:
-                  type: string
-                symbol:
-                  type: string
-                m_indicate_auto:
-                  type: integer
-                l_indicate_auto:
-                  type: integer
-                t_indicate_auto:
-                  type: integer
-                i_indicate_auto:
-                  type: integer
-                unit:
-                  type: string
-                l_indicate:
-                  type: integer
-                t_indicate:
-                  type: integer
-                id_gk:
-                  type: integer
-              required:
-              - val_name
-              - symbol
-              - m_indicate_auto
-              - l_indicate_auto
-              - t_indicate_auto
-              - i_indicate_auto
-              - unit
-              - l_indicate
-              - t_indicate
-              - id_gk
+                quantity:
+                  type: object
+                  properties:
+                    val_name:
+                      type: string
+                    symbol:
+                      type: string
+                    m_indicate_auto:
+                      type: integer
+                    l_indicate_auto:
+                      type: integer
+                    t_indicate_auto:
+                      type: integer
+                    i_indicate_auto:
+                      type: integer
+                    unit:
+                      type: string
+                    l_indicate:
+                      type: integer
+                    t_indicate:
+                      type: integer
+                    id_gk:
+                      type: integer
+                  required:
+                  - val_name
+                  - symbol
+                  - m_indicate_auto
+                  - l_indicate_auto
+                  - t_indicate_auto
+                  - i_indicate_auto
+                  - unit
+                  - l_indicate
+                  - t_indicate
+                  - id_gk
     get:
       summary: list quantities
       tags:
@@ -253,26 +262,29 @@ paths:
             schema:
               type: object
               properties:
-                val_name:
-                  type: string
-                symbol:
-                  type: string
-                m_indicate_auto:
-                  type: integer
-                l_indicate_auto:
-                  type: integer
-                t_indicate_auto:
-                  type: integer
-                i_indicate_auto:
-                  type: integer
-                unit:
-                  type: string
-                l_indicate:
-                  type: integer
-                t_indicate:
-                  type: integer
-                id_gk:
-                  type: integer
+                quantity:
+                  type: object
+                  properties:
+                    val_name:
+                      type: string
+                    symbol:
+                      type: string
+                    m_indicate_auto:
+                      type: integer
+                    l_indicate_auto:
+                      type: integer
+                    t_indicate_auto:
+                      type: integer
+                    i_indicate_auto:
+                      type: integer
+                    unit:
+                      type: string
+                    l_indicate:
+                      type: integer
+                    t_indicate:
+                      type: integer
+                    id_gk:
+                      type: integer
     delete:
       summary: delete quantity
       tags:
@@ -306,15 +318,18 @@ paths:
             schema:
               type: object
               properties:
-                title:
-                  type: string
-                active_values:
-                  type: array
-                  items:
-                    type: integer
-              required:
-              - title
-              - active_values
+                represent:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    active_values:
+                      type: array
+                      items:
+                        type: integer
+                  required:
+                  - title
+                  - active_values
   "/api/represents/{id}":
     parameters:
     - name: id
@@ -350,12 +365,15 @@ paths:
             schema:
               type: object
               properties:
-                title:
-                  type: string
-                active_values:
-                  type: array
-                  items:
-                    type: integer
+                represent:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    active_values:
+                      type: array
+                      items:
+                        type: integer
     delete:
       summary: delete represent
       tags:
@@ -426,7 +444,7 @@ paths:
       responses:
         '200':
           description: successful
-  "/api/users":
+  "/api/signup":
     post:
       summary: create user
       tags:
@@ -457,14 +475,7 @@ paths:
               - last_name
               - first_name
               - patronymic
-  "/api/users/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
+  "/api/profile":
     get:
       summary: show user
       tags:
@@ -472,6 +483,7 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/update":
     patch:
       summary: update user
       tags:

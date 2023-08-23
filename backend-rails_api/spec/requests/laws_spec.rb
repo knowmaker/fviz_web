@@ -2,13 +2,15 @@ require 'swagger_helper'
 
 RSpec.describe 'laws', type: :request do
   let(:law_params) do
-    {
-      law_name: 'Sample Law',
-      first_element: 123,
-      second_element: 456,
-      third_element: 789,
-      fourth_element: 1011,
-      id_type: 1
+    { law:
+      {
+        law_name: 'Sample Law',
+        first_element: 123,
+        second_element: 456,
+        third_element: 789,
+        fourth_element: 1011,
+        id_type: 1
+      }
     }
   end
 
@@ -26,14 +28,19 @@ RSpec.describe 'laws', type: :request do
       parameter name: :law, in: :body, schema: {
         type: :object,
         properties: {
-          law_name: { type: :string },
-          first_element: { type: :integer },
-          second_element: { type: :integer },
-          third_element: { type: :integer },
-          fourth_element: { type: :integer },
-          id_type: { type: :integer }
-        },
-        required: ['law_name', 'first_element', 'second_element', 'third_element', 'fourth_element', 'id_type']
+          law: {
+            type: :object,
+            properties: {
+              law_name: { type: :string },
+              first_element: { type: :integer },
+              second_element: { type: :integer },
+              third_element: { type: :integer },
+              fourth_element: { type: :integer },
+              id_type: { type: :integer }
+            },
+            required: ['law_name', 'first_element', 'second_element', 'third_element', 'fourth_element', 'id_type']
+          }
+        }
       }
 
       response(201, 'created') do
@@ -70,12 +77,17 @@ RSpec.describe 'laws', type: :request do
       parameter name: :law, in: :body, schema: {
         type: :object,
         properties: {
-          law_name: { type: :string },
-          first_element: { type: :integer },
-          second_element: { type: :integer },
-          third_element: { type: :integer },
-          fourth_element: { type: :integer },
-          id_type: { type: :integer }
+          law: {
+            type: :object,
+            properties: {
+              law_name: { type: :string },
+              first_element: { type: :integer },
+              second_element: { type: :integer },
+              third_element: { type: :integer },
+              fourth_element: { type: :integer },
+              id_type: { type: :integer }
+            }
+          }
         }
       }
 

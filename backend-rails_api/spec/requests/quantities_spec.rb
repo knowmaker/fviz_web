@@ -3,17 +3,19 @@ require 'swagger_helper'
 RSpec.describe 'quantities', type: :request do
   # Определение параметров, используемых в запросах
   let(:quantity_params) do
-    {
-      val_name: 'Sample Value',
-      symbol: 'symbol',
-      m_indicate_auto: 0,
-      l_indicate_auto: 1,
-      t_indicate_auto: 2,
-      i_indicate_auto: 3,
-      unit: 'Unit',
-      l_indicate: 1,
-      t_indicate: 2,
-      id_gk: 1
+    { quantity:
+      {
+        val_name: 'Sample Value',
+        symbol: 'symbol',
+        m_indicate_auto: 0,
+        l_indicate_auto: 1,
+        t_indicate_auto: 2,
+        i_indicate_auto: 3,
+        unit: 'Unit',
+        l_indicate: 1,
+        t_indicate: 2,
+        id_gk: 1
+      }
     }
   end
 
@@ -24,19 +26,24 @@ RSpec.describe 'quantities', type: :request do
       parameter name: :quantity, in: :body, schema: {
         type: :object,
         properties: {
-          val_name: { type: :string },
-          symbol: { type: :string },
-          m_indicate_auto: { type: :integer },
-          l_indicate_auto: { type: :integer },
-          t_indicate_auto: { type: :integer },
-          i_indicate_auto: { type: :integer },
-          unit: { type: :string },
-          l_indicate: { type: :integer },
-          t_indicate: { type: :integer },
-          id_gk: { type: :integer }
-        },
-        required: ['val_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
-                   'l_indicate', 't_indicate', 'id_gk']
+          quantity: {
+            type: :object,
+            properties: {
+              val_name: { type: :string },
+              symbol: { type: :string },
+              m_indicate_auto: { type: :integer },
+              l_indicate_auto: { type: :integer },
+              t_indicate_auto: { type: :integer },
+              i_indicate_auto: { type: :integer },
+              unit: { type: :string },
+              l_indicate: { type: :integer },
+              t_indicate: { type: :integer },
+              id_gk: { type: :integer }
+            },
+            required: ['val_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
+                       'l_indicate', 't_indicate', 'id_gk']
+          }
+        }
       }
 
       response(201, 'created') do
@@ -84,16 +91,21 @@ RSpec.describe 'quantities', type: :request do
       parameter name: :quantity, in: :body, schema: {
         type: :object,
         properties: {
-          val_name: { type: :string },
-          symbol: { type: :string },
-          m_indicate_auto: { type: :integer },
-          l_indicate_auto: { type: :integer },
-          t_indicate_auto: { type: :integer },
-          i_indicate_auto: { type: :integer },
-          unit: { type: :string },
-          l_indicate: { type: :integer },
-          t_indicate: { type: :integer },
-          id_gk: { type: :integer }
+          quantity: {
+            type: :object,
+            properties: {
+              val_name: { type: :string },
+              symbol: { type: :string },
+              m_indicate_auto: { type: :integer },
+              l_indicate_auto: { type: :integer },
+              t_indicate_auto: { type: :integer },
+              i_indicate_auto: { type: :integer },
+              unit: { type: :string },
+              l_indicate: { type: :integer },
+              t_indicate: { type: :integer },
+              id_gk: { type: :integer }
+            }
+          }
         }
       }
 

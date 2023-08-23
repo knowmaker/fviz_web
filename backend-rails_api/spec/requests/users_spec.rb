@@ -14,7 +14,7 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users' do
+  path '/api/signup' do
     post('create user') do
       tags 'Users'
       consumes 'application/json'
@@ -36,16 +36,16 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
-
+  path '/api/profile' do
     get('show user') do
       tags 'Users'
       response(200, 'successful') do
         run_test!
       end
     end
+  end
 
+  path '/api/update' do
     patch('update user') do
       tags 'Users'
       consumes 'application/json'

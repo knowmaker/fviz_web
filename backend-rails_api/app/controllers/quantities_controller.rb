@@ -84,6 +84,9 @@ class QuantitiesController < ApplicationController
 
     quantity_params[:id_lt] = lt.id_lt if lt
 
+    quantity_params.delete(:l_indicate)
+    quantity_params.delete(:t_indicate)
+
     # if Quantity.exists?(id_lt: quantity_params[:id_lt], id_gk: quantity_params[:id_gk])
     #   render json: { error: 'Combination of id_lt and id_gk already exists' }, status: :unprocessable_entity
     #   return

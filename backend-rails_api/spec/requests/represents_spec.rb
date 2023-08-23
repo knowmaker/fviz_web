@@ -2,9 +2,11 @@ require 'swagger_helper'
 
 RSpec.describe 'represents', type: :request do
   let(:represent_params) do
-    {
-      title: 'Sample Represent',
-      active_values: [1, 2, 3]
+    { represent:
+      {
+        title: 'Sample Represent',
+        active_values: [1, 2, 3]
+      }
     }
   end
 
@@ -22,13 +24,18 @@ RSpec.describe 'represents', type: :request do
       parameter name: :represent, in: :body, schema: {
         type: :object,
         properties: {
-          title: { type: :string },
-          active_values: {
-            type: :array,
-            items: { type: :integer }
+          represent: {
+            type: :object,
+            properties: {
+              title: { type: :string },
+              active_values: {
+                type: :array,
+                items: { type: :integer }
+              }
+            },
+            required: ['title', 'active_values']
           }
-        },
-        required: ['title', 'active_values']
+        }
       }
 
       response(201, 'created') do
@@ -65,10 +72,15 @@ RSpec.describe 'represents', type: :request do
       parameter name: :represent, in: :body, schema: {
         type: :object,
         properties: {
-          title: { type: :string },
-          active_values: {
-            type: :array,
-            items: { type: :integer }
+          represent: {
+            type: :object,
+            properties: {
+              title: { type: :string },
+              active_values: {
+                type: :array,
+                items: { type: :integer }
+              }
+            }
           }
         }
       }
