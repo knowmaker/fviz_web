@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export default function getData(setStateFunction, adress, afterRequestFunction) {
+export default function getData(setStateFunction, adress, afterRequestFunction, headers) {
 
   axios
-      .get(adress)
+      .get(adress, {headers: headers})
       .then((response) => {
         if (setStateFunction) {
           setStateFunction(response.data);
@@ -38,6 +38,22 @@ export function postData(setStateFunction, adress, data, headers, afterRequestFu
 export function putData(setStateFunction, adress, data, headers, afterRequestFunction) {
 
   axios.put(adress, data, {headers: headers})
+  .then((response) => {
+    if (setStateFunction) {
+      setStateFunction(response.data);
+    }
+    if (afterRequestFunction !== undefined) {
+      afterRequestFunction(response.data);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+export function patchData(setStateFunction, adress, data, headers, afterRequestFunction) {
+
+  axios.patch(adress, data, {headers: headers})
   .then((response) => {
     if (setStateFunction) {
       setStateFunction(response.data);

@@ -1,7 +1,7 @@
 import React,{useEffect,useState, useContext} from 'react';
 import TableUI from '../components/Table2';
 import Draggable from 'react-draggable';
-import getData, { postData, putData} from '../components/api';
+import getData, { postData, putData, patchData} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
 import { EditorState, convertToRaw,  convertFromRaw , ContentState } from 'draft-js';
@@ -107,7 +107,6 @@ export default function Home() {
 
       if (userProfile) {
         document.getElementById("InputEmail3").value = userProfile.email
-        document.getElementById("InputPassword3").value = userProfile.password
         document.getElementById("InputFirstName3").value = userProfile.first_name
         document.getElementById("InputLastName3").value = userProfile.last_name
         document.getElementById("InputPatronymic3").value = userProfile.patronymic
@@ -299,17 +298,12 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
 
   const editProfile = () => {
 
-
-    const email = document.getElementById("InputEmail3").value 
-    const password = document.getElementById("InputPassword3").value
     const firstName = document.getElementById("InputFirstName3").value
     const lastName = document.getElementById("InputLastName3").value 
     const patronymic = document.getElementById("InputPatronymic3").value
 
     const newUserData = {
-      users: {
-        email: email,
-        password:password,
+      user: {
         last_name: firstName,
         first_name: lastName,
         patronymic: patronymic,
@@ -321,9 +315,7 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
       Authorization: `Bearer ${userInfoState.userToken}`
     }
 
-    console.log(headers)
-    console.log(newUserData)
-    postData(userInfoState.setUserProfile,`http://localhost:5000/api/update`,userInfoState, headers , afterEditProfile)
+    patchData(userInfoState.setUserProfile,`http://localhost:5000/api/update`,newUserData, headers , afterEditProfile)
 
   }
 
@@ -342,9 +334,7 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
       <div className="modal-content2">
 
         <label htmlFor="InputEmail3" className="form-label">Email address</label>
-        <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com"/>
-        <label htmlFor="InputPassword3" className="form-label">Password</label>
-        <input type="password" className="form-control" id="InputPassword3" />
+        <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com" disabled={true}/>
         <label htmlFor="InputLastName3" className="form-label">Last name</label>
         <input type="text" className="form-control" id="InputLastName3" placeholder="Воронин"/>
         <label htmlFor="InputFirstName3" className="form-label">First name</label>
@@ -404,7 +394,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
       Authorization: `Bearer ${token}`
     }
 
-    putData(setUserProfile, process.env.REACT_APP_GK_PROFILE_LINK, undefined, headers )
+    getData(setUserProfile, process.env.REACT_APP_GK_PROFILE_LINK, undefined, headers )
   }
 
 
