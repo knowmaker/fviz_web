@@ -15,8 +15,8 @@ Rails.application.routes.draw do
     resources :law_types, only: %i[index create update destroy]
     post '/signup', to: 'users#create'
     post '/login', to: 'users#login'
-    put '/profile', to: 'users#show'
-    post '/update', to: 'users#update'
+    get '/profile', to: 'users#show'
+    patch '/update', to: 'users#update'
   end
   # Defines the root path route ("/")
   # root "articles#index"
