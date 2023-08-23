@@ -54,7 +54,7 @@ RSpec.describe 'laws', type: :request do
     get('show law') do
       tags 'Laws'
       response(200, 'successful') do
-        let(:id_law) { '123' }
+        let(:id) { '123' }
 
         run_test!
       end
@@ -80,7 +80,7 @@ RSpec.describe 'laws', type: :request do
       }
 
       response(200, 'successful') do
-        let(:id_law) { '123' }
+        let(:id) { '123' }
         let(:law) { law_params }
 
         run_test!
@@ -98,7 +98,7 @@ RSpec.describe 'laws', type: :request do
     delete('delete law') do
       tags 'Laws'
       response(200, 'successful') do
-        let(:id_law) { '123' }
+        let(:id) { '123' }
 
         run_test!
       end
