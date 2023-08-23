@@ -46,15 +46,13 @@ RSpec.describe 'users', type: :request do
       end
     end
 
-    put('update user') do
+    patch('update user') do
       tags 'Users'
       consumes 'application/json'
       parameter name: :id, in: :path, type: :string, description: 'id'
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
-          email: { type: :string },
-          password: { type: :string },
           last_name: { type: :string },
           first_name: { type: :string },
           patronymic: { type: :string }

@@ -386,7 +386,7 @@ paths:
       responses:
         '200':
           description: successful
-    put:
+    patch:
       summary: update user
       tags:
       - Users
@@ -406,10 +406,6 @@ paths:
             schema:
               type: object
               properties:
-                email:
-                  type: string
-                password:
-                  type: string
                 last_name:
                   type: string
                 first_name:
