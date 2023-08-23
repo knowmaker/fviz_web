@@ -4,11 +4,11 @@ RSpec.describe 'laws', type: :request do
   let(:law_params) do
     {
       law_name: 'Sample Law',
-      first_element: 'First Element',
-      second_element: 'Second Element',
-      third_element: 'Third Element',
-      fourth_element: 'Fourth Element',
-      id_type: 123
+      first_element: 123,
+      second_element: 456,
+      third_element: 789,
+      fourth_element: 1011,
+      id_type: 1
     }
   end
 
@@ -27,10 +27,10 @@ RSpec.describe 'laws', type: :request do
         type: :object,
         properties: {
           law_name: { type: :string },
-          first_element: { type: :string },
-          second_element: { type: :string },
-          third_element: { type: :string },
-          fourth_element: { type: :string },
+          first_element: { type: :integer },
+          second_element: { type: :integer },
+          third_element: { type: :integer },
+          fourth_element: { type: :integer },
           id_type: { type: :integer }
         },
         required: ['law_name', 'first_element', 'second_element', 'third_element', 'fourth_element', 'id_type']
@@ -54,7 +54,7 @@ RSpec.describe 'laws', type: :request do
     get('show law') do
       tags 'Laws'
       response(200, 'successful') do
-        let(:id) { '123' }
+        let(:id_law) { '123' }
 
         run_test!
       end
@@ -71,16 +71,16 @@ RSpec.describe 'laws', type: :request do
         type: :object,
         properties: {
           law_name: { type: :string },
-          first_element: { type: :string },
-          second_element: { type: :string },
-          third_element: { type: :string },
-          fourth_element: { type: :string },
+          first_element: { type: :integer },
+          second_element: { type: :integer },
+          third_element: { type: :integer },
+          fourth_element: { type: :integer },
           id_type: { type: :integer }
         }
       }
 
       response(200, 'successful') do
-        let(:id) { '123' }
+        let(:id_law) { '123' }
         let(:law) { law_params }
 
         run_test!
@@ -98,7 +98,7 @@ RSpec.describe 'laws', type: :request do
     delete('delete law') do
       tags 'Laws'
       response(200, 'successful') do
-        let(:id) { '123' }
+        let(:id_law) { '123' }
 
         run_test!
       end

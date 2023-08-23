@@ -68,7 +68,7 @@ RSpec.describe 'quantities', type: :request do
     get('show quantity') do
       tags 'Quantities'
       response(200, 'successful') do
-        let(:id) { '123' }
+        let(:id_value) { '123' }
 
         run_test!
       end
@@ -98,7 +98,7 @@ RSpec.describe 'quantities', type: :request do
       }
 
       response(200, 'successful') do
-        let(:id) { '123' }
+        let(:id_value) { '123' }
         let(:quantity) { quantity_params }
 
         run_test!
@@ -116,7 +116,7 @@ RSpec.describe 'quantities', type: :request do
     delete('delete quantity') do
       tags 'Quantities'
       response(200, 'successful') do
-        let(:id) { '123' }
+        let(:id_value) { '123' }
 
         run_test!
       end
