@@ -8,6 +8,8 @@ class UsersController < ApplicationController
       render json: 'User already exists', status: :unprocessable_entity
     else
       user = User.new(user_params)
+      user.password = hash_password(params[:user][:password])
+
       if user.save
         render json: user, status: :created
       else
@@ -18,7 +20,8 @@ class UsersController < ApplicationController
 
   def login
     @user = User.find_by(email: params[:email])
-    if @user && @user.attributes.slice('password')['password'] == params[:password]
+
+    if @user && validate_password(params[:password], @user.password)
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(id_user: @user.id_user)
       render json: token, status: :ok
@@ -50,5 +53,13 @@ class UsersController < ApplicationController
   def encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
     JWT.encode(payload, SECRET_KEY)
+  end
+
+  def hash_password(password)
+    Argon2::Password.create(password)
+  end
+
+  def validate_password(password, password_hash)
+    Argon2::Password.verify_password(password, password_hash)
   end
 end

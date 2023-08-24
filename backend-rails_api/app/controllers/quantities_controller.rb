@@ -16,7 +16,6 @@ class QuantitiesController < ApplicationController
 
     html_content = generate_html_table(@quantities)
     send_data html_content, filename: 'quantities_table.html', type: 'text/html', disposition: 'attachment'
-
   end
 
   def show
@@ -76,9 +75,10 @@ class QuantitiesController < ApplicationController
   end
 
   def quantity_params
-    quantity_params = params.require(:quantity).permit(:value_name, :symbol,
-                                                       :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto,
-                                                       :unit, :l_indicate, :t_indicate, :id_gk)
+    quantity_params = params.require(:quantity)
+                            .permit(:value_name, :symbol,
+                                    :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto,
+                                    :unit, :l_indicate, :t_indicate, :id_gk)
 
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])
 
@@ -94,5 +94,4 @@ class QuantitiesController < ApplicationController
 
     quantity_params
   end
-
 end
