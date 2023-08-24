@@ -194,12 +194,22 @@ sup, sub {
   text-align: end;
 }
 
-.btn {
+/* .btn {
   margin: 5px;
-}
+} */
+
 
 .hidden {
   display: none;
+}
+
+.small-cell {
+  width: 50px;
+}
+
+td,th {
+  vertical-align: middle;
+  text-align: center;
 }
 
 #modal-mask {
