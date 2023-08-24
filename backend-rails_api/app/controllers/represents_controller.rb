@@ -35,10 +35,10 @@ class RepresentsController < ApplicationController
 
   def represent_view_index
     represent_id = @current_user ? @current_user.represents.first : 1
-    quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_values).flatten
+    quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_quantities).flatten
     active_quantities = Quantity.where(id_value: quantity_ids)
                                 .left_joins(:lt)
-                                .select('quantity.id_value, quantity.val_name, quantity.symbol, quantity.unit,
+                                .select('quantity.id_value, quantity.value_name, quantity.symbol, quantity.unit,
                                  quantity.id_lt, quantity.id_gk,
                                  quantity.mlti_sign, lt.lt_sign')
                                 .order('quantity.id_lt')
@@ -46,15 +46,30 @@ class RepresentsController < ApplicationController
   end
 
   def represent_view_show
-    represent_id = @represent
-    quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_values).flatten
+    quantity_ids = @represent.active_quantities.flatten
     active_quantities = Quantity.where(id_value: quantity_ids)
                                 .left_joins(:lt)
-                                .select('quantity.id_value, quantity.val_name, quantity.symbol, quantity.unit,
+                                .select('quantity.id_value, quantity.value_name, quantity.symbol, quantity.unit,
                                  quantity.id_lt, quantity.id_gk,
                                  quantity.mlti_sign, lt.lt_sign')
-                                .order('quantity.id_lt')
-    render json: active_quantities.all
+                                .order('quantity.id_lt').all
+    json_output = {
+      represent_title: @represent.title,
+      active_quantities: active_quantities.map { |quantity|
+        {
+          id_value: quantity.id_value,
+          value_name: quantity.value_name,
+          symbol: quantity.symbol,
+          unit: quantity.unit,
+          id_lt: quantity.id_lt,
+          id_gk: quantity.id_gk,
+          mlti_sign: quantity.mlti_sign,
+          lt_sign: quantity.lt_sign
+        }
+      }
+    }
+
+    render json: json_output
   end
 
   def lt_values
@@ -73,6 +88,6 @@ class RepresentsController < ApplicationController
   end
 
   def represent_params
-    params.require(:represent).permit(:title, active_values: [])
+    params.require(:represent).permit(:title, active_quantities: [])
   end
 end

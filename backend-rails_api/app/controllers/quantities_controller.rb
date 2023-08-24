@@ -76,7 +76,7 @@ class QuantitiesController < ApplicationController
   end
 
   def quantity_params
-    quantity_params = params.require(:quantity).permit(:val_name, :symbol,
+    quantity_params = params.require(:quantity).permit(:value_name, :symbol,
                                                        :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto,
                                                        :unit, :l_indicate, :t_indicate, :id_gk)
 

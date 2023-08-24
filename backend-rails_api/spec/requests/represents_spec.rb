@@ -5,7 +5,7 @@ RSpec.describe 'represents', type: :request do
     { represent:
       {
         title: 'Sample Represent',
-        active_values: [1, 2, 3]
+        active_quantities: [1, 2, 3]
       }
     }
   end
@@ -28,12 +28,12 @@ RSpec.describe 'represents', type: :request do
             type: :object,
             properties: {
               title: { type: :string },
-              active_values: {
+              active_quantities: {
                 type: :array,
                 items: { type: :integer }
               }
             },
-            required: ['title', 'active_values']
+            required: ['title', 'active_quantities']
           }
         }
       }
@@ -63,7 +63,7 @@ RSpec.describe 'represents', type: :request do
             type: :object,
             properties: {
               title: { type: :string },
-              active_values: {
+              active_quantities: {
                 type: :array,
                 items: { type: :integer }
               }

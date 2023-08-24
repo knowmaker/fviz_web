@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   create_table "quantity", primary_key: "id_value", id: :serial, force: :cascade do |t|
-    t.string "val_name", limit: 200
+    t.string "value_name", limit: 200
     t.string "symbol", limit: 100
     t.integer "m_indicate_auto", limit: 2, null: false
     t.integer "l_indicate_auto", limit: 2, null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "represents", primary_key: "id_repr", id: :serial, force: :cascade do |t|
     t.string "title", limit: 100
     t.integer "id_user", null: false
-    t.integer "active_values", null: false, array: true
+    t.integer "active_quantities", null: false, array: true
   end
 
   create_table "users", primary_key: "id_user", id: :serial, force: :cascade do |t|

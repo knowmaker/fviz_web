@@ -28,7 +28,7 @@ module QuantitiesHelper
       quantities_group.each do |quantity|
         html += <<-HTML
         <tr>
-          <td>#{quantity.val_name}</td>
+          <td>#{quantity.value_name}</td>
           <td>#{quantity.symbol}</td>
           <td>#{quantity.unit}</td>
         </tr>

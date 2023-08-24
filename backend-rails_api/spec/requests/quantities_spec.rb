@@ -5,7 +5,7 @@ RSpec.describe 'quantities', type: :request do
   let(:quantity_params) do
     { quantity:
       {
-        val_name: 'Sample Value',
+        value_name: 'Sample Value',
         symbol: 'symbol',
         m_indicate_auto: 0,
         l_indicate_auto: 1,
@@ -29,7 +29,7 @@ RSpec.describe 'quantities', type: :request do
           quantity: {
             type: :object,
             properties: {
-              val_name: { type: :string },
+              value_name: { type: :string },
               symbol: { type: :string },
               m_indicate_auto: { type: :integer },
               l_indicate_auto: { type: :integer },
@@ -40,7 +40,7 @@ RSpec.describe 'quantities', type: :request do
               t_indicate: { type: :integer },
               id_gk: { type: :integer }
             },
-            required: ['val_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
+            required: ['value_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
                        'l_indicate', 't_indicate', 'id_gk']
           }
         }
@@ -94,7 +94,7 @@ RSpec.describe 'quantities', type: :request do
           quantity: {
             type: :object,
             properties: {
-              val_name: { type: :string },
+              value_name: { type: :string },
               symbol: { type: :string },
               m_indicate_auto: { type: :integer },
               l_indicate_auto: { type: :integer },
