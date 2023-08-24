@@ -6,7 +6,7 @@ class RepresentsController < ApplicationController
   before_action :set_represent, only: %i[update destroy represent_view_show]
 
   def index
-    represents = @current_user.represents
+    represents = @current_user.represents.select('represents.id_repr, represents.title')
     render json: represents, status: :ok
   end
 

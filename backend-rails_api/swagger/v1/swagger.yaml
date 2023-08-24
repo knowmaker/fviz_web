@@ -338,15 +338,6 @@ paths:
       required: true
       schema:
         type: string
-    get:
-      summary: show represent
-      tags:
-      - Represents
-      responses:
-        '200':
-          description: successful
-        '404':
-          description: not found
     put:
       summary: update represent
       tags:

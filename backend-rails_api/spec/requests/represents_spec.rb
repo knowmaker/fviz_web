@@ -53,19 +53,6 @@ RSpec.describe 'represents', type: :request do
   path '/api/represents/{id}' do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    get('show represent') do
-      tags 'Represents'
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        run_test!
-      end
-
-      response(404, 'not found') do
-        run_test!
-      end
-    end
-
     put('update represent') do
       tags 'Represents'
       consumes 'application/json'
