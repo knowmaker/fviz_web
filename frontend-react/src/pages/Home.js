@@ -22,7 +22,13 @@ export default function Home() {
     const [isEditCellModalVisible, setEditCellModalVisibility] = useState(false);
     const editCellModalVisibility = {isVisible: isEditCellModalVisible, setVisibility: setEditCellModalVisibility}
 
-    const modalsVisibility={regModalVisibility,editProfileModalVisibility,editCellModalVisibility}
+    const [isLawsModalVisible, setLawsModalVisibility] = useState(false);
+    const lawsModalVisibility = {isVisible: isLawsModalVisible, setVisibility: setLawsModalVisibility}
+
+    const [isTableViewsModalVisible, setTableViewsModalVisibility] = useState(false);
+    const tableViewsModalVisibility = {isVisible: isTableViewsModalVisible, setVisibility: setTableViewsModalVisibility}
+
+    const modalsVisibility={regModalVisibility,editProfileModalVisibility,editCellModalVisibility,lawsModalVisibility,tableViewsModalVisibility}
 
 
     const [tableData, setTableData] = useState([]);
@@ -63,7 +69,8 @@ export default function Home() {
     const cellTEditorState = {value: cellTEditor, set: setCellTEditor}
     const cellEditorsStates = {cellNameEditorState,cellSymbolEditorState,cellUnitEditorState,cellLEditorState,cellTEditorState,cellMLTIEditorState}
 
-
+    const [tableViews, setTableViews] = useState(null)
+    const [laws, setLaws] = useState(null)
 
     
 
@@ -110,9 +117,27 @@ export default function Home() {
         document.getElementById("InputFirstName3").value = userProfile.first_name
         document.getElementById("InputLastName3").value = userProfile.last_name
         document.getElementById("InputPatronymic3").value = userProfile.patronymic
+
+        const headers = {
+          Authorization: `Bearer ${userInfoState.userToken}`
+        }    
+
+        // console.log(userInfoState.userToken)
+
+
+        //getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
+        //getData(null, `http://localhost:5000/api/represents`,testShow,headers)
+
+        getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
+        getData(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
       }
 
     }, [userProfile]);
+
+    const testShow = (result) => {
+
+      console.log(result)
+    }
 
     return (
         <UserProfile.Provider value={userInfoState}>
@@ -124,6 +149,10 @@ export default function Home() {
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
                   <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
                   <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
+                  <LawsModal modalsVisibility={modalsVisibility} laws={laws}/>
+                  <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews}/>
+                  <LawsGroupsModal modalsVisibility={modalsVisibility} />
+
 
                 <ToastContainer />
           </TableContext.Provider>
@@ -352,10 +381,142 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
   )
 }
 
-function LawsModal() {
+function LawsModal({modalsVisibility}) {
+
+
+
+
+  return (
+    <Modal
+      modalVisibility={modalsVisibility.lawsModalVisibility}
+      title={"Laws"}
+      hasBackground={false}
+      >
+      <div className="modal-content2">
+        nothing here
+      </div>
+      <div className="modal-footer2">
+        <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.lawsModalVisibility.setVisibility(false)}>Close</button>
+      </div>
+
+      </Modal>
+  )
+}
+
+function TableViewsModal({modalsVisibility, tableViews, setTableViews}) {
+
+
+  const userInfoState = useContext(UserProfile)
+  const tableState = useContext(TableContext)  
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }      
+
+  const selectTableView = (tableView) => {
+    getData(tableState.setTableData, `http://localhost:5000/api/active_view/${tableView.id_repr}`,afterSelectTableView,headers)
+  }
+
+  const afterSelectTableView = (tableView) => {
+    modalsVisibility.tableViewsModalVisibility.setVisibility(false)
+  }
+
+  const updateTableView = (tableView) => {
+
+
+
+  }
+
+  const deleteTableView = (tableView) => {
+    
+
+  }
+
+  const createTableView = () => {
+    
+
+    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value)
+    console.log(cellIds)
+
+    const tableViewTitle = document.getElementById("InputTableViewName3").value
+
+    const newTableView = {
+      title: tableViewTitle,
+      active_values: cellIds,
+    }
+
+    postData(undefined, `http://localhost:5000/api/represents`, newTableView, headers, afterCreateTableView)
+
+  }
+
+  const afterCreateTableView = () => {
+    getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
+  }
+  
+  let tableViewsMarkup
+  if (tableViews) {
+    tableViewsMarkup = tableViews.map(tableView => {
+
+
+    return (
+      <tr key={tableView.id_repr}>
+        <th scope="row" className='small-cell'>{tableView.id_repr}</th>
+        <td>{tableView.title}</td>
+        <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectTableView(tableView)}>↓</button></td>
+        <td className='small-cell'><button type="button" className="btn btn-success btn-sm" onClick={() => updateTableView(tableView)}>↑</button></td>
+        <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteTableView(tableView)}>🗑</button></td>
+      </tr>
+    );
+  })
+  } else {tableViewsMarkup = null}
+
+
+
+  return (
+    <Modal
+      modalVisibility={modalsVisibility.tableViewsModalVisibility}
+      title={"Table views"}
+      hasBackground={false}
+      sizeX={600}
+      >
+      <div className="modal-content2">
+
+      <div className="row">
+        <div className="col-9">
+          <input type="text" className="form-control" id="InputTableViewName3" placeholder="View 1"/>
+        </div>
+        <div className="col-3">
+        <button type="button" className="btn btn-primary" onClick={() => createTableView()}>create new</button>
+        </div>
+      </div>
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Select</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableViewsMarkup}
+        </tbody>
+      </table>
+      </div>
+      <div className="modal-footer2">
+        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.tableViewsModalVisibility.setVisibility(false)}>Close</button>
+      </div>
+
+      </Modal>
+  )
+}
+
+function LawsGroupsModal({modalsVisibility}) {
 
   return null;
 }
+
 
 function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
 

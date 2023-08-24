@@ -77,6 +77,14 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
 
     }
 
+    const openTableViewsForm = () => {
+        modalsVisibility.tableViewsModalVisibility.setVisibility(true)
+    }
+
+    const openLawsForm = () => {
+        modalsVisibility.lawsModalVisibility.setVisibility(true)
+    }
+
 
     let loginButtons;
 
@@ -114,6 +122,8 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
                         <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Redo</div>
                         <div className="nav-link active" aria-current="page" onClick={getImage}>Screenshot</div>
                         <div className="nav-link active" aria-current="page" onClick={openEditForm}>Edit</div>
+                        <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}>table views</div>
+                        <div className="nav-link active" aria-current="page" onClick={openLawsForm}>laws</div>
                     </div>
                 </div>
                 <div className="navbar-text">
