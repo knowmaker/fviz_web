@@ -54,6 +54,7 @@ class RepresentsController < ApplicationController
                                  quantity.mlti_sign, lt.lt_sign')
                                 .order('quantity.id_lt').all
     json_output = {
+      represent_id: @represent.id_repr,
       represent_title: @represent.title,
       active_quantities: active_quantities.map do |quantity|
         {
