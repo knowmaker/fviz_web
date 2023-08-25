@@ -2,52 +2,55 @@
 
 # Контроллер для получения активных ФВ представления (верхний слой), просмотра слоев, а также для работы с ФВ админом
 class QuantitiesController < ApplicationController
-  before_action :authorize_request, except: %i[index show]
-  before_action :set_quantity, only: %i[update destroy]
+  include QuantitiesHelper
+  # before_action :authorize_request
+  before_action :set_quantity, only: %i[show update]
 
   def index
-    represent_id = @current_user ? @current_user.represents.first : 1
-    quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_values).flatten
-    active_quantities = Quantity.where(id_value: quantity_ids)
-                                .left_joins(:lt)
-                                .select('quantity.id_value, quantity.val_name, quantity.symbol, quantity.unit,
-                                 quantity.id_lt, quantity.id_gk,
-                                 quantity.mlti_sign, lt.lt_sign')
-                                .order('quantity.id_lt')
-    render json: active_quantities.all
+    # unless @current_user.role
+    #   render json: 'Only admins can see all quantities list', status: :unauthorized
+    #   return
+    # end
+
+    @quantities = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*')
+
+    html_content = generate_html_table(@quantities)
+    send_data html_content, filename: 'quantities_table.html', type: 'text/html', disposition: 'attachment'
   end
 
   def show
-    quantities = Quantity.where(id_lt: params[:id])
-    if quantities.any?
-      render json: quantities, status: :ok
-    else
-      render json: 'No quantities found for the given id_lt', status: :not_found
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can see to quantity', status: :unauthorized
+    #   return
+    # end
+
+    render json: @quantity, status: :ok
   end
 
   def create
-    unless @current_user.role
-      render json: 'Only admins can create quantities', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can create quantities', status: :unauthorized
+    #   return
+    # end
 
     quantity = Quantity.new(quantity_params)
 
     if quantity.save
-      render json: quantity, status: :created
+      merged_quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(quantity.id)
+      render json: merged_quantity, status: :created
     else
       render json: 'Failed to create quantity', status: :unprocessable_entity
     end
   end
 
   def update
-    unless @current_user.role
-      render json: 'Only admins can update quantities', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can update quantities', status: :unauthorized
+    #   return
+    # end
 
     if @quantity.update(quantity_params)
+      @quantity.reload
       render json: @quantity, status: :ok
     else
       render json: 'Failed to update quantity', status: :unprocessable_entity
@@ -55,10 +58,11 @@ class QuantitiesController < ApplicationController
   end
 
   def destroy
-    unless @current_user.role
-      render json: 'Only admins can delete quantities', status: :unauthorized
-      return
-    end
+    # unless @current_user.role
+    #   render json: 'Only admins can delete quantities', status: :unauthorized
+    #   return
+    # end
+    @quantity = Quantity.find(params[:id])
 
     @quantity.destroy
     render json: 'Successfully deleted quantity', status: :ok
@@ -67,19 +71,26 @@ class QuantitiesController < ApplicationController
   private
 
   def set_quantity
-    @quantity = Quantity.find(params[:id])
+    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(params[:id])
   end
 
   def quantity_params
-    quantity_params = params.require(:quantity).permit(:val_name, :symbol,
-                                                       :M_indicate, :L_indicate, :T_indicate, :I_indicate,
-                                                       :unit, :l_indicate, :t_indicate, :g_indicate, :k_indicate)
+    quantity_params = params.require(:quantity)
+                            .permit(:value_name, :symbol,
+                                    :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto,
+                                    :unit, :l_indicate, :t_indicate, :id_gk)
 
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])
-    gk = Gk.find_by(g_indicate: quantity_params[:g_indicate], k_indicate: quantity_params[:k_indicate])
 
     quantity_params[:id_lt] = lt.id_lt if lt
-    quantity_params[:id_gk] = gk.id_gk if gk
+
+    quantity_params.delete(:l_indicate)
+    quantity_params.delete(:t_indicate)
+
+    # if Quantity.exists?(id_lt: quantity_params[:id_lt], id_gk: quantity_params[:id_gk])
+    #   render json: { error: 'Combination of id_lt and id_gk already exists' }, status: :unprocessable_entity
+    #   return
+    # end
 
     quantity_params
   end

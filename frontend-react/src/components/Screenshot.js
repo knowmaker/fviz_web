@@ -1,5 +1,4 @@
 import {createRef} from 'react';
-import {createFileName} from 'use-react-screenshot';
 import {toJpeg} from "html-to-image";
 
 export const useDownloadableScreenshot = () => {
@@ -8,10 +7,10 @@ export const useDownloadableScreenshot = () => {
         return await toJpeg(node);
     };
 
-    const download = (image, { name = "ФВиЗ_картина", extension = "jpg" } = {}) => {
+    const download = (image) => {
         const a = document.createElement("a");
         a.href = image;
-        a.download = createFileName(extension, name);
+        a.download = "image.jpg";
         a.click();
     };
 

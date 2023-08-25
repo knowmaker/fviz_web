@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.string "gk_sign", limit: 50
   end
 
-  create_table "gk_settings", id: :serial, force: :cascade do |t|
+  create_table "gk_settings", primary_key: "id_gk_set", id: :serial, force: :cascade do |t|
     t.integer "id_gk", null: false
     t.integer "id_user", null: false
     t.string "gk_color", limit: 20, null: false
@@ -48,12 +48,12 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   create_table "quantity", primary_key: "id_value", id: :serial, force: :cascade do |t|
-    t.string "val_name", limit: 100
-    t.string "symbol", limit: 50
-    t.integer "M_indicate", limit: 2, null: false
-    t.integer "L_indicate", limit: 2, null: false
-    t.integer "T_indicate", limit: 2, null: false
-    t.integer "I_indicate", limit: 2, null: false
+    t.string "value_name", limit: 200
+    t.string "symbol", limit: 100
+    t.integer "m_indicate_auto", limit: 2, null: false
+    t.integer "l_indicate_auto", limit: 2, null: false
+    t.integer "t_indicate_auto", limit: 2, null: false
+    t.integer "i_indicate_auto", limit: 2, null: false
     t.string "unit", limit: 200
     t.integer "id_lt", null: false
     t.integer "id_gk", null: false
@@ -63,16 +63,17 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "represents", primary_key: "id_repr", id: :serial, force: :cascade do |t|
     t.string "title", limit: 100
     t.integer "id_user", null: false
-    t.integer "active_values", null: false, array: true
+    t.integer "active_quantities", null: false, array: true
   end
 
   create_table "users", primary_key: "id_user", id: :serial, force: :cascade do |t|
     t.string "email", limit: 100, null: false
     t.string "password", limit: 50, null: false
-    t.string "last_name", limit: 100, null: false
-    t.string "first_name", limit: 100, null: false
+    t.string "last_name", limit: 100
+    t.string "first_name", limit: 100
     t.string "patronymic", limit: 100
     t.boolean "role", default: false, null: false
+    t.index ["email"], name: "unique_email", unique: true
   end
 
   add_foreign_key "gk_settings", "gk", column: "id_gk", primary_key: "id_gk", name: "gk_settings_id_gk_fkey", on_update: :cascade, on_delete: :cascade

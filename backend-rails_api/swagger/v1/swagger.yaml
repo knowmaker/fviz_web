@@ -10,11 +10,6 @@ paths:
       responses:
         '200':
           description: successful
-    post:
-      summary: create gk_setting
-      responses:
-        '200':
-          description: successful
   "/api/gk_settings/{id}":
     parameters:
     - name: id
@@ -23,11 +18,6 @@ paths:
       required: true
       schema:
         type: string
-    get:
-      summary: show gk_setting
-      responses:
-        '200':
-          description: successful
     patch:
       summary: update gk_setting
       responses:
@@ -38,22 +28,205 @@ paths:
       responses:
         '200':
           description: successful
-    delete:
-      summary: delete gk_setting
-      responses:
-        '200':
-          description: successful
-  "/api/quantities":
+  "/api/law_types":
     get:
-      summary: list quantities
+      summary: list law_types
       responses:
         '200':
           description: successful
     post:
-      summary: create quantity
+      summary: create law_type
       responses:
         '200':
           description: successful
+  "/api/law_types/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update law_type
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update law_type
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete law_type
+      responses:
+        '200':
+          description: successful
+  "/api/laws":
+    get:
+      summary: list laws
+      tags:
+      - Laws
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create law
+      tags:
+      - Laws
+      parameters: []
+      responses:
+        '201':
+          description: created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                law:
+                  type: object
+                  properties:
+                    law_name:
+                      type: string
+                    first_element:
+                      type: integer
+                    second_element:
+                      type: integer
+                    third_element:
+                      type: integer
+                    fourth_element:
+                      type: integer
+                    id_type:
+                      type: integer
+                  required:
+                  - law_name
+                  - first_element
+                  - second_element
+                  - third_element
+                  - fourth_element
+                  - id_type
+  "/api/laws/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show law
+      tags:
+      - Laws
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+    put:
+      summary: update law
+      tags:
+      - Laws
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                law:
+                  type: object
+                  properties:
+                    law_name:
+                      type: string
+                    first_element:
+                      type: integer
+                    second_element:
+                      type: integer
+                    third_element:
+                      type: integer
+                    fourth_element:
+                      type: integer
+                    id_type:
+                      type: integer
+    delete:
+      summary: delete law
+      tags:
+      - Laws
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+  "/api/quantities":
+    post:
+      summary: create quantity
+      tags:
+      - Quantities
+      parameters: []
+      responses:
+        '201':
+          description: created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: object
+                  properties:
+                    value_name:
+                      type: string
+                    symbol:
+                      type: string
+                    m_indicate_auto:
+                      type: integer
+                    l_indicate_auto:
+                      type: integer
+                    t_indicate_auto:
+                      type: integer
+                    i_indicate_auto:
+                      type: integer
+                    unit:
+                      type: string
+                    l_indicate:
+                      type: integer
+                    t_indicate:
+                      type: integer
+                    id_gk:
+                      type: integer
+                  required:
+                  - value_name
+                  - symbol
+                  - m_indicate_auto
+                  - l_indicate_auto
+                  - t_indicate_auto
+                  - i_indicate_auto
+                  - unit
+                  - l_indicate
+                  - t_indicate
+                  - id_gk
+    get:
+      summary: list quantities
+      tags:
+      - Quantities
+      responses:
+        '200':
+          description: successful
+        '500':
+          description: server error
   "/api/quantities/{id}":
     parameters:
     - name: id
@@ -64,35 +237,99 @@ paths:
         type: string
     get:
       summary: show quantity
+      tags:
+      - Quantities
       responses:
         '200':
           description: successful
-    patch:
-      summary: update quantity
-      responses:
-        '200':
-          description: successful
+        '404':
+          description: not found
     put:
       summary: update quantity
+      tags:
+      - Quantities
+      parameters: []
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: object
+                  properties:
+                    value_name:
+                      type: string
+                    symbol:
+                      type: string
+                    m_indicate_auto:
+                      type: integer
+                    l_indicate_auto:
+                      type: integer
+                    t_indicate_auto:
+                      type: integer
+                    i_indicate_auto:
+                      type: integer
+                    unit:
+                      type: string
+                    l_indicate:
+                      type: integer
+                    t_indicate:
+                      type: integer
+                    id_gk:
+                      type: integer
     delete:
       summary: delete quantity
+      tags:
+      - Quantities
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
   "/api/represents":
     get:
       summary: list represents
+      tags:
+      - Represents
       responses:
         '200':
           description: successful
     post:
       summary: create represent
+      tags:
+      - Represents
+      parameters: []
       responses:
-        '200':
-          description: successful
+        '201':
+          description: created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                represent:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    active_quantities:
+                      type: array
+                      items:
+                        type: integer
+                  required:
+                  - title
+                  - active_quantities
   "/api/represents/{id}":
     parameters:
     - name: id
@@ -101,26 +338,177 @@ paths:
       required: true
       schema:
         type: string
-    get:
-      summary: show represent
-      responses:
-        '200':
-          description: successful
-    patch:
-      summary: update represent
-      responses:
-        '200':
-          description: successful
     put:
       summary: update represent
+      tags:
+      - Represents
+      parameters: []
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                represent:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    active_quantities:
+                      type: array
+                      items:
+                        type: integer
     delete:
       summary: delete represent
+      tags:
+      - Represents
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
+  "/api/active_view":
+    get:
+      summary: get active quantities for represent view
+      tags:
+      - Represents
+      responses:
+        '200':
+          description: successful
+  "/api/active_view/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: get active quantities for specific represent view
+      tags:
+      - Represents
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+  "/api/layers/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: get quantities by lt id
+      tags:
+      - Represents
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+  "/api/login":
+    post:
+      summary: login
+      tags:
+      - Users
+      parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+  "/api/signup":
+    post:
+      summary: create user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                last_name:
+                  type: string
+                first_name:
+                  type: string
+                patronymic:
+                  type: string
+              required:
+              - email
+              - password
+              - last_name
+              - first_name
+              - patronymic
+  "/api/profile":
+    get:
+      summary: show user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+  "/api/update":
+    patch:
+      summary: update user
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                last_name:
+                  type: string
+                first_name:
+                  type: string
+                patronymic:
+                  type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []
 servers:
 - url: http://{defaultHost}
   variables:

@@ -6,7 +6,8 @@ class GkSettingsController < ApplicationController
   before_action :set_gk_setting, only: [:update]
 
   def index
-    gk_settings = GkSetting.joins(:gk).select('gk_settings.*, gk.gk_sign').all
+    user_id = @current_user ? @current_user.id_user : 1
+    gk_settings = GkSetting.where(id_user: user_id).joins(:gk).select('gk_settings.*, gk.*').all
     render json: gk_settings, status: :ok
   end
 
