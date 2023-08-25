@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default function getData(setStateFunction, adress, afterRequestFunction, headers) {
+export default function getData(setStateFunction, adress, afterRequestFunction, headers, extraData) {
 
   axios
       .get(adress, {headers: headers})
@@ -9,7 +9,7 @@ export default function getData(setStateFunction, adress, afterRequestFunction, 
           setStateFunction(response.data);
         } 
         if (afterRequestFunction !== undefined) {
-          afterRequestFunction(response.data);
+          afterRequestFunction(response.data,extraData);
         }
         if (!setStateFunction) {return response.data}
       })
@@ -54,6 +54,22 @@ export function putData(setStateFunction, adress, data, headers, afterRequestFun
 export function patchData(setStateFunction, adress, data, headers, afterRequestFunction) {
 
   axios.patch(adress, data, {headers: headers})
+  .then((response) => {
+    if (setStateFunction) {
+      setStateFunction(response.data);
+    }
+    if (afterRequestFunction !== undefined) {
+      afterRequestFunction(response.data);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+export function deleteData(setStateFunction, adress, headers, afterRequestFunction) {
+
+  axios.delete(adress, {headers: headers})
   .then((response) => {
     if (setStateFunction) {
       setStateFunction(response.data);

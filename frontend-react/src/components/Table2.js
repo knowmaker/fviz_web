@@ -207,7 +207,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
 
   if (cellData) {
 
-    const cellContent_name = cellData.val_name;
+    const cellContent_name = cellData.value_name;
     const cellContent_symbol = cellData.symbol;
     const cellContent_unit = cellData.unit;
     const cellContent_mlti = cellData.mlti_sign;

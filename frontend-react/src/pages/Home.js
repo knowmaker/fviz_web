@@ -1,7 +1,7 @@
 import React,{useEffect,useState, useContext} from 'react';
 import TableUI from '../components/Table2';
 import Draggable from 'react-draggable';
-import getData, { postData, putData, patchData} from '../components/api';
+import getData, { postData, putData, patchData, deleteData} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
 import { EditorState, convertToRaw,  convertFromRaw , ContentState } from 'draft-js';
@@ -36,11 +36,16 @@ export default function Home() {
     const [gkColors, setGkColors] = useState([]);
     const gkState = {gkColors, setGkColors}
 
+    const [tableView, setTableView] = useState({id_repr:3,title:"Базовое"}); // remove after fix
+    const tableViewState = {tableView,setTableView}
+    console.log(tableView)
+
     useEffect(() => {
       getData(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
       getData(setGkColors,process.env.REACT_APP_GK_SETTINGS_LINK)
   
     }, []);
+
   
 
     const [selectedCell, setSelectedCell] = useState(null);
@@ -126,7 +131,7 @@ export default function Home() {
 
 
         //getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
-        //getData(null, `http://localhost:5000/api/represents`,testShow,headers)
+        getData(null, `http://localhost:5000/api/represents`,testShow,headers)
 
         getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
         getData(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
@@ -150,7 +155,7 @@ export default function Home() {
                   <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
                   <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
                   <LawsModal modalsVisibility={modalsVisibility} laws={laws}/>
-                  <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews}/>
+                  <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
                   <LawsGroupsModal modalsVisibility={modalsVisibility} />
 
 
@@ -403,7 +408,7 @@ function LawsModal({modalsVisibility}) {
   )
 }
 
-function TableViewsModal({modalsVisibility, tableViews, setTableViews}) {
+function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewState}) {
 
 
   const userInfoState = useContext(UserProfile)
@@ -413,22 +418,34 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews}) {
   }      
 
   const selectTableView = (tableView) => {
-    getData(tableState.setTableData, `http://localhost:5000/api/active_view/${tableView.id_repr}`,afterSelectTableView,headers)
+    getData(undefined, `http://localhost:5000/api/active_view/${tableView.id_repr}`,afterSelectTableView,headers,tableView.id_repr)
   }
 
-  const afterSelectTableView = (tableView) => {
-    modalsVisibility.tableViewsModalVisibility.setVisibility(false)
+  const afterSelectTableView = (tableView,id_repr) => {
+
+    tableViewState.setTableView({id_repr:id_repr,title:tableView.represent_title})
+    tableState.setTableData(tableView.active_quantities)
+    //modalsVisibility.tableViewsModalVisibility.setVisibility(false)
   }
 
-  const updateTableView = (tableView) => {
+  const updateTableView = () => {
 
+    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value)
 
+    const newTableView = {
+      active_quantities: cellIds,
+    }
 
+    putData(undefined,`http://localhost:5000/api/represents/${tableViewState.tableView.id_repr}`,newTableView,headers,afterCreateTableView)
   }
 
   const deleteTableView = (tableView) => {
     
+    deleteData(undefined,`http://localhost:5000/api/represents/${tableView.id_repr}`,headers,afterDeleteTableView)
+  }
 
+  const afterDeleteTableView = () => {
+    getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
   }
 
   const createTableView = () => {
@@ -441,7 +458,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews}) {
 
     const newTableView = {
       title: tableViewTitle,
-      active_values: cellIds,
+      active_quantities: cellIds,
     }
 
     postData(undefined, `http://localhost:5000/api/represents`, newTableView, headers, afterCreateTableView)
@@ -453,16 +470,18 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews}) {
   }
   
   let tableViewsMarkup
+  let tableViewsCounter = 0
   if (tableViews) {
     tableViewsMarkup = tableViews.map(tableView => {
+    tableViewsCounter += 1 
 
+    const isCurrent = tableView.id_repr === tableViewState.tableView.id_repr
 
     return (
       <tr key={tableView.id_repr}>
-        <th scope="row" className='small-cell'>{tableView.id_repr}</th>
+        <th scope="row" className='small-cell'>{isCurrent ? tableViewsCounter + `+` : tableViewsCounter}</th>
         <td>{tableView.title}</td>
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectTableView(tableView)}>↓</button></td>
-        <td className='small-cell'><button type="button" className="btn btn-success btn-sm" onClick={() => updateTableView(tableView)}>↑</button></td>
         <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteTableView(tableView)}>🗑</button></td>
       </tr>
     );
@@ -481,21 +500,23 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews}) {
       <div className="modal-content2">
 
       <div className="row">
-        <div className="col-9">
+        <div className="col-5">
           <input type="text" className="form-control" id="InputTableViewName3" placeholder="View 1"/>
         </div>
         <div className="col-3">
         <button type="button" className="btn btn-primary" onClick={() => createTableView()}>create new</button>
+        </div>
+        <div className="col-4">
+        <button type="button" className="btn btn-success" onClick={() => updateTableView()}>update current</button>
         </div>
       </div>
 
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">id</th>
+            <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Select</th>
-            <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
@@ -534,7 +555,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
       theme: "colored",
       });
 
-    postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userData, undefined, afterLogin)
+    //postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userData, undefined, afterLogin)
   }
 
   const afterLogin = (token) => {

@@ -13,7 +13,7 @@ $job =Start-Job -ScriptBlock {
 $job2 =Start-Job -ScriptBlock {
   Set-Location $using:PWD
   Set-location "backend-rails_api"
-  # bundle update
+  # bundle install
   shutup # gem install shutup
   rails s -p 5000        
 }

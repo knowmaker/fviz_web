@@ -212,6 +212,10 @@ td,th {
   text-align: center;
 }
 
+td button {
+  min-width: 31px;
+}
+
 #modal-mask {
   position: fixed;
   height: 100%;
