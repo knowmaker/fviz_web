@@ -38,7 +38,6 @@ export default function Home() {
 
     const [tableView, setTableView] = useState({id_repr:3,title:"Базовое"}); // remove after fix
     const tableViewState = {tableView,setTableView}
-    console.log(tableView)
 
     useEffect(() => {
       getData(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
@@ -421,10 +420,14 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     getData(undefined, `http://localhost:5000/api/active_view/${tableView.id_repr}`,afterSelectTableView,headers,tableView.id_repr)
   }
 
-  const afterSelectTableView = (tableView,id_repr) => {
+  const afterSelectTableView = (fullTableView,id_repr) => {
 
-    tableViewState.setTableView({id_repr:id_repr,title:tableView.represent_title})
-    tableState.setTableData(tableView.active_quantities)
+
+    tableViewState.setTableView({id_repr:id_repr,title:fullTableView.represent_title})
+    tableState.setTableData(fullTableView.active_quantities)
+
+    document.getElementById("InputTableViewName3").value = fullTableView.represent_title
+
     //modalsVisibility.tableViewsModalVisibility.setVisibility(false)
   }
 
@@ -432,7 +435,10 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
 
     const cellIds = Object.values(tableState)[0].map(cell => cell.id_value)
 
+    const tableViewTitle = document.getElementById("InputTableViewName3").value
+
     const newTableView = {
+      title: tableViewTitle,
       active_quantities: cellIds,
     }
 
