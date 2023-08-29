@@ -50,24 +50,12 @@ class RepresentsController < ApplicationController
     active_quantities = Quantity.where(id_value: quantity_ids)
                                 .left_joins(:lt)
                                 .select('quantity.id_value, quantity.value_name, quantity.symbol, quantity.unit,
-                                 quantity.id_lt, quantity.id_gk,
-                                 quantity.mlti_sign, lt.lt_sign')
+                                 quantity.id_lt, quantity.id_gk, quantity.mlti_sign, lt.lt_sign')
                                 .order('quantity.id_lt').all
     json_output = {
       represent_id: @represent.id_repr,
       represent_title: @represent.title,
-      active_quantities: active_quantities.map do |quantity|
-        {
-          id_value: quantity.id_value,
-          value_name: quantity.value_name,
-          symbol: quantity.symbol,
-          unit: quantity.unit,
-          id_lt: quantity.id_lt,
-          id_gk: quantity.id_gk,
-          mlti_sign: quantity.mlti_sign,
-          lt_sign: quantity.lt_sign
-        }
-      end
+      active_quantities: format_active_quantities(active_quantities)
     }
 
     render json: json_output
@@ -90,5 +78,20 @@ class RepresentsController < ApplicationController
 
   def represent_params
     params.require(:represent).permit(:title, active_quantities: [])
+  end
+
+  def format_active_quantities(active_quantities)
+    active_quantities.map do |quantity|
+      {
+        id_value: quantity.id_value,
+        value_name: quantity.value_name,
+        symbol: quantity.symbol,
+        unit: quantity.unit,
+        id_lt: quantity.id_lt,
+        id_gk: quantity.id_gk,
+        mlti_sign: quantity.mlti_sign,
+        lt_sign: quantity.lt_sign
+      }
+    end
   end
 end

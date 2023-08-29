@@ -4,17 +4,16 @@
 class UsersController < ApplicationController
   before_action :authorize_request, except: %i[create login]
   def create
-    if User.exists?(email: params[:user][:email])
-      render json: 'User already exists', status: :unprocessable_entity
-    else
-      user = User.new(user_params)
-      user.password = hash_password(params[:user][:password])
+    user = User.find_by(email: params[:user][:email])
+    render json: 'User already exists', status: :unprocessable_entity and return if user
 
-      if user.save
-        render json: user, status: :created
-      else
-        render json: 'Registering error', status: :unprocessable_entity
-      end
+    user = User.new(user_params)
+    user.password = hash_password(params[:user][:password])
+
+    if user.save
+      render json: user, status: :created
+    else
+      render json: 'Registering error', status: :unprocessable_entity
     end
   end
 
