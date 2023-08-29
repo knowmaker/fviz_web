@@ -2,15 +2,18 @@
 
 # Контроллер для контроля обработки пользовательских регистраций и авторизаций
 class UsersController < ApplicationController
-  before_action :authorize_request, except: %i[create login]
+  before_action :authorize_request, except: %i[create login confirm]
   def create
     user = User.find_by(email: params[:user][:email])
     render json: 'User already exists', status: :unprocessable_entity and return if user
 
     user = User.new(user_params)
     user.password = hash_password(params[:user][:password])
+    user.confirmation_token = SecureRandom.urlsafe_base64.to_s
 
     if user.save
+      ConfirmationMailer.confirmation_email(user).deliver_now
+
       render json: user, status: :created
     else
       render json: 'Registering error', status: :unprocessable_entity
@@ -20,10 +23,14 @@ class UsersController < ApplicationController
   def login
     @user = User.find_by(email: params[:email])
 
-    if @user && validate_password(params[:password], @user.password)
+    if @user&.confirmed && validate_password(params[:password], @user.password)
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(id_user: @user.id_user)
       render json: token, status: :ok
+    elsif !@user
+      render json: 'User not found', status: :not_found
+    elsif !@user.confirmed
+      render json: 'Email not confirmed', status: :unauthorized
     else
       render json: 'Invalid credentials', status: :unauthorized
     end
@@ -38,6 +45,17 @@ class UsersController < ApplicationController
       render json: @current_user, status: :ok
     else
       render json: 'Updating error', status: :unprocessable_entity
+    end
+  end
+
+  def confirm
+    user = User.find_by(confirmation_token: params[:confirmation_token])
+
+    if user
+      user.update(confirmed: true, confirmation_token: nil)
+      render json: 'Email confirmed successfully', status: :ok
+    else
+      render json: 'Invalid confirmation token', status: :unprocessable_entity
     end
   end
 

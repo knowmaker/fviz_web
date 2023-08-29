@@ -68,11 +68,13 @@ ActiveRecord::Schema[7.0].define(version: 0) do
 
   create_table "users", primary_key: "id_user", id: :serial, force: :cascade do |t|
     t.string "email", limit: 100, null: false
-    t.string "password", limit: 50, null: false
+    t.string "password", null: false
     t.string "last_name", limit: 100
     t.string "first_name", limit: 100
     t.string "patronymic", limit: 100
     t.boolean "role", default: false, null: false
+    t.string "confirmation_token"
+    t.boolean "confirmed"
     t.index ["email"], name: "unique_email", unique: true
   end
 

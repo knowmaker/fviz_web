@@ -5,15 +5,18 @@ class ApplicationController < ActionController::API
   attr_reader :current_user
 
   def authorize_request
-    header = request.headers['Authorization']
-    token = header.split.last if header
-    p token
-    begin
-      # @decoded = JsonWebToken.decode(token)
-      @decoded = decode(token)
-      @current_user = User.find(@decoded[:id_user])
-    rescue ActiveRecord::RecordNotFound, JWT::DecodeError
-      render json: 'Unauthorized', status: :unauthorized
+    token = request.headers['Authorization']
+    if token
+      token = token.split.last
+      begin
+        # @decoded = JsonWebToken.decode(token)
+        @decoded = decode(token)
+        @current_user = User.find(@decoded[:id_user])
+      rescue ActiveRecord::RecordNotFound, JWT::DecodeError
+        render json: 'Unauthorized', status: :unauthorized
+      end
+    else
+      render json: { error: 'No authorization token found' }, status: :unauthorized
     end
   end
 

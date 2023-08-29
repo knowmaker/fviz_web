@@ -17,6 +17,11 @@ Rails.application.routes.draw do
     post '/login', to: 'users#login'
     get '/profile', to: 'users#show'
     patch '/update', to: 'users#update'
+    resources :users, only: [] do
+      member do
+        get :confirm, to: 'users#confirm'
+      end
+    end
   end
   # Defines the root path route ("/")
   # root "articles#index"
