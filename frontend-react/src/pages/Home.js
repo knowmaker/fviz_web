@@ -126,11 +126,11 @@ export default function Home() {
           Authorization: `Bearer ${userInfoState.userToken}`
         }    
 
-        // console.log(userInfoState.userToken)
 
 
-        //getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
-        getData(null, `http://localhost:5000/api/represents`,testShow,headers)
+
+        getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
+        //getData(null, `http://localhost:5000/api/represents`,testShow,headers)
 
         getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
         getData(setLaws, `http://localhost:5000/api/laws`,undefined,headers)

@@ -4,6 +4,7 @@ import Footbar from './FootBar';
 import { TableContext } from './Contexts.js';
 import { useDownloadableScreenshot } from './Screenshot';
 import getData from './api';
+import LawsCanvas from './LawsCanvas';
 
 const rowCount = 20
 const cellCount = 20
@@ -39,6 +40,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
       <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} ref={ref}/>
       <Footbar hoveredCell={hoveredCell} gkColors={gkState.gkColors}/>
+
     </>  
     );
 }
@@ -113,7 +115,12 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState }, ref)
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
       return <Row key={rowId} rowId={rowId} fullTableData={fullTableData} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState}/>
     });
-      return <div className="tables" ref={ref}>{rowList}</div>
+      return (
+        <div className="tables" ref={ref}>
+        {rowList}
+        <LawsCanvas lawCells={[5,61,83]}/>
+        </div>
+      )
   }
   else
   {
@@ -223,6 +230,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
           onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
           onClick={event => selectedCells ? handleCellLeftClick(event, cellFullId) : {}}
           onMouseOver={event => hoveredCellState ? handleCellHover(event, cellFullId) : {}}
+          cellnumber={cellFullId}
         >
           <div className='cell-name'>
           <span dangerouslySetInnerHTML={{__html: cellContent_name}}></span>
@@ -240,7 +248,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
         </div>
     );
   } else {
-    return <div className="cell-invisible cell" onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)}></div>
+    return <div className="cell-invisible cell" onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)} id={`cell-${cellFullId}`} cellnumber={cellFullId}></div>
   }
   
 }

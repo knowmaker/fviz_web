@@ -55,8 +55,17 @@ html {
   overflow-y: scroll;
   overflow-x: scroll;
   padding-left: 230px;
-
   padding-right: 5px;  
+  position: relative;
+}
+
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* width: 3726px;
+  height: 2537px; */
+  padding-left: 230px;
 }
 
 div.tables div.row {
