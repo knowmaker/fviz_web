@@ -619,6 +619,37 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
     postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userLoginData, undefined, afterLogin)
   }
 
+  const forgotPassword = () => {
+
+    const email = document.getElementById("InputEmail5").value
+
+    const userData = {
+      user: {
+        email: email,
+      }
+    }
+
+    console.log(userData)
+    postData(undefined, `http://localhost:5000/api/reset`, userData, undefined, afterForgotPassword)
+
+   
+
+
+  }
+
+  const afterForgotPassword = () => {
+
+    toast.success('Recovery email sent', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  }
+
 
   return (
     <Modal
@@ -632,6 +663,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
               <button className="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Login</button>
               <button className="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Register</button>
+              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false">Forgot password?</button>
           </div>
       </nav>
       <div className="tab-content" id="nav-tabContent">
@@ -667,6 +699,18 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
                   <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button>
                   <button type="button" className="btn btn-primary" onClick={() => register()}>Send</button>
               </div>
+          </div>
+          <div className="tab-pane fade" id="forgot-password" role="tabpanel" aria-labelledby="forgot-password-tab" tabIndex="0">
+
+          <div className="modal-content2">
+              <label htmlFor="InputEmail5" className="form-label">Email address</label>
+              <input type="email" className="form-control" id="InputEmail5" aria-describedby="emailHelp" placeholder="name@example.com"/>
+          </div>
+
+          <div className="modal-footer2">
+              <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button>
+              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Send</button>
+          </div>
           </div>
       </div>
       </div>
