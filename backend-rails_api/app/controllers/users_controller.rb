@@ -26,6 +26,9 @@ class UsersController < ApplicationController
     @user = User.find_by(email: params[:user][:email])
 
     if @user&.confirmed && validate_password(params[:user][:password], @user.password)
+
+      schedule_account_deletion unless @user.role
+
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(id_user: @user.id_user)
       render json: token, status: :ok
@@ -107,5 +110,15 @@ class UsersController < ApplicationController
   def encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
     JWT.encode(payload, SECRET_KEY)
+  end
+
+  def schedule_account_deletion
+    SendAccountReminderJob.where(arguments: [@user.id_user]).destroy_all
+
+    SendAccountReminderJob.set(wait: 2.years + 11.months).perform_later(@user.id_user) # За месяц
+    SendAccountReminderJob.set(wait: 2.years + 11.months + 3.weeks).perform_later(@user.id_user) # За неделю
+    SendAccountReminderJob.set(wait: 2.years + 11.months + 3.weeks + 6.days).perform_later(@user.id_user) # За день
+
+    DeleteInactiveUserJob.set(wait: 3.years).perform_later(id) # Удаление через 3 года
   end
 end
