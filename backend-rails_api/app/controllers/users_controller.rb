@@ -2,7 +2,7 @@
 
 # Контроллер для контроля обработки пользовательских регистраций и авторизаций
 class UsersController < ApplicationController
-  before_action :authorize_request, except: %i[create login confirm]
+  before_action :authorize_request, except: %i[create login confirm reset new_password]
   def create
     user = User.find_by(email: params[:user][:email])
     render json: 'User already exists', status: :unprocessable_entity and return if user
@@ -59,6 +59,40 @@ class UsersController < ApplicationController
     end
   end
 
+  def reset
+    user = User.find_by(email: params[:user][:email])
+
+    if user&.confirmed
+      user.confirmation_token = SecureRandom.urlsafe_base64.to_s
+      user.save
+
+      ResetPasswordMailer.reset_password_email(user).deliver_now
+
+      render json: 'Reset password email sent', status: :ok
+    elsif !user.confirmed
+      render json: 'Email not confirmed', status: :unauthorized
+    else
+      render json: 'User not found', status: :not_found
+    end
+  end
+
+  def new_password
+    user = User.find_by(confirmation_token: params[:confirmation_token])
+
+    if user
+      new_password = generate_random_password
+      user.password = hash_password(new_password)
+      user.confirmation_token = nil
+      user.save
+
+      NewPasswordMailer.new_password_email(user, new_password).deliver_now
+
+      render json: 'New password generated and sent', status: :ok
+    else
+      render json: 'Invalid reset token', status: :unprocessable_entity
+    end
+  end
+
   private
 
   def user_params
@@ -70,13 +104,5 @@ class UsersController < ApplicationController
   def encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
     JWT.encode(payload, SECRET_KEY)
-  end
-
-  def hash_password(password)
-    Argon2::Password.create(password)
-  end
-
-  def validate_password(password, password_hash)
-    Argon2::Password.verify_password(password, password_hash)
   end
 end
