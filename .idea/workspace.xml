@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user api-docs">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
-    </list>
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="auto deleting user acc 2" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -203,23 +200,7 @@
       <workItem from="1692967107491" duration="2471000" />
       <workItem from="1693296371696" duration="1458000" />
       <workItem from="1693312639926" duration="14745000" />
-      <workItem from="1693408071001" duration="10298000" />
-    </task>
-    <task id="LOCAL-00007" summary="api interface">
-      <option name="closed" value="true" />
-      <created>1691583114602</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1691583114602</updated>
-    </task>
-    <task id="LOCAL-00008" summary="api interface QUANTITY">
-      <option name="closed" value="true" />
-      <created>1691585079544</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1691585079544</updated>
+      <workItem from="1693408071001" duration="10756000" />
     </task>
     <task id="LOCAL-00009" summary="trying api interface USER">
       <option name="closed" value="true" />
@@ -597,7 +578,23 @@
       <option name="project" value="LOCAL" />
       <updated>1693419148566</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="auto deleting user acc">
+      <option name="closed" value="true" />
+      <created>1693422044325</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1693422044325</updated>
+    </task>
+    <task id="LOCAL-00057" summary="auto deleting user acc 2">
+      <option name="closed" value="true" />
+      <created>1693422096533</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1693422096533</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -615,8 +612,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="rubymine settings" />
-    <MESSAGE value="db v_new1" />
     <MESSAGE value="db v_new1,5" />
     <MESSAGE value="db v_new2" />
     <MESSAGE value="db v_new3" />
@@ -640,7 +635,9 @@
     <MESSAGE value="reset confirmation_token jobs" />
     <MESSAGE value="user helper debug" />
     <MESSAGE value="user api-docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="user api-docs" />
+    <MESSAGE value="auto deleting user acc" />
+    <MESSAGE value="auto deleting user acc 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="auto deleting user acc 2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1693411623103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

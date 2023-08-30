@@ -114,11 +114,11 @@ class UsersController < ApplicationController
 
   def schedule_account_deletion
     SendAccountReminderJob.where(arguments: [@user.id_user]).destroy_all
+    DeleteInactiveUserJob.where(arguments: [@user.id_user]).destroy_all
 
     SendAccountReminderJob.set(wait: 2.years + 11.months).perform_later(@user.id_user) # За месяц
     SendAccountReminderJob.set(wait: 2.years + 11.months + 3.weeks).perform_later(@user.id_user) # За неделю
     SendAccountReminderJob.set(wait: 2.years + 11.months + 3.weeks + 6.days).perform_later(@user.id_user) # За день
-
     DeleteInactiveUserJob.set(wait: 3.years).perform_later(@user.id_user) # Удаление через 3 года
   end
 end
