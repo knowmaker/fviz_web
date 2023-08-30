@@ -37,7 +37,7 @@ RSpec.describe 'users', type: :request do
               email: { type: :string },
               password: { type: :string },
             },
-            required: ['email', 'password', 'last_name', 'first_name', 'patronymic']
+            required: ['email', 'password']
           }
         }
       }
@@ -76,9 +76,28 @@ RSpec.describe 'users', type: :request do
     end
   end
 
+  path '/api/users/{id}/confirm' do
+    parameter name: 'id', in: :path, type: :string, description: 'id'
+    parameter name: 'confirmation_token', in: :query, type: :string, description: 'confirmation token', required: true
+
+    post('confirm email') do
+      tags 'Users'
+      produces 'application/json'
+
+      response(200, 'email confirmed') do
+        run_test!
+      end
+
+      response(422, 'invalid confirmation token') do
+        run_test!
+      end
+    end
+  end
+
   path '/api/reset' do
     post('Send reset password email') do
       tags 'Users'
+      consumes 'application/json'
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -101,6 +120,24 @@ RSpec.describe 'users', type: :request do
       end
 
       response(404, 'user not found') do
+        run_test!
+      end
+    end
+  end
+
+  path '/api/users/{id}/new_password' do
+    parameter name: 'id', in: :path, type: :string, description: 'id'
+    parameter name: 'confirmation_token', in: :query, type: :string, description: 'confirmation token', required: true
+
+    get('generate and send new password') do
+      tags 'Users'
+      produces 'application/json'
+
+      response(200, 'new password generated and sent') do
+        run_test!
+      end
+
+      response(422, 'invalid reset token') do
         run_test!
       end
     end

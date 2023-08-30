@@ -466,9 +466,6 @@ paths:
                   required:
                   - email
                   - password
-                  - last_name
-                  - first_name
-                  - patronymic
   "/api/profile":
     get:
       summary: show user
@@ -498,6 +495,29 @@ paths:
                   type: string
                 patronymic:
                   type: string
+  "/api/users/{id}/confirm":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    - name: confirmation_token
+      in: query
+      description: confirmation token
+      required: true
+      schema:
+        type: string
+    post:
+      summary: confirm email
+      tags:
+      - Users
+      responses:
+        '200':
+          description: email confirmed
+        '422':
+          description: invalid confirmation token
   "/api/reset":
     post:
       summary: Send reset password email
@@ -511,6 +531,42 @@ paths:
           description: email not confirmed
         '404':
           description: user not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                  required:
+                  - email
+  "/api/users/{id}/new_password":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    - name: confirmation_token
+      in: query
+      description: confirmation token
+      required: true
+      schema:
+        type: string
+    get:
+      summary: generate and send new password
+      tags:
+      - Users
+      responses:
+        '200':
+          description: new password generated and sent
+        '422':
+          description: invalid reset token
 components:
   securitySchemes:
     bearerAuth:
