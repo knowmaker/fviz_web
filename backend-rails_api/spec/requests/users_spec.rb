@@ -5,9 +5,19 @@ RSpec.describe 'users', type: :request do
     post('login') do
       tags 'Users'
       consumes 'application/json'
-      parameter name: :email, in: :query, type: :string, required: true
-      parameter name: :password, in: :query, type: :string, required: true
-
+      parameter name: :user, in: :body, schema: {
+        type: :object,
+        properties: {
+          user: {
+            type: :object,
+            properties: {
+              email: { type: :string },
+              password: { type: :string },
+            },
+            required: ['email', 'password']
+          }
+        }
+      }
       response(200, 'successful') do
         run_test!
       end
@@ -21,13 +31,15 @@ RSpec.describe 'users', type: :request do
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
-          email: { type: :string },
-          password: { type: :string },
-          last_name: { type: :string },
-          first_name: { type: :string },
-          patronymic: { type: :string }
-        },
-        required: ['email', 'password', 'last_name', 'first_name', 'patronymic']
+          user: {
+            type: :object,
+            properties: {
+              email: { type: :string },
+              password: { type: :string },
+            },
+            required: ['email', 'password', 'last_name', 'first_name', 'patronymic']
+          }
+        }
       }
 
       response(201, 'created') do
@@ -49,7 +61,6 @@ RSpec.describe 'users', type: :request do
     patch('update user') do
       tags 'Users'
       consumes 'application/json'
-      parameter name: :id, in: :path, type: :string, description: 'id'
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -60,6 +71,36 @@ RSpec.describe 'users', type: :request do
       }
 
       response(200, 'successful') do
+        run_test!
+      end
+    end
+  end
+
+  path '/api/reset' do
+    post('Send reset password email') do
+      tags 'Users'
+      parameter name: :user, in: :body, schema: {
+        type: :object,
+        properties: {
+          user: {
+            type: :object,
+            properties: {
+              email: { type: :string }
+            },
+            required: ['email']
+          }
+        }
+      }
+
+      response(200, 'email sent') do
+        run_test!
+      end
+
+      response(401, 'email not confirmed') do
+        run_test!
+      end
+
+      response(404, 'user not found') do
         run_test!
       end
     end

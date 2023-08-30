@@ -23,9 +23,9 @@ class UsersController < ApplicationController
   end
 
   def login
-    @user = User.find_by(email: params[:email])
+    @user = User.find_by(email: params[:user][:email])
 
-    if @user&.confirmed && validate_password(params[:password], @user.password)
+    if @user&.confirmed && validate_password(params[:user][:password], @user.password)
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(id_user: @user.id_user)
       render json: token, status: :ok

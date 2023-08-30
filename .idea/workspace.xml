@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="reset password">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user helper debug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,23 +203,7 @@
       <workItem from="1692967107491" duration="2471000" />
       <workItem from="1693296371696" duration="1458000" />
       <workItem from="1693312639926" duration="14745000" />
-      <workItem from="1693408071001" duration="5850000" />
-    </task>
-    <task id="LOCAL-00003" summary="trying jwt 2">
-      <option name="closed" value="true" />
-      <created>1691415776017</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1691415776017</updated>
-    </task>
-    <task id="LOCAL-00004" summary="update controllers">
-      <option name="closed" value="true" />
-      <created>1691435311996</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1691435311996</updated>
+      <workItem from="1693408071001" duration="7293000" />
     </task>
     <task id="LOCAL-00005" summary="new routes.rb">
       <option name="closed" value="true" />
@@ -597,7 +581,23 @@
       <option name="project" value="LOCAL" />
       <updated>1693414047601</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="reset confirmation_token jobs">
+      <option name="closed" value="true" />
+      <created>1693414671671</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1693414671671</updated>
+    </task>
+    <task id="LOCAL-00053" summary="user helper debug">
+      <option name="closed" value="true" />
+      <created>1693414820378</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1693414820378</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -615,8 +615,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="quantity update" />
-    <MESSAGE value="font-size" />
     <MESSAGE value="editor alphabet" />
     <MESSAGE value="rubymine settings" />
     <MESSAGE value="db v_new1" />
@@ -640,7 +638,9 @@
     <MESSAGE value="rubocop" />
     <MESSAGE value="confirmation email" />
     <MESSAGE value="reset password" />
-    <option name="LAST_COMMIT_MESSAGE" value="reset password" />
+    <MESSAGE value="reset confirmation_token jobs" />
+    <MESSAGE value="user helper debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="user helper debug" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1693411623103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
