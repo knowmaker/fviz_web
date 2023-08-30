@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
     if user.save
       ConfirmationMailer.confirmation_email(user).deliver_now
+      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
       render json: user, status: :created
     else
@@ -67,6 +68,7 @@ class UsersController < ApplicationController
       user.save
 
       ResetPasswordMailer.reset_password_email(user).deliver_now
+      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
       render json: 'Reset password email sent', status: :ok
     elsif !user.confirmed
