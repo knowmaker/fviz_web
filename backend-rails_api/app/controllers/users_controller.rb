@@ -2,6 +2,7 @@
 
 # Контроллер для контроля обработки пользовательских регистраций и авторизаций
 class UsersController < ApplicationController
+  include UserHelper
   before_action :authorize_request, except: %i[create login confirm reset new_password]
   def create
     user = User.find_by(email: params[:user][:email])
