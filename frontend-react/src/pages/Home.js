@@ -612,8 +612,10 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
     const email = document.getElementById("InputEmail2").value
     const password = document.getElementById("InputPassword2").value
     const userLoginData = {
-      email: email,
-      password: password,
+      user: {
+        email: email,
+        password: password,
+      }
     }
 
     postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userLoginData, undefined, afterLogin)
