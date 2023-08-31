@@ -3,7 +3,7 @@
 # Контроллер для работы с закономерностями
 class LawsController < ApplicationController
   before_action :authorize_request
-  before_action :set_law, only: %i[show update destroy]
+  before_action :set_law, only: %i[show destroy]
 
   def index
     laws = @current_user.laws.all

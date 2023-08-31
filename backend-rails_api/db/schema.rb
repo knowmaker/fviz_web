@@ -35,6 +35,8 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.integer "fourth_element", null: false
     t.integer "id_user", null: false
     t.integer "id_type", null: false
+    t.integer "combination", array: true
+    t.index ["combination", "id_user"], name: "unique_combination_user", unique: true
   end
 
   create_table "laws_type", primary_key: "id_type", id: :serial, force: :cascade do |t|
