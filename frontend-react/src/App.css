@@ -66,6 +66,7 @@ canvas {
   /* width: 3726px;
   height: 2537px; */
   padding-left: 230px;
+  pointer-events: none;
 }
 
 div.tables div.row {
