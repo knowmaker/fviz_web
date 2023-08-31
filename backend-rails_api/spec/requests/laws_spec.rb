@@ -71,6 +71,38 @@ RSpec.describe 'laws', type: :request do
       end
     end
 
+    patch('update law') do
+      tags 'Laws'
+      consumes 'application/json'
+      parameter name: :law, in: :body, schema: {
+        type: :object,
+        properties: {
+          law: {
+            type: :object,
+            properties: {
+              law_name: { type: :string },
+              id_type: { type: :integer }
+            }
+          }
+        }
+      }
+
+      response(200, 'successful') do
+        let(:id) { '123' }
+        let(:law) { law_params }
+
+        run_test!
+      end
+
+      response(404, 'not found') do
+        run_test!
+      end
+
+      response(422, 'unprocessable entity') do
+        run_test!
+      end
+    end
+
     delete('delete law') do
       tags 'Laws'
       response(200, 'successful') do

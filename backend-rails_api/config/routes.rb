@@ -5,13 +5,13 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   scope 'api' do
-    resources :represents, except: %i[show]
+    resources :represents, only: %i[index create update destroy]
     get '/active_view', to: 'represents#represent_view_index'
     get '/active_view/:id', to: 'represents#represent_view_show'
     get '/layers/:id', to: 'represents#lt_values'
     resources :gk_settings, only: %i[index update]
     resources :quantities
-    resources :laws, only: %i[index show create destroy]
+    resources :laws, only: %i[index show create update destroy]
     resources :law_types, only: %i[index create update destroy]
     post '/signup', to: 'users#create'
     post '/login', to: 'users#login'
