@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="auto deleting user acc 3">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="laws db wo controller">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/jobs/delete_inactive_user_job.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/mailers/account_reminder_mailer.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/account_reminder_mailer/reminder_email.html.erb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/jobs/delete_inactive_user_job_spec.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/account_reminder_mailer_spec.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/previews/account_reminder_mailer_preview.rb" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,15 +210,7 @@
       <workItem from="1693296371696" duration="1458000" />
       <workItem from="1693312639926" duration="14745000" />
       <workItem from="1693408071001" duration="11429000" />
-      <workItem from="1693476932132" duration="1862000" />
-    </task>
-    <task id="LOCAL-00010" summary="AUTH done">
-      <option name="closed" value="true" />
-      <created>1691653348737</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1691653348737</updated>
+      <workItem from="1693476932132" duration="5195000" />
     </task>
     <task id="LOCAL-00011" summary="+gk_name in api">
       <option name="closed" value="true" />
@@ -598,7 +596,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693422188020</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="laws db wo controller">
+      <option name="closed" value="true" />
+      <created>1693481002032</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1693481002033</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -616,7 +622,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="db v_new2" />
     <MESSAGE value="db v_new3" />
     <MESSAGE value="db v_new4" />
     <MESSAGE value="db v_new_final-today" />
@@ -641,9 +646,10 @@
     <MESSAGE value="auto deleting user acc" />
     <MESSAGE value="auto deleting user acc 2" />
     <MESSAGE value="auto deleting user acc 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="auto deleting user acc 3" />
+    <MESSAGE value="laws db wo controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="laws db wo controller" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1693411623103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1693505237436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>
