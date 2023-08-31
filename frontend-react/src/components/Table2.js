@@ -9,11 +9,11 @@ import LawsCanvas from './LawsCanvas';
 const rowCount = 20
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState}) {
 
   const [hoveredCell, setHoveredCell] = useState(null);
 
-
+  //console.log(selectedLawState.selectedLaw)
 
   const hoveredCellState = {hoveredCell, setHoveredCell}
 
@@ -38,7 +38,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
     <>
       <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} ref={ref}/>
+      <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref}/>
       <Footbar hoveredCell={hoveredCell} gkColors={gkState.gkColors}/>
 
     </>  
@@ -101,24 +101,35 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState }, ref) => {
+const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selectedLawState }, ref) => {
 
 
   const tableState = useContext(TableContext)
   const tableData = tableState.tableData
   const fullTableData = { tableData: tableData, Colors: gkColors};
 
-
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0
+
+  let selectedLawCellsLTId = selectedLawState.selectedLaw.map(cell => cell.id_lt)
+  if (hoveredCellState.hoveredCell !== null && selectedLawCellsLTId.length >= 1 && selectedLawCellsLTId.length < 3) {
+    selectedLawCellsLTId.push(hoveredCellState.hoveredCell)
+  }
+  if (hoveredCellState.hoveredCell !== null && selectedLawCellsLTId.length === 3) {
+    selectedLawCellsLTId.push(findFourthCell(selectedLawCellsLTId))
+    
+  }
+
+  //  console.log(hoveredCellState.hoveredCell)
+  //  console.log(selectedLawCellsLTId)
 
   if (isLoaded) {
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
-      return <Row key={rowId} rowId={rowId} fullTableData={fullTableData} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState}/>
+      return <Row key={rowId} rowId={rowId} fullTableData={fullTableData} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState}/>
     });
       return (
         <div className="tables" ref={ref}>
         {rowList}
-        <LawsCanvas lawCells={[5,61,83]}/>
+        <LawsCanvas lawCells={ selectedLawCellsLTId}/>
         </div>
       )
   }
@@ -133,7 +144,7 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState }, ref)
 
 })
 
-function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
+function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedLawState}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
 
@@ -148,6 +159,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
             cellFullData={{cellFullId,cellData,cellColor}} 
             cellRightClick={setSelectedCell} 
             hoveredCellState={hoveredCellState}
+            selectedLawState={selectedLawState}
             />);
   });
 
@@ -163,7 +175,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState}) {
 
 }
 
-function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell}) {
+function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -204,13 +216,41 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
 
       setSelectedCell(null)
 
+
+
   };
+
+  const handleLawSelection = (event, cellId) => {
+
+      const selectedCellData = tableState.tableData.find(cell => cell.id_lt === cellId)
+
+
+
+      if (selectedLawState.selectedLaw.map(cell=>cell.id_lt).find(cellId => cellId === selectedCellData.id_lt) === undefined && selectedLawState.selectedLaw.length < 2) {
+        selectedLawState.setSelectedLaw(currentCells => [...currentCells,selectedCellData] );
+      }
+     
+      if (selectedLawState.selectedLaw.map(cell=>cell.id_lt).find(cellId => cellId === selectedCellData.id_lt) === undefined && selectedLawState.selectedLaw.length === 2) {
+        const selectedLawCellsLTId = selectedLawState.selectedLaw.map(cell => cell.id_lt)
+        selectedLawCellsLTId.push(selectedCellData.id_lt)
+        const fourthCellData = tableState.tableData.find(cell => cell.id_lt === findFourthCell(selectedLawCellsLTId))
+        selectedLawState.setSelectedLaw(currentCells => [...currentCells,selectedCellData,fourthCellData] );
+      }
+
+  }
 
   const handleCellHover = (event, cellId) => {
 
     hoveredCellState.setHoveredCell(cellId)
+    //console.log(selectedLawState.selectedLaw)
   }
 
+
+  const onClickEvent = (event) => {
+
+    if (selectedCells) {handleCellLeftClick(event, cellFullId)};
+    if (selectedLawState) {handleLawSelection(event, cellFullId)};
+  }
 
   if (cellData) {
 
@@ -228,7 +268,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
           id={`cell-${cellFullId}`}
           style={{ backgroundColor: cellColor }}
           onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
-          onClick={event => selectedCells ? handleCellLeftClick(event, cellFullId) : {}}
+          onClick={onClickEvent}
           onMouseOver={event => hoveredCellState ? handleCellHover(event, cellFullId) : {}}
           cellnumber={cellFullId}
         >
@@ -251,5 +291,25 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
     return <div className="cell-invisible cell" onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)} id={`cell-${cellFullId}`} cellnumber={cellFullId}></div>
   }
   
+}
+
+function getRow(cellId) {
+  return Math.floor(cellId/19.5)+1
+}
+
+function getColumn(cellId) {
+  return cellId-(Math.floor(getRow(cellId)*19.5))+19
+}
+
+function findFourthCell(lawCells) {
+
+  const firstAndSecondCellDifference = {x: getColumn(lawCells[1])-getColumn(lawCells[0]),y: getRow(lawCells[1])- getRow(lawCells[0])}
+
+  const fourthCellCoords = {x: getColumn(lawCells[2])- firstAndSecondCellDifference.x, y:  getRow(lawCells[2]) - firstAndSecondCellDifference.y}
+
+  const fourthCellId = Math.floor((fourthCellCoords.y-1)*19.5)+(fourthCellCoords.y%2 === 0 ? 1 : 0)+fourthCellCoords.x
+
+
+  return fourthCellId
 }
 

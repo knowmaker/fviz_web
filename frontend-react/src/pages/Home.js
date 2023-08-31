@@ -76,7 +76,8 @@ export default function Home() {
     const [tableViews, setTableViews] = useState(null)
     const [laws, setLaws] = useState(null)
 
-    
+    const [selectedLaw, setSelectedLaw] = useState([])
+    const selectedLawState = {selectedLaw, setSelectedLaw}
 
     useEffect(() => {
 
@@ -146,7 +147,7 @@ export default function Home() {
     return (
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={gkState}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={gkState} selectedLawState={selectedLawState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                   <RegModal modalsVisibility={modalsVisibility} setUserToken={setUserToken} setUserProfile={setUserProfile}/>               
