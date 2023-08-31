@@ -5,37 +5,38 @@ import { TableContext } from './Contexts.js';
 export default function LawsCanvas({lawCells}) {
 
   const canvasRef = useRef(null)
+
   
   useEffect(() => {
     drawLaw()
   }, [lawCells])
 
-  const div = (val, by) => {
-    return (val - val % by) / by;
-  }
-
   const convertCellIdToCoords = (cellId) => {
     return {x:(getColumn(cellId)-1)*184+184-(getRow(cellId)%2)*92,y:(getRow(cellId)-1)*124+62}
   }
 
+  const getCorrectDrawOrder = (lawCells) => {
+
+    const sortedCells = lawCells.sort()
+
+    return [sortedCells[0],sortedCells[1],sortedCells[3],sortedCells[2]]
+
+  }
 
   const drawLaw = () => {
 
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')   
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);    
+
     if (lawCells.length === 0) {return}
 
-    let cellsArray
-    // if (lawCells.length === 3) {
-    //   const fourthCellId = findFourthCell(lawCells)
-    //   cellsArray = lawCells
-    //   cellsArray.push(fourthCellId)
+    const cellsArray = lawCells.length === 4 ? getCorrectDrawOrder(lawCells) : lawCells
 
-    // } else {cellsArray = lawCells}
-    cellsArray = lawCells
 
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 
     ctx.beginPath();
     const firstCellCoords = convertCellIdToCoords(cellsArray[0])

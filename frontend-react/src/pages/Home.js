@@ -75,9 +75,27 @@ export default function Home() {
 
     const [tableViews, setTableViews] = useState(null)
     const [laws, setLaws] = useState(null)
+    const lawsState = {laws, setLaws}
 
     const [selectedLaw, setSelectedLaw] = useState([])
     const selectedLawState = {selectedLaw, setSelectedLaw}
+  
+    useEffect(() => {
+      const keyDownHandler = event => {
+        //console.log('User pressed: ', event.key);
+  
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          setSelectedLaw([])
+        }
+      };
+  
+      document.addEventListener('keydown', keyDownHandler);
+  
+      return () => {
+        document.removeEventListener('keydown', keyDownHandler);
+      };
+    }, []);
 
     useEffect(() => {
 
@@ -139,6 +157,8 @@ export default function Home() {
 
     }, [userProfile]);
 
+    //console.log(laws)
+
     const testShow = (result) => {
 
       console.log(result)
@@ -154,7 +174,7 @@ export default function Home() {
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
                   <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
                   <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
-                  <LawsModal modalsVisibility={modalsVisibility} laws={laws}/>
+                  <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState}/>
                   <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
                   <LawsGroupsModal modalsVisibility={modalsVisibility} />
 

@@ -119,8 +119,7 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
     
   }
 
-  //  console.log(hoveredCellState.hoveredCell)
-  //  console.log(selectedLawCellsLTId)
+  //console.log(selectedLawCellsLTId)
 
   if (isLoaded) {
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
