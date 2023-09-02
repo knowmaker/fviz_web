@@ -76,6 +76,21 @@ RSpec.describe 'users', type: :request do
     end
   end
 
+  path '/api/delete' do
+    delete('delete user') do
+      tags 'Users'
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        run_test!
+      end
+
+      response(404, 'not found') do
+        run_test!
+      end
+    end
+  end
+
   path '/api/users/{id}/confirm' do
     parameter name: 'id', in: :path, type: :string, description: 'id'
     parameter name: 'confirmation_token', in: :query, type: :string, description: 'confirmation token', required: true

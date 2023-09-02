@@ -557,6 +557,16 @@ paths:
                   type: string
                 patronymic:
                   type: string
+  "/api/delete":
+    delete:
+      summary: delete user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
   "/api/users/{id}/confirm":
     parameters:
     - name: id

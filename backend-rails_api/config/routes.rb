@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     post '/login', to: 'users#login'
     get '/profile', to: 'users#show'
     patch '/update', to: 'users#update'
+    delete '/delete', to: 'users#destroy'
     post '/reset', to: 'users#reset'
     resources :users, only: [] do
       member do
