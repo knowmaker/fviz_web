@@ -34,7 +34,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.integer "third_element", null: false
     t.integer "fourth_element", null: false
     t.integer "id_user", null: false
-    t.integer "id_type", null: false
+    t.integer "id_type"
     t.integer "combination", array: true
     t.index ["combination", "id_user"], name: "unique_combination_user", unique: true
   end
@@ -76,13 +76,13 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.string "patronymic", limit: 100
     t.boolean "role", default: false, null: false
     t.string "confirmation_token"
-    t.boolean "confirmed"
+    t.boolean "confirmed", default: false
     t.index ["email"], name: "unique_email", unique: true
   end
 
   add_foreign_key "gk_settings", "gk", column: "id_gk", primary_key: "id_gk", name: "gk_settings_id_gk_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "gk_settings", "users", column: "id_user", primary_key: "id_user", name: "gk_settings_id_user_fkey", on_update: :cascade, on_delete: :cascade
-  add_foreign_key "laws", "laws_type", column: "id_type", primary_key: "id_type", name: "laws_id_type_fkey", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "laws", "laws_type", column: "id_type", primary_key: "id_type", name: "laws_id_type_fkey", on_update: :cascade, on_delete: :nullify
   add_foreign_key "laws", "quantity", column: "first_element", primary_key: "id_value", name: "laws_first_element_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "laws", "quantity", column: "fourth_element", primary_key: "id_value", name: "laws_fourth_element_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "laws", "quantity", column: "second_element", primary_key: "id_value", name: "laws_second_element_fkey", on_update: :cascade, on_delete: :cascade
