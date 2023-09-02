@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :gk_settings, only: %i[index update]
     resources :quantities
     resources :laws, only: %i[index show create update destroy]
-    resources :law_types, only: %i[index create update destroy]
+    resources :law_types, only: %i[index show create update destroy]
     post '/signup', to: 'users#create'
     post '/login', to: 'users#login'
     get '/profile', to: 'users#show'
