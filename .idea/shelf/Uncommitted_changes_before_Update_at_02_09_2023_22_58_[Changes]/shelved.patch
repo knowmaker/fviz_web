@@ -1,0 +1,271 @@
+Index: backend-rails_api/app/controllers/users_controller.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># frozen_string_literal: true\r\n\r\n# Контроллер для контроля обработки пользовательских регистраций и авторизаций\r\nclass UsersController < ApplicationController\r\n  include UserHelper\r\n  before_action :authorize_request, except: %i[create login confirm reset new_password]\r\n  def create\r\n    user = User.find_by(email: params[:user][:email])\r\n    render json: 'User already exists', status: :unprocessable_entity and return if user\r\n\r\n    user = User.new(user_params)\r\n    user.password = hash_password(params[:user][:password])\r\n    user.confirmation_token = SecureRandom.urlsafe_base64.to_s\r\n\r\n    if user.save\r\n      ConfirmationMailer.confirmation_email(user).deliver_now\r\n      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)\r\n\r\n      render json: user, status: :created\r\n    else\r\n      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def login\r\n    @user = User.find_by(email: params[:user][:email])\r\n\r\n    if @user&.confirmed && validate_password(params[:user][:password], @user.password)\r\n\r\n      # token = JsonWebToken.encode(user_id: @user.id)\r\n      token = encode(id_user: @user.id_user)\r\n      render json: token, status: :ok\r\n    elsif !@user\r\n      render json: 'User not found', status: :not_found\r\n    elsif !@user.confirmed\r\n      render json: 'Email not confirmed', status: :unauthorized\r\n    else\r\n      render json: 'Invalid credentials', status: :unauthorized\r\n    end\r\n  end\r\n\r\n  def show\r\n    render json: @current_user, status: :ok\r\n  end\r\n\r\n  def update\r\n    if @current_user.update(user_params)\r\n      render json: @current_user, status: :ok\r\n    else\r\n      render json: 'Updating error', status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def confirm\r\n    user = User.find_by(confirmation_token: params[:confirmation_token])\r\n\r\n    if user\r\n      user.update(confirmed: true, confirmation_token: nil)\r\n      render json: 'Email confirmed successfully', status: :ok\r\n    else\r\n      render json: 'Invalid confirmation token', status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def reset\r\n    user = User.find_by(email: params[:user][:email])\r\n\r\n    if user&.confirmed\r\n      user.confirmation_token = SecureRandom.urlsafe_base64.to_s\r\n      user.save\r\n\r\n      ResetPasswordMailer.reset_password_email(user).deliver_now\r\n      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)\r\n\r\n      render json: 'Reset password email sent', status: :ok\r\n    elsif !user.confirmed\r\n      render json: 'Email not confirmed', status: :unauthorized\r\n    else\r\n      render json: 'User not found', status: :not_found\r\n    end\r\n  end\r\n\r\n  def new_password\r\n    user = User.find_by(confirmation_token: params[:confirmation_token])\r\n\r\n    if user\r\n      new_password = generate_random_password\r\n      user.password = hash_password(new_password)\r\n      user.confirmation_token = nil\r\n      user.save\r\n\r\n      NewPasswordMailer.new_password_email(user, new_password).deliver_now\r\n\r\n      render json: 'New password generated and sent', status: :ok\r\n    else\r\n      render json: 'Invalid reset token', status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def destroy\r\n    @current_user.destroy\r\n    render json: 'Successfully deleted user', status: :ok\r\n  end\r\n\r\n  private\r\n\r\n  def user_params\r\n    params.require(:user).permit(:email, :password, :last_name, :first_name, :patronymic)\r\n  end\r\n\r\n  SECRET_KEY = Rails.application.secrets.secret_key_base.to_s\r\n\r\n  def encode(payload, exp = 24.hours.from_now)\r\n    payload[:exp] = exp.to_i\r\n    JWT.encode(payload, SECRET_KEY)\r\n  end\r\nend\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend-rails_api/app/controllers/users_controller.rb b/backend-rails_api/app/controllers/users_controller.rb
+--- a/backend-rails_api/app/controllers/users_controller.rb	(revision b49e9959530deeb80215846f456d33d8a5fc9c30)
++++ b/backend-rails_api/app/controllers/users_controller.rb	(date 1693684573944)
+@@ -4,21 +4,24 @@
+ class UsersController < ApplicationController
+   include UserHelper
+   before_action :authorize_request, except: %i[create login confirm reset new_password]
++
+   def create
+     user = User.find_by(email: params[:user][:email])
+-    render json: 'User already exists', status: :unprocessable_entity and return if user
+-
+-    user = User.new(user_params)
+-    user.password = hash_password(params[:user][:password])
+-    user.confirmation_token = SecureRandom.urlsafe_base64.to_s
++    if user
++      render json: { message: 'User already exists', data: nil }, status: :unprocessable_entity
++    else
++      user = User.new(user_params)
++      user.password = hash_password(params[:user][:password])
++      user.confirmation_token = SecureRandom.urlsafe_base64.to_s
+ 
+-    if user.save
+-      ConfirmationMailer.confirmation_email(user).deliver_now
+-      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
++      if user.save
++        ConfirmationMailer.confirmation_email(user).deliver_now
++        ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
+ 
+-      render json: user, status: :created
+-    else
+-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
++        render json: { message: 'User created successfully', data: user }, status: :created
++      else
++        render json: { message: 'Validation failed', errors: user.errors.full_messages }, status: :unprocessable_entity
++      end
+     end
+   end
+ 
+@@ -29,25 +32,25 @@
+ 
+       # token = JsonWebToken.encode(user_id: @user.id)
+       token = encode(id_user: @user.id_user)
+-      render json: token, status: :ok
++      render json: { message: 'Login successful', data: token }, status: :ok
+     elsif !@user
+-      render json: 'User not found', status: :not_found
++      render json: { message: 'User not found', data: nil }, status: :not_found
+     elsif !@user.confirmed
+-      render json: 'Email not confirmed', status: :unauthorized
++      render json: { message: 'Email not confirmed', data: nil }, status: :unauthorized
+     else
+-      render json: 'Invalid credentials', status: :unauthorized
++      render json: { message: 'Invalid credentials', data: nil }, status: :unauthorized
+     end
+   end
+ 
+   def show
+-    render json: @current_user, status: :ok
++    render json: { message: 'User details', data: @current_user }, status: :ok
+   end
+ 
+   def update
+     if @current_user.update(user_params)
+-      render json: @current_user, status: :ok
++      render json: { message: 'User updated successfully', data: @current_user }, status: :ok
+     else
+-      render json: 'Updating error', status: :unprocessable_entity
++      render json: { message: 'Update failed', errors: @current_user.errors.full_messages }, status: :unprocessable_entity
+     end
+   end
+ 
+@@ -56,9 +59,9 @@
+ 
+     if user
+       user.update(confirmed: true, confirmation_token: nil)
+-      render json: 'Email confirmed successfully', status: :ok
++      render json: { message: 'Email confirmed successfully', data: nil }, status: :ok
+     else
+-      render json: 'Invalid confirmation token', status: :unprocessable_entity
++      render json: { message: 'Invalid confirmation token', data: nil }, status: :unprocessable_entity
+     end
+   end
+ 
+@@ -72,11 +75,11 @@
+       ResetPasswordMailer.reset_password_email(user).deliver_now
+       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
+ 
+-      render json: 'Reset password email sent', status: :ok
++      render json: { message: 'Reset password email sent', data: nil }, status: :ok
+     elsif !user.confirmed
+-      render json: 'Email not confirmed', status: :unauthorized
++      render json: { message: 'Email not confirmed', data: nil }, status: :unauthorized
+     else
+-      render json: 'User not found', status: :not_found
++      render json: { message: 'User not found', data: nil }, status: :not_found
+     end
+   end
+ 
+@@ -91,15 +94,15 @@
+ 
+       NewPasswordMailer.new_password_email(user, new_password).deliver_now
+ 
+-      render json: 'New password generated and sent', status: :ok
++      render json: { message: 'New password generated and sent', data: nil }, status: :ok
+     else
+-      render json: 'Invalid reset token', status: :unprocessable_entity
++      render json: { message: 'Invalid reset token', data: nil }, status: :unprocessable_entity
+     end
+   end
+ 
+   def destroy
+     @current_user.destroy
+-    render json: 'Successfully deleted user', status: :ok
++    render json: { message: 'User deleted successfully', data: nil }, status: :ok
+   end
+ 
+   private
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"7f6946f6-a0e3-478a-85c1-b0d802641d47\" name=\"Changes\" comment=\"user delete /and spec\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/modules/backend-rails_api.iml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/modules/backend-rails_api.iml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/backend-rails_api/Gemfile\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend-rails_api/Gemfile\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/backend-rails_api/Gemfile.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend-rails_api/Gemfile.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/backend-rails_api/app/jobs/reset_confirmation_token_job.rb\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend-rails_api/app/jobs/reset_confirmation_token_job.rb\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/backend-rails_api/app/models/user.rb\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend-rails_api/app/models/user.rb\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/backend-rails_api/config/application.rb\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend-rails_api/config/application.rb\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/backend-rails_api/db/schema.rb\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend-rails_api/db/schema.rb\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Ruby File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"LogFilters\">\r\n    <option name=\"FILTER_ERRORS\" value=\"false\" />\r\n    <option name=\"FILTER_WARNINGS\" value=\"false\" />\r\n    <option name=\"FILTER_INFO\" value=\"true\" />\r\n    <option name=\"FILTER_DEBUG\" value=\"true\" />\r\n    <option name=\"CUSTOM_FILTER\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2TbIxtuPScM2ZH2L9Djo58XOoY5\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;laws-testing&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alexander/Desktop/BMSTU_works/kursaches/fviz_web&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;,\r\n    &quot;ruby.structure.view.model.defaults.configured&quot;: &quot;true&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  },\r\n  &quot;keyToStringList&quot;: {\r\n    &quot;DatabaseDriversLRU&quot;: [\r\n      &quot;postgresql&quot;\r\n    ]\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\Alexander\\Desktop\\BMSTU_works\\kursaches\\fviz_web\\backend-rails_api\\app\\helpers\" />\r\n      <recent name=\"C:\\Users\\Alexander\\Desktop\\BMSTU_works\\kursaches\\fviz_web\\backend-rails_api\\app\\controllers\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Rails.backend-rails_api\">\r\n    <configuration name=\"generated-requests | #6\" type=\"HttpClient.HttpRequestRunConfigurationType\" factoryName=\"HTTP Request\" temporary=\"true\" nameIsGenerated=\"true\" path=\"$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http\" index=\"6\" requestIdentifier=\"#6\" runType=\"Run single request\">\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"backend-rails_api\" type=\"RailsRunConfigurationType\" factoryName=\"Rails\">\r\n      <module name=\"backend-rails_api\" />\r\n      <predefined_log_file enabled=\"true\" id=\"RUBY_RAILS_SERVER\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"RUBY_ARGS\" VALUE=\"\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"WORK DIR\" VALUE=\"$MODULE_DIR$/../../backend-rails_api\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"SHOULD_USE_SDK\" VALUE=\"false\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"ALTERN_SDK_NAME\" VALUE=\"\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"myPassParentEnvs\" VALUE=\"true\" />\r\n      <EXTENSION ID=\"BundlerRunConfigurationExtension\" BUNDLE_MODE=\"AUTO\" bundleExecEnabled=\"true\" />\r\n      <EXTENSION ID=\"RubyCoverageRunConfigurationExtension\" track_test_folders=\"true\" runner=\"rcov\" ENABLE_BRANCH_COVERAGE=\"true\" ENABLE_FORKED_COVERAGE=\"true\" />\r\n      <EXTENSION ID=\"org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension\" SCRATCH_USE_RAILS_RUNNER=\"false\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"SCRIPT_ARGS\" VALUE=\"\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"PORT\" VALUE=\"5000\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"IP\" VALUE=\"127.0.0.1\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"DUMMY_APP\" VALUE=\"test/dummy\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"RAILS_SERVER_TYPE\" VALUE=\"default\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"ENVIRONMENT_TYPE\" VALUE=\"development\" />\r\n      <RAILS_SERVER_CONFIG_SETTINGS_ID NAME=\"LAUNCH_JS\" VALUE=\"false\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"spec: backend-rails_api\" type=\"RakeRunConfigurationType\" factoryName=\"Rake\">\r\n      <module name=\"backend-rails_api\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RUBY_ARGS\" VALUE=\"\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"WORK DIR\" VALUE=\"$MODULE_DIR$/../../backend-rails_api\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"SHOULD_USE_SDK\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"ALTERN_SDK_NAME\" VALUE=\"\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"myPassParentEnvs\" VALUE=\"true\" />\r\n      <EXTENSION ID=\"BundlerRunConfigurationExtension\" BUNDLE_MODE=\"AUTO\" bundleExecEnabled=\"true\" />\r\n      <EXTENSION ID=\"RubyCoverageRunConfigurationExtension\" track_test_folders=\"true\" runner=\"rcov\" ENABLE_BRANCH_COVERAGE=\"true\" ENABLE_FORKED_COVERAGE=\"true\" />\r\n      <EXTENSION ID=\"org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension\" SCRATCH_USE_RAILS_RUNNER=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_NAME\" VALUE=\"spec\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_ARGS\" VALUE=\"\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_ATTACHED_TEST_FRAMEWORKS\" VALUE=\":rspec \" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_TRACE\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_DRYRUN\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_PREREQS\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_TESTOPTS\" VALUE=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"test: backend-rails_api\" type=\"RakeRunConfigurationType\" factoryName=\"Rake\">\r\n      <module name=\"backend-rails_api\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RUBY_ARGS\" VALUE=\"\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"WORK DIR\" VALUE=\"$MODULE_DIR$/../../backend-rails_api\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"SHOULD_USE_SDK\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"ALTERN_SDK_NAME\" VALUE=\"\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"myPassParentEnvs\" VALUE=\"true\" />\r\n      <envs>\r\n        <env name=\"RAILS_ENV\" value=\"test\" />\r\n      </envs>\r\n      <EXTENSION ID=\"BundlerRunConfigurationExtension\" BUNDLE_MODE=\"AUTO\" bundleExecEnabled=\"true\" />\r\n      <EXTENSION ID=\"RubyCoverageRunConfigurationExtension\" track_test_folders=\"true\" runner=\"rcov\" ENABLE_BRANCH_COVERAGE=\"true\" ENABLE_FORKED_COVERAGE=\"true\" />\r\n      <EXTENSION ID=\"org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension\" SCRATCH_USE_RAILS_RUNNER=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_NAME\" VALUE=\"test\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_ARGS\" VALUE=\"\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_ATTACHED_TEST_FRAMEWORKS\" VALUE=\":test_unit \" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_TRACE\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_DRYRUN\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_PREREQS\" VALUE=\"false\" />\r\n      <RAKE_RUN_CONFIG_SETTINGS_ID NAME=\"RAKE_TASK_OPTION_TESTOPTS\" VALUE=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration default=\"true\" type=\"SwaggerCodegen\">\r\n      <option name=\"activeConfigurationType\" value=\"FILE\" />\r\n      <option name=\"configurationPath\" value=\"\" />\r\n      <option name=\"customJreEnabled\" value=\"false\" />\r\n      <option name=\"customTemplatesPath\" value=\"\" />\r\n      <option name=\"enableDebugLogging\" value=\"false\" />\r\n      <option name=\"generateToPath\" value=\"C:\\Users\\Alexander\\Desktop\\BMSTU_works\\kursaches\\fviz_web\\gen\" />\r\n      <option name=\"generationParameters\">\r\n        <list />\r\n      </option>\r\n      <option name=\"generatorPath\" value=\"https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar\" />\r\n      <option name=\"jdkPath\" value=\"\" />\r\n      <option name=\"language\" value=\"java\" />\r\n      <option name=\"specificationPath\" value=\"C:\\Users\\Alexander\\Desktop\\BMSTU_works\\kursaches\\fviz_web\\backend-rails_api\\swagger\\v1\\swagger.yaml\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"HTTP Request.generated-requests | #6\" />\r\n      <item itemvalue=\"Rails.backend-rails_api\" />\r\n      <item itemvalue=\"Rake.spec: backend-rails_api\" />\r\n      <item itemvalue=\"Rake.test: backend-rails_api\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"HTTP Request.generated-requests | #6\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"SpringUtil\" SPRING_PRE_LOADER_OPTION=\"true\" RAKE_SPRING_PRE_LOADER_OPTION=\"true\" RAILS_SPRING_PRE_LOADER_OPTION=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"7f6946f6-a0e3-478a-85c1-b0d802641d47\" name=\"Changes\" comment=\"\" />\r\n      <created>1691305605958</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1691305605958</updated>\r\n      <workItem from=\"1691305614844\" duration=\"460000\" />\r\n      <workItem from=\"1691306105594\" duration=\"826000\" />\r\n      <workItem from=\"1691320356679\" duration=\"2585000\" />\r\n      <workItem from=\"1691342007477\" duration=\"694000\" />\r\n      <workItem from=\"1691352344327\" duration=\"1485000\" />\r\n      <workItem from=\"1691405519802\" duration=\"8190000\" />\r\n      <workItem from=\"1691433565911\" duration=\"7706000\" />\r\n      <workItem from=\"1691475919982\" duration=\"623000\" />\r\n      <workItem from=\"1691492520363\" duration=\"1624000\" />\r\n      <workItem from=\"1691582337828\" duration=\"4209000\" />\r\n      <workItem from=\"1691652080635\" duration=\"1659000\" />\r\n      <workItem from=\"1691666789659\" duration=\"604000\" />\r\n      <workItem from=\"1692003696730\" duration=\"29000\" />\r\n      <workItem from=\"1692003741402\" duration=\"27000\" />\r\n      <workItem from=\"1692003811332\" duration=\"9251000\" />\r\n      <workItem from=\"1692095006563\" duration=\"7581000\" />\r\n      <workItem from=\"1692115592865\" duration=\"3855000\" />\r\n      <workItem from=\"1692179947075\" duration=\"4529000\" />\r\n      <workItem from=\"1692208024526\" duration=\"3013000\" />\r\n      <workItem from=\"1692257260195\" duration=\"11229000\" />\r\n      <workItem from=\"1692347424624\" duration=\"10129000\" />\r\n      <workItem from=\"1692558035494\" duration=\"594000\" />\r\n      <workItem from=\"1692694859281\" duration=\"6822000\" />\r\n      <workItem from=\"1692783877125\" duration=\"13620000\" />\r\n      <workItem from=\"1692865182156\" duration=\"839000\" />\r\n      <workItem from=\"1692874485555\" duration=\"8793000\" />\r\n      <workItem from=\"1692967107491\" duration=\"2471000\" />\r\n      <workItem from=\"1693296371696\" duration=\"1458000\" />\r\n      <workItem from=\"1693312639926\" duration=\"14745000\" />\r\n      <workItem from=\"1693408071001\" duration=\"11429000\" />\r\n      <workItem from=\"1693476932132\" duration=\"7510000\" />\r\n      <workItem from=\"1693576924202\" duration=\"736000\" />\r\n      <workItem from=\"1693638234490\" duration=\"4200000\" />\r\n      <workItem from=\"1693663031994\" duration=\"9077000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00017\" summary=\"user anti double register\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692039974088</created>\r\n      <option name=\"number\" value=\"00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692039974088</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00018\" summary=\"debug after text meet\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692097309156</created>\r\n      <option name=\"number\" value=\"00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692097309156</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00019\" summary=\"debug index quantities\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692104606391</created>\r\n      <option name=\"number\" value=\"00019\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00019\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692104606391</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00020\" summary=\"db\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692115742214</created>\r\n      <option name=\"number\" value=\"00020\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00020\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692115742214</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00021\" summary=\"db attempt2\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692117973398</created>\r\n      <option name=\"number\" value=\"00021\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00021\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692117973398</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00022\" summary=\"debug quantity show\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692180430786</created>\r\n      <option name=\"number\" value=\"00022\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00022\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692180430786</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00023\" summary=\"database\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692182541385</created>\r\n      <option name=\"number\" value=\"00023\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00023\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692182541385</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00024\" summary=\"database 23456\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692182943393</created>\r\n      <option name=\"number\" value=\"00024\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00024\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692182943393</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00025\" summary=\"added code api\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692219791438</created>\r\n      <option name=\"number\" value=\"00025\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00025\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692219791438</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00026\" summary=\"quantity update\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692259826164</created>\r\n      <option name=\"number\" value=\"00026\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00026\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692259826164</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00027\" summary=\"font-size\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692276089202</created>\r\n      <option name=\"number\" value=\"00027\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00027\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692276089202</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00028\" summary=\"editor alphabet\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692279194986</created>\r\n      <option name=\"number\" value=\"00028\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00028\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692279194986</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00029\" summary=\"rubymine settings\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692290485078</created>\r\n      <option name=\"number\" value=\"00029\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00029\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692290485078</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00030\" summary=\"db v_new1\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692297386342</created>\r\n      <option name=\"number\" value=\"00030\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00030\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692297386342</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00031\" summary=\"db v_new1,5\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692304991776</created>\r\n      <option name=\"number\" value=\"00031\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00031\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692304991776</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00032\" summary=\"db v_new2\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692308483811</created>\r\n      <option name=\"number\" value=\"00032\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00032\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692308483811</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00033\" summary=\"db v_new3\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692347623307</created>\r\n      <option name=\"number\" value=\"00033\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00033\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692347623307</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00034\" summary=\"db v_new4\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692350248780</created>\r\n      <option name=\"number\" value=\"00034\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00034\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692350248780</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00035\" summary=\"db v_new_final-today\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692354791602</created>\r\n      <option name=\"number\" value=\"00035\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00035\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692354791602</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00036\" summary=\"db v_new_final-today2\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692363008113</created>\r\n      <option name=\"number\" value=\"00036\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00036\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692363008113</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00037\" summary=\"quantity spec update after debug\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692382420791</created>\r\n      <option name=\"number\" value=\"00037\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00037\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692382420791</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00038\" summary=\"quantity update after debug\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692704167064</created>\r\n      <option name=\"number\" value=\"00038\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00038\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692704167064</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00039\" summary=\"routes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692784928807</created>\r\n      <option name=\"number\" value=\"00039\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00039\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692784928807</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00040\" summary=\"laws_controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692798342354</created>\r\n      <option name=\"number\" value=\"00040\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00040\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692798342354</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00041\" summary=\"laws spec 1\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692798771375</created>\r\n      <option name=\"number\" value=\"00041\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00041\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692798771375</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00042\" summary=\"swagger.yaml\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692799144390</created>\r\n      <option name=\"number\" value=\"00042\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00042\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692799144390</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00043\" summary=\"swagger.yaml user\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692799366005</created>\r\n      <option name=\"number\" value=\"00043\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00043\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692799366005</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00044\" summary=\"swagger.yaml represents\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692819023361</created>\r\n      <option name=\"number\" value=\"00044\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00044\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692819023361</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00045\" summary=\"swagger.yaml all\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692824848146</created>\r\n      <option name=\"number\" value=\"00045\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00045\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692824848146</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00046\" summary=\"swagger.yaml represents\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692874795312</created>\r\n      <option name=\"number\" value=\"00046\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00046\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692874795312</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00047\" summary=\"rename attributes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692882941187</created>\r\n      <option name=\"number\" value=\"00047\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00047\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692882941187</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00048\" summary=\"+ id_repr\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1692958822047</created>\r\n      <option name=\"number\" value=\"00048\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00048\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1692958822047</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00049\" summary=\"rubocop\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693297817384</created>\r\n      <option name=\"number\" value=\"00049\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00049\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693297817384</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00050\" summary=\"confirmation email\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693336141426</created>\r\n      <option name=\"number\" value=\"00050\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00050\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693336141429</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00051\" summary=\"reset password\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693414047599</created>\r\n      <option name=\"number\" value=\"00051\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00051\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693414047601</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00052\" summary=\"reset confirmation_token jobs\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693414671671</created>\r\n      <option name=\"number\" value=\"00052\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00052\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693414671671</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00053\" summary=\"user helper debug\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693414820378</created>\r\n      <option name=\"number\" value=\"00053\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00053\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693414820378</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00054\" summary=\"user api-docs\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693416428892</created>\r\n      <option name=\"number\" value=\"00054\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00054\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693416428892</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00055\" summary=\"user api-docs\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693419148566</created>\r\n      <option name=\"number\" value=\"00055\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00055\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693419148566</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00056\" summary=\"auto deleting user acc\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693422044325</created>\r\n      <option name=\"number\" value=\"00056\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00056\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693422044325</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00057\" summary=\"auto deleting user acc 2\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693422096533</created>\r\n      <option name=\"number\" value=\"00057\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00057\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693422096533</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00058\" summary=\"auto deleting user acc 3\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693422188020</created>\r\n      <option name=\"number\" value=\"00058\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00058\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693422188020</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00059\" summary=\"laws db wo controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693481002032</created>\r\n      <option name=\"number\" value=\"00059\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00059\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693481002033</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00060\" summary=\"delete user deleting after 3y\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693507317409</created>\r\n      <option name=\"number\" value=\"00060\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00060\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693507317409</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00061\" summary=\"update laws controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693509754400</created>\r\n      <option name=\"number\" value=\"00061\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00061\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693509754400</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00062\" summary=\"law types controller and spec\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693640051662</created>\r\n      <option name=\"number\" value=\"00062\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00062\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693640051662</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00063\" summary=\"gk settings controller and spec\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693664310781</created>\r\n      <option name=\"number\" value=\"00063\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00063\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693664310781</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00064\" summary=\"other spec\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693664325132</created>\r\n      <option name=\"number\" value=\"00064\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00064\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693664325132</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00065\" summary=\"user delete /and spec\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1693664777173</created>\r\n      <option name=\"number\" value=\"00065\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00065\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1693664777173</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"66\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"routes\" />\r\n    <MESSAGE value=\"laws_controller\" />\r\n    <MESSAGE value=\"laws spec 1\" />\r\n    <MESSAGE value=\"swagger.yaml\" />\r\n    <MESSAGE value=\"swagger.yaml user\" />\r\n    <MESSAGE value=\"swagger.yaml all\" />\r\n    <MESSAGE value=\"swagger.yaml represents\" />\r\n    <MESSAGE value=\"rename attributes\" />\r\n    <MESSAGE value=\"+ id_repr\" />\r\n    <MESSAGE value=\"rubocop\" />\r\n    <MESSAGE value=\"confirmation email\" />\r\n    <MESSAGE value=\"reset password\" />\r\n    <MESSAGE value=\"reset confirmation_token jobs\" />\r\n    <MESSAGE value=\"user helper debug\" />\r\n    <MESSAGE value=\"user api-docs\" />\r\n    <MESSAGE value=\"auto deleting user acc\" />\r\n    <MESSAGE value=\"auto deleting user acc 2\" />\r\n    <MESSAGE value=\"auto deleting user acc 3\" />\r\n    <MESSAGE value=\"laws db wo controller\" />\r\n    <MESSAGE value=\"delete user deleting after 3y\" />\r\n    <MESSAGE value=\"update laws controller\" />\r\n    <MESSAGE value=\"law types controller and spec\" />\r\n    <MESSAGE value=\"gk settings controller and spec\" />\r\n    <MESSAGE value=\"other spec\" />\r\n    <MESSAGE value=\"user delete /and spec\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"user delete /and spec\" />\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/fviz_web@backend_rails_api.rcov\" NAME=\"backend-rails_api Coverage Results\" MODIFIED=\"1693676660686\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"rcov\" COVERAGE_BY_TEST_ENABLED=\"true\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$/backend-rails_api\" MODULE_NAME=\"backend-rails_api\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision b49e9959530deeb80215846f456d33d8a5fc9c30)
++++ b/.idea/workspace.xml	(date 1693684647990)
+@@ -4,16 +4,8 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user delete /and spec">
+-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend-rails_api/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/Gemfile" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/jobs/reset_confirmation_token_job.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/jobs/reset_confirmation_token_job.rb" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/application.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/application.rb" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
++    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="undo commit">
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -34,6 +26,8 @@
+       </map>
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++    <option name="RESET_MODE" value="MIXED" />
++    <option name="UPDATE_TYPE" value="REBASE" />
+   </component>
+   <component name="LogFilters">
+     <option name="FILTER_ERRORS" value="false" />
+@@ -214,31 +208,7 @@
+       <workItem from="1693476932132" duration="7510000" />
+       <workItem from="1693576924202" duration="736000" />
+       <workItem from="1693638234490" duration="4200000" />
+-      <workItem from="1693663031994" duration="9077000" />
+-    </task>
+-    <task id="LOCAL-00017" summary="user anti double register">
+-      <option name="closed" value="true" />
+-      <created>1692039974088</created>
+-      <option name="number" value="00017" />
+-      <option name="presentableId" value="LOCAL-00017" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1692039974088</updated>
+-    </task>
+-    <task id="LOCAL-00018" summary="debug after text meet">
+-      <option name="closed" value="true" />
+-      <created>1692097309156</created>
+-      <option name="number" value="00018" />
+-      <option name="presentableId" value="LOCAL-00018" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1692097309156</updated>
+-    </task>
+-    <task id="LOCAL-00019" summary="debug index quantities">
+-      <option name="closed" value="true" />
+-      <created>1692104606391</created>
+-      <option name="number" value="00019" />
+-      <option name="presentableId" value="LOCAL-00019" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1692104606391</updated>
++      <workItem from="1693663031994" duration="9754000" />
+     </task>
+     <task id="LOCAL-00020" summary="db">
+       <option name="closed" value="true" />
+@@ -608,7 +578,31 @@
+       <option name="project" value="LOCAL" />
+       <updated>1693664777173</updated>
+     </task>
+-    <option name="localTasksCounter" value="66" />
++    <task id="LOCAL-00066" summary="user validation">
++      <option name="closed" value="true" />
++      <created>1693676833219</created>
++      <option name="number" value="00066" />
++      <option name="presentableId" value="LOCAL-00066" />
++      <option name="project" value="LOCAL" />
++      <updated>1693676833219</updated>
++    </task>
++    <task id="LOCAL-00067" summary="internationalization">
++      <option name="closed" value="true" />
++      <created>1693676853985</created>
++      <option name="number" value="00067" />
++      <option name="presentableId" value="LOCAL-00067" />
++      <option name="project" value="LOCAL" />
++      <updated>1693676853993</updated>
++    </task>
++    <task id="LOCAL-00068" summary="undo commit">
++      <option name="closed" value="true" />
++      <created>1693684563001</created>
++      <option name="number" value="00068" />
++      <option name="presentableId" value="LOCAL-00068" />
++      <option name="project" value="LOCAL" />
++      <updated>1693684563001</updated>
++    </task>
++    <option name="localTasksCounter" value="69" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -619,16 +613,25 @@
+       <map>
+         <entry key="MAIN">
+           <value>
+-            <State />
++            <State>
++              <option name="FILTERS">
++                <map>
++                  <entry key="branch">
++                    <value>
++                      <list>
++                        <option value="origin/laws-testing" />
++                      </list>
++                    </value>
++                  </entry>
++                </map>
++              </option>
++            </State>
+           </value>
+         </entry>
+       </map>
+     </option>
+   </component>
+   <component name="VcsManagerConfiguration">
+-    <MESSAGE value="routes" />
+-    <MESSAGE value="laws_controller" />
+-    <MESSAGE value="laws spec 1" />
+     <MESSAGE value="swagger.yaml" />
+     <MESSAGE value="swagger.yaml user" />
+     <MESSAGE value="swagger.yaml all" />
+@@ -651,7 +654,10 @@
+     <MESSAGE value="gk settings controller and spec" />
+     <MESSAGE value="other spec" />
+     <MESSAGE value="user delete /and spec" />
+-    <option name="LAST_COMMIT_MESSAGE" value="user delete /and spec" />
++    <MESSAGE value="user validation" />
++    <MESSAGE value="internationalization" />
++    <MESSAGE value="undo commit" />
++    <option name="LAST_COMMIT_MESSAGE" value="undo commit" />
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1693676660686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
