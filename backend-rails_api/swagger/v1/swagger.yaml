@@ -6,7 +6,9 @@ info:
 paths:
   "/api/gk_settings":
     get:
-      summary: list gk_settings
+      summary: list gk settings
+      tags:
+      - GK settings
       responses:
         '200':
           description: successful
@@ -18,17 +20,46 @@ paths:
       required: true
       schema:
         type: string
+    get:
+      summary: show GK setting
+      tags:
+      - GK settings
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
     patch:
-      summary: update gk_setting
+      summary: update GK setting
+      tags:
+      - GK settings
+      parameters: []
       responses:
         '200':
           description: successful
-    put:
-      summary: update gk_setting
-      responses:
-        '200':
-          description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gk_setting:
+                  type: object
+                  properties:
+                    gk_color:
+                      type: string
   "/api/law_types":
+    get:
+      summary: list law types
+      tags:
+      - Law Types
+      responses:
+        '200':
+          description: successful
     post:
       summary: create law type
       tags:
@@ -52,15 +83,6 @@ paths:
                       type: string
                   required:
                   - type_name
-    get:
-      summary: list law types
-      tags:
-      - Law Types
-      responses:
-        '200':
-          description: successful
-        '500':
-          description: server error
   "/api/law_types/{id}":
     parameters:
     - name: id
@@ -208,6 +230,15 @@ paths:
         '404':
           description: not found
   "/api/quantities":
+    get:
+      summary: list quantities
+      tags:
+      - Quantities
+      responses:
+        '200':
+          description: successful
+        '500':
+          description: server error
     post:
       summary: create quantity
       tags:
@@ -258,15 +289,6 @@ paths:
                   - l_indicate
                   - t_indicate
                   - id_gk
-    get:
-      summary: list quantities
-      tags:
-      - Quantities
-      responses:
-        '200':
-          description: successful
-        '500':
-          description: server error
   "/api/quantities/{id}":
     parameters:
     - name: id

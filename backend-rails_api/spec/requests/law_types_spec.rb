@@ -10,6 +10,13 @@ RSpec.describe 'law_types', type: :request do
   end
 
   path '/api/law_types' do
+    get('list law types') do
+      tags 'Law Types'
+      response(200, 'successful') do
+        run_test!
+      end
+    end
+
     post('create law type') do
       tags 'Law Types'
       consumes 'application/json'
@@ -33,17 +40,6 @@ RSpec.describe 'law_types', type: :request do
       end
 
       response(422, 'unprocessable entity') do
-        run_test!
-      end
-    end
-
-    get('list law types') do
-      tags 'Law Types'
-      response(200, 'successful') do
-        run_test!
-      end
-
-      response(500, 'server error') do
         run_test!
       end
     end

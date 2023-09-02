@@ -20,6 +20,17 @@ RSpec.describe 'quantities', type: :request do
   end
 
   path '/api/quantities' do
+    get('list quantities') do
+      tags 'Quantities'
+      response(200, 'successful') do
+        run_test!
+      end
+
+      response(500, 'server error') do
+        run_test!
+      end
+    end
+
     post('create quantity') do
       tags 'Quantities'
       consumes 'application/json'
@@ -53,17 +64,6 @@ RSpec.describe 'quantities', type: :request do
       end
 
       response(422, 'unprocessable entity') do
-        run_test!
-      end
-    end
-
-    get('list quantities') do
-      tags 'Quantities'
-      response(200, 'successful') do
-        run_test!
-      end
-
-      response(500, 'server error') do
         run_test!
       end
     end
