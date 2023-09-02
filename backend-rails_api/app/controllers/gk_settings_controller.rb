@@ -2,8 +2,8 @@
 
 # Контроллер для получения и работы с настройками цвета слоев
 class GkSettingsController < ApplicationController
-  before_action :authorize_request, except: %i[index]
-  before_action :set_gk_setting, only: [:update]
+  before_action :authorize_request, only: %i[show update]
+  before_action :set_gk_setting, only: %i[show update]
 
   def index
     user_id = @current_user ? @current_user.id_user : 1
@@ -11,8 +11,12 @@ class GkSettingsController < ApplicationController
     render json: gk_settings, status: :ok
   end
 
+  def show
+    render json: @gk_setting, status: :ok
+  end
+
   def update
-    if @gk_setting.update(gk_setting_update_params)
+    if @gk_setting.update(gk_setting_params)
       render json: @gk_setting, status: :ok
     else
       render json: 'Failed to update gk_setting', status: :unprocessable_entity
@@ -25,7 +29,7 @@ class GkSettingsController < ApplicationController
     @gk_setting = @current_user.gk_settings.find(params[:id])
   end
 
-  def gk_setting_update_params
+  def gk_setting_params
     params.require(:gk_setting).permit(:gk_color)
   end
 end
