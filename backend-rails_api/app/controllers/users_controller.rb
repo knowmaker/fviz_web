@@ -5,9 +5,6 @@ class UsersController < ApplicationController
   include UserHelper
   before_action :authorize_request, except: %i[create login confirm reset new_password]
   def create
-    user = User.find_by(email: params[:user][:email])
-    render json: 'User already exists', status: :unprocessable_entity and return if user
-
     user = User.new(user_params)
     user.password = hash_password(params[:user][:password])
     user.confirmation_token = SecureRandom.urlsafe_base64.to_s
@@ -18,7 +15,7 @@ class UsersController < ApplicationController
 
       render json: user, status: :created
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: user.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -31,11 +28,11 @@ class UsersController < ApplicationController
       token = encode(id_user: @user.id_user)
       render json: token, status: :ok
     elsif !@user
-      render json: 'User not found', status: :not_found
+      render json: ['Пользователь не найден'], status: :not_found
     elsif !@user.confirmed
-      render json: 'Email not confirmed', status: :unauthorized
+      render json: ['Email не подтвержден'], status: :unauthorized
     else
-      render json: 'Invalid credentials', status: :unauthorized
+      render json: ['Неправильный логин или пароль'], status: :unauthorized
     end
   end
 
@@ -45,9 +42,9 @@ class UsersController < ApplicationController
 
   def update
     if @current_user.update(user_params)
-      render json: @current_user, status: :ok
+      head :ok
     else
-      render json: 'Updating error', status: :unprocessable_entity
+      render json: @current_user.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -72,11 +69,11 @@ class UsersController < ApplicationController
       ResetPasswordMailer.reset_password_email(user).deliver_now
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
-      render json: 'Reset password email sent', status: :ok
+      head :ok
     elsif !user.confirmed
-      render json: 'Email not confirmed', status: :unauthorized
+      render json: ['Email не подтвержден'], status: :unauthorized
     else
-      render json: 'User not found', status: :not_found
+      render json: ['Пользователь не найден'], status: :not_found
     end
   end
 
@@ -99,7 +96,7 @@ class UsersController < ApplicationController
 
   def destroy
     @current_user.destroy
-    render json: 'Successfully deleted user', status: :ok
+    head :ok
   end
 
   private

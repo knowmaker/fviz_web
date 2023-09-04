@@ -47,7 +47,7 @@
 ]
 [<class> GkSettingsController |
    |
-  +index; +update; -set_gk_setting; -gk_setting_update_params |
+  +index; +show; +update; -set_gk_setting; -gk_setting_params |
   
 ]
 [<class> LawTypesController |
@@ -72,7 +72,7 @@
 ]
 [<class> UsersController |
    |
-  +create; +login; +show; +update; +confirm; +reset; +new_password; -user_params; -encode(payload, exp) |
+  +create; +login; +show; +update; +confirm; +reset; +new_password; +destroy; -user_params; -encode(payload, exp) |
   
 ]
 [<class> ApplicationJob |
