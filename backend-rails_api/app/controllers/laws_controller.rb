@@ -11,6 +11,20 @@ class LawsController < ApplicationController
   end
 
   def show
+    @law = @current_user.laws
+                        .joins(
+                          'LEFT JOIN quantity AS first_element_quantities ON laws.first_element = first_element_quantities.id_value',
+                          'LEFT JOIN quantity AS second_element_quantities ON laws.second_element = second_element_quantities.id_value',
+                          'LEFT JOIN quantity AS third_element_quantities ON laws.third_element = third_element_quantities.id_value',
+                          'LEFT JOIN quantity AS fourth_element_quantities ON laws.fourth_element = fourth_element_quantities.id_value'
+                        )
+                        .select(
+                          'laws.id_law', 'laws.law_name', 'laws.id_type',
+                          'laws.first_element', 'laws.second_element', 'laws.third_element', 'laws.fourth_element',
+                          'CONCAT_WS(\' * \', first_element_quantities.value_name, second_element_quantities.value_name, third_element_quantities.value_name, fourth_element_quantities.value_name) AS text_formula',
+                          'CONCAT_WS(\' * \', first_element_quantities.symbol, second_element_quantities.symbol, third_element_quantities.symbol, fourth_element_quantities.symbol) AS formula'
+                        ).find(params[:id])
+
     render json: @law, status: :ok
   end
 
