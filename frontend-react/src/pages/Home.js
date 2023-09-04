@@ -1,7 +1,7 @@
 import React,{useEffect,useState, useContext} from 'react';
 import TableUI from '../components/Table2';
 import Draggable from 'react-draggable';
-import getData, { postData, putData, patchData, deleteData} from '../components/api';
+import getData, { postData, putData, patchData, deleteData, getAllCellData} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
 import { EditorState, convertToRaw,  convertFromRaw , ContentState } from 'draft-js';
@@ -79,7 +79,7 @@ export default function Home() {
 
     const [selectedLaw, setSelectedLaw] = useState([])
     const selectedLawState = {selectedLaw, setSelectedLaw}
-  
+
     useEffect(() => {
       const keyDownHandler = event => {
         //console.log('User pressed: ', event.key);
@@ -110,7 +110,8 @@ export default function Home() {
 
     const setEditorFromSelectedCell = (cellData) => {
 
-      convertMarkdownToEditorState(setCellNameEditor, cellData.val_name) 
+
+      convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
       convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
       convertMarkdownToEditorState(setCellUnitEditor, cellData.unit) 
       document.getElementById("inputL3").value = cellData.l_indicate
@@ -120,6 +121,7 @@ export default function Home() {
     }
 
     const convertMarkdownToEditorState = (stateFunction, markdown) => {
+
 
       const blocksFromHtml = htmlToDraft(markdown);
       const { contentBlocks, entityMap } = blocksFromHtml;
@@ -338,8 +340,8 @@ function CellEditor({editorState,setEditorState}) {
                     "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ",
                     "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω",
                     "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ",
-                    "ν", "ξ", "ο", "π", "ρ", "ς", "σ", "τ", "υ", "φ", "χ", "ψ", "ω",
-                    "∀", "∁", "∂", "∃", "∄", "∅", "∆", "∇"
+                    "ν", "ξ", "ο", "π", "ρ", "ς", "σ", "τ", "υ", "φ", "χ", "ψ",
+                    "ω", "∀", "∁", "∂", "∃", "∄", "∅", "∆", "∇"
                 ],
             }
         }}
@@ -406,22 +408,87 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
   )
 }
 
-function LawsModal({modalsVisibility}) {
+function LawsModal({modalsVisibility, lawsState, selectedLawState}) {
 
 
+  const createLaw = () => {
+    if (selectedLawState.selectedLaw.length !== 4) {
+      return
+    }
+    const selectedLawCellId = selectedLawState.selectedLaw.map(cell => cell.id_value)
 
+    console.log(selectedLawCellId)
+  }
+
+  const updateLaw = () => {
+
+  }
+
+  const selectLaw = (law) => {
+
+  }
+
+  const deleteLaw = (law) => {
+
+  }
+
+  console.log(lawsState.laws)
+  let lawsMarkup
+  let lawsCounter = 0
+  if (lawsState.laws) {
+    lawsMarkup = lawsState.laws.map(law => {
+    lawsCounter += 1 
+
+    const isCurrent = false
+    //const isCurrent = tableView.id_repr === tableViewState.tableView.id_repr
+
+    return ( 
+      <tr key={law.id_law}>
+        <th scope="row" className='small-cell'>{isCurrent ? lawsCounter + `+` : lawsCounter}</th>
+        <td>{law.law_name}</td>
+        <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLaw(law)}>↓</button></td>
+        <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLaw(law)}>🗑</button></td>
+      </tr>
+    );
+  })
+  } else {lawsMarkup = null}
 
   return (
     <Modal
       modalVisibility={modalsVisibility.lawsModalVisibility}
       title={"Laws"}
       hasBackground={false}
+      sizeX={600}
       >
       <div className="modal-content2">
-        nothing here
+        <div className="row">
+          <div className="col-5">
+            <input type="text" className="form-control" id="InputLawName3" placeholder="Law 1"/>
+          </div>
+          <div className="col-3">
+          <button type="button" className="btn btn-primary" onClick={() => createLaw()}>create new</button>
+          </div>
+          <div className="col-4">
+          <button type="button" className="btn btn-success" onClick={() => updateLaw()}>update current</button>
+          </div>
+        </div>
+
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Select</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lawsMarkup}
+          </tbody>
+        </table>
       </div>
       <div className="modal-footer2">
-        <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.lawsModalVisibility.setVisibility(false)}>Close</button>
+        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.lawsModalVisibility.setVisibility(false)}>Close</button>
       </div>
 
       </Modal>
@@ -620,7 +687,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
         }
       }
 
-
+      //console.log(userData)
 
       postData(undefined, process.env.REACT_APP_GK_REGISTER_LINK, userData, undefined, afterRegister)
       

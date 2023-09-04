@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext, forwardRef } from 'react';
 import Navbar from './Navbar';
 import Footbar from './FootBar';
-import { TableContext } from './Contexts.js';
+import { TableContext, UserProfile } from './Contexts.js';
 import { useDownloadableScreenshot } from './Screenshot';
-import getData from './api';
+import getData, {getAllCellData} from './api';
 import LawsCanvas from './LawsCanvas';
 
 const rowCount = 20
@@ -38,7 +38,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
     <>
       <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref}/>
+      <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref} modalsVisibility={modalsVisibility}/>
       <Footbar hoveredCell={hoveredCell} gkColors={gkState.gkColors}/>
 
     </>  
@@ -101,7 +101,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selectedLawState }, ref) => {
+const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selectedLawState,modalsVisibility}, ref) => {
 
 
   const tableState = useContext(TableContext)
@@ -123,7 +123,15 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
 
   if (isLoaded) {
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
-      return <Row key={rowId} rowId={rowId} fullTableData={fullTableData} setSelectedCell={setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState}/>
+      return <Row 
+      key={rowId} 
+      rowId={rowId} 
+      fullTableData={fullTableData} 
+      setSelectedCell={setSelectedCell} 
+      hoveredCellState={hoveredCellState} 
+      selectedLawState={selectedLawState}
+      modalsVisibility={modalsVisibility}
+      />
     });
       return (
         <div className="tables" ref={ref}>
@@ -143,7 +151,7 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
 
 })
 
-function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedLawState}) {
+function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedLawState, modalsVisibility}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
 
@@ -159,6 +167,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
             cellRightClick={setSelectedCell} 
             hoveredCellState={hoveredCellState}
             selectedLawState={selectedLawState}
+            modalsVisibility={modalsVisibility}
             />);
   });
 
@@ -174,12 +183,13 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
 
 }
 
-function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState}) {
+function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState, modalsVisibility}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
   const cellColor = cellFullData.cellColor
   const tableState = useContext(TableContext)
+  const userInfoState = useContext(UserProfile)
 
   
   const handleCellRightClick = (event, cellId) => {
@@ -234,9 +244,45 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
         selectedLawCellsLTId.push(selectedCellData.id_lt)
         const fourthCellData = tableState.tableData.find(cell => cell.id_lt === findFourthCell(selectedLawCellsLTId))
         selectedLawState.setSelectedLaw(currentCells => [...currentCells,selectedCellData,fourthCellData] );
+
+        const headers = {
+          Authorization: `Bearer ${userInfoState.userToken}`
+        }    
+        getAllCellData([...selectedLawState.selectedLaw,selectedCellData,fourthCellData],headers,checkLaw)
+
       }
 
   }
+
+  const checkLaw = (cells) => {
+
+
+    console.log(cells)
+
+    const firstThirdCellsMLTI = {
+      M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
+      L: cells[0].l_indicate_auto + cells[2].l_indicate_auto,
+      T: cells[0].t_indicate_auto + cells[2].t_indicate_auto,
+      I: cells[0].i_indicate_auto + cells[2].i_indicate_auto
+    }
+
+
+
+    const secondFourthCellsMLTI = {
+      M: cells[1].m_indicate_auto + cells[3].m_indicate_auto,
+      L: cells[1].l_indicate_auto + cells[3].l_indicate_auto,
+      T: cells[1].t_indicate_auto + cells[3].t_indicate_auto,
+      I: cells[1].i_indicate_auto + cells[3].i_indicate_auto
+    }
+
+    const sameMLTI = JSON.stringify(firstThirdCellsMLTI) === JSON.stringify(secondFourthCellsMLTI)
+
+    if (sameMLTI) {
+      modalsVisibility.lawsModalVisibility.setVisibility(true)
+    }
+  }
+
+  //const checkLawExistence = (selectedLaw)
 
   const handleCellHover = (event, cellId) => {
 

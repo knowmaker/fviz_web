@@ -82,3 +82,19 @@ export function deleteData(setStateFunction, adress, headers, afterRequestFuncti
     console.log(error);
   });
 }
+
+export function getAllCellData(cells,headers,callbackFunction) {
+
+  let requests = cells.map(cell => axios.get(`http://localhost:5000/api/quantities/${cell.id_value}`, {headers: headers}));
+
+  Promise.all(requests)
+    .then(responses => {
+
+      //console.log(responses)
+
+      const cells = responses.map(response => response.data)
+      //callbackFunction(responses)
+      callbackFunction(cells)
+    })
+
+}
