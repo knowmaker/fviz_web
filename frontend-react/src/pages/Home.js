@@ -80,6 +80,9 @@ export default function Home() {
     const [selectedLaw, setSelectedLaw] = useState([])
     const selectedLawState = {selectedLaw, setSelectedLaw}
 
+    const [lawsGroups, setLawsGroups] = useState([])
+    const lawsGroupsState = {lawsGroups, setLawsGroups}
+
     useEffect(() => {
       const keyDownHandler = event => {
         //console.log('User pressed: ', event.key);
@@ -155,11 +158,12 @@ export default function Home() {
 
         getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
         getData(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+        getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
       }
 
     }, [userProfile]);
 
-    //console.log(laws)
+    //console.log(lawsGroups)
 
     const testShow = (result) => {
 
@@ -176,9 +180,9 @@ export default function Home() {
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
                   <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
                   <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
-                  <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState}/>
+                  <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
                   <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
-                  <LawsGroupsModal modalsVisibility={modalsVisibility} />
+                  <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
 
 
                 <ToastContainer />
@@ -231,13 +235,13 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     }
 
 
-    console.log(newCell)
+    //console.log(newCell)
     putData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, newCell, null, afterChangesToCell)
   }
 
   const afterChangesToCell = (cellData) => {
 
-    console.log(cellData)
+    //console.log(cellData)
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).filter(cell => cell.id_value !== selectedCell.id_value).concat(cellData))
 
 
@@ -408,39 +412,126 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
   )
 }
 
-function LawsModal({modalsVisibility, lawsState, selectedLawState}) {
+function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsState}) {
 
+  const userInfoState = useContext(UserProfile) 
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }      
 
   const createLaw = () => {
+
     if (selectedLawState.selectedLaw.length !== 4) {
+      return
+    }
+    if (!checkLaw(selectedLawState.selectedLaw)) {
       return
     }
     const selectedLawCellId = selectedLawState.selectedLaw.map(cell => cell.id_value)
 
-    console.log(selectedLawCellId)
+
+
+    //console.log(selectedLawCellId)
+
+    const newLaw = {
+      law: {
+        law_name: document.getElementById("InputLawName3").value,
+        first_element: selectedLawCellId[0],
+        second_element: selectedLawCellId[1],
+        third_element: selectedLawCellId[2],
+        fourth_element: selectedLawCellId[3],
+        id_type: document.getElementById("inputLawGroup3").value
+      }
+    }
+    //console.log(newLaw)
+    postData(undefined, `http://localhost:5000/api/laws`, newLaw, headers, afterCreateLaw)
+    
+
   }
+  
+  const afterCreateLaw = () => {
+
+    //console.log("success")
+    getData(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+  }
+
 
   const updateLaw = () => {
 
   }
 
-  const selectLaw = (law) => {
+  const selectLaw = (selectedLaw) => {
 
+
+    //console.log(law)
+
+    const lawCells = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
+
+    getAllCellData(lawCells,headers,afterSelectSearch)
+  }
+
+  const afterSelectSearch = (cells) => {
+
+    selectedLawState.setSelectedLaw(cells)
   }
 
   const deleteLaw = (law) => {
 
+    deleteData(undefined,`http://localhost:5000/api/laws/${law.id_law}`,headers,afterDeleteLaw)
   }
 
-  console.log(lawsState.laws)
+  const afterDeleteLaw = () => {
+    getData(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+  }
+
+  // dublicate, remove later
+  const checkLaw = (cells) => {
+
+
+    //console.log(cells)
+
+    const firstThirdCellsMLTI = {
+      M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
+      L: cells[0].l_indicate_auto + cells[2].l_indicate_auto,
+      T: cells[0].t_indicate_auto + cells[2].t_indicate_auto,
+      I: cells[0].i_indicate_auto + cells[2].i_indicate_auto
+    }
+
+
+
+    const secondFourthCellsMLTI = {
+      M: cells[1].m_indicate_auto + cells[3].m_indicate_auto,
+      L: cells[1].l_indicate_auto + cells[3].l_indicate_auto,
+      T: cells[1].t_indicate_auto + cells[3].t_indicate_auto,
+      I: cells[1].i_indicate_auto + cells[3].i_indicate_auto
+    }
+
+    const sameMLTI = JSON.stringify(firstThirdCellsMLTI) === JSON.stringify(secondFourthCellsMLTI)
+
+    return(sameMLTI)
+  }
+
+  const lawGroupsList = lawsGroupsState.lawsGroups.map(lawGroup => {
+
+    const shownText = `${lawGroup.type_name}`
+
+    return (
+      <option key={lawGroup.id_type} value={lawGroup.id_type} dangerouslySetInnerHTML={{__html: shownText}}/>
+    );
+
+  });
+
   let lawsMarkup
   let lawsCounter = 0
   if (lawsState.laws) {
     lawsMarkup = lawsState.laws.map(law => {
     lawsCounter += 1 
 
-    const isCurrent = false
-    //const isCurrent = tableView.id_repr === tableViewState.tableView.id_repr
+    const lawCellsIds = [law.first_element,law.second_element,law.third_element,law.fourth_element]
+    const selectedLawCellIds = selectedLawState.selectedLaw.map(cell => cell.id_value)
+    //const isCurrent = false
+
+    const isCurrent = JSON.stringify(selectedLawCellIds) === JSON.stringify(lawCellsIds)
 
     return ( 
       <tr key={law.id_law}>
@@ -470,6 +561,13 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState}) {
           </div>
           <div className="col-4">
           <button type="button" className="btn btn-success" onClick={() => updateLaw()}>update current</button>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+          <select className="form-select" aria-label="Default select example" id='inputLawGroup3'>
+              {lawGroupsList}
+            </select>
           </div>
         </div>
 
@@ -546,7 +644,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     
 
     const cellIds = Object.values(tableState)[0].map(cell => cell.id_value)
-    console.log(cellIds)
+    //console.log(cellIds)
 
     const tableViewTitle = document.getElementById("InputTableViewName3").value
 
@@ -719,7 +817,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
       }
     }
 
-    console.log(userData)
+    //console.log(userData)
     postData(undefined, `http://localhost:5000/api/reset`, userData, undefined, afterForgotPassword)
 
    
