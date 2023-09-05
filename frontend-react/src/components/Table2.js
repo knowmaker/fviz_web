@@ -248,7 +248,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
         const headers = {
           Authorization: `Bearer ${userInfoState.userToken}`
         }    
-        getAllCellData([...selectedLawState.selectedLaw,selectedCellData,fourthCellData],headers,checkLaw)
+        getAllCellData([...selectedLawState.selectedLaw,selectedCellData,fourthCellData].map(cell=>cell.id_value),headers,checkLaw)
 
       }
 
