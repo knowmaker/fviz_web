@@ -6,7 +6,7 @@ class LawsController < ApplicationController
   before_action :set_law, only: %i[show update destroy]
 
   def index
-    laws = @current_user.laws.all
+    laws = @current_user.laws.joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.type_name').all
     render json: laws, status: :ok
   end
 
@@ -19,8 +19,7 @@ class LawsController < ApplicationController
                           'LEFT JOIN quantity AS fourth_element_quantities ON laws.fourth_element = fourth_element_quantities.id_value'
                         )
                         .select(
-                          'laws.id_law', 'laws.law_name', 'laws.id_type',
-                          'laws.first_element', 'laws.second_element', 'laws.third_element', 'laws.fourth_element',
+                          Law.column_names - ['combination'],
                           'CONCAT_WS(\' * \', first_element_quantities.value_name, second_element_quantities.value_name, third_element_quantities.value_name, fourth_element_quantities.value_name) AS text_formula',
                           'CONCAT_WS(\' * \', first_element_quantities.symbol, second_element_quantities.symbol, third_element_quantities.symbol, fourth_element_quantities.symbol) AS formula'
                         ).find(params[:id])
