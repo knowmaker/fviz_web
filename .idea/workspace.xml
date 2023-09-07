@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="json format">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="law validates">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk_setting.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk_setting.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law_type.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law_type.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,15 +214,7 @@
       <workItem from="1693663031994" duration="9077000" />
       <workItem from="1693844808020" duration="12952000" />
       <workItem from="1693934615588" duration="2616000" />
-      <workItem from="1694070665778" duration="7514000" />
-    </task>
-    <task id="LOCAL-00026" summary="quantity update">
-      <option name="closed" value="true" />
-      <created>1692259826164</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1692259826164</updated>
+      <workItem from="1694070665778" duration="9935000" />
     </task>
     <task id="LOCAL-00027" summary="font-size">
       <option name="closed" value="true" />
@@ -606,7 +600,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694077815475</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="law validates">
+      <option name="closed" value="true" />
+      <created>1694078756665</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1694078756665</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,7 +626,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="swagger.yaml all" />
     <MESSAGE value="swagger.yaml represents" />
     <MESSAGE value="rename attributes" />
     <MESSAGE value="+ id_repr" />
@@ -649,7 +650,8 @@
     <MESSAGE value="laws controller" />
     <MESSAGE value="db" />
     <MESSAGE value="json format" />
-    <option name="LAST_COMMIT_MESSAGE" value="json format" />
+    <MESSAGE value="law validates" />
+    <option name="LAST_COMMIT_MESSAGE" value="law validates" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694075706935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

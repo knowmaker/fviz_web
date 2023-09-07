@@ -4,6 +4,7 @@
 class GkSettingsController < ApplicationController
   before_action :authorize_request, only: %i[show update]
   before_action :set_gk_setting, only: %i[show update]
+  skip_before_action :authorize_request, only: :index
 
   def index
     user_id = @current_user ? @current_user.id_user : 1
@@ -27,6 +28,7 @@ class GkSettingsController < ApplicationController
 
   def set_gk_setting
     @gk_setting = @current_user.gk_settings.find(params[:id])
+    p @current_user.gk_settings
   end
 
   def gk_setting_params

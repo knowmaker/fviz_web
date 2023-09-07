@@ -6,4 +6,9 @@ class GkSetting < ApplicationRecord
 
   belongs_to :gk, foreign_key: 'id_gk'
   belongs_to :user, foreign_key: 'id_user'
+
+  validates :id_gk, presence: true, numericality: { only_integer: true }
+  validates :id_user, presence: true, numericality: { only_integer: true }
+  validates :gk_color, presence: true
+  validates :id_gk, uniqueness: { scope: :id_user }
 end

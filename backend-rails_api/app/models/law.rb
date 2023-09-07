@@ -18,6 +18,7 @@ class Law < ApplicationRecord
   validates :id_type, numericality: { only_integer: true }, allow_nil: true
   validates :combination, presence: true, on: :create
   validate :unique_combination_user, on: :create
+  # validates :combination, uniqueness: { scope: :id_user }, on: :create тоже самое, что выше
 
   private
   def unique_combination_user
