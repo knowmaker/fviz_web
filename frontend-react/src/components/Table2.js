@@ -158,9 +158,16 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
 
   const cellList = Array.from({length: cellCount - 1 - isEven}, (_, cellId) => {
 
+
+
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
-    const cellColor = cellData ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}` : '';
+    let cellColor
+    if (cellData) {
+      cellColor = cellData.id_gk ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}` : '';
+    }
+
+    console.log(cellData)
 
     return (<Cell 
             key={cellFullId} 
