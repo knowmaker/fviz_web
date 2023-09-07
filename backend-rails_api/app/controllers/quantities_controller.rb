@@ -8,7 +8,7 @@ class QuantitiesController < ApplicationController
 
   def index
     # unless @current_user.role
-    #   render json: 'Only admins can see all quantities list', status: :unauthorized
+    #   render json: {error: ['Only admins can see all quantities list']}, status: :unauthorized
     #   return
     # end
 
@@ -20,7 +20,7 @@ class QuantitiesController < ApplicationController
 
   def show
     # unless @current_user.role
-    #   render json: 'Only admins can see to quantity', status: :unauthorized
+    #   render json: {error: ['Only admins can see to quantity']}, status: :unauthorized
     #   return
     # end
 
@@ -29,7 +29,7 @@ class QuantitiesController < ApplicationController
 
   def create
     # unless @current_user.role
-    #   render json: 'Only admins can create quantities', status: :unauthorized
+    #   render json: {error: ['Only admins can create quantities']}, status: :unauthorized
     #   return
     # end
 
@@ -45,7 +45,7 @@ class QuantitiesController < ApplicationController
 
   def update
     # unless @current_user.role
-    #   render json: 'Only admins can update quantities', status: :unauthorized
+    #   render json: {error: ['Only admins can update quantities']}, status: :unauthorized
     #   return
     # end
 
@@ -59,7 +59,7 @@ class QuantitiesController < ApplicationController
 
   def destroy
     # unless @current_user.role
-    #   render json: 'Only admins can delete quantities', status: :unauthorized
+    #   render json: {error: ['Only admins can delete quantities']}, status: :unauthorized
     #   return
     # end
     @quantity = Quantity.find(params[:id])
@@ -88,7 +88,7 @@ class QuantitiesController < ApplicationController
     quantity_params.delete(:t_indicate)
 
     # if Quantity.exists?(id_lt: quantity_params[:id_lt], id_gk: quantity_params[:id_gk])
-    #   render json: { error: 'Combination of id_lt and id_gk already exists' }, status: :unprocessable_entity
+    #   render json: { error: ['Combination of id_lt and id_gk already exists'] }, status: :unprocessable_entity
     #   return
     # end
 

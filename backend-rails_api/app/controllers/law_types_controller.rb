@@ -7,7 +7,7 @@ class LawTypesController < ApplicationController
 
   def index
     # unless @current_user.role
-    #   render json: 'Only admins can see all law types list', status: :unauthorized
+    #   render json: {error: ['Only admins can see all law types list']}, status: :unauthorized
     #   return
     # end
     #
@@ -17,7 +17,7 @@ class LawTypesController < ApplicationController
 
   def show
     # unless @current_user.role
-    #   render json: 'Only admins can see to law type', status: :unauthorized
+    #   render json: {error: ['Only admins can see to law type']}, status: :unauthorized
     #   return
     # end
 
@@ -26,7 +26,7 @@ class LawTypesController < ApplicationController
 
   def create
     # unless @current_user.role
-    #   render json: 'Only admins can create law type', status: :unauthorized
+    #   render json: {error: ['Only admins can create law type']}, status: :unauthorized
     #   return
     # end
 
@@ -41,7 +41,7 @@ class LawTypesController < ApplicationController
 
   def update
     # unless @current_user.role
-    #   render json: 'Only admins can update law type', status: :unauthorized
+    #   render json: {error: ['Only admins can update law type']}, status: :unauthorized
     #   return
     # end
 
@@ -54,7 +54,7 @@ class LawTypesController < ApplicationController
 
   def destroy
     # unless @current_user.role
-    #   render json: 'Only admins can delete law type', status: :unauthorized
+    #   render json: {error: ['Only admins can delete law type']}, status: :unauthorized
     #   return
     # end
 
@@ -68,7 +68,6 @@ class LawTypesController < ApplicationController
     @law_type = LawType.find(params[:id])
   end
 
-  # and update_params too
   def law_type_params
     params.require(:law_type).permit(:type_name)
   end
