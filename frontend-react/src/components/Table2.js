@@ -6,7 +6,7 @@ import { useDownloadableScreenshot } from './Screenshot';
 import getData, {getAllCellData} from './api';
 import LawsCanvas from './LawsCanvas';
 
-const rowCount = 20
+const rowCount = 19
 const cellCount = 20
 
 export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState}) {
