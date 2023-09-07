@@ -12,7 +12,7 @@ class LawTypesController < ApplicationController
     # end
     #
     law_types = LawType.all
-    render json: law_types, status: :ok
+    render json: {data: law_types}, status: :ok
   end
 
   def show
@@ -21,7 +21,7 @@ class LawTypesController < ApplicationController
     #   return
     # end
 
-    render json: @law_type, status: :ok
+    render json: {data: @law_type}, status: :ok
   end
 
   def create
@@ -33,9 +33,9 @@ class LawTypesController < ApplicationController
     law_type = LawType.new(law_type_params)
 
     if law_type.save
-      render json: law_type, status: :created
+      render json: {data: law_type}, status: :created
     else
-      render json: 'Failed to create law_type', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -46,9 +46,9 @@ class LawTypesController < ApplicationController
     # end
 
     if @law_type.update(law_type_params)
-      render json: @law_type, status: :ok
+      render json: {data: @law_type}, status: :ok
     else
-      render json: 'Failed to update law_type', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -59,7 +59,7 @@ class LawTypesController < ApplicationController
     # end
 
     @law_type.destroy
-    render json: 'Successfully deleted law_type', status: :ok
+    head :ok
   end
 
   private

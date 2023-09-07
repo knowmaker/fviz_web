@@ -24,7 +24,7 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    render json: @quantity, status: :ok
+    render json: {data: @quantity}, status: :ok
   end
 
   def create
@@ -37,9 +37,9 @@ class QuantitiesController < ApplicationController
 
     if quantity.save
       merged_quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(quantity.id)
-      render json: merged_quantity, status: :created
+      render json: {data: merged_quantity}, status: :created
     else
-      render json: 'Failed to create quantity', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -51,9 +51,9 @@ class QuantitiesController < ApplicationController
 
     if @quantity.update(quantity_params)
       @quantity.reload
-      render json: @quantity, status: :ok
+      render json: {data: @quantity}, status: :ok
     else
-      render json: 'Failed to update quantity', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -65,7 +65,7 @@ class QuantitiesController < ApplicationController
     @quantity = Quantity.find(params[:id])
 
     @quantity.destroy
-    render json: 'Successfully deleted quantity', status: :ok
+    head :ok
   end
 
   private

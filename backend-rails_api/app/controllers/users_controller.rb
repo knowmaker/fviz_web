@@ -13,9 +13,9 @@ class UsersController < ApplicationController
       ConfirmationMailer.confirmation_email(user).deliver_now
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
-      render json: user, status: :created
+      render json: {data: user}, status: :created
     else
-      render json: user.errors.full_messages, status: :unprocessable_entity
+      render json: {error: user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -26,25 +26,25 @@ class UsersController < ApplicationController
 
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(id_user: @user.id_user)
-      render json: token, status: :ok
+      render json: {data: token}, status: :ok
     elsif !@user
-      render json: ['Пользователь не найден'], status: :not_found
+      render json: {error: ['Пользователь не найден']}, status: :not_found
     elsif !@user.confirmed
-      render json: ['Email не подтвержден'], status: :unauthorized
+      render json: {error: ['Email не подтвержден']}, status: :unauthorized
     else
-      render json: ['Неправильный логин или пароль'], status: :unauthorized
+      render json: {error: ['Неправильный логин или пароль']}, status: :unauthorized
     end
   end
 
   def show
-    render json: @current_user, status: :ok
+    render json: {data: @current_user}, status: :ok
   end
 
   def update
     if @current_user.update(user_params)
-      head :ok
+      render json: {data: @current_user}, status: :ok
     else
-      render json: @current_user.errors.full_messages, status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -71,9 +71,9 @@ class UsersController < ApplicationController
 
       head :ok
     elsif !user.confirmed
-      render json: ['Email не подтвержден'], status: :unauthorized
+      render json: {error: ['Email не подтвержден']}, status: :unauthorized
     else
-      render json: ['Пользователь не найден'], status: :not_found
+      render json: {error: ['Пользователь не найден']}, status: :not_found
     end
   end
 

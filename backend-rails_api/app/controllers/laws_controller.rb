@@ -7,7 +7,7 @@ class LawsController < ApplicationController
 
   def index
     laws = @current_user.laws.joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.type_name').all
-    render json: laws, status: :ok
+    render json: {data: laws}, status: :ok
   end
 
   def show
@@ -24,7 +24,7 @@ class LawsController < ApplicationController
                           'CONCAT_WS(\' * \', first_element_quantities.symbol, second_element_quantities.symbol, third_element_quantities.symbol, fourth_element_quantities.symbol) AS formula'
                         ).find(params[:id])
 
-    render json: @law, status: :ok
+    render json: {data: @law}, status: :ok
   end
 
   def create
@@ -36,23 +36,23 @@ class LawsController < ApplicationController
     law = @current_user.laws.new(law_params)
 
     if law.save
-      render json: law, status: :created
+      render json: {data: law}, status: :created
     else
-      render json: 'Failed to create law', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   def update
     if @law.update(law_params)
-      render json: @law, status: :ok
+      render json: {data: @law}, status: :ok
     else
-      render json: 'Failed to update law', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   def destroy
     @law.destroy
-    render json: 'Successfully deleted law', status: :ok
+    head :ok
   end
 
   private

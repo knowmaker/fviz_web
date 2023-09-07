@@ -13,10 +13,10 @@ class ApplicationController < ActionController::API
         @decoded = decode(token)
         @current_user = User.find(@decoded[:id_user])
       rescue ActiveRecord::RecordNotFound, JWT::DecodeError
-        render json: 'Unauthorized', status: :unauthorized
+        render json: {error: ['Unauthorized']}, status: :unauthorized
       end
     else
-      render json: { error: 'No authorization token found' }, status: :unauthorized
+      render json: { error: ['No authorization token found'] }, status: :unauthorized
     end
   end
 

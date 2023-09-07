@@ -8,18 +8,18 @@ class GkSettingsController < ApplicationController
   def index
     user_id = @current_user ? @current_user.id_user : 1
     gk_settings = GkSetting.where(id_user: user_id).joins(:gk).select('gk_settings.*, gk.*').all
-    render json: gk_settings, status: :ok
+    render json: {data: gk_settings}, status: :ok
   end
 
   def show
-    render json: @gk_setting, status: :ok
+    render json: {data: @gk_setting}, status: :ok
   end
 
   def update
     if @gk_setting.update(gk_setting_params)
-      render json: @gk_setting, status: :ok
+      render json: {data: @gk_setting}, status: :ok
     else
-      render json: 'Failed to update gk_setting', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

@@ -7,16 +7,16 @@ class RepresentsController < ApplicationController
 
   def index
     represents = @current_user.represents.select('represents.id_repr, represents.title')
-    render json: represents, status: :ok
+    render json: {data: represents}, status: :ok
   end
 
   def create
     represent = @current_user.represents.new(represent_params)
 
     if represent.save
-      render json: represent, status: :created
+      render json: {data: represent}, status: :created
     else
-      render json: 'Failed to create represent', status: :unprocessable_entity
+      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -30,7 +30,7 @@ class RepresentsController < ApplicationController
 
   def destroy
     @represent.destroy
-    render json: 'Successfully deleted represent', status: :ok
+    head :ok
   end
 
   def represent_view_index
@@ -41,8 +41,8 @@ class RepresentsController < ApplicationController
                                 .select('quantity.id_value, quantity.value_name, quantity.symbol, quantity.unit,
                                  quantity.id_lt, quantity.id_gk,
                                  quantity.mlti_sign, lt.lt_sign')
-                                .order('quantity.id_lt')
-    render json: active_quantities.all
+                                .order('quantity.id_lt').all
+    render json: {data: active_quantities}, status: :ok
   end
 
   def represent_view_show
@@ -58,15 +58,15 @@ class RepresentsController < ApplicationController
       active_quantities: format_active_quantities(active_quantities)
     }
 
-    render json: json_output
+    render json: {data: json_output}, status: :ok
   end
 
   def lt_values
     quantities = Quantity.where(id_lt: params[:id])
     if quantities.any?
-      render json: quantities, status: :ok
+      render json: {data: quantities}, status: :ok
     else
-      render json: 'No quantities found for the given id_lt', status: :not_found
+      render json: {error: ['No quantities found for the given id_lt']}, status: :not_found
     end
   end
 
