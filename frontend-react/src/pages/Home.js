@@ -153,17 +153,16 @@ export default function Home() {
 
 
 
-        getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
+        //getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
         //getData(null, `http://localhost:5000/api/represents`,testShow,headers)
 
         getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
-        getData(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+        getData(setLaws, `http://localhost:5000/api/laws`,testShow,headers)
         getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
       }
 
     }, [userProfile]);
 
-    //console.log(lawsGroups)
 
     const testShow = (result) => {
 

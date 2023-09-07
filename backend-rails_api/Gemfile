@@ -46,6 +46,7 @@ group :development, :test do
   gem 'rspec-rails' # ignore if already set up in project
 
   gem 'rswag'
+  # gem 'shutup'
 end
 
 group :development do
