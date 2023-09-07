@@ -83,7 +83,7 @@ export function deleteData(setStateFunction, adress, headers, afterRequestFuncti
   });
 }
 
-export function getAllCellData(cells,headers,callbackFunction) {
+export function getAllCellData(cells,headers,callbackFunction, extraData) {
 
   let requests = cells.map(cell => axios.get(`http://localhost:5000/api/quantities/${cell}`, {headers: headers}));
 
@@ -94,7 +94,7 @@ export function getAllCellData(cells,headers,callbackFunction) {
 
       const cells = responses.map(response => response.data.data)
       //callbackFunction(responses)
-      callbackFunction(cells)
+      callbackFunction(cells, extraData)
     })
 
 }

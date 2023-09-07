@@ -36,7 +36,7 @@ export default function Home() {
     const [gkColors, setGkColors] = useState([]);
     const gkState = {gkColors, setGkColors}
 
-    const [tableView, setTableView] = useState({id_repr:3,title:"Базовое"}); // remove after fix
+    const [tableView, setTableView] = useState({id_repr:1,title:"Базовое"}); 
     const tableViewState = {tableView,setTableView}
 
     useEffect(() => {
@@ -77,7 +77,7 @@ export default function Home() {
     const [laws, setLaws] = useState(null)
     const lawsState = {laws, setLaws}
 
-    const [selectedLaw, setSelectedLaw] = useState([])
+    const [selectedLaw, setSelectedLaw] = useState({law_name: null,cells:[],id_type: null})
     const selectedLawState = {selectedLaw, setSelectedLaw}
 
     const [lawsGroups, setLawsGroups] = useState([])
@@ -89,7 +89,7 @@ export default function Home() {
   
         if (event.key === 'Escape') {
           event.preventDefault();
-          setSelectedLaw([])
+          setSelectedLaw({law_name: null,cells:[],id_type: null})
         }
       };
   
@@ -420,13 +420,13 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
   const createLaw = () => {
 
-    if (selectedLawState.selectedLaw.length !== 4) {
+    if (selectedLawState.selectedLaw.cells.length !== 4) {
       return
     }
-    if (!checkLaw(selectedLawState.selectedLaw)) {
+    if (!checkLaw(selectedLawState.selectedLaw.cells)) {
       return
     }
-    const selectedLawCellId = selectedLawState.selectedLaw.map(cell => cell.id_value)
+    const selectedLawCellId = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
 
 
 
@@ -456,22 +456,46 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
 
   const updateLaw = () => {
+    if (selectedLawState.selectedLaw.cells.length !== 4) {
+      return
+    }
+    if (!checkLaw(selectedLawState.selectedLaw.cells)) {
+      return
+    }
+    const selectedLawCellId = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
 
+
+
+    //console.log(selectedLawCellId)
+
+    const newLaw = {
+      law: {
+        law_name: document.getElementById("InputLawName3").value,
+        first_element: selectedLawCellId[0],
+        second_element: selectedLawCellId[1],
+        third_element: selectedLawCellId[2],
+        fourth_element: selectedLawCellId[3],
+        id_type: document.getElementById("inputLawGroup3").value
+      }
+    }
+    //console.log(newLaw)
+    patchData(undefined, `http://localhost:5000/api/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
+    
   }
 
   const selectLaw = (selectedLaw) => {
 
 
-    //console.log(law)
+    //console.log(selectedLaw)
 
     const lawCells = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
 
-    getAllCellData(lawCells,headers,afterSelectSearch)
+    getAllCellData(lawCells,headers,afterSelectSearch,selectedLaw)
   }
 
-  const afterSelectSearch = (cells) => {
+  const afterSelectSearch = (cells,selectedLaw) => {
 
-    selectedLawState.setSelectedLaw(cells)
+    selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:cells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
   }
 
   const deleteLaw = (law) => {
@@ -526,11 +550,12 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     lawsMarkup = lawsState.laws.map(law => {
     lawsCounter += 1 
 
-    const lawCellsIds = [law.first_element,law.second_element,law.third_element,law.fourth_element]
-    const selectedLawCellIds = selectedLawState.selectedLaw.map(cell => cell.id_value)
+    // const lawCellsIds = [law.first_element,law.second_element,law.third_element,law.fourth_element]
+    // const selectedLawCellIds = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
     //const isCurrent = false
 
-    const isCurrent = JSON.stringify(selectedLawCellIds) === JSON.stringify(lawCellsIds)
+    //console.log(selectedLawState.selectedLaw.id_type,law.id_type)
+    const isCurrent = selectedLawState.selectedLaw.id_law === law.id_law
 
     return ( 
       <tr key={law.id_law}>

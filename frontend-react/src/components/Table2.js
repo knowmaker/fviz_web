@@ -13,7 +13,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
 
   const [hoveredCell, setHoveredCell] = useState(null);
 
-  //console.log(selectedLawState.selectedLaw)
+  //console.log(selectedLawState.selectedLaw.cells)
 
   const hoveredCellState = {hoveredCell, setHoveredCell}
 
@@ -110,7 +110,8 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0
 
-  let selectedLawCellsLTId = selectedLawState.selectedLaw.map(cell => cell.id_lt)
+  //console.log( selectedLawState.selectedLaw)
+  let selectedLawCellsLTId = selectedLawState.selectedLaw.cells.map(cell => cell.id_lt)
   if (hoveredCellState.hoveredCell !== null && selectedLawCellsLTId.length >= 1 && selectedLawCellsLTId.length < 3) {
     selectedLawCellsLTId.push(hoveredCellState.hoveredCell)
   }
@@ -235,20 +236,35 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
 
 
 
-      if (selectedLawState.selectedLaw.map(cell=>cell.id_lt).find(cellId => cellId === selectedCellData.id_lt) === undefined && selectedLawState.selectedLaw.length < 2) {
-        selectedLawState.setSelectedLaw(currentCells => [...currentCells,selectedCellData] );
+      if (selectedLawState.selectedLaw.cells.map(cell=>cell.id_lt).find(cellId => cellId === selectedCellData.id_lt) === undefined && selectedLawState.selectedLaw.cells.length < 2) {
+        selectedLawState.setSelectedLaw(
+        {
+          law_name: null,
+          cells:[...selectedLawState.selectedLaw.cells,selectedCellData],
+          id_type: null,
+        } 
+        );
       }
      
-      if (selectedLawState.selectedLaw.map(cell=>cell.id_lt).find(cellId => cellId === selectedCellData.id_lt) === undefined && selectedLawState.selectedLaw.length === 2) {
-        const selectedLawCellsLTId = selectedLawState.selectedLaw.map(cell => cell.id_lt)
+      if (selectedLawState.selectedLaw.cells.map(cell=>cell.id_lt).find(cellId => cellId === selectedCellData.id_lt) === undefined && selectedLawState.selectedLaw.cells.length === 2) {
+        const selectedLawCellsLTId = selectedLawState.selectedLaw.cells.map(cell => cell.id_lt)
         selectedLawCellsLTId.push(selectedCellData.id_lt)
         const fourthCellData = tableState.tableData.find(cell => cell.id_lt === findFourthCell(selectedLawCellsLTId))
-        selectedLawState.setSelectedLaw(currentCells => [...currentCells,selectedCellData,fourthCellData] );
+        selectedLawState.setSelectedLaw(
+          {
+            law_name: null,
+            cells:[...selectedLawState.selectedLaw.cells,selectedCellData,fourthCellData],
+            id_type: null,
+          } 
+          );
+        //[...currentCells,selectedCellData,fourthCellData]
+
+
 
         const headers = {
           Authorization: `Bearer ${userInfoState.userToken}`
         }    
-        getAllCellData([...selectedLawState.selectedLaw,selectedCellData,fourthCellData].map(cell=>cell.id_value),headers,checkLaw)
+        getAllCellData([...selectedLawState.selectedLaw.cells,selectedCellData,fourthCellData].map(cell=>cell.id_value),headers,checkLaw)
 
       }
 
@@ -257,7 +273,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
   const checkLaw = (cells) => {
 
 
-    console.log(cells)
+    //console.log(cells)
 
     const firstThirdCellsMLTI = {
       M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
@@ -287,7 +303,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
   const handleCellHover = (event, cellId) => {
 
     hoveredCellState.setHoveredCell(cellId)
-    //console.log(selectedLawState.selectedLaw)
+    //console.log(selectedLawState.selectedLaw.cells)
   }
 
 
