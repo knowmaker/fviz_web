@@ -16,15 +16,15 @@ class RepresentsController < ApplicationController
     if represent.save
       render json: {data: represent}, status: :created
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: represent.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   def update
     if @represent.update(represent_params)
-      render json: @represent, status: :ok
+      render json: {data: @represent}, status: :ok
     else
-      render json: 'Failed to update represent', status: :unprocessable_entity
+      render json: {error: @represent.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

@@ -19,7 +19,7 @@ class GkSettingsController < ApplicationController
     if @gk_setting.update(gk_setting_params)
       render json: {data: @gk_setting}, status: :ok
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: @gk_setting.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
