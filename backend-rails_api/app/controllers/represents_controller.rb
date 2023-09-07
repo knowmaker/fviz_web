@@ -2,7 +2,7 @@
 
 # Контроллер для работы с представлениями ФВ
 class RepresentsController < ApplicationController
-  before_action :authorize_request, except: %i[represent_view_index lt_values]
+  before_action :authorize_request
   before_action :set_represent, only: %i[update destroy represent_view_show]
 
   def index
@@ -36,13 +36,21 @@ class RepresentsController < ApplicationController
   def represent_view_index
     represent_id = @current_user ? @current_user.represents.first : 1
     quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_quantities).flatten
-    active_quantities = Quantity.where(id_value: quantity_ids)
-                                .left_joins(:lt)
-                                .select('quantity.id_value, quantity.value_name, quantity.symbol, quantity.unit,
-                                 quantity.id_lt, quantity.id_gk,
-                                 quantity.mlti_sign, lt.lt_sign')
-                                .order('quantity.id_lt').all
-    render json: {data: active_quantities}, status: :ok
+    # Выбираем все записи из таблицы lt
+    all_lt_records = Lt.all.select('lt.id_lt, lt.lt_sign')
+
+    # Выбираем записи из таблицы Quantity, которые пересекаются с quantity_ids
+    matching_quantity_records = Quantity.left_joins(:lt)
+                                        .where(id_value: quantity_ids)
+
+    # Преобразуем результаты запросов в массивы
+    all_lt_array = all_lt_records.map { |lt| lt.attributes }
+    matching_quantity_array = matching_quantity_records.map { |quantity| quantity.attributes }
+
+    # Объединяем массивы
+    combined_records = all_lt_array + matching_quantity_array
+
+    render json: { data: combined_records }, status: :ok
   end
 
   def represent_view_show
