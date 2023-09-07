@@ -64,9 +64,12 @@ class LawsController < ApplicationController
 
   def law_params
     law_params = params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_type)
-    combination = [params[:law][:first_element], params[:law][:second_element], params[:law][:third_element],
-                   params[:law][:fourth_element]]
-    law_params[:combination] = combination.sort
+
+    if action_name == 'create'
+      combination = [params[:law][:first_element], params[:law][:second_element], params[:law][:third_element],
+                     params[:law][:fourth_element]]
+      law_params[:combination] = combination.sort
+    end
     law_params
   end
 end

@@ -13,11 +13,11 @@ class Law < ApplicationRecord
   belongs_to :fourth_element_quantity, class_name: 'Quantity', foreign_key: 'fourth_element'
 
   validates :law_name, presence: true
-  validates :first_element, :second_element, :third_element, :fourth_element, presence: true , numericality: { only_integer: true }
-  validates :id_user, presence: true
+  validates :first_element, :second_element, :third_element, :fourth_element, presence: true , numericality: { only_integer: true }, on: :create
+  validates :id_user, presence: true, on: :create
   validates :id_type, numericality: { only_integer: true }, allow_nil: true
-  validates :combination, presence: true
-  validate :unique_combination_user
+  validates :combination, presence: true, on: :create
+  validate :unique_combination_user, on: :create
 
   private
   def unique_combination_user
