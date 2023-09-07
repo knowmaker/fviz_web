@@ -2,9 +2,8 @@
 
 # Контроллер для получения и работы с настройками цвета слоев
 class GkSettingsController < ApplicationController
-  before_action :authorize_request, only: %i[show update]
+  before_action :authorize_request
   before_action :set_gk_setting, only: %i[show update]
-  skip_before_action :authorize_request, only: :index
 
   def index
     user_id = @current_user ? @current_user.id_user : 1

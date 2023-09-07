@@ -15,8 +15,8 @@ class ApplicationController < ActionController::API
       rescue ActiveRecord::RecordNotFound, JWT::DecodeError
         render json: {error: ['Unauthorized']}, status: :unauthorized
       end
-    else
-      render json: { error: ['No authorization token found'] }, status: :unauthorized
+    # else
+    #   render json: { error: ['No authorization token found'] }, status: :unauthorized
     end
   end
 

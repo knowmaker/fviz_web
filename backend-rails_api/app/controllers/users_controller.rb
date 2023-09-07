@@ -3,7 +3,7 @@
 # Контроллер для контроля обработки пользовательских регистраций и авторизаций
 class UsersController < ApplicationController
   include UserHelper
-  before_action :authorize_request, except: %i[create login confirm reset new_password]
+  before_action :authorize_request, only: %i[show update destroy]
   def create
     user = User.new(user_params)
     user.password = hash_password(params[:user][:password])
