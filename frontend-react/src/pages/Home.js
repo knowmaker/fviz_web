@@ -360,15 +360,25 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
     const firstName = document.getElementById("InputFirstName3").value
     const lastName = document.getElementById("InputLastName3").value 
     const patronymic = document.getElementById("InputPatronymic3").value
+    let password = document.getElementById("InputPassword3").value
 
-    const newUserData = {
+
+
+
+    let newUserData = {
       user: {
         last_name: firstName,
         first_name: lastName,
         patronymic: patronymic,
       }
-
+      
     }
+
+    if (password !== "") {
+      newUserData.user.password = password
+    }
+
+    //console.log(newUserData)
 
     const headers = {
       Authorization: `Bearer ${userInfoState.userToken}`
@@ -394,6 +404,8 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
 
         <label htmlFor="InputEmail3" className="form-label">Email address</label>
         <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com" disabled={true}/>
+        <label htmlFor="InputLastName3" className="form-label">New password</label>
+        <input type="password" className="form-control" id="InputPassword3" placeholder="Пароль"/>
         <label htmlFor="InputLastName3" className="form-label">Last name</label>
         <input type="text" className="form-control" id="InputLastName3" placeholder="Воронин"/>
         <label htmlFor="InputFirstName3" className="form-label">First name</label>
@@ -920,7 +932,6 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
           </div>
 
           <div className="modal-footer2">
-              <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button>
               <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Send</button>
           </div>
           </div>
