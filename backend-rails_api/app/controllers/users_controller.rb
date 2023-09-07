@@ -42,6 +42,10 @@ class UsersController < ApplicationController
 
   def update
     if @current_user.update(user_params)
+      if params[:user][:password].present?
+        @current_user.password = hash_password(params[:user][:password])
+        @current_user.save
+      end
       render json: {data: @current_user}, status: :ok
     else
       render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity

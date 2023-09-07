@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="json format">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" afterDir="false" />
-    </list>
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user password update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -212,31 +208,7 @@
       <workItem from="1693663031994" duration="9077000" />
       <workItem from="1693844808020" duration="12952000" />
       <workItem from="1693934615588" duration="2616000" />
-      <workItem from="1694070665778" duration="7514000" />
-    </task>
-    <task id="LOCAL-00026" summary="quantity update">
-      <option name="closed" value="true" />
-      <created>1692259826164</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1692259826164</updated>
-    </task>
-    <task id="LOCAL-00027" summary="font-size">
-      <option name="closed" value="true" />
-      <created>1692276089202</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1692276089202</updated>
-    </task>
-    <task id="LOCAL-00028" summary="editor alphabet">
-      <option name="closed" value="true" />
-      <created>1692279194986</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1692279194986</updated>
+      <workItem from="1694070665778" duration="10843000" />
     </task>
     <task id="LOCAL-00029" summary="rubymine settings">
       <option name="closed" value="true" />
@@ -606,7 +578,31 @@
       <option name="project" value="LOCAL" />
       <updated>1694077815475</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="law validates">
+      <option name="closed" value="true" />
+      <created>1694078756665</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1694078756665</updated>
+    </task>
+    <task id="LOCAL-00076" summary="gk_set &amp; law &amp; law_type &amp; represent validates">
+      <option name="closed" value="true" />
+      <created>1694081111364</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1694081111364</updated>
+    </task>
+    <task id="LOCAL-00077" summary="user password update">
+      <option name="closed" value="true" />
+      <created>1694081830358</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1694081830358</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,9 +620,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="swagger.yaml all" />
-    <MESSAGE value="swagger.yaml represents" />
-    <MESSAGE value="rename attributes" />
     <MESSAGE value="+ id_repr" />
     <MESSAGE value="rubocop" />
     <MESSAGE value="confirmation email" />
@@ -649,7 +642,10 @@
     <MESSAGE value="laws controller" />
     <MESSAGE value="db" />
     <MESSAGE value="json format" />
-    <option name="LAST_COMMIT_MESSAGE" value="json format" />
+    <MESSAGE value="law validates" />
+    <MESSAGE value="gk_set &amp; law &amp; law_type &amp; represent validates" />
+    <MESSAGE value="user password update" />
+    <option name="LAST_COMMIT_MESSAGE" value="user password update" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694075706935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
