@@ -36,22 +36,23 @@ class RepresentsController < ApplicationController
   def represent_view_index
     represent_id = @current_user ? @current_user.represents.first : 1
     quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_quantities).flatten
-    active_quantities = Quantity.where(id_value: quantity_ids)
-                                .left_joins(:lt)
+    active_quantities = Quantity.joins('RIGHT JOIN lt ON quantity.id_lt = lt.id_lt')
+                                .where('quantity.id_value IN (?) OR quantity.id_value IS NULL', quantity_ids)
                                 .select('quantity.id_value, quantity.value_name, quantity.symbol, quantity.unit,
-                                 quantity.id_lt, quantity.id_gk,
+                                 lt.id_lt, quantity.id_gk,
                                  quantity.mlti_sign, lt.lt_sign')
-                                .order('quantity.id_lt').all
+                                .order('lt.id_lt').all
     render json: {data: active_quantities}, status: :ok
   end
 
   def represent_view_show
     quantity_ids = @represent.active_quantities.flatten
-    active_quantities = Quantity.where(id_value: quantity_ids)
-                                .left_joins(:lt)
+    active_quantities = Quantity.joins('RIGHT JOIN lt ON quantity.id_lt = lt.id_lt')
+                                .where('quantity.id_value IN (?) OR quantity.id_value IS NULL', quantity_ids)
                                 .select('quantity.id_value, quantity.value_name, quantity.symbol, quantity.unit,
-                                 quantity.id_lt, quantity.id_gk, quantity.mlti_sign, lt.lt_sign')
-                                .order('quantity.id_lt').all
+                                 lt.id_lt, quantity.id_gk,
+                                 quantity.mlti_sign, lt.lt_sign')
+                                .order('lt.id_lt').all
     json_output = {
       represent_id: @represent.id_repr,
       represent_title: @represent.title,
