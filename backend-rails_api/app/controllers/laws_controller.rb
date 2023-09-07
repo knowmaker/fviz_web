@@ -28,17 +28,18 @@ class LawsController < ApplicationController
   end
 
   def create
-    combination = [params[:law][:first_element], params[:law][:first_element], params[:law][:first_element],
-                   params[:law][:first_element]]
-    law = Law.find_by(combination: combination.sort, id_user: @current_user.id_user)
-    render json: 'Law already exists', status: :unprocessable_entity and return if law
-
+    # combination = [params[:law][:first_element], params[:law][:first_element], params[:law][:first_element],
+    #                params[:law][:first_element]]
+    # law = Law.find_by(combination: combination.sort, id_user: @current_user.id_user)
+    # render json: 'Law already exists', status: :unprocessable_entity and return if law
+    # law_params[:combination] = combination
+    # p law_params
     law = @current_user.laws.new(law_params)
 
     if law.save
       render json: {data: law}, status: :created
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: law.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -46,7 +47,7 @@ class LawsController < ApplicationController
     if @law.update(law_params)
       render json: {data: @law}, status: :ok
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: @law.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -62,6 +63,13 @@ class LawsController < ApplicationController
   end
 
   def law_params
-    params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_type)
+    law_params = params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_type)
+
+    if action_name == 'create'
+      combination = [params[:law][:first_element], params[:law][:second_element], params[:law][:third_element],
+                     params[:law][:fourth_element]]
+      law_params[:combination] = combination.sort
+    end
+    law_params
   end
 end

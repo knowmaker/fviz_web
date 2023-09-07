@@ -39,7 +39,7 @@ class QuantitiesController < ApplicationController
       merged_quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(quantity.id)
       render json: {data: merged_quantity}, status: :created
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: quantity.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -53,7 +53,7 @@ class QuantitiesController < ApplicationController
       @quantity.reload
       render json: {data: @quantity}, status: :ok
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: @quantity.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

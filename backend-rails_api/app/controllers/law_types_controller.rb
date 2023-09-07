@@ -35,7 +35,7 @@ class LawTypesController < ApplicationController
     if law_type.save
       render json: {data: law_type}, status: :created
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: law_type.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -48,7 +48,7 @@ class LawTypesController < ApplicationController
     if @law_type.update(law_type_params)
       render json: {data: @law_type}, status: :ok
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: @law_type.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
