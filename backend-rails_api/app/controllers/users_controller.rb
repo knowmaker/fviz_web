@@ -41,6 +41,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    @current_user.password = hash_password(params[:user][:password])
     if @current_user.update(user_params)
       render json: {data: @current_user}, status: :ok
     else
