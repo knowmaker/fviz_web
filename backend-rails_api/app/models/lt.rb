@@ -5,4 +5,8 @@ class Lt < ApplicationRecord
   self.table_name = 'lt'
 
   has_many :quantities, foreign_key: 'id_lt'
+
+  validates :l_indicate, presence: true, numericality: { only_integer: true }
+  validates :t_indicate, presence: true, numericality: { only_integer: true }
+  validates :lt_sign, length: { maximum: 50 }
 end

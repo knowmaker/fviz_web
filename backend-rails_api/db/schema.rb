@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.integer "id_lt", null: false
     t.integer "id_gk", null: false
     t.string "mlti_sign", limit: 100
+    t.index ["id_lt", "id_gk"], name: "idx_unique_id_lt_id_gk", unique: true
   end
 
   create_table "represents", primary_key: "id_repr", id: :serial, force: :cascade do |t|
