@@ -28,7 +28,15 @@ export default function Home() {
     const [isTableViewsModalVisible, setTableViewsModalVisibility] = useState(false);
     const tableViewsModalVisibility = {isVisible: isTableViewsModalVisible, setVisibility: setTableViewsModalVisibility}
 
-    const modalsVisibility={regModalVisibility,editProfileModalVisibility,editCellModalVisibility,lawsModalVisibility,tableViewsModalVisibility}
+    const [isLawsGroupsModalVisible, setLawsGroupsModalVisibility] = useState(false);
+    const lawsGroupsModalVisibility = {isVisible: isLawsGroupsModalVisible, setVisibility: setLawsGroupsModalVisibility}
+        
+    const [isGKColorsEditModalVisible, setGKColorsEditModalVisibility] = useState(false);
+    const GKColorsEditModalVisibility = {isVisible: isGKColorsEditModalVisible, setVisibility: setGKColorsEditModalVisibility}
+
+    const modalsVisibility={regModalVisibility,editProfileModalVisibility,
+                            editCellModalVisibility,lawsModalVisibility,
+                            tableViewsModalVisibility,lawsGroupsModalVisibility,GKColorsEditModalVisibility}
 
 
     const [tableData, setTableData] = useState([]);
@@ -770,11 +778,129 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   )
 }
 
-function LawsGroupsModal({modalsVisibility}) {
+function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 
-  return null;
+  const userInfoState = useContext(UserProfile)
+  //const tableState = useContext(TableContext)  
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }    
+  const lawsGroups = lawsGroupsState.lawsGroups
+  const setLawsGroups = lawsGroupsState.setLawsGroups
+  //console.log(lawsGroups)
+
+  const [selectedLawGroup, setSelectedLawGroup] = useState({ type_name:null,id_type:null})
+
+  const selectLawGroup = (group) => {
+    setSelectedLawGroup(group)
+
+    document.getElementById("InputLawGroupName3").value = group.type_name
+  }
+
+  const updateLawGroup = () => {
+
+    const lawGroupName = document.getElementById("InputLawGroupName3").value
+
+    const newLawGroup = {
+      law_type: {
+        type_name: lawGroupName
+      }
+    }
+
+    putData(undefined,`http://localhost:5000/api/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
+  }
+
+  const deleteLawGroup = (group) => {
+    
+    deleteData(undefined,`http://localhost:5000/api/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
+  }
+
+  const afterDeleteLawGroup = () => {
+
+    getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+  }
+
+  const createLawGroup = () => {
+    
+    const lawGroupName = document.getElementById("InputLawGroupName3").value
+
+    const newLawGroup = {
+      law_type: {
+        type_name: lawGroupName
+      }
+    }
+
+    postData(undefined, `http://localhost:5000/api/law_types`, newLawGroup, headers, afterCreateLawGroup)
+
+  }
+
+  const afterCreateLawGroup = () => {
+    getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+  }
+  
+  let lawsGroupsMarkup
+  let lawsGroupsCounter = 0
+  if (lawsGroups) {
+    lawsGroupsMarkup = lawsGroups.map(group => {
+    lawsGroupsCounter += 1 
+
+    const isCurrent = selectedLawGroup.id_type === group.id_type
+
+    return (
+      <tr key={group.id_type}>
+        <th scope="row" className='small-cell'>{isCurrent ? lawsGroupsCounter + `+` : lawsGroupsCounter}</th>
+        <td>{group.type_name}</td>
+        <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLawGroup(group)}>↓</button></td>
+        <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLawGroup(group)}>🗑</button></td>
+      </tr>
+    );
+  })
+  } else {lawsGroupsMarkup = null}
+
+
+
+  return (
+    <Modal
+      modalVisibility={modalsVisibility.lawsGroupsModalVisibility}
+      title={"Laws groups"}
+      hasBackground={false}
+      sizeX={600}
+      >
+      <div className="modal-content2">
+
+      <div className="row">
+        <div className="col-5">
+          <input type="text" className="form-control" id="InputLawGroupName3" placeholder="Group 1"/>
+        </div>
+        <div className="col-3">
+        <button type="button" className="btn btn-primary" onClick={() => createLawGroup()}>create new</button>
+        </div>
+        <div className="col-4">
+        <button type="button" className="btn btn-success" onClick={() => updateLawGroup()}>update current</button>
+        </div>
+      </div>
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Select</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lawsGroupsMarkup}
+        </tbody>
+      </table>
+      </div>
+      <div className="modal-footer2">
+        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.lawsGroupsModalVisibility.setVisibility(false)}>Close</button>
+      </div>
+
+      </Modal>
+  )
 }
-
 
 function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
 

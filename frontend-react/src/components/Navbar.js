@@ -85,6 +85,14 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
         modalsVisibility.lawsModalVisibility.setVisibility(true)
     }
 
+    const openLawsGroupsForm = () => {
+        modalsVisibility.lawsGroupsModalVisibility.setVisibility(true)
+    }
+
+    const openGKColorsEditForm = () => {
+        modalsVisibility.GKColorsEditModalVisibility.setVisibility(true)
+    }
+
 
     let loginButtons;
 
@@ -124,6 +132,8 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
                         <div className="nav-link active" aria-current="page" onClick={openEditForm}>Edit</div>
                         <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}>table views</div>
                         <div className="nav-link active" aria-current="page" onClick={openLawsForm}>laws</div>
+                        <div className="nav-link active" aria-current="page" onClick={openLawsGroupsForm}>Edit laws groups</div>
+                        <div className="nav-link active" aria-current="page" onClick={openGKColorsEditForm}>Edit layer colors</div>
                     </div>
                 </div>
                 <div className="navbar-text">
