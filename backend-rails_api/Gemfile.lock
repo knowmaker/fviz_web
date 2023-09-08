@@ -74,6 +74,9 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
+    combine_pdf (1.0.23)
+      matrix
+      ruby-rc4 (>= 0.1.5)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
     date (3.3.3)
@@ -88,6 +91,9 @@ GEM
       rake
     globalid (1.1.0)
       activesupport (>= 5.0)
+    grover (1.1.5)
+      combine_pdf (~> 1.0)
+      nokogiri (~> 1.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
@@ -105,6 +111,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
+    matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.19.0)
@@ -196,6 +203,7 @@ GEM
     rswag-ui (2.10.1)
       actionpack (>= 3.1, < 7.1)
       railties (>= 3.1, < 7.1)
+    ruby-rc4 (0.1.5)
     thor (1.2.2)
     timeout (0.4.0)
     tzinfo (2.0.6)
@@ -214,6 +222,7 @@ DEPENDENCIES
   argon2
   bootsnap
   debug
+  grover
   jwt
   pg (~> 1.1)
   puma (~> 5.0)

@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="rubocop models">
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user controllers">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/Gemfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/helpers/quantities_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/helpers/quantities_helper.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,14 +218,6 @@
       <workItem from="1693934615588" duration="2616000" />
       <workItem from="1694070665778" duration="11303000" />
       <workItem from="1694098390375" duration="3684000" />
-    </task>
-    <task id="LOCAL-00036" summary="db v_new_final-today2">
-      <option name="closed" value="true" />
-      <created>1692363008113</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1692363008113</updated>
     </task>
     <task id="LOCAL-00037" summary="quantity spec update after debug">
       <option name="closed" value="true" />
@@ -606,7 +603,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694182043067</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL-00085" summary="user controllers">
+      <option name="closed" value="true" />
+      <created>1694183376304</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1694183376304</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,7 +629,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="user api-docs" />
     <MESSAGE value="auto deleting user acc" />
     <MESSAGE value="auto deleting user acc 2" />
     <MESSAGE value="auto deleting user acc 3" />
@@ -649,9 +653,10 @@
     <MESSAGE value="validations and db" />
     <MESSAGE value="rubocop controllers" />
     <MESSAGE value="rubocop models" />
-    <option name="LAST_COMMIT_MESSAGE" value="rubocop models" />
+    <MESSAGE value="user controllers" />
+    <option name="LAST_COMMIT_MESSAGE" value="user controllers" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694173103284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694185403547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>

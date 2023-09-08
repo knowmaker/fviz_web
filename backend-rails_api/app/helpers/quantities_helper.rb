@@ -4,7 +4,7 @@ module QuantitiesHelper
   def generate_html_table(quantities)
     grouped_quantities = quantities.group_by(&:gk_sign)
 
-    html = "<html><head><title>Quantities Tables</title>"
+    html = "<html lang='en'><head><meta charset='UTF-8'><title>Quantities Tables</title>"
     html += "<style>
               table {
                 border-collapse: collapse;
@@ -23,7 +23,7 @@ module QuantitiesHelper
 
     grouped_quantities.each do |gk_sign, quantities_group|
       html += "<h1>Quantities Table for GK Sign: #{gk_sign}</h1>"
-      html += "<table><thead><tr><th>Name</th><th>Value</th><th>Unit</th></tr></thead><tbody>"
+      html += "<table><thead><tr><th>Name</th><th>Value</th><th>Unit</th><th>MLTI</th></tr></thead><tbody>"
 
       quantities_group.each do |quantity|
         html += <<-HTML

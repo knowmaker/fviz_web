@@ -15,7 +15,9 @@ class QuantitiesController < ApplicationController
     @quantities = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*')
 
     html_content = generate_html_table(@quantities)
-    send_data html_content, filename: 'quantities_table.html', type: 'text/html', disposition: 'attachment'
+    pdf = Grover.new(html_content, format: 'A4', encoding: 'UTF-8').to_pdf
+
+    send_data pdf, filename: 'quantities_table.pdf', type: 'application/pdf', disposition: 'attachment'
   end
 
   def show
