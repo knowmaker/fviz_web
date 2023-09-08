@@ -8,10 +8,9 @@ class User < ApplicationRecord
   has_many :laws, foreign_key: 'id_user'
   has_many :represents, foreign_key: 'id_user'
 
-
   validates :email, presence: true, length: { maximum: 100 },
-            format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
-            uniqueness: { case_sensitive: false }
+                    format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
+                    uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 8 }
   validates :last_name, :first_name, :patronymic, length: { maximum: 100 }
   validates :role, inclusion: { in: [true, false] }

@@ -13,7 +13,8 @@ class Law < ApplicationRecord
   belongs_to :fourth_element_quantity, class_name: 'Quantity', foreign_key: 'fourth_element'
 
   validates :law_name, presence: true
-  validates :first_element, :second_element, :third_element, :fourth_element, presence: true , numericality: { only_integer: true }, on: :create
+  validates :first_element, :second_element, :third_element, :fourth_element, presence: true,
+                                                                              numericality: { only_integer: true }, on: :create
   validates :id_user, presence: true, on: :create
   validates :id_type, numericality: { only_integer: true }, allow_nil: true
   validates :combination, presence: true, on: :create
@@ -21,9 +22,10 @@ class Law < ApplicationRecord
   # validates :combination, uniqueness: { scope: :id_user }, on: :create тоже самое, что выше
 
   private
+
   def unique_combination_user
-    if Law.where(id_user: id_user, combination: combination).where.not(id_law: id_law).exists?
-      errors.add(:combination, "Комбинация пользователя и закона должна быть уникальной")
+    if Law.where(id_user:, combination:).where.not(id_law:).exists?
+      errors.add(:combination, 'Комбинация пользователя и закона должна быть уникальной')
     end
   end
 end

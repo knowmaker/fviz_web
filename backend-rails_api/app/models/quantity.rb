@@ -14,9 +14,10 @@ class Quantity < ApplicationRecord
 
   validates :value_name, length: { maximum: 200 }
   validates :symbol, length: { maximum: 100 }
-  validates :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto, presence: true, numericality: { only_integer: true}
+  validates :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto, presence: true,
+                                                                                    numericality: { only_integer: true }
   validates :unit, length: { maximum: 200 }
   validates :id_lt, :id_gk, presence: true, numericality: { only_integer: true }
   validates :mlti_sign, length: { maximum: 100 }
-  validates :id_gk, uniqueness: { scope: :id_lt, message: "должен быть уникальным в сочетании с LT" }
+  validates :id_gk, uniqueness: { scope: :id_lt, message: 'должен быть уникальным в сочетании с LT' }
 end

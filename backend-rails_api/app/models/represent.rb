@@ -12,7 +12,13 @@ class Represent < ApplicationRecord
   validate :active_quantities_array
 
   private
+
   def active_quantities_array
-    errors.add(:active_quantities, "должны быть целыми числами") unless active_quantities.is_a?(Array) && active_quantities.all? { |q| q.is_a?(Integer) }
+    unless active_quantities.is_a?(Array) && active_quantities.all? do |q|
+             q.is_a?(Integer)
+           end
+      errors.add(:active_quantities,
+                 'должны быть целыми числами')
+    end
   end
 end
