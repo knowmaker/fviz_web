@@ -7,24 +7,24 @@ class RepresentsController < ApplicationController
 
   def index
     represents = @current_user.represents.select('represents.id_repr, represents.title')
-    render json: {data: represents}, status: :ok
+    render json: { data: represents }, status: :ok
   end
 
   def create
     represent = @current_user.represents.new(represent_params)
 
     if represent.save
-      render json: {data: represent}, status: :created
+      render json: { data: represent }, status: :created
     else
-      render json: {error: represent.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: represent.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
     if @represent.update(represent_params)
-      render json: {data: @represent}, status: :ok
+      render json: { data: @represent }, status: :ok
     else
-      render json: {error: @represent.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: @represent.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -42,7 +42,7 @@ class RepresentsController < ApplicationController
                                  lt.id_lt, quantity.id_gk,
                                  quantity.mlti_sign, lt.lt_sign')
                                 .order('lt.id_lt').all
-    render json: {data: active_quantities}, status: :ok
+    render json: { data: active_quantities }, status: :ok
   end
 
   def represent_view_show
@@ -59,15 +59,15 @@ class RepresentsController < ApplicationController
       active_quantities: format_active_quantities(active_quantities)
     }
 
-    render json: {data: json_output}, status: :ok
+    render json: { data: json_output }, status: :ok
   end
 
   def lt_values
     quantities = Quantity.where(id_lt: params[:id])
     if quantities.any?
-      render json: {data: quantities}, status: :ok
+      render json: { data: quantities }, status: :ok
     else
-      render json: {error: ['No quantities found for the given id_lt']}, status: :not_found
+      render json: { error: ['В данной ячейке нет величин'] }, status: :not_found
     end
   end
 

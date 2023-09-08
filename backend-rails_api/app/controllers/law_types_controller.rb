@@ -7,54 +7,54 @@ class LawTypesController < ApplicationController
 
   def index
     # unless @current_user.role
-    #   render json: {error: ['Only admins can see all law types list']}, status: :unauthorized
+    #   render json: {error: ['Только админ может просматривать список типов законов']}, status: :unauthorized
     #   return
     # end
     #
     law_types = LawType.all
-    render json: {data: law_types}, status: :ok
+    render json: { data: law_types }, status: :ok
   end
 
   def show
     # unless @current_user.role
-    #   render json: {error: ['Only admins can see to law type']}, status: :unauthorized
+    #   render json: {error: ['Только админ просматривать тип закона']}, status: :unauthorized
     #   return
     # end
 
-    render json: {data: @law_type}, status: :ok
+    render json: { data: @law_type }, status: :ok
   end
 
   def create
     # unless @current_user.role
-    #   render json: {error: ['Only admins can create law type']}, status: :unauthorized
+    #   render json: {error: ['Только админ может создавать законы']}, status: :unauthorized
     #   return
     # end
 
     law_type = LawType.new(law_type_params)
 
     if law_type.save
-      render json: {data: law_type}, status: :created
+      render json: { data: law_type }, status: :created
     else
-      render json: {error: law_type.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: law_type.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
     # unless @current_user.role
-    #   render json: {error: ['Only admins can update law type']}, status: :unauthorized
+    #   render json: {error: ['Только админ может обновлять законы']}, status: :unauthorized
     #   return
     # end
 
     if @law_type.update(law_type_params)
-      render json: {data: @law_type}, status: :ok
+      render json: { data: @law_type }, status: :ok
     else
-      render json: {error: @law_type.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: @law_type.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def destroy
     # unless @current_user.role
-    #   render json: {error: ['Only admins can delete law type']}, status: :unauthorized
+    #   render json: {error: ['Только админ может удалять законы']}, status: :unauthorized
     #   return
     # end
 

@@ -13,9 +13,9 @@ class UsersController < ApplicationController
       ConfirmationMailer.confirmation_email(user).deliver_now
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
-      render json: {data: user}, status: :created
+      render json: { data: user }, status: :created
     else
-      render json: {error: user.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -26,18 +26,18 @@ class UsersController < ApplicationController
 
       # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(id_user: @user.id_user)
-      render json: {data: token}, status: :ok
+      render json: { data: token }, status: :ok
     elsif !@user
-      render json: {error: ['Пользователь не найден']}, status: :not_found
+      render json: { error: ['Пользователь не найден'] }, status: :not_found
     elsif !@user.confirmed
-      render json: {error: ['Email не подтвержден']}, status: :unauthorized
+      render json: { error: ['Email не подтвержден'] }, status: :unauthorized
     else
-      render json: {error: ['Неправильный логин или пароль']}, status: :unauthorized
+      render json: { error: ['Неправильный логин или пароль'] }, status: :unauthorized
     end
   end
 
   def show
-    render json: {data: @current_user}, status: :ok
+    render json: { data: @current_user }, status: :ok
   end
 
   def update
@@ -46,9 +46,9 @@ class UsersController < ApplicationController
         @current_user.password = hash_password(params[:user][:password])
         @current_user.save
       end
-      render json: {data: @current_user}, status: :ok
+      render json: { data: @current_user }, status: :ok
     else
-      render json: {error: @current_user.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: @current_user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -75,9 +75,9 @@ class UsersController < ApplicationController
 
       head :ok
     elsif !user.confirmed
-      render json: {error: ['Email не подтвержден']}, status: :unauthorized
+      render json: { error: ['Email не подтвержден'] }, status: :unauthorized
     else
-      render json: {error: ['Пользователь не найден']}, status: :not_found
+      render json: { error: ['Пользователь не найден'] }, status: :not_found
     end
   end
 
