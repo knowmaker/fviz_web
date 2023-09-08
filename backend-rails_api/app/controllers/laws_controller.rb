@@ -6,27 +6,54 @@ class LawsController < ApplicationController
   before_action :set_law, only: %i[show update destroy]
 
   def index
-    laws = @current_user.laws.all
-    render json: laws, status: :ok
+    laws = @current_user.laws.joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.type_name').all
+    render json: {data: laws}, status: :ok
   end
 
   def show
-    render json: @law, status: :ok
+    @law = @current_user.laws
+                        .joins(
+                          'LEFT JOIN quantity AS first_element_quantities ON laws.first_element = first_element_quantities.id_value',
+                          'LEFT JOIN quantity AS second_element_quantities ON laws.second_element = second_element_quantities.id_value',
+                          'LEFT JOIN quantity AS third_element_quantities ON laws.third_element = third_element_quantities.id_value',
+                          'LEFT JOIN quantity AS fourth_element_quantities ON laws.fourth_element = fourth_element_quantities.id_value'
+                        )
+                        .select(
+                          Law.column_names - ['combination'],
+                          'CONCAT_WS(\' * \', first_element_quantities.value_name, second_element_quantities.value_name, third_element_quantities.value_name, fourth_element_quantities.value_name) AS text_formula',
+                          'CONCAT_WS(\' * \', first_element_quantities.symbol, second_element_quantities.symbol, third_element_quantities.symbol, fourth_element_quantities.symbol) AS formula'
+                        ).find(params[:id])
+
+    render json: {data: @law}, status: :ok
   end
 
   def create
+    # combination = [params[:law][:first_element], params[:law][:first_element], params[:law][:first_element],
+    #                params[:law][:first_element]]
+    # law = Law.find_by(combination: combination.sort, id_user: @current_user.id_user)
+    # render json: 'Law already exists', status: :unprocessable_entity and return if law
+    # law_params[:combination] = combination
+    # p law_params
     law = @current_user.laws.new(law_params)
 
     if law.save
-      render json: law, status: :created
+      render json: {data: law}, status: :created
     else
-      render json: 'Failed to create law', status: :unprocessable_entity
+      render json: {error: law.errors.full_messages}, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @law.update(law_params)
+      render json: {data: @law}, status: :ok
+    else
+      render json: {error: @law.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   def destroy
     @law.destroy
-    render json: 'Successfully deleted law', status: :ok
+    head :ok
   end
 
   private
@@ -36,6 +63,13 @@ class LawsController < ApplicationController
   end
 
   def law_params
-    params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_type)
+    law_params = params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_type)
+
+    if action_name == 'create'
+      combination = [params[:law][:first_element], params[:law][:second_element], params[:law][:third_element],
+                     params[:law][:fourth_element]]
+      law_params[:combination] = combination.sort
+    end
+    law_params
   end
 end

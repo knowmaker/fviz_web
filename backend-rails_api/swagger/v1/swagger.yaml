@@ -6,7 +6,9 @@ info:
 paths:
   "/api/gk_settings":
     get:
-      summary: list gk_settings
+      summary: list gk settings
+      tags:
+      - GK settings
       responses:
         '200':
           description: successful
@@ -18,27 +20,69 @@ paths:
       required: true
       schema:
         type: string
+    get:
+      summary: show GK setting
+      tags:
+      - GK settings
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
     patch:
-      summary: update gk_setting
+      summary: update GK setting
+      tags:
+      - GK settings
+      parameters: []
       responses:
         '200':
           description: successful
-    put:
-      summary: update gk_setting
-      responses:
-        '200':
-          description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gk_setting:
+                  type: object
+                  properties:
+                    gk_color:
+                      type: string
   "/api/law_types":
     get:
-      summary: list law_types
+      summary: list law types
+      tags:
+      - Law Types
       responses:
         '200':
           description: successful
     post:
-      summary: create law_type
+      summary: create law type
+      tags:
+      - Law Types
+      parameters: []
       responses:
-        '200':
-          description: successful
+        '201':
+          description: created
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                law_type:
+                  type: object
+                  properties:
+                    type_name:
+                      type: string
+                  required:
+                  - type_name
   "/api/law_types/{id}":
     parameters:
     - name: id
@@ -47,21 +91,47 @@ paths:
       required: true
       schema:
         type: string
-    patch:
-      summary: update law_type
+    get:
+      summary: show law type
+      tags:
+      - Law Types
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
     put:
-      summary: update law_type
+      summary: update law type
+      tags:
+      - Law Types
+      parameters: []
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                law_type:
+                  type: object
+                  properties:
+                    type_name:
+                      type: string
     delete:
-      summary: delete law_type
+      summary: delete law type
+      tags:
+      - Law Types
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
   "/api/laws":
     get:
       summary: list laws
@@ -125,7 +195,7 @@ paths:
           description: successful
         '404':
           description: not found
-    put:
+    patch:
       summary: update law
       tags:
       - Laws
@@ -148,14 +218,6 @@ paths:
                   properties:
                     law_name:
                       type: string
-                    first_element:
-                      type: integer
-                    second_element:
-                      type: integer
-                    third_element:
-                      type: integer
-                    fourth_element:
-                      type: integer
                     id_type:
                       type: integer
     delete:
@@ -168,6 +230,15 @@ paths:
         '404':
           description: not found
   "/api/quantities":
+    get:
+      summary: list quantities
+      tags:
+      - Quantities
+      responses:
+        '200':
+          description: successful
+        '500':
+          description: server error
     post:
       summary: create quantity
       tags:
@@ -218,15 +289,6 @@ paths:
                   - l_indicate
                   - t_indicate
                   - id_gk
-    get:
-      summary: list quantities
-      tags:
-      - Quantities
-      responses:
-        '200':
-          description: successful
-        '500':
-          description: server error
   "/api/quantities/{id}":
     parameters:
     - name: id
@@ -421,20 +483,26 @@ paths:
       summary: login
       tags:
       - Users
-      parameters:
-      - name: email
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: password
-        in: query
-        required: true
-        schema:
-          type: string
+      parameters: []
       responses:
         '200':
           description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - password
   "/api/signup":
     post:
       summary: create user
@@ -450,22 +518,16 @@ paths:
             schema:
               type: object
               properties:
-                email:
-                  type: string
-                password:
-                  type: string
-                last_name:
-                  type: string
-                first_name:
-                  type: string
-                patronymic:
-                  type: string
-              required:
-              - email
-              - password
-              - last_name
-              - first_name
-              - patronymic
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - password
   "/api/profile":
     get:
       summary: show user
@@ -479,13 +541,7 @@ paths:
       summary: update user
       tags:
       - Users
-      parameters:
-      - name: id
-        in: path
-        description: id
-        required: true
-        schema:
-          type: string
+      parameters: []
       responses:
         '200':
           description: successful
@@ -501,6 +557,88 @@ paths:
                   type: string
                 patronymic:
                   type: string
+  "/api/delete":
+    delete:
+      summary: delete user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+  "/api/users/{id}/confirm":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    - name: confirmation_token
+      in: query
+      description: confirmation token
+      required: true
+      schema:
+        type: string
+    post:
+      summary: confirm email
+      tags:
+      - Users
+      responses:
+        '200':
+          description: email confirmed
+        '422':
+          description: invalid confirmation token
+  "/api/reset":
+    post:
+      summary: Send reset password email
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: email sent
+        '401':
+          description: email not confirmed
+        '404':
+          description: user not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                  required:
+                  - email
+  "/api/users/{id}/new_password":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    - name: confirmation_token
+      in: query
+      description: confirmation token
+      required: true
+      schema:
+        type: string
+    get:
+      summary: generate and send new password
+      tags:
+      - Users
+      responses:
+        '200':
+          description: new password generated and sent
+        '422':
+          description: invalid reset token
 components:
   securitySchemes:
     bearerAuth:

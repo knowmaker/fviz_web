@@ -8,7 +8,7 @@ class QuantitiesController < ApplicationController
 
   def index
     # unless @current_user.role
-    #   render json: 'Only admins can see all quantities list', status: :unauthorized
+    #   render json: {error: ['Only admins can see all quantities list']}, status: :unauthorized
     #   return
     # end
 
@@ -20,16 +20,16 @@ class QuantitiesController < ApplicationController
 
   def show
     # unless @current_user.role
-    #   render json: 'Only admins can see to quantity', status: :unauthorized
+    #   render json: {error: ['Only admins can see to quantity']}, status: :unauthorized
     #   return
     # end
 
-    render json: @quantity, status: :ok
+    render json: {data: @quantity}, status: :ok
   end
 
   def create
     # unless @current_user.role
-    #   render json: 'Only admins can create quantities', status: :unauthorized
+    #   render json: {error: ['Only admins can create quantities']}, status: :unauthorized
     #   return
     # end
 
@@ -37,35 +37,35 @@ class QuantitiesController < ApplicationController
 
     if quantity.save
       merged_quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(quantity.id)
-      render json: merged_quantity, status: :created
+      render json: {data: merged_quantity}, status: :created
     else
-      render json: 'Failed to create quantity', status: :unprocessable_entity
+      render json: {error: quantity.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   def update
     # unless @current_user.role
-    #   render json: 'Only admins can update quantities', status: :unauthorized
+    #   render json: {error: ['Only admins can update quantities']}, status: :unauthorized
     #   return
     # end
 
     if @quantity.update(quantity_params)
       @quantity.reload
-      render json: @quantity, status: :ok
+      render json: {data: @quantity}, status: :ok
     else
-      render json: 'Failed to update quantity', status: :unprocessable_entity
+      render json: {error: @quantity.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   def destroy
     # unless @current_user.role
-    #   render json: 'Only admins can delete quantities', status: :unauthorized
+    #   render json: {error: ['Only admins can delete quantities']}, status: :unauthorized
     #   return
     # end
     @quantity = Quantity.find(params[:id])
 
     @quantity.destroy
-    render json: 'Successfully deleted quantity', status: :ok
+    head :ok
   end
 
   private
@@ -88,7 +88,7 @@ class QuantitiesController < ApplicationController
     quantity_params.delete(:t_indicate)
 
     # if Quantity.exists?(id_lt: quantity_params[:id_lt], id_gk: quantity_params[:id_gk])
-    #   render json: { error: 'Combination of id_lt and id_gk already exists' }, status: :unprocessable_entity
+    #   render json: { error: ['Combination of id_lt and id_gk already exists'] }, status: :unprocessable_entity
     #   return
     # end
 

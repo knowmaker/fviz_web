@@ -71,7 +71,7 @@ RSpec.describe 'laws', type: :request do
       end
     end
 
-    put('update law') do
+    patch('update law') do
       tags 'Laws'
       consumes 'application/json'
       parameter name: :law, in: :body, schema: {
@@ -81,10 +81,6 @@ RSpec.describe 'laws', type: :request do
             type: :object,
             properties: {
               law_name: { type: :string },
-              first_element: { type: :integer },
-              second_element: { type: :integer },
-              third_element: { type: :integer },
-              fourth_element: { type: :integer },
               id_type: { type: :integer }
             }
           }

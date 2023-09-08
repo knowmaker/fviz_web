@@ -31,6 +31,7 @@ module QuantitiesHelper
           <td>#{quantity.value_name}</td>
           <td>#{quantity.symbol}</td>
           <td>#{quantity.unit}</td>
+          <td>#{quantity.mlti_sign}</td>
         </tr>
         HTML
       end

@@ -1,7 +1,7 @@
 import React,{useEffect,useState, useContext} from 'react';
 import TableUI from '../components/Table2';
 import Draggable from 'react-draggable';
-import getData, { postData, putData, patchData, deleteData} from '../components/api';
+import getData, { postData, putData, patchData, deleteData, getAllCellData} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
 import { EditorState, convertToRaw,  convertFromRaw , ContentState } from 'draft-js';
@@ -36,7 +36,7 @@ export default function Home() {
     const [gkColors, setGkColors] = useState([]);
     const gkState = {gkColors, setGkColors}
 
-    const [tableView, setTableView] = useState({id_repr:3,title:"Базовое"}); // remove after fix
+    const [tableView, setTableView] = useState({id_repr:1,title:"Базовое"}); 
     const tableViewState = {tableView,setTableView}
 
     useEffect(() => {
@@ -75,8 +75,30 @@ export default function Home() {
 
     const [tableViews, setTableViews] = useState(null)
     const [laws, setLaws] = useState(null)
+    const lawsState = {laws, setLaws}
 
-    
+    const [selectedLaw, setSelectedLaw] = useState({law_name: null,cells:[],id_type: null})
+    const selectedLawState = {selectedLaw, setSelectedLaw}
+
+    const [lawsGroups, setLawsGroups] = useState([])
+    const lawsGroupsState = {lawsGroups, setLawsGroups}
+
+    useEffect(() => {
+      const keyDownHandler = event => {
+        //console.log('User pressed: ', event.key);
+  
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          setSelectedLaw({law_name: null,cells:[],id_type: null})
+        }
+      };
+  
+      document.addEventListener('keydown', keyDownHandler);
+  
+      return () => {
+        document.removeEventListener('keydown', keyDownHandler);
+      };
+    }, []);
 
     useEffect(() => {
 
@@ -91,7 +113,8 @@ export default function Home() {
 
     const setEditorFromSelectedCell = (cellData) => {
 
-      convertMarkdownToEditorState(setCellNameEditor, cellData.val_name) 
+
+      convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
       convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
       convertMarkdownToEditorState(setCellUnitEditor, cellData.unit) 
       document.getElementById("inputL3").value = cellData.l_indicate
@@ -101,6 +124,7 @@ export default function Home() {
     }
 
     const convertMarkdownToEditorState = (stateFunction, markdown) => {
+
 
       const blocksFromHtml = htmlToDraft(markdown);
       const { contentBlocks, entityMap } = blocksFromHtml;
@@ -129,14 +153,16 @@ export default function Home() {
 
 
 
-        getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
+        //getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
         //getData(null, `http://localhost:5000/api/represents`,testShow,headers)
 
         getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
-        getData(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+        getData(setLaws, `http://localhost:5000/api/laws`,testShow,headers)
+        getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
       }
 
     }, [userProfile]);
+
 
     const testShow = (result) => {
 
@@ -146,16 +172,16 @@ export default function Home() {
     return (
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={gkState}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={gkState} selectedLawState={selectedLawState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                   <RegModal modalsVisibility={modalsVisibility} setUserToken={setUserToken} setUserProfile={setUserProfile}/>               
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
                   <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
                   <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
-                  <LawsModal modalsVisibility={modalsVisibility} laws={laws}/>
+                  <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
                   <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
-                  <LawsGroupsModal modalsVisibility={modalsVisibility} />
+                  <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
 
 
                 <ToastContainer />
@@ -208,17 +234,26 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     }
 
 
-    console.log(newCell)
+    //console.log(newCell)
     putData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, newCell, null, afterChangesToCell)
   }
 
   const afterChangesToCell = (cellData) => {
 
-    console.log(cellData)
-    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).filter(cell => cell.id_value !== selectedCell.id_value).concat(cellData))
+    //console.log(cellData)
+    console.log(tableState)
+    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
-
+    getData(undefined,`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`,replaceMissingCell) 
    
+  }
+
+  const replaceMissingCell = (cellAlternatives) => {
+
+    if (cellAlternatives.length > 0) {
+      tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value).concat(cellAlternatives[0]))
+    }
+
   }
 
   const cellList = gkColors.map(gkLevel => {
@@ -317,8 +352,8 @@ function CellEditor({editorState,setEditorState}) {
                     "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ",
                     "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω",
                     "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ",
-                    "ν", "ξ", "ο", "π", "ρ", "ς", "σ", "τ", "υ", "φ", "χ", "ψ", "ω",
-                    "∀", "∁", "∂", "∃", "∄", "∅", "∆", "∇"
+                    "ν", "ξ", "ο", "π", "ρ", "ς", "σ", "τ", "υ", "φ", "χ", "ψ",
+                    "ω", "∀", "∁", "∂", "∃", "∄", "∅", "∆", "∇"
                 ],
             }
         }}
@@ -334,15 +369,25 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
     const firstName = document.getElementById("InputFirstName3").value
     const lastName = document.getElementById("InputLastName3").value 
     const patronymic = document.getElementById("InputPatronymic3").value
+    let password = document.getElementById("InputPassword3").value
 
-    const newUserData = {
+
+
+
+    let newUserData = {
       user: {
         last_name: firstName,
         first_name: lastName,
         patronymic: patronymic,
       }
-
+      
     }
+
+    if (password !== "") {
+      newUserData.user.password = password
+    }
+
+    //console.log(newUserData)
 
     const headers = {
       Authorization: `Bearer ${userInfoState.userToken}`
@@ -356,6 +401,11 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
 
     modalsVisibility.editProfileModalVisibility.setVisibility(false)
 
+    document.getElementById("InputEmail2").value = ""
+    document.getElementById("InputPassword2").value = ""
+    document.getElementById("InputEmail1").value = ""
+    document.getElementById("InputPassword1").value = ""
+
   }
 
   return (
@@ -368,6 +418,8 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
 
         <label htmlFor="InputEmail3" className="form-label">Email address</label>
         <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com" disabled={true}/>
+        <label htmlFor="InputLastName3" className="form-label">New password</label>
+        <input type="password" className="form-control" id="InputPassword3" placeholder="Пароль"/>
         <label htmlFor="InputLastName3" className="form-label">Last name</label>
         <input type="text" className="form-control" id="InputLastName3" placeholder="Воронин"/>
         <label htmlFor="InputFirstName3" className="form-label">First name</label>
@@ -385,22 +437,201 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
   )
 }
 
-function LawsModal({modalsVisibility}) {
+function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsState}) {
+
+  const userInfoState = useContext(UserProfile) 
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }      
+
+  const createLaw = () => {
+
+    if (selectedLawState.selectedLaw.cells.length !== 4) {
+      return
+    }
+    if (!checkLaw(selectedLawState.selectedLaw.cells)) {
+      return
+    }
+    const selectedLawCellId = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
 
 
 
+    //console.log(selectedLawCellId)
+
+    const newLaw = {
+      law: {
+        law_name: document.getElementById("InputLawName3").value,
+        first_element: selectedLawCellId[0],
+        second_element: selectedLawCellId[1],
+        third_element: selectedLawCellId[2],
+        fourth_element: selectedLawCellId[3],
+        id_type: document.getElementById("inputLawGroup3").value
+      }
+    }
+    //console.log(newLaw)
+    postData(undefined, `http://localhost:5000/api/laws`, newLaw, headers, afterCreateLaw)
+    
+
+  }
+  
+  const afterCreateLaw = () => {
+
+    //console.log("success")
+    getData(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+  }
+
+
+  const updateLaw = () => {
+    if (selectedLawState.selectedLaw.cells.length !== 4) {
+      return
+    }
+    if (!checkLaw(selectedLawState.selectedLaw.cells)) {
+      return
+    }
+    const selectedLawCellId = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
+
+
+
+    //console.log(selectedLawCellId)
+
+    const newLaw = {
+      law: {
+        law_name: document.getElementById("InputLawName3").value,
+        first_element: selectedLawCellId[0],
+        second_element: selectedLawCellId[1],
+        third_element: selectedLawCellId[2],
+        fourth_element: selectedLawCellId[3],
+        id_type: document.getElementById("inputLawGroup3").value
+      }
+    }
+    //console.log(newLaw)
+    patchData(undefined, `http://localhost:5000/api/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
+    
+  }
+
+  const selectLaw = (selectedLaw) => {
+
+
+    //console.log(selectedLaw)
+
+    const lawCells = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
+
+    getAllCellData(lawCells,headers,afterSelectSearch,selectedLaw)
+  }
+
+  const afterSelectSearch = (cells,selectedLaw) => {
+
+    selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:cells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
+  }
+
+  const deleteLaw = (law) => {
+
+    deleteData(undefined,`http://localhost:5000/api/laws/${law.id_law}`,headers,afterDeleteLaw)
+  }
+
+  const afterDeleteLaw = () => {
+    getData(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+  }
+
+  // dublicate, remove later
+  const checkLaw = (cells) => {
+
+
+    //console.log(cells)
+
+    const firstThirdCellsMLTI = {
+      M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
+      L: cells[0].l_indicate_auto + cells[2].l_indicate_auto,
+      T: cells[0].t_indicate_auto + cells[2].t_indicate_auto,
+      I: cells[0].i_indicate_auto + cells[2].i_indicate_auto
+    }
+
+
+
+    const secondFourthCellsMLTI = {
+      M: cells[1].m_indicate_auto + cells[3].m_indicate_auto,
+      L: cells[1].l_indicate_auto + cells[3].l_indicate_auto,
+      T: cells[1].t_indicate_auto + cells[3].t_indicate_auto,
+      I: cells[1].i_indicate_auto + cells[3].i_indicate_auto
+    }
+
+    const sameMLTI = JSON.stringify(firstThirdCellsMLTI) === JSON.stringify(secondFourthCellsMLTI)
+
+    return(sameMLTI)
+  }
+
+  const lawGroupsList = lawsGroupsState.lawsGroups.map(lawGroup => {
+
+    const shownText = `${lawGroup.type_name}`
+
+    return (
+      <option key={lawGroup.id_type} value={lawGroup.id_type} dangerouslySetInnerHTML={{__html: shownText}}/>
+    );
+
+  });
+
+  let lawsMarkup
+  let lawsCounter = 0
+  if (lawsState.laws) {
+    lawsMarkup = lawsState.laws.map(law => {
+    lawsCounter += 1 
+
+    const isCurrent = selectedLawState.selectedLaw.id_law === law.id_law
+
+    return ( 
+      <tr key={law.id_law}>
+        <th scope="row" className='small-cell'>{isCurrent ? lawsCounter + `+` : lawsCounter}</th>
+        <td>{law.law_name}</td>
+        <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLaw(law)}>↓</button></td>
+        <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLaw(law)}>🗑</button></td>
+      </tr>
+    );
+  })
+  } else {lawsMarkup = null}
 
   return (
     <Modal
       modalVisibility={modalsVisibility.lawsModalVisibility}
       title={"Laws"}
       hasBackground={false}
+      sizeX={600}
       >
       <div className="modal-content2">
-        nothing here
+        <div className="row">
+          <div className="col-5">
+            <input type="text" className="form-control" id="InputLawName3" placeholder="Law 1"/>
+          </div>
+          <div className="col-3">
+          <button type="button" className="btn btn-primary" onClick={() => createLaw()}>create new</button>
+          </div>
+          <div className="col-4">
+          <button type="button" className="btn btn-success" onClick={() => updateLaw()}>update current</button>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+          <select className="form-select" aria-label="Default select example" id='inputLawGroup3'>
+              {lawGroupsList}
+            </select>
+          </div>
+        </div>
+
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Select</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lawsMarkup}
+          </tbody>
+        </table>
       </div>
       <div className="modal-footer2">
-        <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.lawsModalVisibility.setVisibility(false)}>Close</button>
+        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.lawsModalVisibility.setVisibility(false)}>Close</button>
       </div>
 
       </Modal>
@@ -458,7 +689,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     
 
     const cellIds = Object.values(tableState)[0].map(cell => cell.id_value)
-    console.log(cellIds)
+    //console.log(cellIds)
 
     const tableViewTitle = document.getElementById("InputTableViewName3").value
 
@@ -599,7 +830,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
         }
       }
 
-
+      //console.log(userData)
 
       postData(undefined, process.env.REACT_APP_GK_REGISTER_LINK, userData, undefined, afterRegister)
       
@@ -612,11 +843,44 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
     const email = document.getElementById("InputEmail2").value
     const password = document.getElementById("InputPassword2").value
     const userLoginData = {
-      email: email,
-      password: password,
+      user: {
+        email: email,
+        password: password,
+      }
     }
 
     postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userLoginData, undefined, afterLogin)
+  }
+
+  const forgotPassword = () => {
+
+    const email = document.getElementById("InputEmail5").value
+
+    const userData = {
+      user: {
+        email: email,
+      }
+    }
+
+    //console.log(userData)
+    postData(undefined, `http://localhost:5000/api/reset`, userData, undefined, afterForgotPassword)
+
+   
+
+
+  }
+
+  const afterForgotPassword = () => {
+
+    toast.success('Recovery email sent', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined,
+      theme: "colored",
+    });
   }
 
 
@@ -632,6 +896,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
               <button className="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Login</button>
               <button className="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Register</button>
+              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false">Forgot password?</button>
           </div>
       </nav>
       <div className="tab-content" id="nav-tabContent">
@@ -667,6 +932,17 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
                   <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button>
                   <button type="button" className="btn btn-primary" onClick={() => register()}>Send</button>
               </div>
+          </div>
+          <div className="tab-pane fade" id="forgot-password" role="tabpanel" aria-labelledby="forgot-password-tab" tabIndex="0">
+
+          <div className="modal-content2">
+              <label htmlFor="InputEmail5" className="form-label">Email address</label>
+              <input type="email" className="form-control" id="InputEmail5" aria-describedby="emailHelp" placeholder="name@example.com"/>
+          </div>
+
+          <div className="modal-footer2">
+              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Send</button>
+          </div>
           </div>
       </div>
       </div>

@@ -6,12 +6,12 @@ export default function getData(setStateFunction, adress, afterRequestFunction, 
       .get(adress, {headers: headers})
       .then((response) => {
         if (setStateFunction) {
-          setStateFunction(response.data);
+          setStateFunction(response.data.data);
         } 
         if (afterRequestFunction !== undefined) {
-          afterRequestFunction(response.data,extraData);
+          afterRequestFunction(response.data.data,extraData);
         }
-        if (!setStateFunction) {return response.data}
+        if (!setStateFunction) {return response.data.data}
       })
       .catch((error) => {
           console.error(error);
@@ -24,10 +24,10 @@ export function postData(setStateFunction, adress, data, headers, afterRequestFu
   axios.post(adress, data, {headers: headers})
   .then((response) => {
     if (setStateFunction !== undefined) {
-      setStateFunction(response.data);
+      setStateFunction(response.data.data);
     }
     if (afterRequestFunction !== undefined) {
-      afterRequestFunction(response.data);
+      afterRequestFunction(response.data.data);
     }
   })
   .catch((error) => {
@@ -40,10 +40,10 @@ export function putData(setStateFunction, adress, data, headers, afterRequestFun
   axios.put(adress, data, {headers: headers})
   .then((response) => {
     if (setStateFunction) {
-      setStateFunction(response.data);
+      setStateFunction(response.data.data);
     }
     if (afterRequestFunction !== undefined) {
-      afterRequestFunction(response.data);
+      afterRequestFunction(response.data.data);
     }
   })
   .catch((error) => {
@@ -56,10 +56,10 @@ export function patchData(setStateFunction, adress, data, headers, afterRequestF
   axios.patch(adress, data, {headers: headers})
   .then((response) => {
     if (setStateFunction) {
-      setStateFunction(response.data);
+      setStateFunction(response.data.data);
     }
     if (afterRequestFunction !== undefined) {
-      afterRequestFunction(response.data);
+      afterRequestFunction(response.data.data);
     }
   })
   .catch((error) => {
@@ -72,13 +72,29 @@ export function deleteData(setStateFunction, adress, headers, afterRequestFuncti
   axios.delete(adress, {headers: headers})
   .then((response) => {
     if (setStateFunction) {
-      setStateFunction(response.data);
+      setStateFunction(response.data.data);
     }
     if (afterRequestFunction !== undefined) {
-      afterRequestFunction(response.data);
+      afterRequestFunction(response.data.data);
     }
   })
   .catch((error) => {
     console.log(error);
   });
+}
+
+export function getAllCellData(cells,headers,callbackFunction, extraData) {
+
+  let requests = cells.map(cell => axios.get(`http://localhost:5000/api/quantities/${cell}`, {headers: headers}));
+
+  Promise.all(requests)
+    .then(responses => {
+
+      //console.log(responses)
+
+      const cells = responses.map(response => response.data.data)
+      //callbackFunction(responses)
+      callbackFunction(cells, extraData)
+    })
+
 }

@@ -1,0 +1,125 @@
+Index: backend-rails_api/app/controllers/users_controller.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># frozen_string_literal: true\r\n\r\n# Контроллер для контроля обработки пользовательских регистраций и авторизаций\r\nclass UsersController < ApplicationController\r\n  include UserHelper\r\n  before_action :authorize_request, except: %i[create login confirm reset new_password]\r\n  def create\r\n    user = User.find_by(email: params[:user][:email])\r\n    render json: 'User already exists', status: :unprocessable_entity and return if user\r\n\r\n    user = User.new(user_params)\r\n    user.password = hash_password(params[:user][:password])\r\n    user.confirmation_token = SecureRandom.urlsafe_base64.to_s\r\n\r\n    if user.save\r\n      ConfirmationMailer.confirmation_email(user).deliver_now\r\n      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)\r\n\r\n      render json: user, status: :created\r\n    else\r\n      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def login\r\n    @user = User.find_by(email: params[:user][:email])\r\n\r\n    if @user&.confirmed && validate_password(params[:user][:password], @user.password)\r\n\r\n      # token = JsonWebToken.encode(user_id: @user.id)\r\n      token = encode(id_user: @user.id_user)\r\n      render json: token, status: :ok\r\n    elsif !@user\r\n      render json: 'User not found', status: :not_found\r\n    elsif !@user.confirmed\r\n      render json: 'Email not confirmed', status: :unauthorized\r\n    else\r\n      render json: 'Invalid credentials', status: :unauthorized\r\n    end\r\n  end\r\n\r\n  def show\r\n    render json: @current_user, status: :ok\r\n  end\r\n\r\n  def update\r\n    if @current_user.update(user_params)\r\n      render json: @current_user, status: :ok\r\n    else\r\n      render json: 'Updating error', status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def confirm\r\n    user = User.find_by(confirmation_token: params[:confirmation_token])\r\n\r\n    if user\r\n      user.update(confirmed: true, confirmation_token: nil)\r\n      render json: 'Email confirmed successfully', status: :ok\r\n    else\r\n      render json: 'Invalid confirmation token', status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def reset\r\n    user = User.find_by(email: params[:user][:email])\r\n\r\n    if user&.confirmed\r\n      user.confirmation_token = SecureRandom.urlsafe_base64.to_s\r\n      user.save\r\n\r\n      ResetPasswordMailer.reset_password_email(user).deliver_now\r\n      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)\r\n\r\n      render json: 'Reset password email sent', status: :ok\r\n    elsif !user.confirmed\r\n      render json: 'Email not confirmed', status: :unauthorized\r\n    else\r\n      render json: 'User not found', status: :not_found\r\n    end\r\n  end\r\n\r\n  def new_password\r\n    user = User.find_by(confirmation_token: params[:confirmation_token])\r\n\r\n    if user\r\n      new_password = generate_random_password\r\n      user.password = hash_password(new_password)\r\n      user.confirmation_token = nil\r\n      user.save\r\n\r\n      NewPasswordMailer.new_password_email(user, new_password).deliver_now\r\n\r\n      render json: 'New password generated and sent', status: :ok\r\n    else\r\n      render json: 'Invalid reset token', status: :unprocessable_entity\r\n    end\r\n  end\r\n\r\n  def destroy\r\n    @current_user.destroy\r\n    render json: 'Successfully deleted user', status: :ok\r\n  end\r\n\r\n  private\r\n\r\n  def user_params\r\n    params.require(:user).permit(:email, :password, :last_name, :first_name, :patronymic)\r\n  end\r\n\r\n  SECRET_KEY = Rails.application.secrets.secret_key_base.to_s\r\n\r\n  def encode(payload, exp = 24.hours.from_now)\r\n    payload[:exp] = exp.to_i\r\n    JWT.encode(payload, SECRET_KEY)\r\n  end\r\nend\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend-rails_api/app/controllers/users_controller.rb b/backend-rails_api/app/controllers/users_controller.rb
+--- a/backend-rails_api/app/controllers/users_controller.rb	(revision b49e9959530deeb80215846f456d33d8a5fc9c30)
++++ b/backend-rails_api/app/controllers/users_controller.rb	(date 1693677707439)
+@@ -4,21 +4,24 @@
+ class UsersController < ApplicationController
+   include UserHelper
+   before_action :authorize_request, except: %i[create login confirm reset new_password]
++
+   def create
+     user = User.find_by(email: params[:user][:email])
+-    render json: 'User already exists', status: :unprocessable_entity and return if user
+-
+-    user = User.new(user_params)
+-    user.password = hash_password(params[:user][:password])
+-    user.confirmation_token = SecureRandom.urlsafe_base64.to_s
++    if user
++      render json: { message: 'User already exists', data: nil }, status: :unprocessable_entity
++    else
++      user = User.new(user_params)
++      user.password = hash_password(params[:user][:password])
++      user.confirmation_token = SecureRandom.urlsafe_base64.to_s
+ 
+-    if user.save
+-      ConfirmationMailer.confirmation_email(user).deliver_now
+-      ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
++      if user.save
++        ConfirmationMailer.confirmation_email(user).deliver_now
++        ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
+ 
+-      render json: user, status: :created
+-    else
+-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
++        render json: { message: 'User created successfully', data: user }, status: :created
++      else
++        render json: { message: 'Validation failed', errors: user.errors.full_messages }, status: :unprocessable_entity
++      end
+     end
+   end
+ 
+@@ -29,25 +32,25 @@
+ 
+       # token = JsonWebToken.encode(user_id: @user.id)
+       token = encode(id_user: @user.id_user)
+-      render json: token, status: :ok
++      render json: { message: 'Login successful', data: token }, status: :ok
+     elsif !@user
+-      render json: 'User not found', status: :not_found
++      render json: { message: 'User not found', data: nil }, status: :not_found
+     elsif !@user.confirmed
+-      render json: 'Email not confirmed', status: :unauthorized
++      render json: { message: 'Email not confirmed', data: nil }, status: :unauthorized
+     else
+-      render json: 'Invalid credentials', status: :unauthorized
++      render json: { message: 'Invalid credentials', data: nil }, status: :unauthorized
+     end
+   end
+ 
+   def show
+-    render json: @current_user, status: :ok
++    render json: { message: 'User details', data: @current_user }, status: :ok
+   end
+ 
+   def update
+     if @current_user.update(user_params)
+-      render json: @current_user, status: :ok
++      render json: { message: 'User updated successfully', data: @current_user }, status: :ok
+     else
+-      render json: 'Updating error', status: :unprocessable_entity
++      render json: { message: 'Update failed', errors: @current_user.errors.full_messages }, status: :unprocessable_entity
+     end
+   end
+ 
+@@ -56,9 +59,9 @@
+ 
+     if user
+       user.update(confirmed: true, confirmation_token: nil)
+-      render json: 'Email confirmed successfully', status: :ok
++      render json: { message: 'Email confirmed successfully', data: nil }, status: :ok
+     else
+-      render json: 'Invalid confirmation token', status: :unprocessable_entity
++      render json: { message: 'Invalid confirmation token', data: nil }, status: :unprocessable_entity
+     end
+   end
+ 
+@@ -72,11 +75,11 @@
+       ResetPasswordMailer.reset_password_email(user).deliver_now
+       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
+ 
+-      render json: 'Reset password email sent', status: :ok
++      render json: { message: 'Reset password email sent', data: nil }, status: :ok
+     elsif !user.confirmed
+-      render json: 'Email not confirmed', status: :unauthorized
++      render json: { message: 'Email not confirmed', data: nil }, status: :unauthorized
+     else
+-      render json: 'User not found', status: :not_found
++      render json: { message: 'User not found', data: nil }, status: :not_found
+     end
+   end
+ 
+@@ -91,15 +94,15 @@
+ 
+       NewPasswordMailer.new_password_email(user, new_password).deliver_now
+ 
+-      render json: 'New password generated and sent', status: :ok
++      render json: { message: 'New password generated and sent', data: nil }, status: :ok
+     else
+-      render json: 'Invalid reset token', status: :unprocessable_entity
++      render json: { message: 'Invalid reset token', data: nil }, status: :unprocessable_entity
+     end
+   end
+ 
+   def destroy
+     @current_user.destroy
+-    render json: 'Successfully deleted user', status: :ok
++    render json: { message: 'User deleted successfully', data: nil }, status: :ok
+   end
+ 
+   private

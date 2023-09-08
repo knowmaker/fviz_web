@@ -47,17 +47,17 @@
 ]
 [<class> GkSettingsController |
    |
-  +index; +update; -set_gk_setting; -gk_setting_update_params |
+  +index; +show; +update; -set_gk_setting; -gk_setting_params |
   
 ]
 [<class> LawTypesController |
    |
-  +index; +create; +update; +destroy; -set_law_type; -law_type_params |
+  +index; +show; +create; +update; +destroy; -set_law_type; -law_type_params |
   
 ]
 [<class> LawsController |
    |
-  +index; +show; +create; +destroy; -set_law; -law_params |
+  +index; +show; +create; +update; +destroy; -set_law; -law_params |
   
 ]
 [<class> QuantitiesController |
@@ -67,12 +67,12 @@
 ]
 [<class> RepresentsController |
    |
-  +index; +create; +update; +destroy; +represent_view_index; +represent_view_show; +lt_values; -set_represent; -represent_params |
+  +index; +create; +update; +destroy; +represent_view_index; +represent_view_show; +lt_values; -set_represent; -represent_params; -format_active_quantities(active_quantities) |
   
 ]
 [<class> UsersController |
    |
-  +create; +login; +show; +update; -user_params; -encode(payload, exp) |
+  +create; +login; +show; +update; +confirm; +reset; +new_password; +destroy; -user_params; -encode(payload, exp) |
   
 ]
 [<class> ApplicationJob |
@@ -80,9 +80,29 @@
    |
   
 ]
+[<class> ResetConfirmationTokenJob |
+   |
+  +perform(user_id) |
+  
+]
 [<class> ApplicationMailer |
    |
    |
+  
+]
+[<class> ConfirmationMailer |
+   |
+  +confirmation_email(user) |
+  
+]
+[<class> NewPasswordMailer |
+   |
+  +new_password_email(user, new_password) |
+  
+]
+[<class> ResetPasswordMailer |
+   |
+  +reset_password_email(user) |
   
 ]
 [<class> ApplicationRecord |
@@ -142,6 +162,10 @@
   +generate_html_table(quantities) |
   
 ]
+[<module> UserHelper |
+  +hash_password(password); +validate_password(password, password_hash); +generate_random_password |
+  
+]
 [Channel] inherits <:- [Base]
 [Connection] inherits <:- [Base]
 [ApplicationController] inherits <:- [API]
@@ -152,8 +176,13 @@
 [QuantitiesController] includes <- [QuantitiesHelper]
 [RepresentsController] inherits <:- [ApplicationController]
 [UsersController] inherits <:- [ApplicationController]
+[UsersController] includes <- [UserHelper]
 [ApplicationJob] inherits <:- [Base]
+[ResetConfirmationTokenJob] inherits <:- [ApplicationJob]
 [ApplicationMailer] inherits <:- [Base]
+[ConfirmationMailer] inherits <:- [ApplicationMailer]
+[NewPasswordMailer] inherits <:- [ApplicationMailer]
+[ResetPasswordMailer] inherits <:- [ApplicationMailer]
 [ApplicationRecord] inherits <:- [Base]
 [Gk] inherits <:- [ApplicationRecord]
 [GkSetting] inherits <:- [ApplicationRecord]
