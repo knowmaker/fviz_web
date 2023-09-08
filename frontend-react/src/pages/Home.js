@@ -241,10 +241,19 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
   const afterChangesToCell = (cellData) => {
 
     //console.log(cellData)
-    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).filter(cell => cell.id_value !== selectedCell.id_value).concat(cellData))
+    console.log(tableState)
+    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
-
+    getData(undefined,`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`,replaceMissingCell) 
    
+  }
+
+  const replaceMissingCell = (cellAlternatives) => {
+
+    if (cellAlternatives.length > 0) {
+      tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value).concat(cellAlternatives[0]))
+    }
+
   }
 
   const cellList = gkColors.map(gkLevel => {
@@ -391,6 +400,11 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
   const afterEditProfile = (newUserData) => {
 
     modalsVisibility.editProfileModalVisibility.setVisibility(false)
+
+    document.getElementById("InputEmail2").value = ""
+    document.getElementById("InputPassword2").value = ""
+    document.getElementById("InputEmail1").value = ""
+    document.getElementById("InputPassword1").value = ""
 
   }
 
@@ -562,11 +576,6 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     lawsMarkup = lawsState.laws.map(law => {
     lawsCounter += 1 
 
-    // const lawCellsIds = [law.first_element,law.second_element,law.third_element,law.fourth_element]
-    // const selectedLawCellIds = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
-    //const isCurrent = false
-
-    //console.log(selectedLawState.selectedLaw.id_type,law.id_type)
     const isCurrent = selectedLawState.selectedLaw.id_law === law.id_law
 
     return ( 

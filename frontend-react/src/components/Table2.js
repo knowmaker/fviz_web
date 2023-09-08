@@ -6,7 +6,7 @@ import { useDownloadableScreenshot } from './Screenshot';
 import getData, {getAllCellData} from './api';
 import LawsCanvas from './LawsCanvas';
 
-const rowCount = 19
+const rowCount = 21
 const cellCount = 20
 
 export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState}) {
@@ -60,16 +60,19 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
   if (cellAlternatives !== null && selectedCell !== null) {
 
-    const cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
+    const emptyCellData = {id_lt:selectedCell.id_lt,id_value:999}    
+
+    let cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
 
       const cellFullId = cellData.id_value
       const cellColor = `#${gkColors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}`
 
+      console.log(cellData)
       return (
         <Cell 
         key={cellFullId} 
         cellFullData={{cellFullId,cellData,cellColor}}
-        selectedCells={cellAlternatives} 
+        selectedCells={cellAlternatives.concat(emptyCellData)} 
         revStates={revStates} 
         setSelectedCell={setSelectedCell}
         />
@@ -78,6 +81,17 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
     })
 
+    
+    cells.push(
+      <Cell 
+      key={999} 
+      cellFullData={{cellFullId:999,cellData:emptyCellData,undefined}}
+      selectedCells={cellAlternatives.concat(emptyCellData)} 
+      revStates={revStates} 
+      setSelectedCell={setSelectedCell}
+      isEmpty={true}
+      />
+    )
 
     const cellOptions = cells.length !== 0 ? cells : "no cells to show"
 
@@ -167,15 +181,16 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
       cellColor = cellData.id_gk ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}` : '';
     }
 
-    console.log(cellData)
+    //console.log(cellData)
 
     return (<Cell 
             key={cellFullId} 
             cellFullData={{cellFullId,cellData,cellColor}} 
             cellRightClick={setSelectedCell} 
             hoveredCellState={hoveredCellState}
-            selectedLawState={selectedLawState}
+            selectedLawState={cellColor ? selectedLawState : undefined}
             modalsVisibility={modalsVisibility}
+            isEmpty={cellColor ? false:true}
             />);
   });
 
@@ -191,7 +206,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
 
 }
 
-function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState, modalsVisibility}) {
+function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState, modalsVisibility,isEmpty = false}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -218,8 +233,11 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
 
   const handleCellLeftClick = (event, cellId) => {
     
+
       event.preventDefault()
       const cellData = selectedCells.find(cell => cell.id_value === cellId);
+
+    console.log(selectedCells,cellData)
 
       cellData.lt_sign = tableState.tableData.find(cell => cell.id_lt !== cellData.id_lt).lt_sign
 
@@ -320,7 +338,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
     if (selectedLawState) {handleLawSelection(event, cellFullId)};
   }
 
-  if (cellData) {
+  if (!isEmpty) {
 
     const cellContent_name = cellData.value_name;
     const cellContent_symbol = cellData.symbol;
@@ -336,7 +354,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
           id={`cell-${cellFullId}`}
           style={{ backgroundColor: cellColor }}
           onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
-          onClick={onClickEvent}
+          
           onMouseOver={event => hoveredCellState ? handleCellHover(event, cellFullId) : {}}
           cellnumber={cellFullId}
         >
@@ -356,7 +374,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
         </div>
     );
   } else {
-    return <div className="cell-invisible cell" onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)} id={`cell-${cellFullId}`} cellnumber={cellFullId}></div>
+    return <div className="cell-invisible cell" onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)} onClick={onClickEvent} id={`cell-${cellFullId}`} cellnumber={cellFullId}></div>
   }
   
 }
