@@ -6,10 +6,12 @@ class UsersController < ApplicationController
   before_action :authorize_request, only: %i[show update destroy]
   def create
     user = User.new(user_params)
-    user.password = hash_password(params[:user][:password])
     user.confirmation_token = SecureRandom.urlsafe_base64.to_s
 
     if user.save
+      user.password = hash_password(params[:user][:password])
+      user.save
+
       ConfirmationMailer.confirmation_email(user).deliver_now
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 

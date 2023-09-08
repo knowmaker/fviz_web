@@ -4,19 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="db (plus 2 row lt)">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/law_types_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/law_types_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="rubocop models">
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/lt.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/lt.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/quantity.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/quantity.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,30 +213,6 @@
       <workItem from="1693934615588" duration="2616000" />
       <workItem from="1694070665778" duration="11303000" />
       <workItem from="1694098390375" duration="3684000" />
-    </task>
-    <task id="LOCAL-00033" summary="db v_new3">
-      <option name="closed" value="true" />
-      <created>1692347623307</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1692347623307</updated>
-    </task>
-    <task id="LOCAL-00034" summary="db v_new4">
-      <option name="closed" value="true" />
-      <created>1692350248780</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1692350248780</updated>
-    </task>
-    <task id="LOCAL-00035" summary="db v_new_final-today">
-      <option name="closed" value="true" />
-      <created>1692354791602</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1692354791602</updated>
     </task>
     <task id="LOCAL-00036" summary="db v_new_final-today2">
       <option name="closed" value="true" />
@@ -617,7 +582,31 @@
       <option name="project" value="LOCAL" />
       <updated>1694173205055</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="validations and db">
+      <option name="closed" value="true" />
+      <created>1694181969855</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1694181969855</updated>
+    </task>
+    <task id="LOCAL-00083" summary="rubocop controllers">
+      <option name="closed" value="true" />
+      <created>1694181991315</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1694181991317</updated>
+    </task>
+    <task id="LOCAL-00084" summary="rubocop models">
+      <option name="closed" value="true" />
+      <created>1694182043067</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1694182043067</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -635,9 +624,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="reset password" />
-    <MESSAGE value="reset confirmation_token jobs" />
-    <MESSAGE value="user helper debug" />
     <MESSAGE value="user api-docs" />
     <MESSAGE value="auto deleting user acc" />
     <MESSAGE value="auto deleting user acc 2" />
@@ -660,7 +646,10 @@
     <MESSAGE value="debug" />
     <MESSAGE value="debug represent with id_lt" />
     <MESSAGE value="db (plus 2 row lt)" />
-    <option name="LAST_COMMIT_MESSAGE" value="db (plus 2 row lt)" />
+    <MESSAGE value="validations and db" />
+    <MESSAGE value="rubocop controllers" />
+    <MESSAGE value="rubocop models" />
+    <option name="LAST_COMMIT_MESSAGE" value="rubocop models" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694173103284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
