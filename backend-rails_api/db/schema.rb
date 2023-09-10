@@ -19,12 +19,13 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.integer "k_indicate", limit: 2, null: false
     t.string "gk_name", limit: 100
     t.string "gk_sign", limit: 50
+    t.string "color", limit: 50, null: false
   end
 
   create_table "gk_settings", primary_key: "id_gk_set", id: :serial, force: :cascade do |t|
     t.integer "id_gk", null: false
     t.integer "id_user", null: false
-    t.string "gk_color", limit: 20, null: false
+    t.string "difference", limit: 20, default: "0", null: false
   end
 
   create_table "laws", primary_key: "id_law", id: :serial, force: :cascade do |t|

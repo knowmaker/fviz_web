@@ -31,6 +31,6 @@ class GkSettingsController < ApplicationController
   end
 
   def gk_setting_params
-    params.require(:gk_setting).permit(:gk_color)
+    params.require(:gk_setting).permit(:difference)
   end
 end

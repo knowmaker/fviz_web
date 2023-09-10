@@ -65,7 +65,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     let cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
 
       const cellFullId = cellData.id_value
-      const cellColor = `#${gkColors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}`
+      const cellColor = `#${gkColors.find((setting) => setting.id_gk === cellData.id_gk).color}`
 
       console.log(cellData)
       return (
@@ -178,7 +178,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
     let cellColor
     if (cellData) {
-      cellColor = cellData.id_gk ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).gk_color}` : '';
+      cellColor = cellData.id_gk ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).color}` : '';
     }
 
     //console.log(cellData)

@@ -6,7 +6,7 @@ RSpec.describe 'gk_settings', type: :request do
         {
           id_gk: 5,
           id_user: 2,
-          gk_color: '#fff'
+          difference: '#fff'
         }
     }
   end
@@ -45,7 +45,7 @@ RSpec.describe 'gk_settings', type: :request do
           gk_setting: {
             type: :object,
             properties: {
-              gk_color: { type: :string }
+              difference: { type: :string }
             }
           }
         }

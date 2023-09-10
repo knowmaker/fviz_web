@@ -9,6 +9,6 @@ class GkSetting < ApplicationRecord
 
   validates :id_gk, presence: true, numericality: { only_integer: true }
   validates :id_user, presence: true, numericality: { only_integer: true }
-  validates :gk_color, presence: true
+  validates :difference, presence: true, length: { maximum: 20 }
   validates :id_gk, uniqueness: { scope: :id_user }
 end
