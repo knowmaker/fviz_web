@@ -25,7 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "gk_settings", primary_key: "id_gk_set", id: :serial, force: :cascade do |t|
     t.integer "id_gk", null: false
     t.integer "id_user", null: false
-    t.string "difference", limit: 20, default: "0", null: false
+    t.integer "gk_bright", default: 50, null: false
   end
 
   create_table "laws", primary_key: "id_law", id: :serial, force: :cascade do |t|

@@ -27,10 +27,9 @@ class GkSettingsController < ApplicationController
 
   def set_gk_setting
     @gk_setting = @current_user.gk_settings.find(params[:id])
-    p @current_user.gk_settings
   end
 
   def gk_setting_params
-    params.require(:gk_setting).permit(:difference)
+    params.require(:gk_setting).permit(:gk_bright)
   end
 end

@@ -50,7 +50,7 @@ paths:
                 gk_setting:
                   type: object
                   properties:
-                    difference:
+                    gk_bright:
                       type: string
   "/api/law_types":
     get:
