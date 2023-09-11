@@ -4,15 +4,15 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/gk_settings":
+  "/api/gk":
     get:
-      summary: list gk settings
+      summary: list gk
       tags:
-      - GK settings
+      - GK
       responses:
         '200':
           description: successful
-  "/api/gk_settings/{id}":
+  "/api/gk/{id}":
     parameters:
     - name: id
       in: path
@@ -21,18 +21,18 @@ paths:
       schema:
         type: string
     get:
-      summary: show GK setting
+      summary: show GK
       tags:
-      - GK settings
+      - GK
       responses:
         '200':
           description: successful
         '404':
           description: not found
     patch:
-      summary: update GK setting
+      summary: update GK
       tags:
-      - GK settings
+      - GK
       parameters: []
       responses:
         '200':
@@ -47,10 +47,12 @@ paths:
             schema:
               type: object
               properties:
-                gk_setting:
+                gk:
                   type: object
                   properties:
-                    gk_bright:
+                    gk_name:
+                      type: string
+                    color:
                       type: string
   "/api/law_types":
     get:
@@ -229,6 +231,14 @@ paths:
           description: successful
         '404':
           description: not found
+  "/api/lt":
+    get:
+      summary: list lt
+      tags:
+      - LT
+      responses:
+        '200':
+          description: successful
   "/api/quantities":
     get:
       summary: list quantities

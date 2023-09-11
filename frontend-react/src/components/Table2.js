@@ -5,6 +5,7 @@ import { TableContext, UserProfile } from './Contexts.js';
 import { useDownloadableScreenshot } from './Screenshot';
 import getData, {getAllCellData} from './api';
 import LawsCanvas from './LawsCanvas';
+const Color = require('color');
 
 const rowCount = 21
 const cellCount = 20
@@ -65,9 +66,9 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     let cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
 
       const cellFullId = cellData.id_value
-      const cellColor = `#${gkColors.find((setting) => setting.id_gk === cellData.id_gk).color}`
+      const cellColor = `${gkColors.find((setting) => setting.id_gk === cellData.id_gk).color}`
 
-      console.log(cellData)
+      //console.log(cellData)
       return (
         <Cell 
         key={cellFullId} 
@@ -173,12 +174,17 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
   const cellList = Array.from({length: cellCount - 1 - isEven}, (_, cellId) => {
 
 
-
+    //console.log(fullTableData.Colors)
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
     let cellColor
     if (cellData) {
-      cellColor = cellData.id_gk ? `#${fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk).color}` : '';
+      if (cellData.id_gk) {
+        const cellGKLayer = fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk)
+        const cellNormalColor = `${cellGKLayer.color}`
+        cellColor = Color(cellNormalColor).lighten(cellGKLayer.gk_bright/50-1).hex()
+        //console.log(cellColor)
+      }
     }
 
     //console.log(cellData)
@@ -354,7 +360,7 @@ function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCe
           id={`cell-${cellFullId}`}
           style={{ backgroundColor: cellColor }}
           onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
-          
+          onClick={onClickEvent}
           onMouseOver={event => hoveredCellState ? handleCellHover(event, cellFullId) : {}}
           cellnumber={cellFullId}
         >

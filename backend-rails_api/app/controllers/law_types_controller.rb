@@ -6,18 +6,13 @@ class LawTypesController < ApplicationController
   before_action :set_law_type, only: %i[show update destroy]
 
   def index
-    # unless @current_user.role
-    #   render json: {error: ['Только админ может просматривать список типов законов']}, status: :unauthorized
-    #   return
-    # end
-    #
     law_types = LawType.all
     render json: { data: law_types }, status: :ok
   end
 
   def show
     # unless @current_user.role
-    #   render json: {error: ['Только админ просматривать тип закона']}, status: :unauthorized
+    #   render json: {error: ['Только админ может просматривать тип закона']}, status: :unauthorized
     #   return
     # end
 

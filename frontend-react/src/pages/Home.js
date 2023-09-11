@@ -1,15 +1,17 @@
-import React,{useEffect,useState, useContext} from 'react';
+import React,{useEffect,useState, useContext, useRef} from 'react';
 import TableUI from '../components/Table2';
 import Draggable from 'react-draggable';
-import getData, { postData, putData, patchData, deleteData, getAllCellData} from '../components/api';
+import getData, { postData, putData, patchData, deleteData, getAllCellData, getDataFromAPI, postDataToAPI,patchAllLayerData} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
-import { EditorState, convertToRaw,  convertFromRaw , ContentState } from 'draft-js';
+import { EditorState, convertToRaw, convertFromRaw , ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { TableContext } from '../components/Contexts.js';
 
 import draftToMarkdown from 'draftjs-to-markdown';
 import htmlToDraft from 'html-to-draftjs';
+
+const Color = require('color');
 
 export default function Home() {
 
@@ -41,15 +43,15 @@ export default function Home() {
 
     const [tableData, setTableData] = useState([]);
     const tableState = {tableData,setTableData}
-    const [gkColors, setGkColors] = useState([]);
-    const gkState = {gkColors, setGkColors}
+    const [GKLayers, setGKLayers] = useState([]);
+    const GKLayersState = {gkColors: GKLayers, setGkColors: setGKLayers}
 
     const [tableView, setTableView] = useState({id_repr:1,title:"Базовое"}); 
     const tableViewState = {tableView,setTableView}
 
     useEffect(() => {
       getData(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
-      getData(setGkColors,process.env.REACT_APP_GK_SETTINGS_LINK)
+      getData(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK)
   
     }, []);
 
@@ -180,17 +182,17 @@ export default function Home() {
     return (
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={gkState} selectedLawState={selectedLawState}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                   <RegModal modalsVisibility={modalsVisibility} setUserToken={setUserToken} setUserProfile={setUserProfile}/>               
                   {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
-                  <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={gkColors}/>
+                  <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
                   <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
                   <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
                   <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
                   <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
-
+                  <GKColorModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
 
                 <ToastContainer />
           </TableContext.Provider>
@@ -902,46 +904,141 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   )
 }
 
+function GKColorModal({modalsVisibility,GKLayersState}) {
+
+  const userInfoState = useContext(UserProfile)
+  //const tableState = useContext(TableContext)  
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }    
+  const GKLayers = GKLayersState.gkColors
+  const setGKLayers = GKLayersState.setGkColors
+  //console.log(gkColors)
+
+  const [selectedBrightness, setSelectedBrightness] = useState([])
+
+  useEffect(() => {
+
+    if (GKLayers) {
+
+      //console.log(GKLayers)
+      setSelectedBrightness(GKLayers.map(layer => ({brightness: layer.gk_bright, id:layer.id_gk})))
+    }
+
+  }, [GKLayers]);
+
+  //console.log(selectedColors)
+
+  const updateGKLayers = () => {
+
+    const changedLayersBright = selectedBrightness
+      .filter(brightness => brightness.brightness !== GKLayers.find(layer => layer.id_gk === brightness.id).gk_bright)
+    //const 
+    const fullChangedLayers = GKLayers.map(layer => {
+
+      const brightChange = changedLayersBright.find(brightness => brightness.id === layer.id_gk)
+      if (brightChange !== undefined) {
+
+        return {
+          ...layer,
+          gk_bright: brightChange.brightness
+        }
+      } else {return layer}
+
+    })
+    //console.log(fullChangedLayers)
+    setGKLayers(fullChangedLayers)
+
+    //patchAllLayerData(changedLayersBright,headers,afterUpdateGKLayers)
+    //putData(undefined,`http://localhost:5000/api/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
+  }
+
+  const afterUpdateGKLayers = (result) => {
+    console.log(result)
+
+  }
+
+  let GKLayersMarkup
+  let GKLayersCounter = 0
+  if (GKLayers && selectedBrightness.length !== 0) {
+    GKLayersMarkup = GKLayers.map(layer => {
+    GKLayersCounter += 1 
+    //console.log(selectedColors)
+
+    //const inputColorRef = useRef(undefined)
+    //const inputBrightnessElement = document.getElementById(`GKLayersRange${layer.id_gk}`)
+    //const inputBrightness = inputBrightnessElement ? inputBrightnessElement.value : 50
+
+    const layerBrightness = selectedBrightness.find(color => color.id === layer.id_gk)
+    const adjustedSelectedColor = Color(layer.color).lighten(layerBrightness.brightness/50-1)
+
+    const handleBrightnessChanges = (input,id_gk) => {
+      console.log(input.target.value,id_gk)
+      //console.log(selectedColors)
+      setSelectedBrightness(selectedBrightness.filter(selectedColor => selectedColor.id !== id_gk).concat({brightness: parseInt(input.target.value), id:id_gk}))
+    }
+
+
+
+    return (
+      <tr key={layer.id_gk}>
+        <th scope="row" className='small-cell'>{GKLayersCounter}</th>
+        <td>{layer.gk_name}</td>
+        <td dangerouslySetInnerHTML={{__html: layer.gk_sign}}></td>
+        <td><input type="color" className="form-control form-control-color disabled" value={`${adjustedSelectedColor.hex()}`} readOnly/></td>
+        <td><input type="range" className="form-range" min="0" max="100" onChange={(input) => handleBrightnessChanges(input,layer.id_gk)} /></td>
+      </tr>
+    );
+  })
+  } else {GKLayersMarkup = null}
+
+
+
+  return (
+    <Modal
+      modalVisibility={modalsVisibility.GKColorsEditModalVisibility}
+      title={"GK Layers"}
+      hasBackground={false}
+      sizeX={600}
+      >
+      <div className="modal-content2">
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">GK</th>
+            <th scope="col">Current color</th>
+            <th scope="col">Change color</th>
+          </tr>
+        </thead>
+        <tbody>
+          {GKLayersMarkup}
+        </tbody>
+      </table>
+      </div>
+      <div className="modal-footer2">
+      <button type="button" className="btn btn-primary" onClick={() => updateGKLayers()}>Save</button>
+        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.GKColorsEditModalVisibility.setVisibility(false)}>Close</button>
+      </div>
+
+      </Modal>
+  )
+}
+
 function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
+
+
 
   const afterRegister = (userData) => {
 
     modalsVisibility.regModalVisibility.setVisibility(false)
 
-    toast.success('Registration successful', {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      progress: undefined,
-      theme: "colored",
-      });
+    addMessage("Registration successful")
 
     //postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userData, undefined, afterLogin)
   }
-
-  const afterLogin = (token) => {
-
-    modalsVisibility.regModalVisibility.setVisibility(false)
-    
-    toast.success('Login successful', {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      progress: undefined,
-      theme: "colored",
-    });
-
-    const headers = {
-      Authorization: `Bearer ${token}`
-    }
-
-    getData(setUserProfile, process.env.REACT_APP_GK_PROFILE_LINK, undefined, headers )
-  }
-
 
   const register = () => {
 
@@ -963,7 +1060,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
 
   }
 
-  const login = () => {
+  const login = async () => {
 
 
     const email = document.getElementById("InputEmail2").value
@@ -975,7 +1072,35 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
       }
     }
 
-    postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userLoginData, undefined, afterLogin)
+
+    const loginResponse = await postDataToAPI(process.env.REACT_APP_GK_LOGIN_LINK, userLoginData)
+    console.log(loginResponse)     
+    if (!isResponseSuccessful(loginResponse)) {
+      addMessage(loginResponse.data.error)
+      return
+    }
+    const loginResponseData = loginResponse.data.data
+    setUserToken(loginResponseData) 
+    
+  
+    const headers = {
+      Authorization: `Bearer ${loginResponseData}`
+    }
+
+    modalsVisibility.regModalVisibility.setVisibility(false)
+    addMessage("Login successful")    
+
+    getData(setUserProfile, process.env.REACT_APP_GK_PROFILE_LINK, undefined, headers )
+    //const gettingUserProfileResult = (await postData2(process.env.REACT_APP_GK_LOGIN_LINK, userLoginData)).data.data
+  }
+
+  const afterLogin = (token) => {
+
+
+    
+
+
+
   }
 
   const forgotPassword = () => {
@@ -997,16 +1122,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
   }
 
   const afterForgotPassword = () => {
-
-    toast.success('Recovery email sent', {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      progress: undefined,
-      theme: "colored",
-    });
+    addMessage("Recovery email successful")
   }
 
 
@@ -1037,7 +1153,7 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
 
               <div className="modal-footer2">
 
-                  <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button>
+      
                   <button type="button" className="btn btn-primary" onClick={() => login()}>Send</button>
               </div>
           </div>
@@ -1055,7 +1171,6 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
 
 
               <div className="modal-footer2">
-                  <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button>
                   <button type="button" className="btn btn-primary" onClick={() => register()}>Send</button>
               </div>
           </div>
@@ -1111,6 +1226,28 @@ function Modal({ children, modalVisibility, title, hasBackground = false, sizeX 
           </div>
         </Draggable>
       );
+}
+
+function addMessage(message,type = "success") {
+
+  if (type == "success") {
+    toast.success(message, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    progress: undefined,
+    theme: "colored",
+  });
   }
+
+
+}
+
+function isResponseSuccessful(response) {
+  if (response.status < 300) {return true}
+  return false
+}
 
 

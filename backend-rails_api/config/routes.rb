@@ -9,7 +9,8 @@ Rails.application.routes.draw do
     get '/active_view', to: 'represents#represent_view_index'
     get '/active_view/:id', to: 'represents#represent_view_show'
     get '/layers/:id', to: 'represents#lt_values'
-    resources :gk_settings, only: %i[index show update]
+    resources :gk, only: %i[index show update]
+    resources :lt, only: %i[index]
     resources :quantities
     resources :laws, only: %i[index show create update destroy]
     resources :law_types, only: %i[index show create update destroy]
