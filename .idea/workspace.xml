@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="fviz add #">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="new methods for gk and lt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_settings_controller.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/law_types_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/law_types_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/gk_settings_spec.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Explorer &lt;shatl03@mail.ru&gt;" />
+      </list>
+    </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
@@ -222,23 +222,7 @@
       <workItem from="1694237651563" duration="908000" />
       <workItem from="1694356487104" duration="2043000" />
       <workItem from="1694370927788" duration="646000" />
-      <workItem from="1694532603728" duration="1662000" />
-    </task>
-    <task id="LOCAL-00040" summary="laws_controller">
-      <option name="closed" value="true" />
-      <created>1692798342354</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1692798342354</updated>
-    </task>
-    <task id="LOCAL-00041" summary="laws spec 1">
-      <option name="closed" value="true" />
-      <created>1692798771375</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1692798771375</updated>
+      <workItem from="1694532603728" duration="2433000" />
     </task>
     <task id="LOCAL-00042" summary="swagger.yaml">
       <option name="closed" value="true" />
@@ -616,7 +600,23 @@
       <option name="project" value="LOCAL" />
       <updated>1694455245561</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="new methods for gk and lt">
+      <option name="closed" value="true" />
+      <created>1694534385583</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1694534385583</updated>
+    </task>
+    <task id="LOCAL-00090" summary="new methods for gk and lt">
+      <option name="closed" value="true" />
+      <created>1694534407037</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1694534407037</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -634,7 +634,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="laws db wo controller" />
     <MESSAGE value="delete user deleting after 3y" />
     <MESSAGE value="update laws controller" />
     <MESSAGE value="law types controller and spec" />
@@ -659,7 +658,8 @@
     <MESSAGE value="index all quantity pdf" />
     <MESSAGE value="color + difference" />
     <MESSAGE value="fviz add #" />
-    <option name="LAST_COMMIT_MESSAGE" value="fviz add #" />
+    <MESSAGE value="new methods for gk and lt" />
+    <option name="LAST_COMMIT_MESSAGE" value="new methods for gk and lt" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694534231240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
