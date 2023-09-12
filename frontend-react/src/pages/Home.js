@@ -165,7 +165,7 @@ export default function Home() {
 
         //getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
         //getData(null, `http://localhost:5000/api/represents`,testShow,headers)
-
+        getData(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK,undefined,headers)
         getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
         getData(setLaws, `http://localhost:5000/api/laws`,testShow,headers)
         getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
@@ -949,7 +949,7 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
     //console.log(fullChangedLayers)
     setGKLayers(fullChangedLayers)
 
-    //patchAllLayerData(changedLayersBright,headers,afterUpdateGKLayers)
+    patchAllLayerData(changedLayersBright,headers,afterUpdateGKLayers)
     //putData(undefined,`http://localhost:5000/api/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
   }
 

@@ -128,26 +128,26 @@ export function patchAllLayerData(layers,headers,callbackFunction, extraData) {
 
 
 
-  let requests = layers.map((layer) => {
+  // let requests = layers.map((layer) => {
 
-    const newLayerBrightness = {
-      "gk_setting": {
-        "gk_bright": layer.brightness
-      }
-    }
+  //   const newLayerBrightness = {
+  //     "gk_setting": {
+  //       "gk_bright": layer.brightness
+  //     }
+  //   }
 
-    console.log(newLayerBrightness,headers)
+  //   console.log(newLayerBrightness,headers)
 
-    return axios.patch(`http://localhost:5000/api/gk_settings/${layer.id}`,newLayerBrightness, {headers: headers})});
+  //   return axios.patch(`http://localhost:5000/api/gk/${layer.id}`,newLayerBrightness, {headers: headers})});
 
-  Promise.all(requests)
-    .then(responses => {
+  // Promise.all(requests)
+  //   .then(responses => {
 
-      console.log(responses)
+  //     console.log(responses)
 
-      const results = responses.map(response => response.data.data)
-      //callbackFunction(responses)
-      callbackFunction(results, extraData)
-    })
+  //     const results = responses.map(response => response.data.data)
+  //     //callbackFunction(responses)
+  //     callbackFunction(results, extraData)
+  //   })
 
 }

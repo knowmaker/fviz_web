@@ -174,15 +174,14 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
   const cellList = Array.from({length: cellCount - 1 - isEven}, (_, cellId) => {
 
 
-    //console.log(fullTableData.Colors)
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
     let cellColor
     if (cellData) {
       if (cellData.id_gk) {
         const cellGKLayer = fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk)
-        const cellNormalColor = `${cellGKLayer.color}`
-        cellColor = Color(cellNormalColor).lighten(cellGKLayer.gk_bright/50-1).hex()
+        const cellNormalColor = cellGKLayer.color
+        cellColor = Color(cellNormalColor).hex()
         //console.log(cellColor)
       }
     }
