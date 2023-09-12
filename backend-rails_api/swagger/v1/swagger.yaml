@@ -83,8 +83,10 @@ paths:
                   properties:
                     type_name:
                       type: string
+                    color:
+                      type: string
                   required:
-                  - type_name
+                  - type_name, color
   "/api/law_types/{id}":
     parameters:
     - name: id
@@ -124,6 +126,8 @@ paths:
                   type: object
                   properties:
                     type_name:
+                      type: string
+                    color:
                       type: string
     delete:
       summary: delete law type

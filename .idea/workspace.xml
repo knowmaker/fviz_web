@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="new methods for gk and lt">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="old represents controller methods">
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law_type.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law_type.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,15 +222,7 @@
       <workItem from="1694237651563" duration="908000" />
       <workItem from="1694356487104" duration="2043000" />
       <workItem from="1694370927788" duration="646000" />
-      <workItem from="1694532603728" duration="2433000" />
-    </task>
-    <task id="LOCAL-00042" summary="swagger.yaml">
-      <option name="closed" value="true" />
-      <created>1692799144390</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1692799144390</updated>
+      <workItem from="1694532603728" duration="2874000" />
     </task>
     <task id="LOCAL-00043" summary="swagger.yaml user">
       <option name="closed" value="true" />
@@ -616,7 +608,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694534407037</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="old represents controller methods">
+      <option name="closed" value="true" />
+      <created>1694535314631</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1694535314631</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -634,7 +634,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="delete user deleting after 3y" />
     <MESSAGE value="update laws controller" />
     <MESSAGE value="law types controller and spec" />
     <MESSAGE value="gk settings controller and spec" />
@@ -659,7 +658,8 @@
     <MESSAGE value="color + difference" />
     <MESSAGE value="fviz add #" />
     <MESSAGE value="new methods for gk and lt" />
-    <option name="LAST_COMMIT_MESSAGE" value="new methods for gk and lt" />
+    <MESSAGE value="old represents controller methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="old represents controller methods" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694534231240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

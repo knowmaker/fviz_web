@@ -64,6 +64,6 @@ class LawTypesController < ApplicationController
   end
 
   def law_type_params
-    params.require(:law_type).permit(:type_name)
+    params.require(:law_type).permit(:type_name, :color)
   end
 end

@@ -4,7 +4,8 @@ RSpec.describe 'law_types', type: :request do
   let(:law_type_params) do
     { law_type:
         {
-          type_name: 'Sample Type'
+          type_name: 'Sample Type',
+          color: '#000000'
         }
     }
   end
@@ -26,9 +27,10 @@ RSpec.describe 'law_types', type: :request do
           law_type: {
             type: :object,
             properties: {
-              type_name: { type: :string }
+              type_name: { type: :string },
+              color: { type: :string }
             },
-            required: ['type_name']
+            required: ['type_name, color']
           }
         }
       }
@@ -70,7 +72,8 @@ RSpec.describe 'law_types', type: :request do
           law_type: {
             type: :object,
             properties: {
-              type_name: { type: :string }
+              type_name: { type: :string },
+              color: { type: :string }
             }
           }
         }
