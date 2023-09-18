@@ -1,24 +1,5 @@
 import axios from 'axios';
 
-export default function getData(setStateFunction, adress, afterRequestFunction, headers, extraData) {
-
-  axios
-      .get(adress, {headers: headers})
-      .then((response) => {
-        if (setStateFunction) {
-          setStateFunction(response.data.data);
-        } 
-        if (afterRequestFunction !== undefined) {
-          afterRequestFunction(response.data.data,extraData);
-        }
-        if (!setStateFunction) {return response.data.data}
-      })
-      .catch((error) => {
-          console.error(error);
-      });
-
-}
-
 export function getDataFromAPI(adress, headers = undefined) {
   return new Promise(async function(resolve) {
     try {
@@ -41,6 +22,61 @@ export function postDataToAPI(adress,data, headers = undefined) {
     }
   })
   //return axios.post(adress, data, {headers: headers})
+}
+
+export function putDataToAPI(adress,data, headers = undefined) {
+  return new Promise(async function(resolve) {
+    try {
+      const response = await axios.put(adress, data, {headers: headers})
+      resolve(response)
+    } catch (error) {
+      resolve(error.response)
+    }
+  })
+
+}
+
+export function patchDataToAPI(adress,data, headers = undefined) {
+  return new Promise(async function(resolve) {
+    try {
+      const response = await axios.patch(adress, data, {headers: headers})
+      resolve(response)
+    } catch (error) {
+      resolve(error.response)
+    }
+  })
+
+}
+
+export function deleteDataFromAPI(adress,data, headers = undefined) {
+  return new Promise(async function(resolve) {
+    try {
+      const response = await axios.delete(adress, data, {headers: headers})
+      resolve(response)
+    } catch (error) {
+      resolve(error.response)
+    }
+  })
+
+}
+
+export default function setStateFromGetAPI(setStateFunction, adress, afterRequestFunction, headers, extraData) {
+
+  axios
+      .get(adress, {headers: headers})
+      .then((response) => {
+        if (setStateFunction) {
+          setStateFunction(response.data.data);
+        } 
+        if (afterRequestFunction !== undefined) {
+          afterRequestFunction(response.data.data,extraData);
+        }
+        if (!setStateFunction) {return response.data.data}
+      })
+      .catch((error) => {
+          console.error(error);
+      });
+
 }
 
 export function postData(setStateFunction, adress, data, headers, afterRequestFunction) {

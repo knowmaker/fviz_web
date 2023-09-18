@@ -1,12 +1,13 @@
 import React,{useEffect,useState, useContext, useRef} from 'react';
 import TableUI from '../components/Table2';
 import Draggable from 'react-draggable';
-import getData, { postData, putData, patchData, deleteData, getAllCellData, getDataFromAPI, postDataToAPI,patchAllLayerData} from '../components/api';
+import setStateFromGetAPI, { postData, putData, patchData, deleteData, getAllCellData, getDataFromAPI, postDataToAPI, putDataToAPI,patchAllLayerData} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
 import { EditorState, convertToRaw, convertFromRaw , ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { TableContext } from '../components/Contexts.js';
+import { Cell } from '../components/Table2.js';
 
 import draftToMarkdown from 'draftjs-to-markdown';
 import htmlToDraft from 'html-to-draftjs';
@@ -49,9 +50,10 @@ export default function Home() {
     const [tableView, setTableView] = useState({id_repr:1,title:"Базовое"}); 
     const tableViewState = {tableView,setTableView}
 
+    // get table and layers when page is loaded
     useEffect(() => {
-      getData(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
-      getData(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK)
+      setStateFromGetAPI(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
+      setStateFromGetAPI(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK)
   
     }, []);
 
@@ -94,54 +96,51 @@ export default function Home() {
     const lawsGroupsState = {lawsGroups, setLawsGroups}
 
     useEffect(() => {
+
       const keyDownHandler = event => {
         //console.log('User pressed: ', event.key);
-  
+
+        // when escape pressed deselect any law
         if (event.key === 'Escape') {
           event.preventDefault();
           setSelectedLaw({law_name: null,cells:[],id_type: null})
         }
       };
-  
       document.addEventListener('keydown', keyDownHandler);
   
       return () => {
         document.removeEventListener('keydown', keyDownHandler);
       };
+
     }, []);
 
     useEffect(() => {
 
-      if (selectedCell) {
-
-        getData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, setEditorFromSelectedCell)
+      // if selected cell changed
+      async function setSelectedCell() {
+        if (selectedCell) {
+          setStateFromGetAPI(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`)
+  
+          // get full data about cell
+          const cellResponseData = await getDataFromAPI(`http://localhost:5000/api/quantities/${selectedCell.id_value}`)
+          if (!isResponseSuccessful(cellResponseData)) {
+            showMessage(cellResponseData.data.error,"error")
+            return
+          }
+          const cellData = cellResponseData.data.data
+  
+          // set cell editor for this cell
+          convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
+          convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
+          convertMarkdownToEditorState(setCellUnitEditor, cellData.unit) 
+          document.getElementById("inputL3").value = cellData.l_indicate
+          document.getElementById("inputT3").value = cellData.t_indicate
+          document.getElementById("inputGK3").value = cellData.id_gk
+        }  
       }
+      setSelectedCell()
 
     }, [selectedCell]);
-
-
-
-    const setEditorFromSelectedCell = (cellData) => {
-
-
-      convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
-      convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
-      convertMarkdownToEditorState(setCellUnitEditor, cellData.unit) 
-      document.getElementById("inputL3").value = cellData.l_indicate
-      document.getElementById("inputT3").value = cellData.t_indicate
-      document.getElementById("inputGK3").value = cellData.id_gk
-
-    }
-
-    const convertMarkdownToEditorState = (stateFunction, markdown) => {
-
-
-      const blocksFromHtml = htmlToDraft(markdown);
-      const { contentBlocks, entityMap } = blocksFromHtml;
-      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-      stateFunction(EditorState.createWithContent(contentState))
-
-    }
 
     const [userToken, setUserToken] = useState(null)
     const [userProfile, setUserProfile] = useState(null)
@@ -150,30 +149,35 @@ export default function Home() {
 
     useEffect(() => {
 
+      if (userToken) {
+
+        // set header for API queries
+        const headers = {
+          Authorization: `Bearer ${userToken}`
+        }    
+
+        // get all required data
+        setStateFromGetAPI(setUserProfile, process.env.REACT_APP_PROFILE_LINK, undefined, headers )
+        setStateFromGetAPI(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK,undefined,headers)
+        setStateFromGetAPI(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
+        setStateFromGetAPI(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+        setStateFromGetAPI(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+      }
+
+    }, [userToken]);
+
+    useEffect(() => {
+
+      // if user profile is not null set edit form
       if (userProfile) {
         document.getElementById("InputEmail3").value = userProfile.email
         document.getElementById("InputFirstName3").value = userProfile.first_name
         document.getElementById("InputLastName3").value = userProfile.last_name
         document.getElementById("InputPatronymic3").value = userProfile.patronymic
-
-        const headers = {
-          Authorization: `Bearer ${userInfoState.userToken}`
-        }    
-
-
-
-
-        //getData(null, `http://localhost:5000/api/active_view`,testShow,headers)
-        //getData(null, `http://localhost:5000/api/represents`,testShow,headers)
-        getData(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK,undefined,headers)
-        getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
-        getData(setLaws, `http://localhost:5000/api/laws`,testShow,headers)
-        getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
       }
-
     }, [userProfile]);
 
-
+    // DELETE LATER
     const testShow = (result) => {
 
       console.log(result)
@@ -185,14 +189,13 @@ export default function Home() {
                 <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
-                  <RegModal modalsVisibility={modalsVisibility} setUserToken={setUserToken} setUserProfile={setUserProfile}/>               
-                  {/* <EditProfileModal modalsVisibility={modalsVisibility}/> */}
-                  <EditCellModal modalsVisibility={modalsVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
-                  <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
-                  <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
-                  <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
-                  <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
-                  <GKColorModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
+                <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken}/>               
+                <EditCellModal modalVisibility={modalsVisibility.editCellModalVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
+                <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
+                <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
+                <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
+                <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
+                <GKColorModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
 
                 <ToastContainer />
           </TableContext.Provider>
@@ -200,23 +203,19 @@ export default function Home() {
     );
 }
 
-function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkColors}) {
+function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColors}) {
 
   const tableState = useContext(TableContext)
+  const userInfoState = useContext(UserProfile) 
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }  
 
-  const convertMarkdownFromEditorState = (state) => {
+  const updateCell = async () => {
 
-    let html = draftToMarkdown(convertToRaw(state.getCurrentContent()));
-    return html
-  }
-
-  const applyChangesToCell = () => {
-
-    modalsVisibility.editCellModalVisibility.setVisibility(false)
-
+    // get all MLTI parameters
     const id_gk = parseInt(document.getElementById("inputGK3").value)
 
-  
     const G_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).g_indicate
     const K_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).k_indicate
     const l_indicate = parseInt(document.getElementById("inputL3").value)
@@ -227,9 +226,10 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
     const T_indicate = t_indicate - G_indicate*-2
     const I_indicate = 0 - K_indicate*-1
 
+    // create new cell
     const newCell = {
       quantity: {
-        val_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
+        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
         symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
         unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
         l_indicate: l_indicate,
@@ -243,29 +243,40 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
 
     }
 
+    // send cell update request
+    const changedCellResponseData = await putDataToAPI(`http://localhost:5000/api/quantities/${selectedCell.id_value}`, newCell, headers)
+    if (!isResponseSuccessful(changedCellResponseData)) {
+      showMessage(changedCellResponseData.data.error,"error")
+      return
+    }
+    const cellData = changedCellResponseData.data.data
 
-    //console.log(newCell)
-    putData(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`, newCell, null, afterChangesToCell)
-  }
+    //show message
+    showMessage("Ячейка была изменена")
 
-  const afterChangesToCell = (cellData) => {
-
-    //console.log(cellData)
-    console.log(tableState)
+    // remove old cell and set new one
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
-    getData(undefined,`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`,replaceMissingCell) 
-   
-  }
+    // send request to replace missing cell
+    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`,headers)
+    if (!isResponseSuccessful(cellAlternativesResponseData)) {
+      showMessage(cellAlternativesResponseData.data.error,"error")
+      return
+    }
 
-  const replaceMissingCell = (cellAlternatives) => {
+    const cellAlternatives = cellAlternativesResponseData.data.data
 
-    if (cellAlternatives.length > 0) {
+    // replace missing cell if there is alternative
+    if (cellAlternatives.length > 0 && cellData.id_lt !== selectedCell.id_lt) {
       tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value).concat(cellAlternatives[0]))
     }
 
+    // hide modal
+    modalVisibility.setVisibility(false)
+
   }
 
+  // generate gk layer list
   const cellList = gkColors.map(gkLevel => {
 
     const shownText = `${gkLevel.gk_name}  ${gkLevel.gk_sign}`
@@ -276,33 +287,71 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
 
   });
 
+  const [previewCell, setPreviewCell] = useState({
+    cellFullId:9999,
+    cellData:{value_name:"не выбрано",symbol:"",unit:"",mlti_sign:""},
+    cellColor:undefined
+  })
+
+  const [GKoption, setGKoption] = useState(null)
+
+  useEffect(() => {
+
+    // update preview cell when input happens
+    const id_gk = parseInt(document.getElementById("inputGK3").value)
+    if (id_gk) {
+    
+    const cellColor = gkColors.find((setting) => setting.id_gk === id_gk).color
+    setPreviewCell(
+
+      {
+        cellFullId:9999,
+        cellData:{
+          value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
+          symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
+          unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
+          mlti_sign:""
+        },
+        cellColor: cellColor,
+      }
+
+    )
+    }
+  
+    }, [cellEditorsStates,GKoption,selectedCell]);
+
   return  (  
     <Modal
-    modalVisibility={modalsVisibility.editCellModalVisibility}
+    modalVisibility={modalVisibility}
     title={"Edit cell"}
     hasBackground={false}
     sizeX={650}
     >
     <div className="modal-content2">
-
+    <div className="row">
+      <details>
+        <summary>Превью</summary>
+        <Cell cellFullData={previewCell} />
+      </details>
+    </div>
       <div className="row">
       <div className="col-6">
-        <label className="form-label">Name</label>
-        <CellEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set}/>
+        <label className="form-label">Имя</label>
+        <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set}/>
       </div>
       <div className="col-6">
-        <label className="form-label">Symbol</label>
-        <CellEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set}/>
+        <label className="form-label">Условное обозначение</label>
+        <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set}/>
       </div>
       </div>
       <div className="row">
       <div className="col-6">
-      <label htmlFor="InputFirstName3" className="form-label">Unit</label>
-      <CellEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set}/>
+      <label htmlFor="InputFirstName3" className="form-label">Единица измерения</label>
+      <RichTextEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set}/>
       </div>
       <div className="col">
-      <label htmlFor="InputFirstName3" className="form-label">GK level</label>
-      <select className="form-select" aria-label="Default select example" id='inputGK3'>
+      <label htmlFor="InputFirstName3" className="form-label">Уровень GK</label>
+      <select className="form-select" aria-label="Default select example" id='inputGK3' onChange={() => setGKoption(parseInt(document.getElementById("inputGK3").value))}>
         {cellList}
       </select>
 
@@ -324,24 +373,22 @@ function EditCellModal({modalsVisibility, selectedCell, cellEditorsStates, gkCol
 
     </div>
     <div className="modal-footer2">
-      {/* <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setCellModalVisibility(false)}>Close</button> */}
-      <button type="button" className="btn btn-primary" onClick={() => applyChangesToCell()}>Edit</button>
+      <button type="button" className="btn btn-primary" onClick={() => updateCell()}>Отредактировать</button>
     </div>
 
     </Modal>
   )
 }
 
-function CellEditor({editorState,setEditorState}) {
+function RichTextEditor({editorState,setEditorState}) {
 
 
 
   const onEditorStateChange = (editorState) => {
-
     setEditorState(editorState)
-
   };
 
+  // settings for editor
   return (
     <Editor
           editorState={editorState}
@@ -371,23 +418,24 @@ function CellEditor({editorState,setEditorState}) {
   )
 }
 
-function EditProfileModal({modalsVisibility, userInfoState}) {
+function EditProfileModal({modalsVisibility}) {
 
+  const userInfoState = useContext(UserProfile) 
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }      
 
-  const editProfile = () => {
+  const editProfile = async () => {
 
     const firstName = document.getElementById("InputFirstName3").value
     const lastName = document.getElementById("InputLastName3").value 
     const patronymic = document.getElementById("InputPatronymic3").value
-    let password = document.getElementById("InputPassword3").value
-
-
-
+    const password = document.getElementById("InputPassword3").value
 
     let newUserData = {
       user: {
-        last_name: firstName,
-        first_name: lastName,
+        last_name: lastName,
+        first_name: firstName,
         patronymic: patronymic,
       }
       
@@ -399,16 +447,12 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
 
     //console.log(newUserData)
 
-    const headers = {
-      Authorization: `Bearer ${userInfoState.userToken}`
+    const editUserResponse = await patchDataToAPI(`http://localhost:5000/api/update`,newUserData,headers)
+    if (!isResponseSuccessful(editUserResponse)) {
+      showMessage(editUserResponse.data.error,"error")
+      return
     }
-
-    patchData(userInfoState.setUserProfile,`http://localhost:5000/api/update`,newUserData, headers , afterEditProfile)
-
-  }
-
-  const afterEditProfile = (newUserData) => {
-
+   
     modalsVisibility.editProfileModalVisibility.setVisibility(false)
 
     document.getElementById("InputEmail2").value = ""
@@ -416,6 +460,10 @@ function EditProfileModal({modalsVisibility, userInfoState}) {
     document.getElementById("InputEmail1").value = ""
     document.getElementById("InputPassword1").value = ""
 
+  }
+
+  const deleteUser = () => {
+    
   }
 
   return (
@@ -487,7 +535,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const afterCreateLaw = () => {
 
     //console.log("success")
-    getData(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+    setStateFromGetAPI(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
   }
 
 
@@ -540,7 +588,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   }
 
   const afterDeleteLaw = () => {
-    getData(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+    setStateFromGetAPI(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
   }
 
   // dublicate, remove later
@@ -658,7 +706,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   }      
 
   const selectTableView = (tableView) => {
-    getData(undefined, `http://localhost:5000/api/active_view/${tableView.id_repr}`,afterSelectTableView,headers,tableView.id_repr)
+    setStateFromGetAPI(undefined, `http://localhost:5000/api/active_view/${tableView.id_repr}`,afterSelectTableView,headers,tableView.id_repr)
   }
 
   const afterSelectTableView = (fullTableView,id_repr) => {
@@ -692,7 +740,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   }
 
   const afterDeleteTableView = () => {
-    getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
+    setStateFromGetAPI(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
   }
 
   const createTableView = () => {
@@ -713,7 +761,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   }
 
   const afterCreateTableView = () => {
-    getData(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
+    setStateFromGetAPI(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
   }
   
   let tableViewsMarkup
@@ -783,7 +831,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
 function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 
   const userInfoState = useContext(UserProfile)
-  //const tableState = useContext(TableContext)  
+
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }    
@@ -819,7 +867,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 
   const afterDeleteLawGroup = () => {
 
-    getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+    setStateFromGetAPI(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
   }
 
   const createLawGroup = () => {
@@ -837,7 +885,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   }
 
   const afterCreateLawGroup = () => {
-    getData(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+    setStateFromGetAPI(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
   }
   
   let lawsGroupsMarkup
@@ -1027,42 +1075,40 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
   )
 }
 
-function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
+function RegModal({modalVisibility, setUserToken}) {
 
 
 
-  const afterRegister = (userData) => {
+  const register = async () => {
 
-    modalsVisibility.regModalVisibility.setVisibility(false)
+    // get email and password from fields
+    const email = document.getElementById("InputEmail1").value
+    const password = document.getElementById("InputPassword1").value
 
-    addMessage("Registration successful")
+    const userData = {
+      user: {
+        email: email,
+        password: password,
 
-    //postData(setUserToken, process.env.REACT_APP_GK_LOGIN_LINK, userData, undefined, afterLogin)
-  }
-
-  const register = () => {
-
-      const email = document.getElementById("InputEmail1").value
-      const password = document.getElementById("InputPassword1").value
-
-      const userData = {
-        user: {
-          email: email,
-          password: password,
-
-        }
       }
+    }
 
-      //console.log(userData)
+    // try to register
+    const registerResponseData = await postDataToAPI(process.env.REACT_APP_REGISTER_LINK, userData)
+    if (!isResponseSuccessful(registerResponseData)) {
+      showMessage(registerResponseData.data.error,"error")
+      return
+    }
 
-      postData(undefined, process.env.REACT_APP_GK_REGISTER_LINK, userData, undefined, afterRegister)
-      
-
+    // hide modal and show message
+    modalVisibility.setVisibility(false)
+    showMessage("Было выслано письмо подтверждения почты")
   }
 
+  // on login function
   const login = async () => {
 
-
+    // get email and password from fields
     const email = document.getElementById("InputEmail2").value
     const password = document.getElementById("InputPassword2").value
     const userLoginData = {
@@ -1072,39 +1118,27 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
       }
     }
 
-
-    const loginResponse = await postDataToAPI(process.env.REACT_APP_GK_LOGIN_LINK, userLoginData)
-    console.log(loginResponse)     
+    // try to log in 
+    const loginResponse = await postDataToAPI(process.env.REACT_APP_LOGIN_LINK, userLoginData)
+    console.log(loginResponse, loginResponse.data.error)     
     if (!isResponseSuccessful(loginResponse)) {
-      addMessage(loginResponse.data.error)
+      showMessage(loginResponse.data.error,"error")
       return
     }
+
+    // if succesful set user token
     const loginResponseData = loginResponse.data.data
     setUserToken(loginResponseData) 
     
-  
-    const headers = {
-      Authorization: `Bearer ${loginResponseData}`
-    }
-
-    modalsVisibility.regModalVisibility.setVisibility(false)
-    addMessage("Login successful")    
-
-    getData(setUserProfile, process.env.REACT_APP_GK_PROFILE_LINK, undefined, headers )
-    //const gettingUserProfileResult = (await postData2(process.env.REACT_APP_GK_LOGIN_LINK, userLoginData)).data.data
+    // hide modal and show message
+    modalVisibility.setVisibility(false)
+    showMessage("Авторизация успешна")    
   }
 
-  const afterLogin = (token) => {
 
+  const forgotPassword = async () => {
 
-    
-
-
-
-  }
-
-  const forgotPassword = () => {
-
+    // get email field
     const email = document.getElementById("InputEmail5").value
 
     const userData = {
@@ -1113,76 +1147,72 @@ function RegModal({modalsVisibility, setUserToken, setUserProfile}) {
       }
     }
 
-    //console.log(userData)
-    postData(undefined, `http://localhost:5000/api/reset`, userData, undefined, afterForgotPassword)
-
-   
-
-
-  }
-
-  const afterForgotPassword = () => {
-    addMessage("Recovery email successful")
+    // send password reset request
+    const resetPasswordResponse = await postDataToAPI(process.env.REACT_APP_RESET_PASSWORD, userData,)
+    if (!isResponseSuccessful(resetPasswordResponse)) {
+      showMessage(resetPasswordResponse.data.error,"error")
+      return
+    }
+    // show message
+    showMessage("Письмо сброса пароля выслано")
   }
 
 
   return (
     <Modal
-      modalVisibility={modalsVisibility.regModalVisibility}
-      title={"Register/Login"}
+      modalVisibility={modalVisibility}
+      title={"Регитсрация / Авторизация"}
       hasBackground={true}
       >
       <div className="modal-content2">
 
       <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
-              <button className="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Login</button>
-              <button className="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Register</button>
-              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false">Forgot password?</button>
+              <button className="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Авторизация</button>
+              <button className="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Регистрация</button>
+              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false">Забыли пароль?</button>
           </div>
       </nav>
       <div className="tab-content" id="nav-tabContent">
           <div className="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab" tabIndex="0">
 
               <div className="modal-content2">
-                <label htmlFor="InputEmail2" className="form-label">Email address</label>
+                <label htmlFor="InputEmail2" className="form-label">Почта</label>
                 <input type="email" className="form-control" id="InputEmail2" aria-describedby="emailHelp" placeholder="name@example.com"/>
-                <label htmlFor="InputPassword2" className="form-label">Password</label>
+                <label htmlFor="InputPassword2" className="form-label">Пароль</label>
                 <input type="password" className="form-control" id="InputPassword2"/>
               </div>
 
               <div className="modal-footer2">
-
-      
-                  <button type="button" className="btn btn-primary" onClick={() => login()}>Send</button>
+                  <button type="button" className="btn btn-primary" onClick={() => login()}>Отправить</button>
               </div>
           </div>
           <div className="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab" tabIndex="0">
 
               <div className="modal-content2">
-                  <label htmlFor="InputEmail1" className="form-label">Email address</label>
+                  <label htmlFor="InputEmail1" className="form-label">Почта</label>
                   <input type="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="name@example.com"/>
-                  <label htmlFor="InputPassword1" className="form-label">Password</label>
+                  <label htmlFor="InputPassword1" className="form-label">Пароль</label>
                   <input type="password" className="form-control" id="InputPassword1"/>
-                  <div id="passwordHelpBlock" className="form-text">
+                  {/* <div id="passwordHelpBlock" className="form-text">
                       Your password must be 8-20 characters long.
-                  </div>
+                  </div> */}
               </div>
 
 
               <div className="modal-footer2">
-                  <button type="button" className="btn btn-primary" onClick={() => register()}>Send</button>
+                  <button type="button" className="btn btn-primary" onClick={() => register()}>Отправить</button>
               </div>
           </div>
           <div className="tab-pane fade" id="forgot-password" role="tabpanel" aria-labelledby="forgot-password-tab" tabIndex="0">
 
           <div className="modal-content2">
-              <label htmlFor="InputEmail5" className="form-label">Email address</label>
+              <label htmlFor="InputEmail5" className="form-label">Почта</label>
               <input type="email" className="form-control" id="InputEmail5" aria-describedby="emailHelp" placeholder="name@example.com"/>
           </div>
 
           <div className="modal-footer2">
-              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Send</button>
+              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Отправить</button>
           </div>
           </div>
       </div>
@@ -1228,19 +1258,38 @@ function Modal({ children, modalVisibility, title, hasBackground = false, sizeX 
       );
 }
 
-function addMessage(message,type = "success") {
+function showMessage(messages,type = "success") {
 
-  if (type == "success") {
-    toast.success(message, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    progress: undefined,
-    theme: "colored",
-  });
-  }
+  // check if passed argument is array and if not then put it into array
+  const messagesArray = Array.isArray(messages) ? messages : [messages]
+
+  messagesArray.forEach(message => {
+    if (type == "success") {
+      toast.success(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined,
+      theme: "colored",
+    });
+    }
+
+    if (type == "error") {
+      toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined,
+      theme: "colored",
+    });
+    }
+
+  })
+
 
 
 }
@@ -1248,6 +1297,21 @@ function addMessage(message,type = "success") {
 function isResponseSuccessful(response) {
   if (response.status < 300) {return true}
   return false
+}
+
+function convertMarkdownToEditorState(stateFunction, markdown) {
+
+  const blocksFromHtml = htmlToDraft(markdown);
+  const { contentBlocks, entityMap } = blocksFromHtml;
+  const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  stateFunction(EditorState.createWithContent(contentState))
+
+}
+
+function convertMarkdownFromEditorState(state) {
+
+  const html = draftToMarkdown(convertToRaw(state.getCurrentContent()));
+  return html
 }
 
 

@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import Footbar from './FootBar';
 import { TableContext, UserProfile } from './Contexts.js';
 import { useDownloadableScreenshot } from './Screenshot';
-import getData, {getAllCellData} from './api';
+import setStateFromGetAPI, {getAllCellData} from './api';
 import LawsCanvas from './LawsCanvas';
 const Color = require('color');
 
@@ -55,7 +55,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
   useEffect(() => {
     if (selectedCell) {
-      getData(setCellAlternatives,`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`) 
+      setStateFromGetAPI(setCellAlternatives,`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`) 
     } else {setCellAlternatives(null)}
   }, [selectedCell]);
 
@@ -211,7 +211,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
 
 }
 
-function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState, modalsVisibility,isEmpty = false}) {
+export function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState, modalsVisibility,isEmpty = false}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, forwardRef, useRef } from 'react';
-import getData from './api';
+import setStateFromGetAPI from './api';
 import { TableContext } from './Contexts.js';
 
 export default function LawsCanvas({lawCells}) {
