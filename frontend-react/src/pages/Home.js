@@ -1,7 +1,8 @@
 import React,{useEffect,useState, useContext, useRef} from 'react';
 import TableUI from '../components/Table2';
 import Draggable from 'react-draggable';
-import setStateFromGetAPI, { postData, putData, patchData, deleteData, getAllCellData, getDataFromAPI, postDataToAPI, putDataToAPI,patchAllLayerData} from '../components/api';
+import setStateFromGetAPI, { postData, putData, patchData, deleteData, getAllCellData, 
+  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI} from '../components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile } from '../components/Contexts.js';
 import { EditorState, convertToRaw, convertFromRaw , ContentState } from 'draft-js';
@@ -54,6 +55,20 @@ export default function Home() {
     useEffect(() => {
       setStateFromGetAPI(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
       setStateFromGetAPI(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK)
+
+      async function logInByLocalStorage() {
+        const storageToken = localStorage.getItem('token');
+
+        const profileResponseData = await getDataFromAPI(process.env.REACT_APP_PROFILE_LINK)
+        if (!isResponseSuccessful(profileResponseData)) {
+          return
+        }
+        showMessage("Авторизация успешна")
+
+        setUserToken(storageToken)
+
+      }
+      logInByLocalStorage()
   
     }, []);
 
@@ -97,6 +112,7 @@ export default function Home() {
 
     useEffect(() => {
 
+      // add key handler for special actions
       const keyDownHandler = event => {
         //console.log('User pressed: ', event.key);
 
@@ -162,6 +178,13 @@ export default function Home() {
         setStateFromGetAPI(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
         setStateFromGetAPI(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
         setStateFromGetAPI(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+
+        // set up localstorage to authenticate automatically
+        localStorage.setItem('token', userToken);
+
+      } else {
+        // if there is no user token delete user profile
+        setUserProfile(null)
       }
 
     }, [userToken]);
@@ -174,10 +197,15 @@ export default function Home() {
         document.getElementById("InputFirstName3").value = userProfile.first_name
         document.getElementById("InputLastName3").value = userProfile.last_name
         document.getElementById("InputPatronymic3").value = userProfile.patronymic
+      } else {
+        document.getElementById("InputEmail3").value = ""
+        document.getElementById("InputFirstName3").value = ""
+        document.getElementById("InputLastName3").value = ""
+        document.getElementById("InputPatronymic3").value = ""
       }
     }, [userProfile]);
 
-    // DELETE LATER
+    // DELETE LATER <------------------------
     const testShow = (result) => {
 
       console.log(result)
@@ -251,7 +279,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     }
     const cellData = changedCellResponseData.data.data
 
-    //show message
+    // show message
     showMessage("Ячейка была изменена")
 
     // remove old cell and set new one
@@ -273,6 +301,21 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
     // hide modal
     modalVisibility.setVisibility(false)
+
+  }
+
+  const deleteCell = async () => {
+
+
+    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_CELL_DATA}/${selectedCell.id_value}`,headers)
+    if (!isResponseSuccessful(cellDeleteResponseData)) {
+      showMessage(cellDeleteResponseData.data.error,"error")
+      return
+    }
+    // selectedCell.id_value
+    showMessage("Ячейка была удалена")
+
+    
 
   }
 
@@ -373,6 +416,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
     </div>
     <div className="modal-footer2">
+      <button type="button" className="btn btn-danger" onClick={() => deleteCell()}>Удалить</button>
       <button type="button" className="btn btn-primary" onClick={() => updateCell()}>Отредактировать</button>
     </div>
 
@@ -420,6 +464,7 @@ function RichTextEditor({editorState,setEditorState}) {
 
 function EditProfileModal({modalsVisibility}) {
 
+  const modalVisibility = modalsVisibility.editProfileModalVisibility
   const userInfoState = useContext(UserProfile) 
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
@@ -427,6 +472,7 @@ function EditProfileModal({modalsVisibility}) {
 
   const editProfile = async () => {
 
+    // get values from fields
     const firstName = document.getElementById("InputFirstName3").value
     const lastName = document.getElementById("InputLastName3").value 
     const patronymic = document.getElementById("InputPatronymic3").value
@@ -441,20 +487,22 @@ function EditProfileModal({modalsVisibility}) {
       
     }
 
+    // if new password field is not empty add it to json
     if (password !== "") {
       newUserData.user.password = password
     }
 
-    //console.log(newUserData)
-
+    // send profile update request
     const editUserResponse = await patchDataToAPI(`http://localhost:5000/api/update`,newUserData,headers)
     if (!isResponseSuccessful(editUserResponse)) {
       showMessage(editUserResponse.data.error,"error")
       return
     }
    
-    modalsVisibility.editProfileModalVisibility.setVisibility(false)
+    // hide modal
+    modalVisibility.setVisibility(false)
 
+    // empty input fields
     document.getElementById("InputEmail2").value = ""
     document.getElementById("InputPassword2").value = ""
     document.getElementById("InputEmail1").value = ""
@@ -462,33 +510,43 @@ function EditProfileModal({modalsVisibility}) {
 
   }
 
-  const deleteUser = () => {
-    
+  const deleteUser = async () => {
+
+    // send delete request
+    const deleteUserResponse = await deleteDataFromAPI(`http://localhost:5000/api/delete`,undefined,headers)
+    if (!isResponseSuccessful(deleteUserResponse)) {
+      showMessage(deleteUserResponse.data.error,"error")
+      return
+    }
+    // show message and delete user token
+    showMessage("Аккаунт удалён")
+    userInfoState.setUserToken(null)
+
   }
 
   return (
     <Modal
-      modalVisibility={modalsVisibility.editProfileModalVisibility}
-      title={"Edit profile"}
+      modalVisibility={modalVisibility}
+      title={"Редактирование профиля"}
       hasBackground={true}
       >
       <div className="modal-content2">
 
-        <label htmlFor="InputEmail3" className="form-label">Email address</label>
+        <label htmlFor="InputEmail3" className="form-label">Почта</label>
         <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com" disabled={true}/>
-        <label htmlFor="InputLastName3" className="form-label">New password</label>
+        <label htmlFor="InputLastName3" className="form-label">Новый пароль</label>
         <input type="password" className="form-control" id="InputPassword3" placeholder="Пароль"/>
-        <label htmlFor="InputLastName3" className="form-label">Last name</label>
+        <label htmlFor="InputLastName3" className="form-label">Фамилия</label>
         <input type="text" className="form-control" id="InputLastName3" placeholder="Воронин"/>
-        <label htmlFor="InputFirstName3" className="form-label">First name</label>
+        <label htmlFor="InputFirstName3" className="form-label">Имя</label>
         <input type="text" className="form-control" id="InputFirstName3" placeholder="Александр"/>
-        <label htmlFor="InputPatronymic3" className="form-label">Patronymic</label>
+        <label htmlFor="InputPatronymic3" className="form-label">Отчетство</label>
         <input type="text" className="form-control" id="InputPatronymic3" placeholder="Максимович"/>
             
       </div>
       <div className="modal-footer2">
-                  {/* <button type="button" className="btn btn-secondary" onClick={() => modalsVisibility.setRegModalVisibility(false)}>Close</button> */}
-                  <button type="button" className="btn btn-primary" onClick={() => editProfile()}>Edit</button>
+        <button type="button" className="btn btn-danger" onClick={() => deleteUser()}>Удалить аккаунт</button>
+        <button type="button" className="btn btn-primary" onClick={() => editProfile()}>Редактировать</button>
       </div>
 
       </Modal>
@@ -1161,7 +1219,7 @@ function RegModal({modalVisibility, setUserToken}) {
   return (
     <Modal
       modalVisibility={modalVisibility}
-      title={"Регитсрация / Авторизация"}
+      title={"Регитстрация / Авторизация"}
       hasBackground={true}
       >
       <div className="modal-content2">
