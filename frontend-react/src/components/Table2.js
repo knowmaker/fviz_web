@@ -40,7 +40,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
       <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
       <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref} modalsVisibility={modalsVisibility}/>
-      <Footbar hoveredCell={hoveredCell} gkColors={gkState.gkColors}/>
+      <Footbar hoveredCell={hoveredCell}/>
 
     </>  
     );
@@ -125,6 +125,16 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0
 
+  const [emptyCells, setEmptyCells] = useState([]);
+
+  useEffect(() => {
+
+    setStateFromGetAPI(setEmptyCells, `http://localhost:5000/api/lt`)
+
+  }, []);
+
+  //console.log(emptyCells)
+
   //console.log( selectedLawState.selectedLaw)
   let selectedLawCellsLTId = selectedLawState.selectedLaw.cells.map(cell => cell.id_lt)
   if (hoveredCellState.hoveredCell !== null && selectedLawCellsLTId.length >= 1 && selectedLawCellsLTId.length < 3) {
@@ -147,6 +157,7 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
       hoveredCellState={hoveredCellState} 
       selectedLawState={selectedLawState}
       modalsVisibility={modalsVisibility}
+      emptyCellsData={emptyCells}
       />
     });
       return (
@@ -167,32 +178,37 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
 
 })
 
-function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedLawState, modalsVisibility}) {
+function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
+
+  //console.log(emptyCellsData)
 
   const cellList = Array.from({length: cellCount - 1 - isEven}, (_, cellId) => {
 
 
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
+    let hoverData = emptyCellsData.find(cell => cell.id_lt === cellFullId)
     let cellColor
     if (cellData) {
       if (cellData.id_gk) {
         const cellGKLayer = fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk)
         const cellNormalColor = cellGKLayer.color
-        cellColor = Color(cellNormalColor).hex()
+        cellColor = cellNormalColor
         //console.log(cellColor)
+
+        hoverData.GKLayer = cellGKLayer
+
       }
     }
-
-    //console.log(cellData)
 
     return (<Cell 
             key={cellFullId} 
             cellFullData={{cellFullId,cellData,cellColor}} 
             cellRightClick={setSelectedCell} 
             hoveredCellState={hoveredCellState}
+            hoverData={{hoveredCellState,hoverData}}
             selectedLawState={cellColor ? selectedLawState : undefined}
             modalsVisibility={modalsVisibility}
             isEmpty={cellColor ? false:true}
@@ -206,12 +222,9 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
     return <div className="row">{cellList}</div>
   }
 
-  
-
-
 }
 
-export function Cell({cellFullData, cellRightClick, selectedCells, revStates, hoveredCellState, setSelectedCell, selectedLawState, modalsVisibility,isEmpty = false}) {
+export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -330,9 +343,9 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, ho
 
   //const checkLawExistence = (selectedLaw)
 
-  const handleCellHover = (event, cellId) => {
+  const handleCellHover = (event, cellData) => {
 
-    hoveredCellState.setHoveredCell(cellId)
+    hoverData.hoveredCellState.setHoveredCell(cellData)
     //console.log(selectedLawState.selectedLaw.cells)
   }
 
@@ -360,7 +373,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, ho
           style={{ backgroundColor: cellColor }}
           onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
           onClick={onClickEvent}
-          onMouseOver={event => hoveredCellState ? handleCellHover(event, cellFullId) : {}}
+          onMouseOver={event => hoverData ? handleCellHover(event, hoverData.hoverData) : {}}
           cellnumber={cellFullId}
         >
           <div className='cell-name'>
@@ -379,7 +392,14 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, ho
         </div>
     );
   } else {
-    return <div className="cell-invisible cell" onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)} onClick={onClickEvent} id={`cell-${cellFullId}`} cellnumber={cellFullId}></div>
+    return <div 
+    className="cell-invisible cell" 
+    onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)} 
+    onClick={onClickEvent} 
+    id={`cell-${cellFullId}`} 
+    cellnumber={cellFullId}
+    onMouseOver={event => hoverData ? handleCellHover(event, hoverData.hoverData) : {}}
+    ></div>
   }
   
 }

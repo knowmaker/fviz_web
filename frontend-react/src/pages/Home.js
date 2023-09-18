@@ -315,7 +315,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     // selectedCell.id_value
     showMessage("Ячейка была удалена")
 
-    
+
 
   }
 
@@ -501,6 +501,7 @@ function EditProfileModal({modalsVisibility}) {
    
     // hide modal
     modalVisibility.setVisibility(false)
+    showMessage("Профиль обновлён")
 
     // empty input fields
     document.getElementById("InputEmail2").value = ""
@@ -540,7 +541,7 @@ function EditProfileModal({modalsVisibility}) {
         <input type="text" className="form-control" id="InputLastName3" placeholder="Воронин"/>
         <label htmlFor="InputFirstName3" className="form-label">Имя</label>
         <input type="text" className="form-control" id="InputFirstName3" placeholder="Александр"/>
-        <label htmlFor="InputPatronymic3" className="form-label">Отчетство</label>
+        <label htmlFor="InputPatronymic3" className="form-label">Отчество</label>
         <input type="text" className="form-control" id="InputPatronymic3" placeholder="Максимович"/>
             
       </div>
