@@ -34,9 +34,6 @@ class RepresentsController < ApplicationController
   end
 
   def represent_view_index
-    begin
-      authorize_request
-    end
     represent_id = @current_user ? @current_user.represents.first : 1
     quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_quantities).flatten
     active_quantities = Quantity.where(id_value: quantity_ids).order(:id_lt).all
