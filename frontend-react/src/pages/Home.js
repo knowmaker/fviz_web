@@ -57,15 +57,24 @@ export default function Home() {
       setStateFromGetAPI(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK)
 
       async function logInByLocalStorage() {
+        
         const storageToken = localStorage.getItem('token');
+        if (storageToken) {
+          const headers = {
+            Authorization: `Bearer ${storageToken}`
+          }   
+  
+          const profileResponseData = await getDataFromAPI(process.env.REACT_APP_PROFILE_LINK,headers)
+          if (!isResponseSuccessful(profileResponseData)) {
+            localStorage.removeItem('token')
+            return
+          }
+          showMessage("Авторизация успешна")
 
-        const profileResponseData = await getDataFromAPI(process.env.REACT_APP_PROFILE_LINK)
-        if (!isResponseSuccessful(profileResponseData)) {
-          return
+          setUserToken(storageToken)
+
         }
-        showMessage("Авторизация успешна")
 
-        setUserToken(storageToken)
 
       }
       logInByLocalStorage()

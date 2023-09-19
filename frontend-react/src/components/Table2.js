@@ -197,7 +197,6 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
         const cellNormalColor = cellGKLayer.color
         cellColor = cellNormalColor
         //console.log(cellColor)
-
         hoverData.GKLayer = cellGKLayer
 
       }

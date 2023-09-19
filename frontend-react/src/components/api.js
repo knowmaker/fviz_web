@@ -4,6 +4,7 @@ export function getDataFromAPI(adress, headers = undefined) {
   return new Promise(async function(resolve) {
     try {
       const response = await axios.get(adress, {headers: headers})
+      //console.log(adress,headers,response)
       resolve(response)
     } catch (error) {
       resolve(error.response)
@@ -74,7 +75,8 @@ export default function setStateFromGetAPI(setStateFunction, adress, afterReques
         if (!setStateFunction) {return response.data.data}
       })
       .catch((error) => {
-          console.error(error);
+        console.log(adress,headers)
+        //console.error(error);
       });
 
 }
