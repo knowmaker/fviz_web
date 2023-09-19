@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="add color column in law types">
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk_setting.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/.env" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/components/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/components/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="delete gk_setting">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_08_09_2023_14_07_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_08_09_2023_14_07__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,15 +226,16 @@
       <workItem from="1694237651563" duration="908000" />
       <workItem from="1694356487104" duration="2043000" />
       <workItem from="1694370927788" duration="646000" />
-      <workItem from="1694532603728" duration="3442000" />
-    </task>
-    <task id="LOCAL-00044" summary="swagger.yaml represents">
-      <option name="closed" value="true" />
-      <created>1692819023361</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1692819023361</updated>
+      <workItem from="1694532603728" duration="8240000" />
+      <workItem from="1694630117531" duration="549000" />
+      <workItem from="1694630784962" duration="732000" />
+      <workItem from="1694937299424" duration="129000" />
+      <workItem from="1694937520504" duration="1142000" />
+      <workItem from="1694938753933" duration="978000" />
+      <workItem from="1694950160256" duration="3417000" />
+      <workItem from="1695049121636" duration="2774000" />
+      <workItem from="1695066945004" duration="667000" />
+      <workItem from="1695154329226" duration="1216000" />
     </task>
     <task id="LOCAL-00045" summary="swagger.yaml all">
       <option name="closed" value="true" />
@@ -620,7 +621,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694535691899</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="delete gk_setting">
+      <option name="closed" value="true" />
+      <created>1694536156607</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1694536156607</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -638,7 +647,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="law types controller and spec" />
     <MESSAGE value="gk settings controller and spec" />
     <MESSAGE value="other spec" />
     <MESSAGE value="user delete /and spec" />
@@ -663,10 +671,11 @@
     <MESSAGE value="new methods for gk and lt" />
     <MESSAGE value="old represents controller methods" />
     <MESSAGE value="add color column in law types" />
-    <option name="LAST_COMMIT_MESSAGE" value="add color column in law types" />
+    <MESSAGE value="delete gk_setting" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete gk_setting" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1694534231240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1695154384256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@law_types.rcov" NAME="law_types Coverage Results" MODIFIED="1694449991631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>
