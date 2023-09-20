@@ -3,8 +3,8 @@
 # Контроллер для получения активных ФВ представления (верхний слой), просмотра слоев, а также для работы с ФВ админом
 class QuantitiesController < ApplicationController
   include QuantitiesHelper
-  # before_action :authorize_request, only: %i[index create update destroy]
-  before_action :set_quantity, only: %i[show update]
+  before_action :authorize_request, only: %i[index create update destroy]
+  before_action :set_quantity, only: %i[update destroy]
 
   def index
     # unless @current_user.role
@@ -21,6 +21,7 @@ class QuantitiesController < ApplicationController
   end
 
   def show
+    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(params[:id])
     render json: { data: @quantity }, status: :ok
   end
 
@@ -65,7 +66,6 @@ class QuantitiesController < ApplicationController
     #   render json: {error: ['Только админ может удалять величины']}, status: :unauthorized
     #   return
     # end
-    @quantity = Quantity.find(params[:id])
 
     @quantity.destroy
     head :ok
@@ -74,14 +74,14 @@ class QuantitiesController < ApplicationController
   private
 
   def set_quantity
-    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(params[:id])
+    @quantity = Quantity.find(params[:id])
   end
 
   def quantity_params
     quantity_params = params.require(:quantity)
                             .permit(:value_name, :symbol,
                                     :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto,
-                                    :unit, :l_indicate, :t_indicate, :id_gk)
+                                    :unit, :l_indicate, :t_indicate, :id_gk, :mlti_sign)
 
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])
     return { error: 'Такой ячейки не существует' } unless lt

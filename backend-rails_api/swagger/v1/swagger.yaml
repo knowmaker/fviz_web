@@ -184,6 +184,37 @@ paths:
                   - third_element
                   - fourth_element
                   - id_type
+  "/api/laws/check":
+    post:
+      summary: check laws existing
+      tags:
+      - Laws
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                law:
+                  type: object
+                  properties:
+                    first_element:
+                      type: integer
+                    second_element:
+                      type: integer
+                    third_element:
+                      type: integer
+                    fourth_element:
+                      type: integer
+                  required:
+                  - first_element
+                  - second_element
+                  - third_element
+                  - fourth_element
   "/api/laws/{id}":
     parameters:
     - name: id
@@ -492,7 +523,7 @@ paths:
           description: successful
         '404':
           description: not found
-  "/api/login":
+  "/api/users/login":
     post:
       summary: login
       tags:
@@ -517,7 +548,7 @@ paths:
                   required:
                   - email
                   - password
-  "/api/signup":
+  "/api/users/signup":
     post:
       summary: create user
       tags:
@@ -542,7 +573,7 @@ paths:
                   required:
                   - email
                   - password
-  "/api/profile":
+  "/api/users/profile":
     get:
       summary: show user
       tags:
@@ -550,7 +581,7 @@ paths:
       responses:
         '200':
           description: successful
-  "/api/update":
+  "/api/users/update":
     patch:
       summary: update user
       tags:
@@ -571,7 +602,7 @@ paths:
                   type: string
                 patronymic:
                   type: string
-  "/api/delete":
+  "/api/users/delete":
     delete:
       summary: delete user
       tags:
@@ -604,7 +635,7 @@ paths:
           description: email confirmed
         '422':
           description: invalid confirmation token
-  "/api/reset":
+  "/api/users/reset":
     post:
       summary: Send reset password email
       tags:

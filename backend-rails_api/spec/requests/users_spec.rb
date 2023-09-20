@@ -1,7 +1,7 @@
 require 'swagger_helper'
 
 RSpec.describe 'users', type: :request do
-  path '/api/login' do
+  path '/api/users/login' do
     post('login') do
       tags 'Users'
       consumes 'application/json'
@@ -24,7 +24,7 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/signup' do
+  path '/api/users/signup' do
     post('create user') do
       tags 'Users'
       consumes 'application/json'
@@ -48,7 +48,7 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/profile' do
+  path '/api/users/profile' do
     get('show user') do
       tags 'Users'
       response(200, 'successful') do
@@ -57,7 +57,7 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/update' do
+  path '/api/users/update' do
     patch('update user') do
       tags 'Users'
       consumes 'application/json'
@@ -76,7 +76,7 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/delete' do
+  path '/api/users/delete' do
     delete('delete user') do
       tags 'Users'
       response(200, 'successful') do
@@ -109,7 +109,7 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/reset' do
+  path '/api/users/reset' do
     post('Send reset password email') do
       tags 'Users'
       consumes 'application/json'

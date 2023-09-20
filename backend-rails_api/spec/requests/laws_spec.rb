@@ -55,6 +55,31 @@ RSpec.describe 'laws', type: :request do
     end
   end
 
+  path '/api/laws/check' do
+    post('check laws existing') do
+      tags 'Laws'
+      consumes 'application/json'
+      parameter name: :law, in: :body, schema: {
+        type: :object,
+        properties: {
+          law: {
+            type: :object,
+            properties: {
+              first_element: { type: :integer },
+              second_element: { type: :integer },
+              third_element: { type: :integer },
+              fourth_element: { type: :integer }
+            },
+            required: ['first_element', 'second_element', 'third_element', 'fourth_element']
+          }
+        }
+      }
+      response(200, 'successful') do
+        run_test!
+      end
+    end
+  end
+
   path '/api/laws/{id}' do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 

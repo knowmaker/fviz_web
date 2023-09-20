@@ -2,11 +2,11 @@
 
 # Контроллер для работы с типами закономерностей
 class LawTypesController < ApplicationController
-  # before_action :authorize_request
+  before_action :authorize_request
   before_action :set_law_type, only: %i[show update destroy]
 
   def index
-    law_types = LawType.all
+    law_types = LawType.order(:id_type).all
     render json: { data: law_types }, status: :ok
   end
 

@@ -12,21 +12,19 @@ Rails.application.routes.draw do
     resources :gk, only: %i[index show update]
     resources :lt, only: %i[index]
     resources :quantities
-    resources :laws, only: %i[index show create update destroy]
+    resources :laws, only: %i[index show create update destroy] do
+      post :check, on: :collection
+    end
     resources :law_types, only: %i[index show create update destroy]
-    post '/signup', to: 'users#create'
-    post '/login', to: 'users#login'
-    get '/profile', to: 'users#show'
-    patch '/update', to: 'users#update'
-    delete '/delete', to: 'users#destroy'
-    post '/reset', to: 'users#reset'
-    resources :users, only: [] do
-      member do
-        get :confirm, to: 'users#confirm'
-      end
+    resources :users do
+      post :signup, on: :collection
+      post :login, on: :collection
+      get :profile, on: :collection
+      patch :update, on: :collection
+      delete :delete, on: :collection
+      post :reset, on: :collection
+      get :confirm, on: :member
       get :new_password, on: :member
     end
   end
-  # Defines the root path route ("/")
-  # root "articles#index"
 end
