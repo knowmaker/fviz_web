@@ -101,9 +101,9 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
     if (userInfo.userProfile) {
         loginButtons = (
             <>
-                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (Открыть профиль)</span>
+                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (Мой профиль)</span>
                 <span style={{margin:10}}>/</span>
-                <span onClick={() => signOut()} style={{cursor: "pointer"}}>Выйти</span>
+                <span onClick={() => signOut()} style={{cursor: "pointer"}}>Выход</span>
             </>
         )
     }   
@@ -111,9 +111,9 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
     {
         loginButtons = (
             <>
-                <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}>Войти</span>
+                <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}>Вход</span>
                 <span style={{margin:10}}>/</span>
-                <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}>Зарегистрироваться</span>
+                <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}>Регистрация</span>
             </>
         )
     }
@@ -128,9 +128,9 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className="navbar-nav">
-                        <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Отменить</div>
-                        <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Вернуть</div>
-                        <div className="nav-link active" aria-current="page" onClick={getImage}>Снимок текущего представления</div>
+                        <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Отмена</div>
+                        <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Возврат</div>
+                        <div className="nav-link active" aria-current="page" onClick={getImage}>Снимок экрана представления</div>
                         <div className="nav-link active" aria-current="page" onClick={openEditForm}>Редактирование ячейки</div>
                         <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}>Представления</div>
                         <div className="nav-link active" aria-current="page" onClick={openLawsForm}>Законы</div>
