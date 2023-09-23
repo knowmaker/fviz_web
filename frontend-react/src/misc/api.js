@@ -70,12 +70,12 @@ export default function setStateFromGetAPI(setStateFunction, adress, afterReques
           setStateFunction(response.data.data);
         } 
         if (afterRequestFunction !== undefined) {
-          afterRequestFunction(response.data.data,extraData);
+          afterRequestFunction(response.data.data,extraData,{adress:adress,headers:headers});
         }
         if (!setStateFunction) {return response.data.data}
       })
       .catch((error) => {
-        console.log(adress,headers)
+        console.log("ERROR:",adress,headers)
         //console.error(error);
       });
 

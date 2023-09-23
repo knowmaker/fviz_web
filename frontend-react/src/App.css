@@ -25,13 +25,13 @@ html {
 }
 
 .cell:hover {
+  background-color: #e0e0e0;
   opacity: 0.7;
 }
 
 .cell-invisible {
-  opacity: 0.1;
+  background-color: #fff;
 }
-
 
 /* border for hex */
 .inner-cell {
@@ -49,7 +49,7 @@ html {
 
 
 .tables {
-  max-height: calc(100vh - 101px);
+  max-height: calc(100vh - 123px);
   margin-top: 58px;
   /* margin-bottom: 43px; */
   overflow-y: scroll;
@@ -138,7 +138,6 @@ sup, sub {
 
 .navbar {
   border: 1px solid #ccc;
-  z-index: -10;
 }
 
 .nav-link {
@@ -148,7 +147,6 @@ sup, sub {
 .diminput {
   display: block;
   width: 90px;
-  height: 25px;
   font-size: 15px;
   text-align: center;
   position: relative;
@@ -157,15 +155,17 @@ sup, sub {
   color: black;
   border: 1px solid black;
   margin-right: 10px;
+}
 
+.v-align {
+  display: inline;
+  vertical-align: middle;
 }
 
 .diminput sup {
   display:inline-flex;
   min-width: 10px;
 }
-
-
 
 .modal-drag-area {
   position: relative;
@@ -180,7 +180,7 @@ sup, sub {
   margin: 10px;
   background-color: white;
   border: 1px solid #ccc;
-  z-index: 10;
+  z-index: 2000;
 }
 
 

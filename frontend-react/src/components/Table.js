@@ -1,23 +1,19 @@
 import React, { useEffect, useState, useContext, forwardRef } from 'react';
 import Navbar from './Navbar';
-import Footbar from './FootBar';
-import { TableContext, UserProfile } from './Contexts.js';
-import { useDownloadableScreenshot } from './Screenshot';
-import setStateFromGetAPI, {getAllCellData} from './api';
+import { TableContext, UserProfile } from '../misc/contexts.js';
+import { useDownloadableScreenshot } from '../misc/Screenshot.js';
+import setStateFromGetAPI, {getAllCellData} from '../misc/api';
 import LawsCanvas from './LawsCanvas';
 const Color = require('color');
 
 const rowCount = 21
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState}) {
 
-  const [hoveredCell, setHoveredCell] = useState(null);
 
-  //console.log(selectedLawState.selectedLaw.cells)
 
-  const hoveredCellState = {hoveredCell, setHoveredCell}
-
+  const hoveredCell = hoveredCellState.hoveredCell
 
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
@@ -39,8 +35,8 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
     <>
       <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table2 gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref} modalsVisibility={modalsVisibility}/>
-      <Footbar hoveredCell={hoveredCell}/>
+      <Table gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref} modalsVisibility={modalsVisibility}/>
+
 
     </>  
     );
@@ -55,9 +51,11 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
   useEffect(() => {
     if (selectedCell) {
-      setStateFromGetAPI(setCellAlternatives,`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`) 
+      setStateFromGetAPI(setCellAlternatives,`${process.env.REACT_APP_API_LINK}/layers/${selectedCell.id_lt}`) 
     } else {setCellAlternatives(null)}
   }, [selectedCell]);
+
+  console.log(cellAlternatives,selectedCell)
 
   if (cellAlternatives !== null && selectedCell !== null) {
 
@@ -96,6 +94,8 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
     const cellOptions = cells.length !== 0 ? cells : "no cells to show"
 
+
+
     return (
       <div className="data-window">
         <div className="data-window-top">
@@ -116,7 +116,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selectedLawState,modalsVisibility}, ref) => {
+const Table = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selectedLawState,modalsVisibility}, ref) => {
 
 
   const tableState = useContext(TableContext)
@@ -146,6 +146,7 @@ const Table2 = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, select
   }
 
   //console.log(selectedLawCellsLTId)
+  
 
   if (isLoaded) {
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
@@ -235,11 +236,10 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
   const handleCellRightClick = (event, cellId) => {
     
     event.preventDefault()
-    cellRightClick(null)
 
 
       //getData(cellRightClick,`http://127.0.0.1:5000/api/layers/${cellId}`)
-      cellRightClick(cellData)
+    cellRightClick(cellData)
 
   };
 
@@ -362,8 +362,6 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     const cellContent_unit = cellData.unit;
     const cellContent_mlti = cellData.mlti_sign;
     
-    
-
     return (
         <div
           key={cellFullId}
@@ -381,7 +379,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
           </div>
           <div className="su-pos" >
           <span dangerouslySetInnerHTML={{__html: cellContent_symbol}}></span>
-              {', '}
+              {(cellContent_unit === "") ? '' : ', '}
           <span dangerouslySetInnerHTML={{__html: cellContent_unit}}></span>   
               <br />
           </div>

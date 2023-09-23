@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import { TableContext, UserProfile } from './Contexts.js';
+import { TableContext, UserProfile } from '../misc/contexts.js';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { getTextFromState, getStateFromText} from '../pages/Home.js'
@@ -66,6 +66,8 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
             theme: "colored",
           });
 
+        localStorage.removeItem('token')
+
     }
 
     const openProfileForm = () => {
@@ -99,9 +101,9 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
     if (userInfo.userProfile) {
         loginButtons = (
             <>
-                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (Profile)</span>
+                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (Открыть профиль)</span>
                 <span style={{margin:10}}>/</span>
-                <span onClick={() => signOut()} style={{cursor: "pointer"}}>Sign out</span>
+                <span onClick={() => signOut()} style={{cursor: "pointer"}}>Выйти</span>
             </>
         )
     }   
@@ -109,9 +111,9 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
     {
         loginButtons = (
             <>
-                <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}>Login</span>
+                <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}>Войти</span>
                 <span style={{margin:10}}>/</span>
-                <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}>Register</span>
+                <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}>Зарегистрироваться</span>
             </>
         )
     }
@@ -126,14 +128,14 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className="navbar-nav">
-                        <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Undo</div>
-                        <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Redo</div>
-                        <div className="nav-link active" aria-current="page" onClick={getImage}>Screenshot</div>
-                        <div className="nav-link active" aria-current="page" onClick={openEditForm}>Edit</div>
-                        <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}>table views</div>
-                        <div className="nav-link active" aria-current="page" onClick={openLawsForm}>laws</div>
-                        <div className="nav-link active" aria-current="page" onClick={openLawsGroupsForm}>Edit laws groups</div>
-                        <div className="nav-link active" aria-current="page" onClick={openGKColorsEditForm}>Edit layer colors</div>
+                        <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Отменить</div>
+                        <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Вернуть</div>
+                        <div className="nav-link active" aria-current="page" onClick={getImage}>Снимок текущего представления</div>
+                        <div className="nav-link active" aria-current="page" onClick={openEditForm}>Редактирование ячейки</div>
+                        <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}>Представления</div>
+                        <div className="nav-link active" aria-current="page" onClick={openLawsForm}>Законы</div>
+                        <div className="nav-link active" aria-current="page" onClick={openLawsGroupsForm}>Группы законов</div>
+                        <div className="nav-link active" aria-current="page" onClick={openGKColorsEditForm}>Цвета ячеек</div>
                     </div>
                 </div>
                 <div className="navbar-text">

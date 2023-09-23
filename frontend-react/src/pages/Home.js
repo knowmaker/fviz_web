@@ -1,14 +1,15 @@
 import React,{useEffect,useState, useContext, useRef} from 'react';
-import TableUI from '../components/Table2';
+import TableUI from '../components/Table';
 import Draggable from 'react-draggable';
 import setStateFromGetAPI, { postData, putData, patchData, deleteData, getAllCellData, 
-  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI} from '../components/api';
+  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI} from '../misc/api';
 import { ToastContainer, toast } from 'react-toastify';
-import { UserProfile } from '../components/Contexts.js';
-import { EditorState, convertToRaw, convertFromRaw , ContentState } from 'draft-js';
+import { UserProfile } from '../misc/contexts.js';
+import { EditorState, convertToRaw , ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import { TableContext } from '../components/Contexts.js';
-import { Cell } from '../components/Table2.js';
+import { TableContext } from '../misc/contexts.js';
+import { Cell } from '../components/Table.js';
+import Footbar from '../components/FootBar';
 
 import draftToMarkdown from 'draftjs-to-markdown';
 import htmlToDraft from 'html-to-draftjs';
@@ -53,8 +54,8 @@ export default function Home() {
 
     // get table and layers when page is loaded
     useEffect(() => {
-      setStateFromGetAPI(setTableData, process.env.REACT_APP_QUANTITIES_LINK)
-      setStateFromGetAPI(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK)
+      setStateFromGetAPI(setTableData,`${process.env.REACT_APP_API_LINK}/active_view`)
+      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`)
 
       async function logInByLocalStorage() {
         
@@ -64,7 +65,7 @@ export default function Home() {
             Authorization: `Bearer ${storageToken}`
           }   
   
-          const profileResponseData = await getDataFromAPI(process.env.REACT_APP_PROFILE_LINK,headers)
+          const profileResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/users/profile`,headers)
           if (!isResponseSuccessful(profileResponseData)) {
             localStorage.removeItem('token')
             return
@@ -85,6 +86,10 @@ export default function Home() {
 
     const [selectedCell, setSelectedCell] = useState(null);
     const selectedCellState={selectedCell, setSelectedCell}
+
+    console.log(selectedCell)
+    const [hoveredCell, setHoveredCell] = useState(null);
+    const hoveredCellState = {hoveredCell, setHoveredCell}
 
     const [undoStack, setUndoStack] = useState([]);
     const [redoStack, setRedoStack] = useState([]);
@@ -144,10 +149,10 @@ export default function Home() {
       // if selected cell changed
       async function setSelectedCell() {
         if (selectedCell) {
-          setStateFromGetAPI(null, `http://localhost:5000/api/quantities/${selectedCell.id_value}`)
+          setStateFromGetAPI(null, `${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`)
   
           // get full data about cell
-          const cellResponseData = await getDataFromAPI(`http://localhost:5000/api/quantities/${selectedCell.id_value}`)
+          const cellResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`)
           if (!isResponseSuccessful(cellResponseData)) {
             showMessage(cellResponseData.data.error,"error")
             return
@@ -182,11 +187,11 @@ export default function Home() {
         }    
 
         // get all required data
-        setStateFromGetAPI(setUserProfile, process.env.REACT_APP_PROFILE_LINK, undefined, headers )
-        setStateFromGetAPI(setGKLayers,process.env.REACT_APP_GK_SETTINGS_LINK,undefined,headers)
-        setStateFromGetAPI(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
-        setStateFromGetAPI(setLaws, `http://localhost:5000/api/laws`,undefined,headers)
-        setStateFromGetAPI(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+        setStateFromGetAPI(setUserProfile, `${process.env.REACT_APP_API_LINK}/users/profile`, undefined, headers )
+        setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
+        setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+        //setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/laws`,testShow,headers) uncomment when fixed
+        setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
 
         // set up localstorage to authenticate automatically
         localStorage.setItem('token', userToken);
@@ -215,15 +220,17 @@ export default function Home() {
     }, [userProfile]);
 
     // DELETE LATER <------------------------
-    const testShow = (result) => {
+    const testShow = (result,_,info) => {
 
-      console.log(result)
+      console.log(result,info)
     }
 
     return (
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState}/>
+
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState}/>
+                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken}/>               
@@ -276,12 +283,13 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
         l_indicate_auto: L_indicate,
         t_indicate_auto: T_indicate,
         i_indicate_auto: I_indicate,
+        mlti_sign: convertToMLTI(M_indicate,L_indicate,T_indicate,I_indicate)
       }
 
     }
 
     // send cell update request
-    const changedCellResponseData = await putDataToAPI(`http://localhost:5000/api/quantities/${selectedCell.id_value}`, newCell, headers)
+    const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`, newCell, headers)
     if (!isResponseSuccessful(changedCellResponseData)) {
       showMessage(changedCellResponseData.data.error,"error")
       return
@@ -295,7 +303,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
     // send request to replace missing cell
-    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_CELL_LAYERS_LINK}/${selectedCell.id_lt}`,headers)
+    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}//layers/${selectedCell.id_lt}`,headers)
     if (!isResponseSuccessful(cellAlternativesResponseData)) {
       showMessage(cellAlternativesResponseData.data.error,"error")
       return
@@ -316,7 +324,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   const deleteCell = async () => {
 
 
-    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_CELL_DATA}/${selectedCell.id_value}`,headers)
+    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}//quantities/${selectedCell.id_value}`,headers)
     if (!isResponseSuccessful(cellDeleteResponseData)) {
       showMessage(cellDeleteResponseData.data.error,"error")
       return
@@ -350,10 +358,27 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   useEffect(() => {
 
     // update preview cell when input happens
+    updatePreviewCell()
+  
+    }, [cellEditorsStates,GKoption,selectedCell]);
+
+    const updatePreviewCell = () => {
+    
     const id_gk = parseInt(document.getElementById("inputGK3").value)
     if (id_gk) {
     
     const cellColor = gkColors.find((setting) => setting.id_gk === id_gk).color
+
+    const G_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).g_indicate
+    const K_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).k_indicate
+    const l_indicate = parseInt(document.getElementById("inputL3").value)
+    const t_indicate = parseInt(document.getElementById("inputT3").value)
+
+    const M_indicate = 0 - (G_indicate*-1+K_indicate)
+    const L_indicate = l_indicate - G_indicate*3
+    const T_indicate = t_indicate - G_indicate*-2
+    const I_indicate = 0 - K_indicate*-1
+
     setPreviewCell(
 
       {
@@ -362,15 +387,15 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
           value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
           symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
           unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
-          mlti_sign:""
+          mlti_sign: convertToMLTI(M_indicate,L_indicate,T_indicate,I_indicate),
         },
         cellColor: cellColor,
       }
 
     )
     }
-  
-    }, [cellEditorsStates,GKoption,selectedCell]);
+
+    }
 
   return  (  
     <Modal
@@ -413,12 +438,12 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
       <div className="row">
       <div className="col">
       <label className="form-label">L</label>
-      <input type="number" min="-10" max="10" step="1" className="form-control" id="inputL3"/>
+      <input type="number" min="-10" max="10" step="1" className="form-control" id="inputL3" onChange={() => updatePreviewCell()}/>
       </div>
 
       <div className="col">
       <label className="form-label">T</label>
-      <input type="number" min="-10" step="1" className="form-control" id="inputT3"/>
+      <input type="number" min="-10" step="1" className="form-control" id="inputT3" onChange={() => updatePreviewCell()}/>
       </div>
 
       </div>
@@ -426,7 +451,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     </div>
     <div className="modal-footer2">
       <button type="button" className="btn btn-danger" onClick={() => deleteCell()}>Удалить</button>
-      <button type="button" className="btn btn-primary" onClick={() => updateCell()}>Отредактировать</button>
+      <button type="button" className="btn btn-primary" onClick={() => updateCell()}>Сохранить</button>
     </div>
 
     </Modal>
@@ -502,7 +527,7 @@ function EditProfileModal({modalsVisibility}) {
     }
 
     // send profile update request
-    const editUserResponse = await patchDataToAPI(`http://localhost:5000/api/update`,newUserData,headers)
+    const editUserResponse = await patchDataToAPI(`${process.env.REACT_APP_API_LINK}/update`,newUserData,headers)
     if (!isResponseSuccessful(editUserResponse)) {
       showMessage(editUserResponse.data.error,"error")
       return
@@ -523,7 +548,7 @@ function EditProfileModal({modalsVisibility}) {
   const deleteUser = async () => {
 
     // send delete request
-    const deleteUserResponse = await deleteDataFromAPI(`http://localhost:5000/api/delete`,undefined,headers)
+    const deleteUserResponse = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/delete`,undefined,headers)
     if (!isResponseSuccessful(deleteUserResponse)) {
       showMessage(deleteUserResponse.data.error,"error")
       return
@@ -595,7 +620,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
       }
     }
     //console.log(newLaw)
-    postData(undefined, `http://localhost:5000/api/laws`, newLaw, headers, afterCreateLaw)
+    postData(undefined, `${process.env.REACT_APP_API_LINK}/laws`, newLaw, headers, afterCreateLaw)
     
 
   }
@@ -603,7 +628,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const afterCreateLaw = () => {
 
     //console.log("success")
-    setStateFromGetAPI(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
   }
 
 
@@ -631,7 +656,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
       }
     }
     //console.log(newLaw)
-    patchData(undefined, `http://localhost:5000/api/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
+    patchData(undefined, `${process.env.REACT_APP_API_LINK}/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
     
   }
 
@@ -652,11 +677,11 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
   const deleteLaw = (law) => {
 
-    deleteData(undefined,`http://localhost:5000/api/laws/${law.id_law}`,headers,afterDeleteLaw)
+    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/laws/${law.id_law}`,headers,afterDeleteLaw)
   }
 
   const afterDeleteLaw = () => {
-    setStateFromGetAPI(lawsState.setLaws, `http://localhost:5000/api/laws`,undefined,headers)
+    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
   }
 
   // dublicate, remove later
@@ -698,6 +723,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
   let lawsMarkup
   let lawsCounter = 0
+  //console.log(lawsState.laws)
   if (lawsState.laws) {
     lawsMarkup = lawsState.laws.map(law => {
     lawsCounter += 1 
@@ -774,7 +800,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   }      
 
   const selectTableView = (tableView) => {
-    setStateFromGetAPI(undefined, `http://localhost:5000/api/active_view/${tableView.id_repr}`,afterSelectTableView,headers,tableView.id_repr)
+    setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/active_view/${tableView.id_repr}`,afterSelectTableView,headers,tableView.id_repr)
   }
 
   const afterSelectTableView = (fullTableView,id_repr) => {
@@ -799,16 +825,16 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
       active_quantities: cellIds,
     }
 
-    putData(undefined,`http://localhost:5000/api/represents/${tableViewState.tableView.id_repr}`,newTableView,headers,afterCreateTableView)
+    putData(undefined,`${process.env.REACT_APP_API_LINK}/represents/${tableViewState.tableView.id_repr}`,newTableView,headers,afterCreateTableView)
   }
 
   const deleteTableView = (tableView) => {
     
-    deleteData(undefined,`http://localhost:5000/api/represents/${tableView.id_repr}`,headers,afterDeleteTableView)
+    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/represents/${tableView.id_repr}`,headers,afterDeleteTableView)
   }
 
   const afterDeleteTableView = () => {
-    setStateFromGetAPI(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
+    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
   }
 
   const createTableView = () => {
@@ -824,12 +850,12 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
       active_quantities: cellIds,
     }
 
-    postData(undefined, `http://localhost:5000/api/represents`, newTableView, headers, afterCreateTableView)
+    postData(undefined, `${process.env.REACT_APP_API_LINK}/represents`, newTableView, headers, afterCreateTableView)
 
   }
 
   const afterCreateTableView = () => {
-    setStateFromGetAPI(setTableViews, `http://localhost:5000/api/represents`,undefined,headers)
+    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
   }
   
   let tableViewsMarkup
@@ -925,17 +951,17 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
       }
     }
 
-    putData(undefined,`http://localhost:5000/api/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
+    putData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
   }
 
   const deleteLawGroup = (group) => {
     
-    deleteData(undefined,`http://localhost:5000/api/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
+    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
   }
 
   const afterDeleteLawGroup = () => {
 
-    setStateFromGetAPI(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
   }
 
   const createLawGroup = () => {
@@ -948,12 +974,12 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
       }
     }
 
-    postData(undefined, `http://localhost:5000/api/law_types`, newLawGroup, headers, afterCreateLawGroup)
+    postData(undefined, `${process.env.REACT_APP_API_LINK}/law_types`, newLawGroup, headers, afterCreateLawGroup)
 
   }
 
   const afterCreateLawGroup = () => {
-    setStateFromGetAPI(setLawsGroups, `http://localhost:5000/api/law_types`,undefined,headers)
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
   }
   
   let lawsGroupsMarkup
@@ -1066,7 +1092,7 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
     setGKLayers(fullChangedLayers)
 
     patchAllLayerData(changedLayersBright,headers,afterUpdateGKLayers)
-    //putData(undefined,`http://localhost:5000/api/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
+    //putData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
   }
 
   const afterUpdateGKLayers = (result) => {
@@ -1162,7 +1188,7 @@ function RegModal({modalVisibility, setUserToken}) {
     }
 
     // try to register
-    const registerResponseData = await postDataToAPI(process.env.REACT_APP_REGISTER_LINK, userData)
+    const registerResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/users/register`, userData)
     if (!isResponseSuccessful(registerResponseData)) {
       showMessage(registerResponseData.data.error,"error")
       return
@@ -1187,7 +1213,7 @@ function RegModal({modalVisibility, setUserToken}) {
     }
 
     // try to log in 
-    const loginResponse = await postDataToAPI(process.env.REACT_APP_LOGIN_LINK, userLoginData)
+    const loginResponse = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/users/login`, userLoginData)
     console.log(loginResponse, loginResponse.data.error)     
     if (!isResponseSuccessful(loginResponse)) {
       showMessage(loginResponse.data.error,"error")
@@ -1216,7 +1242,7 @@ function RegModal({modalVisibility, setUserToken}) {
     }
 
     // send password reset request
-    const resetPasswordResponse = await postDataToAPI(process.env.REACT_APP_RESET_PASSWORD, userData,)
+    const resetPasswordResponse = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/users/reset`, userData,)
     if (!isResponseSuccessful(resetPasswordResponse)) {
       showMessage(resetPasswordResponse.data.error,"error")
       return
@@ -1238,7 +1264,7 @@ function RegModal({modalVisibility, setUserToken}) {
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
               <button className="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Авторизация</button>
               <button className="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Регистрация</button>
-              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false">Забыли пароль?</button>
+              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false">Сброс пароля</button>
           </div>
       </nav>
       <div className="tab-content" id="nav-tabContent">
@@ -1380,6 +1406,24 @@ function convertMarkdownFromEditorState(state) {
 
   const html = draftToMarkdown(convertToRaw(state.getCurrentContent()));
   return html
+}
+
+function convertToMLTI(M,L,T,I) {
+
+  let MLTIHTMLString = ""
+  if (M !== 0) {
+    MLTIHTMLString += `M<sup>${M}</sup>`
+  }
+  if (L !== 0) {
+    MLTIHTMLString += `L<sup>${L}</sup>`
+  }
+  if (T !== 0) {
+    MLTIHTMLString += `T<sup>${T}</sup>`
+  }
+  if (I !== 0) {
+    MLTIHTMLString += `I<sup>${I}</sup>`
+  }
+  return MLTIHTMLString
 }
 
 
