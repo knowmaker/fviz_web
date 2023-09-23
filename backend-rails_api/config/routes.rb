@@ -17,11 +17,11 @@ Rails.application.routes.draw do
     end
     resources :law_types, only: %i[index show create update destroy]
     resources :users do
-      post :signup, on: :collection
+      post :register, on: :collection
       post :login, on: :collection
       get :profile, on: :collection
       patch :update, on: :collection
-      delete :delete, on: :collection
+      delete :destroy, on: :collection
       post :reset, on: :collection
       get :confirm, on: :member
       get :new_password, on: :member

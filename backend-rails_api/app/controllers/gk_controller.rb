@@ -1,5 +1,5 @@
 class GkController < ApplicationController
-  #before_action :authorize_request
+  before_action :authorize_request, except: %i[index]
   before_action :set_gk, only: %i[show update]
 
   def index

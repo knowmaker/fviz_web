@@ -12,22 +12,6 @@ class LawsController < ApplicationController
     render json: { data: laws_grouped }, status: :ok
   end
 
-  def check
-    existing_law = @current_user.laws.find_by(
-      first_element: params[:law][:first_element],
-      second_element: params[:law][:second_element],
-      third_element: params[:law][:third_element],
-      fourth_element: params[:law][:fourth_element]
-    )
-
-    if existing_law
-      law_data = Law.joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.*').find_by(id_law: existing_law.id_law)
-      render json: { data: law_data }, status: :ok
-    else
-      render json: { data: [] }, status: :ok
-    end
-  end
-
   def show
     @law = @current_user.laws
                         .joins(

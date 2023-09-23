@@ -3,8 +3,8 @@
 # Контроллер для контроля обработки пользовательских регистраций и авторизаций
 class UsersController < ApplicationController
   include UserHelper
-  before_action :authorize_request, only: %i[show update destroy]
-  def create
+  before_action :authorize_request, only: %i[profile update destroy]
+  def register
     user = User.new(user_params)
     user.confirmation_token = SecureRandom.urlsafe_base64.to_s
 
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
+  def profile
     render json: { data: @current_user }, status: :ok
   end
 

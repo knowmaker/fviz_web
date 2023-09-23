@@ -184,37 +184,6 @@ paths:
                   - third_element
                   - fourth_element
                   - id_type
-  "/api/laws/check":
-    post:
-      summary: check laws existing
-      tags:
-      - Laws
-      parameters: []
-      responses:
-        '200':
-          description: successful
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                law:
-                  type: object
-                  properties:
-                    first_element:
-                      type: integer
-                    second_element:
-                      type: integer
-                    third_element:
-                      type: integer
-                    fourth_element:
-                      type: integer
-                  required:
-                  - first_element
-                  - second_element
-                  - third_element
-                  - fourth_element
   "/api/laws/{id}":
     parameters:
     - name: id
@@ -525,7 +494,7 @@ paths:
           description: not found
   "/api/users/login":
     post:
-      summary: login
+      summary: user login
       tags:
       - Users
       parameters: []
@@ -548,9 +517,9 @@ paths:
                   required:
                   - email
                   - password
-  "/api/users/signup":
+  "/api/users/register":
     post:
-      summary: create user
+      summary: user register
       tags:
       - Users
       parameters: []
@@ -575,7 +544,7 @@ paths:
                   - password
   "/api/users/profile":
     get:
-      summary: show user
+      summary: show user profile
       tags:
       - Users
       responses:

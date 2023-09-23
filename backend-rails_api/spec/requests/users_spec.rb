@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'users', type: :request do
   path '/api/users/login' do
-    post('login') do
+    post('user login') do
       tags 'Users'
       consumes 'application/json'
       parameter name: :user, in: :body, schema: {
@@ -24,8 +24,8 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/signup' do
-    post('create user') do
+  path '/api/users/register' do
+    post('user register') do
       tags 'Users'
       consumes 'application/json'
       parameter name: :user, in: :body, schema: {
@@ -49,7 +49,7 @@ RSpec.describe 'users', type: :request do
   end
 
   path '/api/users/profile' do
-    get('show user') do
+    get('show user profile') do
       tags 'Users'
       response(200, 'successful') do
         run_test!
