@@ -2,12 +2,11 @@ import React,{useEffect,useState, useContext, useRef} from 'react';
 import TableUI from '../components/Table';
 import Draggable from 'react-draggable';
 import setStateFromGetAPI, { postData, putData, patchData, deleteData, getAllCellData, 
-  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI} from '../misc/api';
+  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI} from '../misc/api.js';
 import { ToastContainer, toast } from 'react-toastify';
-import { UserProfile } from '../misc/contexts.js';
+import { UserProfile,TableContext } from '../misc/contexts.js';
 import { EditorState, convertToRaw , ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import { TableContext } from '../misc/contexts.js';
 import { Cell } from '../components/Table.js';
 import Footbar from '../components/FootBar';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, forwardRef } from 'react';
+import React, { useEffect, useState, useContext, forwardRef, useRef } from 'react';
 import Navbar from './Navbar';
 import { TableContext, UserProfile } from '../misc/contexts.js';
 import { useDownloadableScreenshot } from '../misc/Screenshot.js';
@@ -25,7 +25,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
 
 
   const { ref, getImage } = useDownloadableScreenshot();
-
+ 
   return (
     <>
       <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
@@ -129,6 +129,72 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
   }, []);
 
+  let zoom = useRef(undefined)
+  let scale = useRef(1)
+  let panning = useRef(false)
+  let pointX = useRef(1109)
+  let pointY = useRef(973)
+  let start = useRef({ x: 0, y: 0 })
+
+  if (document.getElementById("table") && zoom.current === undefined) {
+    zoom.current = document.getElementById("table")
+  }
+
+  if (zoom.current !== undefined) {
+  console.log(zoom.current.scrollTop,zoom.current.scrollLeft)
+  }
+
+  useEffect(() => {
+  
+    if (zoom.current) {
+
+
+
+    function setTransform() {
+      console.log(pointX.current)
+      //zoom.current.style.transform = "scale(" + scale.current + ")";
+      zoom.current.scrollTop = 1947 - pointY.current;
+      zoom.current.scrollLeft = 1841 - pointX.current;
+      
+    }
+
+    zoom.current.onmousedown = function (e) {
+      e.preventDefault();
+      start.current = { x: e.clientX - pointX.current, y: e.clientY - pointY.current };
+      panning.current = true;
+    }
+
+    zoom.current.onmouseup = function (e) {
+      panning.current = false;
+    }
+
+    zoom.current.onmousemove = function (e) {
+      e.preventDefault();
+      if (!panning.current) {
+        return;
+      }
+      pointX.current = (e.clientX - start.current.x);
+      pointY.current = (e.clientY - start.current.y);
+      setTransform();
+    }
+
+    zoom.current.onwheel = function (e) {
+      e.preventDefault();
+      var xs = (e.clientX - pointX.current) / scale.current,
+        ys = (e.clientY - pointY.current) / scale.current,
+        delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+      (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
+      pointX.current = e.clientX - xs * scale.current;
+      pointY.current = e.clientY - ys * scale.current;
+
+      setTransform();
+    }
+  }
+
+  }, [zoom.current]);
+    
+
+
   //console.log(emptyCells)
 
   //console.log( selectedLawState.selectedLaw)
@@ -158,7 +224,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       />
     });
       return (
-        <div className="tables" ref={ref}>
+        <div className="tables" id='table' ref={ref}>
         {rowList}
         <LawsCanvas lawCells={ selectedLawCellsLTId}/>
         </div>
@@ -199,10 +265,11 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
         hoverData.GKLayer = cellGKLayer
 
         if (selectedCellState.selectedCell) {
+
           borderColor = cellData.id_value === selectedCellState.selectedCell.id_value ? "orange" : ""
         }
         if (selectedLawState.selectedLaw) {
-          console.log(selectedLawState.selectedLaw) // .find(
+
           borderColor = selectedLawState.selectedLaw.cells.find(lawCell => lawCell.id_value === cellData.id_value) ? "red" : ""
         }
         

@@ -1,7 +1,12 @@
-import React from 'react';
+import React,{useContext} from 'react';
+import { UserProfile } from '../misc/contexts.js';
+import  { getDataFromAPI} from '../misc/api.js';
+
 
 export default function Footbar({hoveredCell,selectedLawState}) {
   
+  const userInfoState = useContext(UserProfile) 
+
   let cellLT = "?"
   let cellGK = "?"
   if (hoveredCell) {
@@ -13,12 +18,21 @@ export default function Footbar({hoveredCell,selectedLawState}) {
     selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
   }
 
-  const download = (image) => {
-    const a = document.createElement("a");
-    a.href = image;
-    a.download = "представление.jpg";
-    a.click();
-  };
+  const downloadPDF = async () => {
+  
+
+    const headers = {
+      Authorization: `Bearer ${userInfoState.userToken}`
+    }    
+    getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/index.pdf`, headers)
+  }
+
+  // function downloadByURL(dataurl, filename) {
+  //   const link = document.createElement("a");
+  //   link.href = dataurl;
+  //   link.download = filename;
+  //   link.click();
+  // }
 
   return (
   <nav className="navbar navbar-expand fixed-bottom bg-body-tertiary">
@@ -34,7 +48,7 @@ export default function Footbar({hoveredCell,selectedLawState}) {
 
         </div>
         <div className="navbar-text">
-          <div className="btn-sm btn-primary btn" aria-current="page" onClick={removeCurrentLaw}>Скачать pdf</div>
+          <div className="btn-sm btn-primary btn" aria-current="page" onClick={downloadPDF}>Скачать pdf</div>
 
         </div>
     </div>
