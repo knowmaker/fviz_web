@@ -52,7 +52,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
   //console.log(cellAlternatives,selectedCell)
 
-  if (cellAlternatives !== null && selectedCell !== null) {
+  if (cellAlternatives !== null && selectedCell) {
 
     const emptyCellData = {id_lt:selectedCell.id_lt,id_value:999,unit:""}  
     const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:999,unit:"",value_name:"Пустая ячейка"}    
@@ -141,7 +141,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
   }
 
   if (zoom.current !== undefined) {
-  console.log(zoom.current.scrollTop,zoom.current.scrollLeft)
+  //console.log(zoom.current.scrollTop,zoom.current.scrollLeft)
   }
 
   useEffect(() => {
@@ -258,7 +258,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
 
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
-    const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
+    let cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
     let hoverData = emptyCellsData.find(cell => cell.id_lt === cellFullId)
     let cellColor
     let borderColor
@@ -280,6 +280,9 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
         }
         
       }
+    } else {
+      cellData = emptyCellsData.find(cell => cell.id_lt === cellFullId)
+      cellData.id_value = 999
     }
 
     return (<Cell 
@@ -316,6 +319,8 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
   const handleCellRightClick = (event) => {
     
     event.preventDefault()
+    console.log(cellData)
+    
     cellRightClick(cellData)
 
   };

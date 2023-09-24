@@ -86,6 +86,7 @@ export default function Home() {
     const [selectedCell, setSelectedCell] = useState(null);
     const selectedCellState={selectedCell, setSelectedCell}
 
+
     
     const [hoveredCell, setHoveredCell] = useState(null);
     const hoveredCellState = {hoveredCell, setHoveredCell}
@@ -147,8 +148,20 @@ export default function Home() {
       // if selected cell changed
       async function setSelectedCell() {
         if (selectedCell) {
-          setStateFromGetAPI(null, `${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`)
-  
+         
+          // if it is an empty cell
+          if (selectedCell.id_value === 999) {
+
+            convertMarkdownToEditorState(setCellNameEditor, "") 
+            convertMarkdownToEditorState(setCellSymbolEditor, "") 
+            convertMarkdownToEditorState(setCellUnitEditor, "") 
+            document.getElementById("inputL3").value = selectedCell.l_indicate
+            document.getElementById("inputT3").value = selectedCell.t_indicate
+            document.getElementById("inputGK3").value = 0
+
+            return
+          }
+
           // get full data about cell
           const cellResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`)
           if (!isResponseSuccessful(cellResponseData)) {
