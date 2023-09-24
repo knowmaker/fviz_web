@@ -11,10 +11,6 @@ const cellCount = 20
 
 export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState}) {
 
-
-
-  const hoveredCell = hoveredCellState.hoveredCell
-
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
 
@@ -28,14 +24,13 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
   }, [tableState]);
 
 
-
   const { ref, getImage } = useDownloadableScreenshot();
 
   return (
     <>
       <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table gkColors={gkState.gkColors} setSelectedCell={selectedCellState.setSelectedCell} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref} modalsVisibility={modalsVisibility}/>
+      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref} modalsVisibility={modalsVisibility}/>
 
 
     </>  
@@ -55,11 +50,12 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     } else {setCellAlternatives(null)}
   }, [selectedCell]);
 
-  console.log(cellAlternatives,selectedCell)
+  //console.log(cellAlternatives,selectedCell)
 
   if (cellAlternatives !== null && selectedCell !== null) {
 
-    const emptyCellData = {id_lt:selectedCell.id_lt,id_value:999}    
+    const emptyCellData = {id_lt:selectedCell.id_lt,id_value:999,unit:""}  
+    const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:999,unit:"",value_name:"Пустая ячейка"}    
 
     let cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
 
@@ -80,19 +76,19 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
     })
 
+
     
     cells.push(
       <Cell 
       key={999} 
-      cellFullData={{cellFullId:999,cellData:emptyCellData,undefined}}
+      cellFullData={{cellFullId:999,cellData:emptyCellShowData,cellColor:"#CCCCCC"}}
       selectedCells={cellAlternatives.concat(emptyCellData)} 
       revStates={revStates} 
       setSelectedCell={setSelectedCell}
-      isEmpty={true}
       />
     )
 
-    const cellOptions = cells.length !== 0 ? cells : "no cells to show"
+    const cellOptions = cells.length !== 0 ? cells : "нету альтернативных ячеек"
 
 
 
@@ -116,7 +112,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-const Table = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selectedLawState,modalsVisibility}, ref) => {
+const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility}, ref) => {
 
 
   const tableState = useContext(TableContext)
@@ -154,7 +150,7 @@ const Table = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selecte
       key={rowId} 
       rowId={rowId} 
       fullTableData={fullTableData} 
-      setSelectedCell={setSelectedCell} 
+      selectedCellState={selectedCellState} 
       hoveredCellState={hoveredCellState} 
       selectedLawState={selectedLawState}
       modalsVisibility={modalsVisibility}
@@ -179,9 +175,10 @@ const Table = forwardRef(({ gkColors, setSelectedCell, hoveredCellState, selecte
 
 })
 
-function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData}) {
+function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
+  const setSelectedCell = selectedCellState.setSelectedCell
 
   //console.log(emptyCellsData)
 
@@ -192,6 +189,7 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
     const cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
     let hoverData = emptyCellsData.find(cell => cell.id_lt === cellFullId)
     let cellColor
+    let borderColor
     if (cellData) {
       if (cellData.id_gk) {
         const cellGKLayer = fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk)
@@ -200,12 +198,20 @@ function Row({rowId, fullTableData, setSelectedCell, hoveredCellState, selectedL
         //console.log(cellColor)
         hoverData.GKLayer = cellGKLayer
 
+        if (selectedCellState.selectedCell) {
+          borderColor = cellData.id_value === selectedCellState.selectedCell.id_value ? "orange" : ""
+        }
+        if (selectedLawState.selectedLaw) {
+          console.log(selectedLawState.selectedLaw) // .find(
+          borderColor = selectedLawState.selectedLaw.cells.find(lawCell => lawCell.id_value === cellData.id_value) ? "red" : ""
+        }
+        
       }
     }
 
     return (<Cell 
             key={cellFullId} 
-            cellFullData={{cellFullId,cellData,cellColor}} 
+            cellFullData={{cellFullId,cellData,cellColor,borderColor}} 
             cellRightClick={setSelectedCell} 
             hoveredCellState={hoveredCellState}
             hoverData={{hoveredCellState,hoverData}}
@@ -229,24 +235,17 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
   const cellColor = cellFullData.cellColor
+  const borderColor = cellFullData.borderColor
   const tableState = useContext(TableContext)
   const userInfoState = useContext(UserProfile)
 
   
-  const handleCellRightClick = (event, cellId) => {
+  const handleCellRightClick = (event) => {
     
     event.preventDefault()
-
-
-      //getData(cellRightClick,`http://127.0.0.1:5000/api/layers/${cellId}`)
     cellRightClick(cellData)
 
   };
-
-  const handleEmptyCellRightClick = (event) => {
-    event.preventDefault()
-    cellRightClick(null)
-  }
 
   const handleCellLeftClick = (event, cellId) => {
     
@@ -254,17 +253,12 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
       event.preventDefault()
       const cellData = selectedCells.find(cell => cell.id_value === cellId);
 
-    console.log(selectedCells,cellData)
-
       cellData.lt_sign = tableState.tableData.find(cell => cell.id_lt !== cellData.id_lt).lt_sign
 
       tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
-
       revStates.setUndoStack([...revStates.undoStack, tableState.tableData]);
       revStates.setRedoStack([]);
-
-
 
       setSelectedCell(null)
 
@@ -363,9 +357,10 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     const cellContent_mlti = cellData.mlti_sign;
     
     return (
+      <div className="cell" style={{ backgroundColor: borderColor }}>
         <div
           key={cellFullId}
-          className="cell"
+          className="inner-cell"
           id={`cell-${cellFullId}`}
           style={{ backgroundColor: cellColor }}
           onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
@@ -387,16 +382,21 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
           <span dangerouslySetInnerHTML={{__html: cellContent_mlti}}></span>   
           </div>
         </div>
+      </div>
     );
   } else {
-    return <div 
-    className="cell-invisible cell" 
-    onContextMenu={event => handleEmptyCellRightClick(event, cellFullId)} 
-    onClick={onClickEvent} 
-    id={`cell-${cellFullId}`} 
-    cellnumber={cellFullId}
-    onMouseOver={event => hoverData ? handleCellHover(event, hoverData.hoverData) : {}}
-    ></div>
+    return (  
+    <div className="cell-invisible cell">
+      <div 
+      className="cell-invisible inner-cell" 
+      onContextMenu={event => handleCellRightClick(event, cellFullId)} 
+      onClick={onClickEvent} 
+      id={`cell-${cellFullId}`} 
+      cellnumber={cellFullId}
+      onMouseOver={event => hoverData ? handleCellHover(event, hoverData.hoverData) : {}}
+      />
+    </div>
+    )
   }
   
 }

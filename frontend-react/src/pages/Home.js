@@ -87,14 +87,13 @@ export default function Home() {
     const [selectedCell, setSelectedCell] = useState(null);
     const selectedCellState={selectedCell, setSelectedCell}
 
-    console.log(selectedCell)
+    
     const [hoveredCell, setHoveredCell] = useState(null);
     const hoveredCellState = {hoveredCell, setHoveredCell}
 
     const [undoStack, setUndoStack] = useState([]);
     const [redoStack, setRedoStack] = useState([]);
     const revStates = {undoStack,setUndoStack,redoStack,setRedoStack}
-
 
 
 
@@ -190,7 +189,8 @@ export default function Home() {
         setStateFromGetAPI(setUserProfile, `${process.env.REACT_APP_API_LINK}/users/profile`, undefined, headers )
         setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
         setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
-        //setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/laws`,testShow,headers) uncomment when fixed
+        // fix later
+        setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/laws`,testShow,headers)
         setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
 
         // set up localstorage to authenticate automatically
@@ -222,7 +222,7 @@ export default function Home() {
     // DELETE LATER <------------------------
     const testShow = (result,_,info) => {
 
-      console.log(result,info)
+      console.log("result:",result,"input:",info)
     }
 
     return (
@@ -273,9 +273,9 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     // create new cell
     const newCell = {
       quantity: {
-        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
-        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
-        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
+        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
+        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
+        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
         l_indicate: l_indicate,
         t_indicate: t_indicate,
         id_gk: id_gk,
@@ -476,7 +476,7 @@ function RichTextEditor({editorState,setEditorState}) {
           toolbarClassName="toolbar-class"
 
           toolbar={{
-            options: ['inline', 'emoji', 'remove'],
+            options: [ 'emoji', 'inline', 'remove'],
             inline: {
               options: ['superscript', 'subscript'],
             },
