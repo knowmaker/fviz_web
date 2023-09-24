@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="debug controllers after Artem last commit">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="change text names">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -233,15 +233,7 @@
       <workItem from="1695154329226" duration="2732000" />
       <workItem from="1695233609298" duration="4887000" />
       <workItem from="1695485006703" duration="820000" />
-      <workItem from="1695489405885" duration="1577000" />
-    </task>
-    <task id="LOCAL-00049" summary="rubocop">
-      <option name="closed" value="true" />
-      <created>1693297817384</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1693297817384</updated>
+      <workItem from="1695489405885" duration="3141000" />
     </task>
     <task id="LOCAL-00050" summary="confirmation email">
       <option name="closed" value="true" />
@@ -627,7 +619,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695490286305</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="change text names">
+      <option name="closed" value="true" />
+      <created>1695491525129</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1695491525129</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -645,7 +645,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="user controller" />
     <MESSAGE value="laws controller" />
     <MESSAGE value="db" />
     <MESSAGE value="json format" />
@@ -670,7 +669,8 @@
     <MESSAGE value="trying bag 2" />
     <MESSAGE value="debug controllers and swagger. Rename routes" />
     <MESSAGE value="debug controllers after Artem last commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug controllers after Artem last commit" />
+    <MESSAGE value="change text names" />
+    <option name="LAST_COMMIT_MESSAGE" value="change text names" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1695489479987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

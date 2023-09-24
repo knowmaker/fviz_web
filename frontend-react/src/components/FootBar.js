@@ -24,7 +24,7 @@ export default function Footbar({hoveredCell,selectedLawState}) {
     const headers = {
       Authorization: `Bearer ${userInfoState.userToken}`
     }    
-    getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/index.pdf`, headers)
+    getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities`, headers)
   }
 
   // function downloadByURL(dataurl, filename) {

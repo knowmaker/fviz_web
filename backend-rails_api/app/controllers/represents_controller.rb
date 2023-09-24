@@ -59,7 +59,7 @@ class RepresentsController < ApplicationController
     if quantities.any?
       render json: { data: quantities }, status: :ok
     else
-      render json: { error: ['В данной ячейке нет величин'] }, status: :not_found
+      render json: { data: [] }, status: :ok
     end
   end
 
