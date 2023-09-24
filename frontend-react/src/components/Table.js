@@ -151,11 +151,17 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
 
     function setTransform() {
-      console.log(pointX.current)
+      //console.log(pointX.current)
       //zoom.current.style.transform = "scale(" + scale.current + ")";
       zoom.current.scrollTop = 1947 - pointY.current;
       zoom.current.scrollLeft = 1841 - pointX.current;
       
+    }
+
+    zoom.current.onscroll =  function (e) {
+
+      pointY.current = 1947 - zoom.current.scrollTop
+      pointX.current = 1841 - zoom.current.scrollLeft 
     }
 
     zoom.current.onmousedown = function (e) {
@@ -178,17 +184,17 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       setTransform();
     }
 
-    zoom.current.onwheel = function (e) {
-      e.preventDefault();
-      var xs = (e.clientX - pointX.current) / scale.current,
-        ys = (e.clientY - pointY.current) / scale.current,
-        delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
-      (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
-      pointX.current = e.clientX - xs * scale.current;
-      pointY.current = e.clientY - ys * scale.current;
+    // zoom.current.onwheel = function (e) {
+    //   e.preventDefault();
+    //   var xs = (e.clientX - pointX.current) / scale.current,
+    //     ys = (e.clientY - pointY.current) / scale.current,
+    //     delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+    //   (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
+    //   pointX.current = e.clientX - xs * scale.current;
+    //   pointY.current = e.clientY - ys * scale.current;
 
-      setTransform();
-    }
+    //   setTransform();
+    // }
   }
 
   }, [zoom.current]);
