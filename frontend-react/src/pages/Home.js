@@ -1435,6 +1435,11 @@ function convertToMLTI(M,L,T,I) {
   if (I !== 0) {
     MLTIHTMLString += `I<sup>${I}</sup>`
   }
+
+  if (M === 0 && L === 0 && T === 0 && I === 0) { 
+    MLTIHTMLString = 'L<sup>0</sup>T<sup>0</sup>'; 
+  }
+
   return MLTIHTMLString
 }
 
