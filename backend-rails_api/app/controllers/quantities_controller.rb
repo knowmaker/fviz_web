@@ -12,9 +12,9 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    @quantities = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*')
+    quantities = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*')
 
-    html_content = generate_html_table(@quantities)
+    html_content = generate_html_table(quantities)
     pdf = Grover.new(html_content, format: 'A4', encoding: 'UTF-8').to_pdf
 
     send_data pdf, filename: 'quantities_table.pdf', type: 'application/pdf', disposition: 'attachment'
@@ -69,6 +69,15 @@ class QuantitiesController < ApplicationController
 
     @quantity.destroy
     head :ok
+  end
+
+  def lt_values
+    quantities = Quantity.where(id_lt: params[:id])
+    if quantities.any?
+      render json: { data: quantities }, status: :ok
+    else
+      render json: { data: [] }, status: :ok
+    end
   end
 
   private

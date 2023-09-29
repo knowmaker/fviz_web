@@ -127,21 +127,4 @@ RSpec.describe 'represents', type: :request do
       end
     end
   end
-
-  path '/api/layers/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
-
-    get('get quantities by lt id') do
-      tags 'Represents'
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        run_test!
-      end
-
-      response(404, 'not found') do
-        run_test!
-      end
-    end
-  end
 end

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="Обновлен механизм авторизации для методов, позволяющих выдавать данные для авторизованных и неавторизованных пользователй">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/represents_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/represents_spec.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,15 +244,7 @@
       <workItem from="1695746342438" duration="767000" />
       <workItem from="1695931047143" duration="1490000" />
       <workItem from="1695977559741" duration="5680000" />
-      <workItem from="1696005927661" duration="8180000" />
-    </task>
-    <task id="LOCAL-00052" summary="reset confirmation_token jobs">
-      <option name="closed" value="true" />
-      <created>1693414671671</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1693414671671</updated>
+      <workItem from="1696005927661" duration="9732000" />
     </task>
     <task id="LOCAL-00053" summary="user helper debug">
       <option name="closed" value="true" />
@@ -634,7 +630,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696011767853</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="Обновлен механизм авторизации для методов, позволяющих выдавать данные для авторизованных и неавторизованных пользователй">
+      <option name="closed" value="true" />
+      <created>1696017013356</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1696017013357</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -652,7 +656,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="json format" />
     <MESSAGE value="law validates" />
     <MESSAGE value="gk_set &amp; law &amp; law_type &amp; represent validates" />
     <MESSAGE value="user password update" />
@@ -677,10 +680,11 @@
     <MESSAGE value="change text names" />
     <MESSAGE value="little fix" />
     <MESSAGE value="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации" />
-    <option name="LAST_COMMIT_MESSAGE" value="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации" />
+    <MESSAGE value="Обновлен механизм авторизации для методов, позволяющих выдавать данные для авторизованных и неавторизованных пользователй" />
+    <option name="LAST_COMMIT_MESSAGE" value="Обновлен механизм авторизации для методов, позволяющих выдавать данные для авторизованных и неавторизованных пользователй" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696005944050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696017523375" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@law_types.rcov" NAME="law_types Coverage Results" MODIFIED="1694449991631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>
 </project>

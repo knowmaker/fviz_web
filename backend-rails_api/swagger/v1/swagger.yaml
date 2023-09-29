@@ -370,6 +370,23 @@ paths:
           description: successful
         '404':
           description: not found
+  "/api/layers/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: get quantities by lt id
+      tags:
+      - Quantities
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
   "/api/represents":
     get:
       summary: list represents
@@ -468,23 +485,6 @@ paths:
         type: string
     get:
       summary: get active quantities for specific represent view
-      tags:
-      - Represents
-      responses:
-        '200':
-          description: successful
-        '404':
-          description: not found
-  "/api/layers/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
-    get:
-      summary: get quantities by lt id
       tags:
       - Represents
       responses:

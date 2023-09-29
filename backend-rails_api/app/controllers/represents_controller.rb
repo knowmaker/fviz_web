@@ -35,7 +35,7 @@ class RepresentsController < ApplicationController
   end
 
   def represent_view_index
-    represent_id = @current_user ? @current_user.represents.first : 1
+    represent_id = @current_user ? @current_user.active_repr : 1
     quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_quantities).flatten
     active_quantities = Quantity.where(id_value: quantity_ids).order(:id_lt).all
 
@@ -55,15 +55,6 @@ class RepresentsController < ApplicationController
     @current_user.save
 
     render json: { data: json_output }, status: :ok
-  end
-
-  def lt_values
-    quantities = Quantity.where(id_lt: params[:id])
-    if quantities.any?
-      render json: { data: quantities }, status: :ok
-    else
-      render json: { data: [] }, status: :ok
-    end
   end
 
   private

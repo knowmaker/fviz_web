@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :represents, only: %i[index create update destroy]
     get '/active_view', to: 'represents#represent_view_index'
     get '/active_view/:id', to: 'represents#represent_view_show'
-    get '/layers/:id', to: 'represents#lt_values'
+    get '/layers/:id', to: 'quantities#lt_values'
     resources :gk, only: %i[index show update]
     resources :lt, only: %i[index]
     resources :quantities
