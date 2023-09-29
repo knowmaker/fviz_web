@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="little fix">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/gk_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/law_types_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/law_types_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fviz.sql" beforeDir="false" afterPath="$PROJECT_DIR$/fviz.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,15 +240,7 @@
       <workItem from="1695746342438" duration="767000" />
       <workItem from="1695931047143" duration="1490000" />
       <workItem from="1695977559741" duration="5680000" />
-      <workItem from="1696005927661" duration="4136000" />
-    </task>
-    <task id="LOCAL-00051" summary="reset password">
-      <option name="closed" value="true" />
-      <created>1693414047599</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1693414047601</updated>
+      <workItem from="1696005927661" duration="8180000" />
     </task>
     <task id="LOCAL-00052" summary="reset confirmation_token jobs">
       <option name="closed" value="true" />
@@ -643,7 +626,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695559131981</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации">
+      <option name="closed" value="true" />
+      <created>1696011767853</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1696011767853</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -661,7 +652,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="db" />
     <MESSAGE value="json format" />
     <MESSAGE value="law validates" />
     <MESSAGE value="gk_set &amp; law &amp; law_type &amp; represent validates" />
@@ -686,7 +676,8 @@
     <MESSAGE value="debug controllers after Artem last commit" />
     <MESSAGE value="change text names" />
     <MESSAGE value="little fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="little fix" />
+    <MESSAGE value="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации" />
+    <option name="LAST_COMMIT_MESSAGE" value="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696005944050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

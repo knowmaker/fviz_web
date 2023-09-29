@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
+# Контроллер для работы с цветами системных уровней
 class GkController < ApplicationController
   before_action :authorize_request, except: %i[index]
   before_action :set_gk, only: %i[show update]
 
   def index
-    gks=Gk.order(:id_gk).all
+    gks = Gk.order(:id_gk).all
     render json: { data: gks }, status: :ok
   end
 

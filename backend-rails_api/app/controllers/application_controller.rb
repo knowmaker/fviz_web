@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::API
   attr_reader :current_user
 
-  def authorize_request
+  def authorize_request(check_current_user: true)
     token = request.headers['Authorization']
     if token
       token = token.split.last
@@ -17,8 +17,10 @@ class ApplicationController < ActionController::API
       rescue JWT::DecodeError
         render json: { error: ['Ошибка декодирования токена'] }, status: :unprocessable_entity
       end
-    else
+    elsif check_current_user
       render json: { error: ['Токен авторизации не найден'] }, status: :unauthorized
+    else
+      @current_user = nil
     end
   end
 

@@ -3,6 +3,7 @@
 # Контроллер для работы с представлениями ФВ
 class RepresentsController < ApplicationController
   before_action :authorize_request, except: %i[represent_view_index lt_values]
+  before_action -> { authorize_request(check_current_user: false) }, only: %i[represent_view_index]
   before_action :set_represent, only: %i[update destroy represent_view_show]
 
   def index
@@ -38,7 +39,7 @@ class RepresentsController < ApplicationController
     quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_quantities).flatten
     active_quantities = Quantity.where(id_value: quantity_ids).order(:id_lt).all
 
-    render json: {data: active_quantities}, status: :ok
+    render json: { data: active_quantities }, status: :ok
   end
 
   def represent_view_show
@@ -48,9 +49,9 @@ class RepresentsController < ApplicationController
     json_output = {
       represent_id: @represent.id_repr,
       represent_title: @represent.title,
-      active_quantities: active_quantities
+      active_quantities:
     }
-    @current_user.active_repr=params[:id]
+    @current_user.active_repr = params[:id]
     @current_user.save
 
     render json: { data: json_output }, status: :ok
