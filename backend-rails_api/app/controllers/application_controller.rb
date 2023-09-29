@@ -12,11 +12,13 @@ class ApplicationController < ActionController::API
         # @decoded = JsonWebToken.decode(token)
         @decoded = decode(token)
         @current_user = User.find(@decoded[:id_user])
-      rescue ActiveRecord::RecordNotFound, JWT::DecodeError
-        render json: { error: ['Ошибка авторизации'] }, status: :unauthorized
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: ['Пользователь не найден'] }, status: :not_found
+      rescue JWT::DecodeError
+        render json: { error: ['Ошибка декодирования токена'] }, status: :unprocessable_entity
       end
     else
-      render json: { error: ['No authorization token found'] }, status: :unauthorized
+      render json: { error: ['Токен авторизации не найден'] }, status: :unauthorized
     end
   end
 

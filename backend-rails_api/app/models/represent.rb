@@ -5,6 +5,7 @@ class Represent < ApplicationRecord
   self.table_name = 'represents'
 
   belongs_to :user, foreign_key: 'id_user'
+  has_many :users, foreign_key: 'active_repr'
 
   validates :title, presence: true, length: { maximum: 100 }
   validates :id_user, presence: true, numericality: { only_integer: true }

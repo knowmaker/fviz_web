@@ -59,9 +59,9 @@ class UsersController < ApplicationController
 
     if user
       user.update(confirmed: true, confirmation_token: nil)
-      render json: 'Email confirmed successfully', status: :ok
+      render json: 'Email успешно подтвержден', status: :ok
     else
-      render json: 'Invalid confirmation token', status: :unprocessable_entity
+      render json: 'Некорректная ссылка', status: :unprocessable_entity
     end
   end
 
@@ -94,9 +94,9 @@ class UsersController < ApplicationController
 
       NewPasswordMailer.new_password_email(user, new_password).deliver_now
 
-      render json: 'New password generated and sent', status: :ok
+      render json: 'Новый пароль сгенерирован и выслан на почту', status: :ok
     else
-      render json: 'Invalid reset token', status: :unprocessable_entity
+      render json: 'Некорректная ссылка', status: :unprocessable_entity
     end
   end
 

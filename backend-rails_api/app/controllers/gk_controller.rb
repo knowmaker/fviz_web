@@ -9,7 +9,7 @@ class GkController < ApplicationController
 
   def show
     # unless @current_user.role
-    #   render json: {error: ['Только админ может просматривать слой']}, status: :unauthorized
+    #   render json: {error: ['Только админ может просматривать слой']}, status: :forbidden
     #   return
     # end
 
@@ -18,7 +18,7 @@ class GkController < ApplicationController
 
   def update
     # unless @current_user.role
-    #   render json: {error: ['Только админ может обновлять законы']}, status: :unauthorized
+    #   render json: {error: ['Только админ может обновлять законы']}, status: :forbidden
     #   return
     # end
 

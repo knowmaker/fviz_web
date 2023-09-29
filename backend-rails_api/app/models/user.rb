@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :laws, foreign_key: 'id_user'
   has_many :represents, foreign_key: 'id_user'
+  belongs_to :represent, foreign_key: 'active_repr'
 
   validates :email, presence: true, length: { maximum: 100 },
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },

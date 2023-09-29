@@ -74,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.boolean "role", default: false, null: false
     t.string "confirmation_token"
     t.boolean "confirmed", default: false
+    t.integer "active_repr"
     t.index ["email"], name: "unique_email", unique: true
   end
 
@@ -86,4 +87,5 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   add_foreign_key "quantity", "gk", column: "id_gk", primary_key: "id_gk", name: "level", on_update: :cascade, on_delete: :cascade
   add_foreign_key "quantity", "lt", column: "id_lt", primary_key: "id_lt", name: "cell", on_update: :cascade, on_delete: :cascade
   add_foreign_key "represents", "users", column: "id_user", primary_key: "id_user", name: "represents_id_user_fkey", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "users", "represents", column: "active_repr", primary_key: "id_repr", name: "fk_active_repr", on_update: :cascade, on_delete: :nullify
 end

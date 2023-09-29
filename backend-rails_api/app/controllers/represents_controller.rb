@@ -50,6 +50,8 @@ class RepresentsController < ApplicationController
       represent_title: @represent.title,
       active_quantities: active_quantities
     }
+    @current_user.active_repr=params[:id]
+    @current_user.save
 
     render json: { data: json_output }, status: :ok
   end

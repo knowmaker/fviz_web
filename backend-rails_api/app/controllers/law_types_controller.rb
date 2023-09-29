@@ -12,7 +12,7 @@ class LawTypesController < ApplicationController
 
   def show
     # unless @current_user.role
-    #   render json: {error: ['Только админ может просматривать тип закона']}, status: :unauthorized
+    #   render json: {error: ['Только админ может просматривать тип закона']}, status: :forbidden
     #   return
     # end
 
@@ -21,7 +21,7 @@ class LawTypesController < ApplicationController
 
   def create
     # unless @current_user.role
-    #   render json: {error: ['Только админ может создавать законы']}, status: :unauthorized
+    #   render json: {error: ['Только админ может создавать законы']}, status: :forbidden
     #   return
     # end
 
@@ -36,7 +36,7 @@ class LawTypesController < ApplicationController
 
   def update
     # unless @current_user.role
-    #   render json: {error: ['Только админ может обновлять законы']}, status: :unauthorized
+    #   render json: {error: ['Только админ может обновлять законы']}, status: :forbidden
     #   return
     # end
 
@@ -49,7 +49,7 @@ class LawTypesController < ApplicationController
 
   def destroy
     # unless @current_user.role
-    #   render json: {error: ['Только админ может удалять законы']}, status: :unauthorized
+    #   render json: {error: ['Только админ может удалять законы']}, status: :forbidden
     #   return
     # end
 

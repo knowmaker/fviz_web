@@ -8,7 +8,7 @@ class QuantitiesController < ApplicationController
 
   def index
     # unless @current_user.role
-    #   render json: {error: ['Только админ может загружать списко величин']}, status: :unauthorized
+    #   render json: {error: ['Только админ может загружать списко величин']}, status: :forbidden
     #   return
     # end
 
@@ -27,7 +27,7 @@ class QuantitiesController < ApplicationController
 
   def create
     # unless @current_user.role
-    #   render json: {error: ['Только админ может создавать величины']}, status: :unauthorized
+    #   render json: {error: ['Только админ может создавать величины']}, status: :forbidden
     #   return
     # end
 
@@ -49,7 +49,7 @@ class QuantitiesController < ApplicationController
 
   def update
     # unless @current_user.role
-    #   render json: {error: ['Только админ может обновлять величины']}, status: :unauthorized
+    #   render json: {error: ['Только админ может обновлять величины']}, status: :forbidden
     #   return
     # end
 
@@ -63,7 +63,7 @@ class QuantitiesController < ApplicationController
 
   def destroy
     # unless @current_user.role
-    #   render json: {error: ['Только админ может удалять величины']}, status: :unauthorized
+    #   render json: {error: ['Только админ может удалять величины']}, status: :forbidden
     #   return
     # end
 

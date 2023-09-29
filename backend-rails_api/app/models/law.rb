@@ -15,7 +15,7 @@ class Law < ApplicationRecord
   validates :law_name, presence: true
   validates :first_element, :second_element, :third_element, :fourth_element, presence: true,
                                                                               numericality: { only_integer: true }, on: :create
-  validates :id_user, presence: true, on: :create
+  validates :id_user, presence: true, numericality: { only_integer: true }
   validates :id_type, numericality: { only_integer: true }, allow_nil: true
   validates :combination, presence: true, on: :create
   validate :unique_combination_user, on: :create
