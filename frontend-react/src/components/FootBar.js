@@ -10,7 +10,7 @@ export default function Footbar({hoveredCell,selectedLawState}) {
   let cellLT = "?"
   let cellGK = "?"
   if (hoveredCell) {
-    cellLT = hoveredCell.lt_sign
+    cellLT = hoveredCell.lt_sign ? hoveredCell.lt_sign : "?"
     cellGK = hoveredCell.GKLayer ? hoveredCell.GKLayer.gk_sign : "?"
   }
     

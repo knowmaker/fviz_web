@@ -54,8 +54,8 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
   if (cellAlternatives !== null && selectedCell) {
 
-    const emptyCellData = {id_lt:selectedCell.id_lt,id_value:999,unit:""}  
-    const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:999,unit:"",value_name:"Пустая ячейка"}    
+    const emptyCellData = {id_lt:selectedCell.id_lt,id_value:-1,unit:""}  
+    const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:-1,unit:"",value_name:"Пустая ячейка"}    
 
     let cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
 
@@ -80,8 +80,8 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     
     cells.push(
       <Cell 
-      key={999} 
-      cellFullData={{cellFullId:999,cellData:emptyCellShowData,cellColor:"#CCCCCC"}}
+      key={-1} 
+      cellFullData={{cellFullId:-1,cellData:emptyCellShowData,cellColor:"#CCCCCC"}}
       selectedCells={cellAlternatives.concat(emptyCellData)} 
       revStates={revStates} 
       setSelectedCell={setSelectedCell}
@@ -282,7 +282,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
       }
     } else {
       cellData = emptyCellsData.find(cell => cell.id_lt === cellFullId)
-      cellData.id_value = 999
+      cellData.id_value = -1
     }
 
     return (<Cell 
@@ -437,7 +437,6 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     return (
       <div className="cell" style={{ backgroundColor: borderColor }}>
         <div
-          key={cellFullId}
           className="inner-cell"
           id={`cell-${cellFullId}`}
           style={{ backgroundColor: cellColor }}
@@ -452,7 +451,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
           </div>
           <div className="su-pos" >
           <span dangerouslySetInnerHTML={{__html: cellContent_symbol}}></span>
-              {(cellContent_unit === "") ? '' : ', '}
+              {(cellContent_unit === "\n") ? '' : ', '}
           <span dangerouslySetInnerHTML={{__html: cellContent_unit}}></span>   
               <br />
           </div>

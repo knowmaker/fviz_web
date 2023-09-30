@@ -150,7 +150,7 @@ export default function Home() {
         if (selectedCell) {
          
           // if it is an empty cell
-          if (selectedCell.id_value === 999) {
+          if (selectedCell.id_value === -1) {
 
             convertMarkdownToEditorState(setCellNameEditor, "") 
             convertMarkdownToEditorState(setCellSymbolEditor, "") 
@@ -169,7 +169,7 @@ export default function Home() {
             return
           }
           const cellData = cellResponseData.data.data
-  
+          console.log(cellData)
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
           convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
@@ -360,7 +360,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   });
 
   const [previewCell, setPreviewCell] = useState({
-    cellFullId:9999,
+    cellFullId:-1,
     cellData:{value_name:"не выбрано",symbol:"",unit:"",mlti_sign:""},
     cellColor:undefined
   })
@@ -394,7 +394,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     setPreviewCell(
 
       {
-        cellFullId:9999,
+        cellFullId:-1,
         cellData:{
           value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
           symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
@@ -851,8 +851,8 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
 
   const createTableView = () => {
     
-
-    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value)
+    // fix filter later
+    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value).filter(id => id === -1)
     //console.log(cellIds)
 
     const tableViewTitle = document.getElementById("InputTableViewName3").value
