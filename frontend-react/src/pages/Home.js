@@ -51,9 +51,13 @@ export default function Home() {
     const [tableView, setTableView] = useState({id_repr:1,title:"Базовое"}); 
     const tableViewState = {tableView,setTableView}
 
+    const setFullTableData = (result) => {
+      setTableData(result.active_quantities)
+      setTableView({id_repr:result.id_repr,title:result.title})
+    }
     // get table and layers when page is loaded
     useEffect(() => {
-      setStateFromGetAPI(setTableData,`${process.env.REACT_APP_API_LINK}/active_view`)
+      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/active_view`)
       setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`)
 
       async function logInByLocalStorage() {
