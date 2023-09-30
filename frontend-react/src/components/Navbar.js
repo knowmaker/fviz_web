@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { getTextFromState, getStateFromText} from '../pages/Home.js'
 
 
-export default function Navbar({revStates, getImage, modalsVisibility}) {
+export default function Navbar({revStates, modalsVisibility}) {
   
     const tableState = useContext(TableContext)
 
@@ -130,7 +130,6 @@ export default function Navbar({revStates, getImage, modalsVisibility}) {
                     <div className="navbar-nav">
                         <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Отмена</div>
                         <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Возврат</div>
-                        <div className="nav-link active" aria-current="page" onClick={getImage}>Снимок экрана представления</div>
                         <div className="nav-link active" aria-current="page" onClick={openEditForm}>Редактирование ячейки</div>
                         <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}>Представления</div>
                         <div className="nav-link active" aria-current="page" onClick={openLawsForm}>Законы</div>

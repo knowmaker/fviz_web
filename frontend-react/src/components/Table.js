@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, forwardRef, useRef } from 'react';
 import Navbar from './Navbar';
 import { TableContext, UserProfile } from '../misc/contexts.js';
-import { useDownloadableScreenshot } from '../misc/Screenshot.js';
+
 import setStateFromGetAPI, {getAllCellData} from '../misc/api';
 import LawsCanvas from './LawsCanvas';
 const Color = require('color');
@@ -9,7 +9,7 @@ const Color = require('color');
 const rowCount = 21
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable}) {
 
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
@@ -24,13 +24,13 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
   }, [tableState]);
 
 
-  const { ref, getImage } = useDownloadableScreenshot();
+
  
   return (
     <>
-      <Navbar revStates={revStates} getImage={getImage} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
+      <Navbar revStates={revStates} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={ref} modalsVisibility={modalsVisibility}/>
+      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={refTable} modalsVisibility={modalsVisibility}/>
 
 
     </>  

@@ -3,7 +3,7 @@ import { UserProfile } from '../misc/contexts.js';
 import  { getDataFromAPI} from '../misc/api.js';
 
 
-export default function Footbar({hoveredCell,selectedLawState}) {
+export default function Footbar({hoveredCell,selectedLawState,getImage}) {
   
   const userInfoState = useContext(UserProfile) 
 
@@ -27,6 +27,8 @@ export default function Footbar({hoveredCell,selectedLawState}) {
     getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities`, headers)
   }
 
+  
+
   // function downloadByURL(dataurl, filename) {
   //   const link = document.createElement("a");
   //   link.href = dataurl;
@@ -49,7 +51,7 @@ export default function Footbar({hoveredCell,selectedLawState}) {
         </div>
         <div className="navbar-text">
           <div className="btn-sm btn-primary btn" aria-current="page" onClick={downloadPDF}>Скачать pdf</div>
-
+          <div className="btn-sm btn-primary btn" aria-current="page" onClick={getImage}>Скачать скриншот</div>
         </div>
     </div>
   </nav>

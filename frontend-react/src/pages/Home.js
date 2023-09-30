@@ -9,6 +9,7 @@ import { EditorState, convertToRaw , ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { Cell } from '../components/Table.js';
 import Footbar from '../components/FootBar';
+import { useDownloadableScreenshot } from '../misc/Screenshot.js';
 
 import draftToMarkdown from 'draftjs-to-markdown';
 import htmlToDraft from 'html-to-draftjs';
@@ -237,6 +238,8 @@ export default function Home() {
       }
     }, [userProfile]);
 
+    const { ref, getImage } = useDownloadableScreenshot();
+
     // DELETE LATER <------------------------
     const testShow = (result,_,info) => {
 
@@ -247,8 +250,8 @@ export default function Home() {
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
 
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState}/>
-                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref}/>
+                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken}/>               
