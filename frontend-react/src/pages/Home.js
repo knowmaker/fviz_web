@@ -52,6 +52,7 @@ export default function Home() {
     const tableViewState = {tableView,setTableView}
 
     const setFullTableData = (result) => {
+      console.log(result.id_repr)
       setTableData(result.active_quantities)
       setTableView({id_repr:result.id_repr,title:result.title})
     }
@@ -208,6 +209,7 @@ export default function Home() {
         // fix later
         setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/laws`,testShow,headers)
         setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+        setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/active_view`,undefined,headers)
 
         // set up localstorage to authenticate automatically
         localStorage.setItem('token', userToken);
@@ -798,9 +800,6 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
           </tbody>
         </table>
       </div>
-      <div className="modal-footer2">
-        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.lawsModalVisibility.setVisibility(false)}>Close</button>
-      </div>
 
       </Modal>
   )
@@ -880,6 +879,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     tableViewsMarkup = tableViews.map(tableView => {
     tableViewsCounter += 1 
 
+    console.log(tableView.id_repr,tableViewState.tableView.id_repr)
     const isCurrent = tableView.id_repr === tableViewState.tableView.id_repr
 
     return (
@@ -929,9 +929,6 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
           {tableViewsMarkup}
         </tbody>
       </table>
-      </div>
-      <div className="modal-footer2">
-        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.tableViewsModalVisibility.setVisibility(false)}>Close</button>
       </div>
 
       </Modal>
@@ -1054,9 +1051,6 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
         </tbody>
       </table>
       </div>
-      <div className="modal-footer2">
-        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.lawsGroupsModalVisibility.setVisibility(false)}>Close</button>
-      </div>
 
       </Modal>
   )
@@ -1178,7 +1172,7 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
       </div>
       <div className="modal-footer2">
       <button type="button" className="btn btn-primary" onClick={() => updateGKLayers()}>Save</button>
-        <button type="button" className="btn btn-primary" onClick={() => modalsVisibility.GKColorsEditModalVisibility.setVisibility(false)}>Close</button>
+
       </div>
 
       </Modal>
