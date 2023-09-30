@@ -39,7 +39,12 @@ class RepresentsController < ApplicationController
     quantity_ids = Represent.where(id_repr: represent_id).pluck(:active_quantities).flatten
     active_quantities = Quantity.where(id_value: quantity_ids).order(:id_lt).all
 
-    render json: { data: active_quantities }, status: :ok
+    json_output = {
+      represent_id: represent_id,
+      represent_title: Represent.where(id_repr: represent_id).select('title'),
+      active_quantities:
+    }
+    render json: { data: json_output }, status: :ok
   end
 
   def represent_view_show
