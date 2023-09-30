@@ -89,7 +89,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
       )  
     }
 
-    const cellOptions = cells.length !== 0 ? cells : "нету альтернативных ячеек"
+    const cellOptions = cells.length !== 0 ? cells : "нет альтернативных ячеек"
 
 
 
