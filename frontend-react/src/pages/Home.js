@@ -1127,7 +1127,7 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
     const adjustedSelectedColor = Color(layer.color).lighten(layerBrightness.brightness/50-1)
 
     const handleBrightnessChanges = (input,id_gk) => {
-      console.log(input.target.value,id_gk)
+      //console.log(input.target.value,id_gk)
       //console.log(selectedColors)
       setSelectedBrightness(selectedBrightness.filter(selectedColor => selectedColor.id !== id_gk).concat({brightness: parseInt(input.target.value), id:id_gk}))
     }

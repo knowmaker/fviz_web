@@ -119,9 +119,10 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
   const tableData = tableState.tableData
   const fullTableData = { tableData: tableData, Colors: gkColors};
 
-  const isLoaded = tableData.length !== 0 && gkColors.length !== 0
-
   const [emptyCells, setEmptyCells] = useState([]);
+
+  const isLoaded = tableData.length !== 0 && gkColors.length !== 0 && emptyCells.length !== 0 
+
 
   useEffect(() => {
 
@@ -319,7 +320,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
   const handleCellRightClick = (event) => {
     
     event.preventDefault()
-    console.log(cellData)
+    //console.log(cellData)
     
     cellRightClick(cellData)
 
