@@ -77,16 +77,17 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     })
 
 
-    
-    cells.push(
-      <Cell 
-      key={-1} 
-      cellFullData={{cellFullId:-1,cellData:emptyCellShowData,cellColor:"#CCCCCC"}}
-      selectedCells={cellAlternatives.concat(emptyCellData)} 
-      revStates={revStates} 
-      setSelectedCell={setSelectedCell}
-      />
-    )
+    if (selectedCell.id_gk) {
+      cells.push(
+        <Cell 
+        key={-1} 
+        cellFullData={{cellFullId:-1,cellData:emptyCellShowData,cellColor:"#CCCCCC"}}
+        selectedCells={cellAlternatives.concat(emptyCellData)} 
+        revStates={revStates} 
+        setSelectedCell={setSelectedCell}
+        />
+      )  
+    }
 
     const cellOptions = cells.length !== 0 ? cells : "нету альтернативных ячеек"
 
