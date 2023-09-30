@@ -55,7 +55,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   if (cellAlternatives !== null && selectedCell) {
 
     const emptyCellData = {id_lt:selectedCell.id_lt,id_value:-1,unit:""}  
-    const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:-1,unit:"",value_name:"Пустая ячейка"}    
+    const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:-1,unit:"",value_name:"<<Скрыть>>"}    
 
     let cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
 
@@ -85,6 +85,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
         selectedCells={cellAlternatives.concat(emptyCellData)} 
         revStates={revStates} 
         setSelectedCell={setSelectedCell}
+        className="fancy-empty-cell"
         />
       )  
     }
@@ -308,7 +309,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
 }
 
-export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false}) {
+export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = ""}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -439,7 +440,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     return (
       <div className="cell" style={{ backgroundColor: borderColor }}>
         <div
-          className="inner-cell"
+          className={`inner-cell ${className}`}
           id={`cell-${cellFullId}`}
           style={{ backgroundColor: cellColor }}
           onContextMenu={event => cellRightClick ? handleCellRightClick(event, cellFullId) : {}}
