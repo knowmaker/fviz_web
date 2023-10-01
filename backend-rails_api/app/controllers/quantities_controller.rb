@@ -21,8 +21,12 @@ class QuantitiesController < ApplicationController
   end
 
   def show
-    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(params[:id])
-    render json: { data: @quantity }, status: :ok
+    @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find_by(id_value: params[:id])
+    if @quantity
+      render json: { data: @quantity }, status: :ok
+    else
+      render json: { error: ['Величина не найдена'] }, status: :not_found
+    end
   end
 
   def create
@@ -53,17 +57,21 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    quantity_params_result = quantity_params
-    if quantity_params_result.key?(:error)
-      render json: { error: [quantity_params_result[:error]] }, status: :unprocessable_entity
-      return
-    end
+    if @quantity
+      quantity_params_result = quantity_params
+      if quantity_params_result.key?(:error)
+        render json: { error: [quantity_params_result[:error]] }, status: :unprocessable_entity
+        return
+      end
 
-    if @quantity.update(quantity_params_result)
-      @quantity.reload
-      render json: { data: @quantity }, status: :ok
+      if @quantity.update(quantity_params_result)
+        @quantity.reload
+        render json: { data: @quantity }, status: :ok
+      else
+        render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: ['Величина не найдена'] }, status: :not_found
     end
   end
 
@@ -73,23 +81,32 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    @quantity.destroy
-    head :ok
+    if @quantity
+      @quantity.destroy
+      head :ok
+    else
+      render json: { error: ['Величина не найдена'] }, status: :not_found
+    end
+
   end
 
   def lt_values
-    quantities = Quantity.where(id_lt: params[:id])
-    if quantities.any?
-      render json: { data: quantities }, status: :ok
+    if !Lt.find_by(id_lt: params[:id])
+      render json: { error: ['Ячейки не существует'] }, status: :not_found
     else
-      render json: { data: [] }, status: :ok
+      quantities = Quantity.where(id_lt: params[:id])
+      if quantities.any?
+        render json: { data: quantities }, status: :ok
+      else
+        render json: { data: [] }, status: :ok
+      end
     end
   end
 
   private
 
   def set_quantity
-    @quantity = Quantity.find(params[:id])
+    @quantity = Quantity.find_by(id_value: params[:id])
   end
 
   def quantity_params
