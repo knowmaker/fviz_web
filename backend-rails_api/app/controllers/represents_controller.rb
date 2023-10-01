@@ -2,7 +2,7 @@
 
 # Контроллер для работы с представлениями ФВ
 class RepresentsController < ApplicationController
-  before_action :authorize_request, except: %i[represent_view_index lt_values]
+  before_action :authorize_request, except: %i[represent_view_index]
   before_action -> { authorize_request(check_current_user: false) }, only: %i[represent_view_index]
   before_action :set_represent, only: %i[update destroy represent_view_show]
 

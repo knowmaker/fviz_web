@@ -13,6 +13,7 @@ RSpec.describe 'law_types', type: :request do
   path '/api/law_types' do
     get('list law types') do
       tags 'Law Types'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         run_test!
       end
@@ -20,6 +21,7 @@ RSpec.describe 'law_types', type: :request do
 
     post('create law type') do
       tags 'Law Types'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       parameter name: :law_type, in: :body, schema: {
         type: :object,
@@ -52,6 +54,7 @@ RSpec.describe 'law_types', type: :request do
 
     get('show law type') do
       tags 'Law Types'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -65,6 +68,7 @@ RSpec.describe 'law_types', type: :request do
 
     put('update law type') do
       tags 'Law Types'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       parameter name: :law_type, in: :body, schema: {
         type: :object,
@@ -97,6 +101,7 @@ RSpec.describe 'law_types', type: :request do
 
     delete('delete law type') do
       tags 'Law Types'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         let(:id) { '123' }
 

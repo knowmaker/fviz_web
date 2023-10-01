@@ -1,6 +1,15 @@
 require 'swagger_helper'
 
 RSpec.describe 'users', type: :request do
+  let(:user_params) do
+    { user:
+        {
+          email: 'example@sample.com',
+          password: '123456789',
+        }
+    }
+  end
+
   path '/api/users/login' do
     post('user login') do
       tags 'Users'
@@ -19,6 +28,8 @@ RSpec.describe 'users', type: :request do
         }
       }
       response(200, 'successful') do
+        let(:user) { user_params }
+
         run_test!
       end
     end
@@ -43,6 +54,8 @@ RSpec.describe 'users', type: :request do
       }
 
       response(201, 'created') do
+        let(:user) { user_params }
+
         run_test!
       end
     end
@@ -51,6 +64,7 @@ RSpec.describe 'users', type: :request do
   path '/api/users/profile' do
     get('show user profile') do
       tags 'Users'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         run_test!
       end
@@ -60,6 +74,7 @@ RSpec.describe 'users', type: :request do
   path '/api/users/update' do
     patch('update user') do
       tags 'Users'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       parameter name: :user, in: :body, schema: {
         type: :object,
@@ -79,6 +94,7 @@ RSpec.describe 'users', type: :request do
   path '/api/users/delete' do
     delete('delete user') do
       tags 'Users'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         let(:id) { '123' }
 

@@ -13,6 +13,7 @@ RSpec.describe 'represents', type: :request do
   path '/api/represents' do
     get('list represents') do
       tags 'Represents'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         run_test!
       end
@@ -20,6 +21,7 @@ RSpec.describe 'represents', type: :request do
 
     post('create represent') do
       tags 'Represents'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       parameter name: :represent, in: :body, schema: {
         type: :object,
@@ -54,6 +56,7 @@ RSpec.describe 'represents', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     put('update represent') do
+      security [{ bearerAuth: [] }]
       tags 'Represents'
       consumes 'application/json'
       parameter name: :represent, in: :body, schema: {
@@ -90,6 +93,7 @@ RSpec.describe 'represents', type: :request do
 
     delete('delete represent') do
       tags 'Represents'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -116,6 +120,7 @@ RSpec.describe 'represents', type: :request do
 
     get('get active quantities for specific represent view') do
       tags 'Represents'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         let(:id) { '123' }
 

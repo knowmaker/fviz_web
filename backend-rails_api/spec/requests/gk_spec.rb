@@ -26,6 +26,7 @@ RSpec.describe 'gk', type: :request do
 
     get('show GK') do
       tags 'GK'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -39,6 +40,7 @@ RSpec.describe 'gk', type: :request do
 
     patch('update GK') do
       tags 'GK'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       parameter name: :gk, in: :body, schema: {
         type: :object,

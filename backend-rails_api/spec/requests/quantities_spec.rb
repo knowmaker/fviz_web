@@ -22,6 +22,7 @@ RSpec.describe 'quantities', type: :request do
   path '/api/quantities' do
     get('list quantities') do
       tags 'Quantities'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         run_test!
       end
@@ -33,6 +34,7 @@ RSpec.describe 'quantities', type: :request do
 
     post('create quantity') do
       tags 'Quantities'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       parameter name: :quantity, in: :body, schema: {
         type: :object,
@@ -87,6 +89,7 @@ RSpec.describe 'quantities', type: :request do
 
     put('update quantity') do
       tags 'Quantities'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       parameter name: :quantity, in: :body, schema: {
         type: :object,
@@ -127,6 +130,7 @@ RSpec.describe 'quantities', type: :request do
 
     delete('delete quantity') do
       tags 'Quantities'
+      security [{ bearerAuth: [] }]
       response(200, 'successful') do
         let(:id) { '123' }
 
