@@ -53,7 +53,13 @@ class QuantitiesController < ApplicationController
     #   return
     # end
 
-    if @quantity.update(quantity_params)
+    quantity_params_result = quantity_params
+    if quantity_params_result.key?(:error)
+      render json: { error: [quantity_params_result[:error]] }, status: :unprocessable_entity
+      return
+    end
+
+    if @quantity.update(quantity_params_result)
       @quantity.reload
       render json: { data: @quantity }, status: :ok
     else
@@ -99,7 +105,7 @@ class QuantitiesController < ApplicationController
 
     quantity_params.delete(:l_indicate)
     quantity_params.delete(:t_indicate)
-
+    p quantity_params
     quantity_params
   end
 end

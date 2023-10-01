@@ -19,11 +19,18 @@ RSpec.describe 'quantities', type: :request do
     }
   end
 
+  before do
+    @token = user_login(1)
+  end
+
   path '/api/quantities' do
     get('list quantities') do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
+
       response(200, 'successful') do
+        let(:"Authorization") { "Bearer #{@token}" }
+
         run_test!
       end
 
@@ -107,7 +114,9 @@ RSpec.describe 'quantities', type: :request do
               l_indicate: { type: :integer },
               t_indicate: { type: :integer },
               id_gk: { type: :integer }
-            }
+            },
+            required: ['value_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
+                       'l_indicate', 't_indicate', 'id_gk']
           }
         }
       }

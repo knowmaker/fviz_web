@@ -4,5 +4,6 @@ class ResetConfirmationTokenJob < ApplicationJob
   def perform(user_id)
     user = User.find_by(id_user: user_id)
     user.update(confirmation_token: nil) if user&.confirmation_token
+    user.destroy unless user&.confirmed
   end
 end
