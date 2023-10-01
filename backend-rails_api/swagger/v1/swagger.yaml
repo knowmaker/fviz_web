@@ -291,6 +291,8 @@ paths:
           description: created
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -348,6 +350,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
     put:
       summary: update quantity
       tags:
@@ -362,6 +366,8 @@ paths:
           description: not found
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -391,6 +397,17 @@ paths:
                       type: integer
                     id_gk:
                       type: integer
+                  required:
+                  - value_name
+                  - symbol
+                  - m_indicate_auto
+                  - l_indicate_auto
+                  - t_indicate_auto
+                  - i_indicate_auto
+                  - unit
+                  - l_indicate
+                  - t_indicate
+                  - id_gk
     delete:
       summary: delete quantity
       tags:
@@ -402,6 +419,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
   "/api/layers/{id}":
     parameters:
     - name: id
@@ -419,6 +438,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
   "/api/represents":
     get:
       summary: list represents

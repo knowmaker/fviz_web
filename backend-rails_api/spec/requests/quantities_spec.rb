@@ -1,39 +1,14 @@
 require 'swagger_helper'
 
 RSpec.describe 'quantities', type: :request do
-  # Определение параметров, используемых в запросах
-  let(:quantity_params) do
-    { quantity:
-      {
-        value_name: 'Sample Value',
-        symbol: 'symbol',
-        m_indicate_auto: 0,
-        l_indicate_auto: 1,
-        t_indicate_auto: 2,
-        i_indicate_auto: 3,
-        unit: 'Unit',
-        l_indicate: 1,
-        t_indicate: 2,
-        id_gk: 1
-      }
-    }
-  end
-
-  before do
-    @token = user_login(1)
-  end
-
   path '/api/quantities' do
     get('list quantities') do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
 
       response(200, 'successful') do
-        let(:"Authorization") { "Bearer #{@token}" }
-
         run_test!
       end
-
       response(500, 'server error') do
         run_test!
       end
@@ -60,19 +35,18 @@ RSpec.describe 'quantities', type: :request do
               t_indicate: { type: :integer },
               id_gk: { type: :integer }
             },
-            required: ['value_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
-                       'l_indicate', 't_indicate', 'id_gk']
+            required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit l_indicate t_indicate id_gk]
           }
         }
       }
 
       response(201, 'created') do
-        let(:quantity) { quantity_params }
-
         run_test!
       end
-
       response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -83,13 +57,14 @@ RSpec.describe 'quantities', type: :request do
 
     get('show quantity') do
       tags 'Quantities'
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -115,24 +90,21 @@ RSpec.describe 'quantities', type: :request do
               t_indicate: { type: :integer },
               id_gk: { type: :integer }
             },
-            required: ['value_name', 'symbol', 'm_indicate_auto', 'l_indicate_auto', 't_indicate_auto', 'i_indicate_auto', 'unit',
-                       'l_indicate', 't_indicate', 'id_gk']
+            required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit l_indicate t_indicate id_gk]
           }
         }
       }
 
       response(200, 'successful') do
-        let(:id) { '123' }
-        let(:quantity) { quantity_params }
-
         run_test!
       end
-
       response(404, 'not found') do
         run_test!
       end
-
       response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -140,13 +112,14 @@ RSpec.describe 'quantities', type: :request do
     delete('delete quantity') do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -157,13 +130,14 @@ RSpec.describe 'quantities', type: :request do
 
     get('get quantities by lt id') do
       tags 'Quantities'
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
