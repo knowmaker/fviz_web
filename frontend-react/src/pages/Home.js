@@ -812,13 +812,13 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
           <div className="col-2">
             Название:
           </div>
-          <div className="col-3">
+          <div className="col-5">
             <input type="text" className="form-control" id="InputLawName3" placeholder="Мой закон"/>
           </div>
-          <div className="col-3">
+          <div className="col-2">
           <button type="button" className="btn btn-success" onClick={() => createLaw()}>Создать</button>
           </div>
-          <div className="col-4">
+          <div className="col-3">
           <button type="button" className="btn btn-info" onClick={() => updateLaw()}>Обновить</button>
           </div>
         </div>
@@ -826,7 +826,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
         <div className="col-2">
           Группы:
         </div>
-          <div className="col-3">
+          <div className="col-5">
           <select className="form-select" aria-label="Default select example" id='inputLawGroup3'>
               {allOptions}
             </select>
@@ -954,13 +954,13 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
       <div className="col-2">
             Название:
       </div>
-        <div className="col-3">
+        <div className="col-5">
           <input type="text" className="form-control" id="InputTableViewName3" placeholder="Моё представление"/>
         </div>
-        <div className="col-3">
+        <div className="col-2">
         <button type="button" className="btn btn-success" onClick={() => createTableView()}>Создать</button>
         </div>
-        <div className="col-4">
+        <div className="col-3">
         <button type="button" className="btn btn-info" onClick={() => updateTableView()}>Обновить</button>
         </div>
       </div>

@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="debug quantity rspec 4">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="fix law index method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/laws_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -413,15 +413,7 @@
       <workItem from="1696103445473" duration="6476000" />
       <workItem from="1696155333228" duration="7900000" />
       <workItem from="1696166146941" duration="12297000" />
-      <workItem from="1696351054915" duration="1665000" />
-    </task>
-    <task id="LOCAL-00062" summary="law types controller and spec">
-      <option name="closed" value="true" />
-      <created>1693640051662</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1693640051662</updated>
+      <workItem from="1696351054915" duration="2344000" />
     </task>
     <task id="LOCAL-00063" summary="gk settings controller and spec">
       <option name="closed" value="true" />
@@ -807,7 +799,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696192456286</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL-00111" summary="fix law index method">
+      <option name="closed" value="true" />
+      <created>1696352968030</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1696352968031</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -825,7 +825,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="user controllers" />
     <MESSAGE value="index all quantity pdf" />
     <MESSAGE value="color + difference" />
     <MESSAGE value="fviz add #" />
@@ -850,7 +849,8 @@
     <MESSAGE value="debug quantity rspec 2" />
     <MESSAGE value="debug quantity rspec 3" />
     <MESSAGE value="debug quantity rspec 4" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug quantity rspec 4" />
+    <MESSAGE value="fix law index method" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix law index method" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@Quantities_POST__create.rcov" NAME="Quantities POST #create Coverage Results" MODIFIED="1696158493050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
