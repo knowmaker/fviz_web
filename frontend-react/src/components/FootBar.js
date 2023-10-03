@@ -22,10 +22,12 @@ export default function Footbar({hoveredCell,selectedLawState,getImage}) {
   
 
     const headers = {
-      Authorization: `Bearer ${userInfoState.userToken}`
+      Authorization: `Bearer ${userInfoState.userToken}`,
+      responseType: 'blob',
     }    
     const PDFFile = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities`, headers)
-    const blob = await new Blob([PDFFile.data]);
+    await new Promise(resolve => setTimeout(resolve,2000))
+    const blob = new Blob([PDFFile.data], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(blob);
 
     // Создаем ссылку для скачивания

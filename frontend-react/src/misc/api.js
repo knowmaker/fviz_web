@@ -52,11 +52,12 @@ export function patchDataToAPI(adress,data, headers = undefined) {
 export function deleteDataFromAPI(adress,data, headers = undefined) {
   return new Promise(async function(resolve) {
     try {
-      const response = await axios.delete(adress, data, {headers: headers})
+      const response = await axios.delete(adress, {headers: headers})
+      console.log(adress,data,{headers: headers})
       resolve(response)
     } catch (error) {
       resolve(error.response)
-      console.log(adress,data,headers)
+      console.log(adress,data, headers)
     }
   })
 
@@ -94,7 +95,7 @@ export function postData(setStateFunction, adress, data, headers, afterRequestFu
     }
   })
   .catch((error) => {
-    console.log(error);
+    console.log(adress, data, headers);
   });
 }
 
@@ -134,6 +135,7 @@ export function deleteData(setStateFunction, adress, headers, afterRequestFuncti
 
   axios.delete(adress, {headers: headers})
   .then((response) => {
+    console.log(adress, headers);
     if (setStateFunction) {
       setStateFunction(response.data.data);
     }
@@ -142,7 +144,7 @@ export function deleteData(setStateFunction, adress, headers, afterRequestFuncti
     }
   })
   .catch((error) => {
-    console.log(error);
+    console.log(adress, headers);
   });
 }
 

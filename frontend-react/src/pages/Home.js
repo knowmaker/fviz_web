@@ -325,7 +325,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
     // send request to replace missing cell
-    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}//layers/${selectedCell.id_lt}`,headers)
+    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/layers/${selectedCell.id_lt}`,headers)
     if (!isResponseSuccessful(cellAlternativesResponseData)) {
       showMessage(cellAlternativesResponseData.data.error,"error")
       return
@@ -344,6 +344,9 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   }
 
   const deleteCell = async () => {
+    if (!window.confirm("Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.")) {
+      return
+    }
 
     // send delete request
     const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`,undefined,headers)
@@ -351,10 +354,29 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
       showMessage(cellDeleteResponseData.data.error,"error")
       return
     }
+
+    tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value))
+
+    // send request to replace missing cell
+    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/layers/${selectedCell.id_lt}`,headers)
+    if (!isResponseSuccessful(cellAlternativesResponseData)) {
+      showMessage(cellAlternativesResponseData.data.error,"error")
+      return
+    }
+
+    const cellAlternatives = cellAlternativesResponseData.data.data
+
+    // replace missing cell if there is alternative
+    if (cellAlternatives.length > 0) {
+      tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value).concat(cellAlternatives[0]))
+    }
+
+
     // selectedCell.id_value
-    showMessage("Ячейка была удалена")
+    showMessage("Ячейка удалена")
 
-
+    // hide modal
+    modalVisibility.setVisibility(false)
 
   }
 
@@ -567,6 +589,9 @@ function EditProfileModal({modalsVisibility}) {
   }
 
   const deleteUser = async () => {
+    if (!window.confirm("Вы уверены что хотите удалить аккаунт? Это приведёт к потере всех ваших данных.")) {
+      return
+    }
 
     // send delete request
     const deleteUserResponse = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/delete`,undefined,headers)
@@ -877,7 +902,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   const createTableView = () => {
     
     // fix filter later
-    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value).filter(id => id === -1)
+    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value).filter(id => id !== -1)
     //console.log(cellIds)
 
     const tableViewTitle = document.getElementById("InputTableViewName3").value
@@ -1012,6 +1037,9 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   }
 
   const deleteLawGroup = async (group) => {
+    if (!window.confirm("Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.")) {
+      return
+    }
     
     //deleteData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
   
@@ -1494,7 +1522,7 @@ function convertMarkdownToEditorState(stateFunction, markdown) {
 
 function convertMarkdownFromEditorState(state) {
 
-  const html = draftToMarkdown(convertToRaw(state.getCurrentContent()));
+  const html = draftToMarkdown(convertToRaw(state.getCurrentContent())).replace('\n','');
   return html
 }
 
