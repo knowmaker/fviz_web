@@ -6,10 +6,9 @@ class LawsController < ApplicationController
   before_action :set_law, only: %i[show update destroy]
 
   def index
-    laws = @current_user.laws.joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.*').all
-    laws_grouped = laws.group_by { |law| law.law_type.type_name }
+    laws = @current_user.laws.joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.*').order(:id_law).all
 
-    render json: { data: laws_grouped }, status: :ok
+    render json: { data: laws }, status: :ok
   end
 
   def show
