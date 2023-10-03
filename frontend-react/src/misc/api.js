@@ -56,6 +56,7 @@ export function deleteDataFromAPI(adress,data, headers = undefined) {
       resolve(response)
     } catch (error) {
       resolve(error.response)
+      console.log(adress,data,headers)
     }
   })
 

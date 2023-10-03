@@ -276,12 +276,12 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
         if (selectedCellState.selectedCell) {
 
           borderColor = cellData.id_value === selectedCellState.selectedCell.id_value ? "orange" : ""
+
         }
         if (selectedLawState.selectedLaw) {
 
-          borderColor = selectedLawState.selectedLaw.cells.find(lawCell => lawCell.id_value === cellData.id_value) ? "red" : ""
+          borderColor = selectedLawState.selectedLaw.cells.find(lawCell => lawCell.id_value === cellData.id_value) ? "red" : borderColor
         }
-        
       }
     } else {
       cellData = emptyCellsData.find(cell => cell.id_lt === cellFullId)
@@ -436,6 +436,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     const cellContent_symbol = cellData.symbol;
     const cellContent_unit = cellData.unit;
     const cellContent_mlti = cellData.mlti_sign;
+    //console.log(borderColor === "orange")
     
     return (
       <div className="cell" style={{ backgroundColor: borderColor }}>

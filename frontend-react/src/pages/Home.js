@@ -175,7 +175,7 @@ export default function Home() {
             return
           }
           const cellData = cellResponseData.data.data
-          console.log(cellData)
+          //console.log(cellData)
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
           convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
@@ -241,9 +241,10 @@ export default function Home() {
     const { ref, getImage } = useDownloadableScreenshot();
 
     // DELETE LATER <------------------------
+    
     const testShow = (result,_,info) => {
 
-      console.log("result:",result,"input:",info)
+      //console.log("result:",result,"input:",info)
     }
 
     return (
@@ -344,8 +345,8 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
   const deleteCell = async () => {
 
-
-    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}//quantities/${selectedCell.id_value}`,headers)
+    // send delete request
+    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`,undefined,headers)
     if (!isResponseSuccessful(cellDeleteResponseData)) {
       showMessage(cellDeleteResponseData.data.error,"error")
       return
@@ -401,22 +402,21 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     const I_indicate = 0 - K_indicate*-1
 
     setPreviewCell(
-
-      {
-        cellFullId:-1,
-        cellData:{
-          value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
-          symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
-          unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
-          mlti_sign: convertToMLTI(M_indicate,L_indicate,T_indicate,I_indicate),
-        },
-        cellColor: cellColor,
-      }
-
-    )
-    }
+        {
+          cellFullId:-1,
+          cellData:{
+            value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
+            symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
+            unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
+            mlti_sign: convertToMLTI(M_indicate,L_indicate,T_indicate,I_indicate),
+          },
+          cellColor: cellColor,
+        }
+      )
 
     }
+
+  }
 
   return  (  
     <Modal
@@ -614,9 +614,19 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const userInfoState = useContext(UserProfile) 
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
-  }      
+  }  
+  
+  const testShow = (result,_,info) => {
+
+    console.log("result:",result,"input:",info)
+  }
 
   const createLaw = () => {
+    console.log(lawsState.lawsGroups)
+    if (lawsState.lawsGroups === undefined) {
+      setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/laws`,testShow,headers)
+      console.log("ts")
+    }
 
     if (selectedLawState.selectedLaw.cells.length !== 4) {
       return
@@ -628,8 +638,6 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
 
 
-    //console.log(selectedLawCellId)
-
     const newLaw = {
       law: {
         law_name: document.getElementById("InputLawName3").value,
@@ -640,9 +648,11 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
         id_type: document.getElementById("inputLawGroup3").value
       }
     }
-    //console.log(newLaw)
+
     postData(undefined, `${process.env.REACT_APP_API_LINK}/laws`, newLaw, headers, afterCreateLaw)
     
+
+
 
   }
   
@@ -680,6 +690,8 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     patchData(undefined, `${process.env.REACT_APP_API_LINK}/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
     
   }
+
+  console.log(lawsGroupsState)
 
   const selectLaw = (selectedLaw) => {
 
@@ -882,7 +894,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     tableViewsMarkup = tableViews.map(tableView => {
     tableViewsCounter += 1 
 
-    console.log(tableView.id_repr,tableViewState.tableView.id_repr)
+    //console.log(tableView.id_repr,tableViewState.tableView.id_repr)
     const isCurrent = tableView.id_repr === tableViewState.tableView.id_repr
 
     return (
@@ -950,54 +962,92 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   //console.log(lawsGroups)
 
   const [selectedLawGroup, setSelectedLawGroup] = useState({ type_name:null,id_type:null})
+  const [lawGroupEditorState, setLawGroupEditorState] = useState(EditorState.createEmpty())
 
   const selectLawGroup = (group) => {
+   
+    // set this group as selected
     setSelectedLawGroup(group)
 
-    document.getElementById("InputLawGroupName3").value = group.type_name
+    // set input to this group values
+    convertMarkdownToEditorState(setLawGroupEditorState, group.type_name) 
+    document.getElementById("InputLawGroupColor3").value = group.color
+
   }
 
-  const updateLawGroup = () => {
+  const updateLawGroup = async () => {
 
-    const lawGroupName = document.getElementById("InputLawGroupName3").value
+    // get current input values
+    const lawGroupName = convertMarkdownFromEditorState(lawGroupEditorState)
+    const lawGroupColor = document.getElementById("InputLawGroupColor3").value
 
     const newLawGroup = {
       law_type: {
-        type_name: lawGroupName
+        type_name: lawGroupName,
+        color: lawGroupColor,
       }
     }
-
-    putData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
-  }
-
-  const deleteLawGroup = (group) => {
-    
-    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
-  }
-
-  const afterDeleteLawGroup = () => {
-
-    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
-  }
-
-  const createLawGroup = () => {
-    
-    const lawGroupName = document.getElementById("InputLawGroupName3").value
-
-    const newLawGroup = {
-      law_type: {
-        type_name: lawGroupName
-      }
-    }
-
-    postData(undefined, `${process.env.REACT_APP_API_LINK}/law_types`, newLawGroup, headers, afterCreateLawGroup)
-
-  }
-
-  const afterCreateLawGroup = () => {
-    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
-  }
   
+    // send group update request
+    const changedGroupResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers)
+    if (!isResponseSuccessful(changedGroupResponseData)) {
+      showMessage(changedGroupResponseData.data.error,"error")
+      return
+    }
+
+    // update current groups
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+
+    // show message
+    showMessage("Группа была обновлена")
+
+  }
+
+  const deleteLawGroup = async (group) => {
+    
+    //deleteData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
+  
+    // send delete group request
+    const groupDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/law_types/${group.id_type}`,undefined,headers)
+    if (!isResponseSuccessful(groupDeleteResponseData)) {
+      showMessage(groupDeleteResponseData.data.error,"error")
+      return
+    }
+
+    // update current groups
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+   
+    // show message
+    showMessage("Группа была удалена")
+  
+  }
+
+  const createLawGroup = async () => {
+    
+    // get current input values
+    const lawGroupName = convertMarkdownFromEditorState(lawGroupEditorState)
+    const lawGroupColor = document.getElementById("InputLawGroupColor3").value
+
+    const newLawGroup = {
+      law_type: {
+        type_name: lawGroupName,
+        color: lawGroupColor,
+      }
+    }
+
+
+    const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/law_types`,newLawGroup,headers)
+    if (!isResponseSuccessful(newGroupResponseData)) {
+      showMessage(newGroupResponseData.data.error,"error")
+      return
+    }
+
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+
+    showMessage("Группа была создана")
+
+  }
+
   let lawsGroupsMarkup
   let lawsGroupsCounter = 0
   if (lawsGroups) {
@@ -1009,7 +1059,8 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
     return (
       <tr key={group.id_type}>
         <th scope="row" className='small-cell'>{isCurrent ? lawsGroupsCounter + `+` : lawsGroupsCounter}</th>
-        <td>{group.type_name}</td>
+        <td dangerouslySetInnerHTML={{__html: group.type_name}}></td>
+        <td><input type="color" className="form-control form-control-color disabled" value={group.color} readOnly onClick={(e) => {e.preventDefault()}}/></td>
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLawGroup(group)}>↓</button></td>
         <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLawGroup(group)}>🗑</button></td>
       </tr>
@@ -1030,29 +1081,34 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 
       <div className="row">
         <div className="col-5">
-          <input type="text" className="form-control" id="InputLawGroupName3" placeholder="Group 1"/>
+          <RichTextEditor editorState={lawGroupEditorState} setEditorState={setLawGroupEditorState}/>
+          <input type="color" className="form-control form-control-color"  id="InputLawGroupColor3" />
         </div>
         <div className="col-3">
-        <button type="button" className="btn btn-primary" onClick={() => createLawGroup()}>create new</button>
+        <button type="button" className="btn btn-primary" onClick={() => createLawGroup()}>Создать новую</button>
         </div>
         <div className="col-4">
-        <button type="button" className="btn btn-success" onClick={() => updateLawGroup()}>update current</button>
+        <button type="button" className="btn btn-success" onClick={() => updateLawGroup()}>Обновить текущую</button>
         </div>
       </div>
-
-      <table className="table">
+      <details>
+        <summary>Группы</summary>
+        <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Select</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Цвет</th>
+            <th scope="col">Выбрать</th>
+            <th scope="col">Удалить</th>
           </tr>
         </thead>
         <tbody>
           {lawsGroupsMarkup}
         </tbody>
-      </table>
+        </table>
+      </details>
+
       </div>
 
       </Modal>
