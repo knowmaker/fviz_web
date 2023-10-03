@@ -24,7 +24,23 @@ export default function Footbar({hoveredCell,selectedLawState,getImage}) {
     const headers = {
       Authorization: `Bearer ${userInfoState.userToken}`
     }    
-    getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities`, headers)
+    const PDFFile = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities`, headers)
+    const blob = await new Blob([PDFFile.data]);
+    const url = window.URL.createObjectURL(blob);
+
+    // Создаем ссылку для скачивания
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'quantities_table.pdf';
+    document.body.appendChild(a);
+
+    // Нажимаем на ссылку для скачивания
+    a.click();
+
+    // Удаляем ссылку после скачивания
+    window.URL.revokeObjectURL(url);
+  
+  
   }
 
   

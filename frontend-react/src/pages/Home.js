@@ -244,7 +244,7 @@ export default function Home() {
     
     const testShow = (result,_,info) => {
 
-      //console.log("result:",result,"input:",info)
+      console.log("result:",result)
     }
 
     return (
@@ -691,7 +691,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     
   }
 
-  console.log(lawsGroupsState)
+  // console.log(lawsGroupsState)
 
   const selectLaw = (selectedLaw) => {
 
@@ -744,7 +744,9 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     return(sameMLTI)
   }
 
-  const lawGroupsList = lawsGroupsState.lawsGroups.map(lawGroup => {
+  const chooseOption = <option key={-1} value={-1} dangerouslySetInnerHTML={{__html: "Выберите опцию"}}/>
+
+  const lawsGroupList = lawsGroupsState.lawsGroups.map(lawGroup => {
 
     const shownText = `${lawGroup.type_name}`
 
@@ -753,19 +755,18 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     );
 
   });
+  const allOptions = [chooseOption,...lawsGroupList]
 
   let lawsMarkup
-  let lawsCounter = 0
   //console.log(lawsState.laws)
   if (lawsState.laws) {
     lawsMarkup = lawsState.laws.map(law => {
-    lawsCounter += 1 
 
     const isCurrent = selectedLawState.selectedLaw.id_law === law.id_law
 
     return ( 
       <tr key={law.id_law}>
-        <th scope="row" className='small-cell'>{isCurrent ? lawsCounter + `+` : lawsCounter}</th>
+        <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
         <td>{law.law_name}</td>
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLaw(law)}>↓</button></td>
         <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLaw(law)}>🗑</button></td>
@@ -777,26 +778,32 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   return (
     <Modal
       modalVisibility={modalsVisibility.lawsModalVisibility}
-      title={"Laws"}
+      title={"Законы"}
       hasBackground={false}
       sizeX={600}
       >
       <div className="modal-content2">
         <div className="row">
-          <div className="col-5">
-            <input type="text" className="form-control" id="InputLawName3" placeholder="Law 1"/>
+          <div className="col-2">
+            Название:
           </div>
           <div className="col-3">
-          <button type="button" className="btn btn-primary" onClick={() => createLaw()}>create new</button>
+            <input type="text" className="form-control" id="InputLawName3" placeholder="Мой закон"/>
+          </div>
+          <div className="col-3">
+          <button type="button" className="btn btn-success" onClick={() => createLaw()}>Создать</button>
           </div>
           <div className="col-4">
-          <button type="button" className="btn btn-success" onClick={() => updateLaw()}>update current</button>
+          <button type="button" className="btn btn-info" onClick={() => updateLaw()}>Обновить</button>
           </div>
         </div>
         <div className="row">
-          <div className="col">
+        <div className="col-2">
+          Группы:
+        </div>
+          <div className="col-3">
           <select className="form-select" aria-label="Default select example" id='inputLawGroup3'>
-              {lawGroupsList}
+              {allOptions}
             </select>
           </div>
         </div>
@@ -805,9 +812,9 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Select</th>
-              <th scope="col">Delete</th>
+              <th scope="col">Название</th>
+              <th scope="col">Выбрать</th>
+              <th scope="col">Удалить</th>
             </tr>
           </thead>
           <tbody>
@@ -889,17 +896,16 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   }
   
   let tableViewsMarkup
-  let tableViewsCounter = 0
   if (tableViews) {
     tableViewsMarkup = tableViews.map(tableView => {
-    tableViewsCounter += 1 
+
 
     //console.log(tableView.id_repr,tableViewState.tableView.id_repr)
     const isCurrent = tableView.id_repr === tableViewState.tableView.id_repr
 
     return (
       <tr key={tableView.id_repr}>
-        <th scope="row" className='small-cell'>{isCurrent ? tableViewsCounter + `+` : tableViewsCounter}</th>
+        <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
         <td>{tableView.title}</td>
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectTableView(tableView)}>↓</button></td>
         <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteTableView(tableView)}>🗑</button></td>
@@ -913,31 +919,33 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   return (
     <Modal
       modalVisibility={modalsVisibility.tableViewsModalVisibility}
-      title={"Table views"}
+      title={"Представления ФВ"}
       hasBackground={false}
       sizeX={600}
       >
       <div className="modal-content2">
 
       <div className="row">
-        <div className="col-5">
-          <input type="text" className="form-control" id="InputTableViewName3" placeholder="View 1"/>
+      <div className="col-2">
+            Название:
+      </div>
+        <div className="col-3">
+          <input type="text" className="form-control" id="InputTableViewName3" placeholder="Моё представление"/>
         </div>
         <div className="col-3">
-        <button type="button" className="btn btn-primary" onClick={() => createTableView()}>create new</button>
+        <button type="button" className="btn btn-success" onClick={() => createTableView()}>Создать</button>
         </div>
         <div className="col-4">
-        <button type="button" className="btn btn-success" onClick={() => updateTableView()}>update current</button>
+        <button type="button" className="btn btn-info" onClick={() => updateTableView()}>Обновить</button>
         </div>
       </div>
-
       <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Select</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Название</th>
+            <th scope="col">Выбрать</th>
+            <th scope="col">Удалить</th>
           </tr>
         </thead>
         <tbody>
@@ -1044,21 +1052,22 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 
     setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
 
+    setLawGroupEditorState(EditorState.createEmpty())
+    document.getElementById("InputLawGroupColor3").value = "#FF0000"
+
     showMessage("Группа была создана")
 
   }
 
   let lawsGroupsMarkup
-  let lawsGroupsCounter = 0
   if (lawsGroups) {
     lawsGroupsMarkup = lawsGroups.map(group => {
-    lawsGroupsCounter += 1 
 
     const isCurrent = selectedLawGroup.id_type === group.id_type
 
     return (
       <tr key={group.id_type}>
-        <th scope="row" className='small-cell'>{isCurrent ? lawsGroupsCounter + `+` : lawsGroupsCounter}</th>
+        <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
         <td dangerouslySetInnerHTML={{__html: group.type_name}}></td>
         <td><input type="color" className="form-control form-control-color disabled" value={group.color} readOnly onClick={(e) => {e.preventDefault()}}/></td>
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLawGroup(group)}>↓</button></td>
@@ -1073,22 +1082,33 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   return (
     <Modal
       modalVisibility={modalsVisibility.lawsGroupsModalVisibility}
-      title={"Laws groups"}
+      title={"Группы законов"}
       hasBackground={false}
       sizeX={600}
       >
       <div className="modal-content2">
 
       <div className="row">
+      <div className="col-2">
+            Название:
+      </div>
         <div className="col-5">
           <RichTextEditor editorState={lawGroupEditorState} setEditorState={setLawGroupEditorState}/>
-          <input type="color" className="form-control form-control-color"  id="InputLawGroupColor3" />
+
+        </div>
+        <div className="col-2">
+        <button type="button" className="btn btn-success" onClick={() => createLawGroup()}>Создать</button>
         </div>
         <div className="col-3">
-        <button type="button" className="btn btn-primary" onClick={() => createLawGroup()}>Создать новую</button>
+        <button type="button" className="btn btn-info" onClick={() => updateLawGroup()}>Обновить</button>
         </div>
-        <div className="col-4">
-        <button type="button" className="btn btn-success" onClick={() => updateLawGroup()}>Обновить текущую</button>
+      </div>
+      <div className="row">
+      <div className="col-2">
+            Цвет:
+      </div>
+        <div className="col-5">
+          <input type="color" className="form-control form-control-color"  id="InputLawGroupColor3" />
         </div>
       </div>
       <details>
@@ -1097,7 +1117,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Имя</th>
+            <th scope="col">Название</th>
             <th scope="col">Цвет</th>
             <th scope="col">Выбрать</th>
             <th scope="col">Удалить</th>
@@ -1118,86 +1138,68 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 function GKColorModal({modalsVisibility,GKLayersState}) {
 
   const userInfoState = useContext(UserProfile)
-  //const tableState = useContext(TableContext)  
+
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }    
   const GKLayers = GKLayersState.gkColors
   const setGKLayers = GKLayersState.setGkColors
-  //console.log(gkColors)
 
-  const [selectedBrightness, setSelectedBrightness] = useState([])
+  const [selectedGKLayer, setSelectedGKLayer] = useState({ type_name:null,id_type:null})
+  const [GKLayerEditorState, setGKLayerEditorState] = useState(EditorState.createEmpty())
 
-  useEffect(() => {
+  const selectGKLayer = (layer) => {
+   
+    // set this group as selected
+    setSelectedGKLayer(layer)
 
-    if (GKLayers) {
+    // set input to this group values
+    convertMarkdownToEditorState(setGKLayerEditorState, layer.gk_name) 
+    document.getElementById("InputGKLayerColor3").value = layer.color
 
-      //console.log(GKLayers)
-      setSelectedBrightness(GKLayers.map(layer => ({brightness: layer.gk_bright, id:layer.id_gk})))
-    }
-
-  }, [GKLayers]);
-
-  //console.log(selectedColors)
-
-  const updateGKLayers = () => {
-
-    const changedLayersBright = selectedBrightness
-      .filter(brightness => brightness.brightness !== GKLayers.find(layer => layer.id_gk === brightness.id).gk_bright)
-    //const 
-    const fullChangedLayers = GKLayers.map(layer => {
-
-      const brightChange = changedLayersBright.find(brightness => brightness.id === layer.id_gk)
-      if (brightChange !== undefined) {
-
-        return {
-          ...layer,
-          gk_bright: brightChange.brightness
-        }
-      } else {return layer}
-
-    })
-    //console.log(fullChangedLayers)
-    setGKLayers(fullChangedLayers)
-
-    patchAllLayerData(changedLayersBright,headers,afterUpdateGKLayers)
-    //putData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers,afterCreateLawGroup)
   }
 
-  const afterUpdateGKLayers = (result) => {
-    console.log(result)
+  const updateLawGroup = async () => {
+
+    // get current input values
+    const GKLayerName = convertMarkdownFromEditorState(GKLayerEditorState)
+    const GKLayerColor = document.getElementById("InputGKLayerColor3").value
+
+    const newLawGroup = {
+      gk: {
+        gk_name: GKLayerName,
+        color: GKLayerColor,
+      }
+    }
+  
+    // send group update request
+    const changedGKLayerResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/gk/${selectedGKLayer.id_gk}`,newLawGroup,headers)
+    if (!isResponseSuccessful(changedGKLayerResponseData)) {
+      showMessage(changedGKLayerResponseData.data.error,"error")
+      return
+    }
+
+    // update current groups
+    setStateFromGetAPI(setGKLayers, `${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
+
+    // show message
+    showMessage("Системный уровень обновлен")
 
   }
 
   let GKLayersMarkup
-  let GKLayersCounter = 0
-  if (GKLayers && selectedBrightness.length !== 0) {
-    GKLayersMarkup = GKLayers.map(layer => {
-    GKLayersCounter += 1 
-    //console.log(selectedColors)
+  if (GKLayers) {
+    GKLayersMarkup = GKLayers.map(GKLayer => {
 
-    //const inputColorRef = useRef(undefined)
-    //const inputBrightnessElement = document.getElementById(`GKLayersRange${layer.id_gk}`)
-    //const inputBrightness = inputBrightnessElement ? inputBrightnessElement.value : 50
-
-    const layerBrightness = selectedBrightness.find(color => color.id === layer.id_gk)
-    const adjustedSelectedColor = Color(layer.color).lighten(layerBrightness.brightness/50-1)
-
-    const handleBrightnessChanges = (input,id_gk) => {
-      //console.log(input.target.value,id_gk)
-      //console.log(selectedColors)
-      setSelectedBrightness(selectedBrightness.filter(selectedColor => selectedColor.id !== id_gk).concat({brightness: parseInt(input.target.value), id:id_gk}))
-    }
-
-
+    const isCurrent = selectedGKLayer.id_gk === GKLayer.id_gk
 
     return (
-      <tr key={layer.id_gk}>
-        <th scope="row" className='small-cell'>{GKLayersCounter}</th>
-        <td>{layer.gk_name}</td>
-        <td dangerouslySetInnerHTML={{__html: layer.gk_sign}}></td>
-        <td><input type="color" className="form-control form-control-color disabled" value={`${adjustedSelectedColor.hex()}`} readOnly/></td>
-        <td><input type="range" className="form-range" min="0" max="100" onChange={(input) => handleBrightnessChanges(input,layer.id_gk)} /></td>
+      <tr key={GKLayer.id_gk}>
+        <th scope="row" className='small-cell'>{isCurrent ? `+` : ""}</th>
+        <td dangerouslySetInnerHTML={{__html: GKLayer.gk_name}}></td>        
+        <td>G<sup>{GKLayer.g_indicate}</sup>K<sup>{GKLayer.k_indicate}</sup></td>
+        <td><input type="color" className="form-control form-control-color disabled" value={GKLayer.color} readOnly onClick={(e) => {e.preventDefault()}}/></td>
+        <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectGKLayer(GKLayer)}>↓</button></td>
       </tr>
     );
   })
@@ -1208,29 +1210,48 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
   return (
     <Modal
       modalVisibility={modalsVisibility.GKColorsEditModalVisibility}
-      title={"GK Layers"}
+      title={"Системные уровни"}
       hasBackground={false}
       sizeX={600}
       >
       <div className="modal-content2">
 
-      <table className="table">
+      <div className="row">
+      <div className="col-2">
+            Название:
+      </div>
+        <div className="col-5">
+          <RichTextEditor editorState={GKLayerEditorState} setEditorState={setGKLayerEditorState}/>
+        </div>
+        <div className="col-2">
+        <button type="button" className="btn btn-info" onClick={() => updateLawGroup()}>Обновить</button>
+        </div>
+      </div>
+      <div className="row">
+      <div className="col-2">
+            Цвет:
+      </div>
+        <div className="col-5">
+        <input type="color" className="form-control form-control-color"  id="InputGKLayerColor3" />
+        </div>
+      </div>
+      <details>
+        <summary>Уровни</summary>
+        <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">Имя</th>
             <th scope="col">GK</th>
-            <th scope="col">Current color</th>
-            <th scope="col">Change color</th>
+            <th scope="col">Цвет</th>
+            <th scope="col">Выбрать</th>
           </tr>
         </thead>
         <tbody>
           {GKLayersMarkup}
         </tbody>
-      </table>
-      </div>
-      <div className="modal-footer2">
-      <button type="button" className="btn btn-primary" onClick={() => updateGKLayers()}>Save</button>
+        </table>
+      </details>
 
       </div>
 
