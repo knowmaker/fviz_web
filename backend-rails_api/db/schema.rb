@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
 
   create_table "laws_type", primary_key: "id_type", id: :serial, force: :cascade do |t|
     t.string "type_name", limit: 100, null: false
-    t.string "color", limit: 50, default: "#000000", null: false
+    t.string "color", limit: 50, null: false
   end
 
   create_table "lt", primary_key: "id_lt", id: :serial, force: :cascade do |t|

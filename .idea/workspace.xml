@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="change cellid formula">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="gk &amp; lt spec tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/models/lt_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/models/lt_spec.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/models/quantities_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/models/quantity_spec.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,39 +82,7 @@
       <recent name="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\app\controllers" />
     </key>
   </component>
-  <component name="RunManager" selected="RSpec.Gk">
-    <configuration type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
-      <module name="backend-rails_api" />
-      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-      <envs>
-        <env name="RAILS_ENV" value="test" />
-        <env name="JRUBY_OPTS" value="-X+O" />
-      </envs>
-      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
-      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
-      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\spec\controllers\lt2_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="LtController GET #index returns an empty array if no lts exist" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="RSpec.LawType">
     <configuration type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
       <module name="backend-rails_api" />
       <predefined_log_file enabled="true" id="RUBY_RSPEC" />
@@ -178,6 +147,102 @@
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
       <method v="2" />
     </configuration>
+    <configuration name="GkController PUT #update returns an unprocessable entity status code with invalid params" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
+      <module name="backend-rails_api" />
+      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="RAILS_ENV" value="test" />
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
+      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/../../backend-rails_api/spec/controllers/gk_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="GkController PUT #update returns an unprocessable entity status code with invalid params" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="GkController" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
+      <module name="backend-rails_api" />
+      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="RAILS_ENV" value="test" />
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
+      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/../../backend-rails_api/spec/controllers/gk_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="GkController" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="LawType" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
+      <module name="backend-rails_api" />
+      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="RAILS_ENV" value="test" />
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
+      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/../../backend-rails_api/spec/models/law_type_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="LawType" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="LtController" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
       <module name="backend-rails_api" />
       <predefined_log_file enabled="true" id="RUBY_RSPEC" />
@@ -199,70 +264,6 @@
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="LtController" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Quantity" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
-      <module name="backend-rails_api" />
-      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-      <envs>
-        <env name="RAILS_ENV" value="test" />
-        <env name="JRUBY_OPTS" value="-X+O" />
-      </envs>
-      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
-      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
-      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/../../backend-rails_api/spec/models/quantities_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="Quantity" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="quantities" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
-      <module name="backend-rails_api" />
-      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-      <envs>
-        <env name="RAILS_ENV" value="test" />
-        <env name="JRUBY_OPTS" value="-X+O" />
-      </envs>
-      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
-      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
-      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/../../backend-rails_api/spec/requests/quantities_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="quantities" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
@@ -355,19 +356,19 @@
       <item itemvalue="Rails.backend-rails_api" />
       <item itemvalue="Rake.spec: backend-rails_api" />
       <item itemvalue="Rake.test: backend-rails_api" />
-      <item itemvalue="RSpec.LtController GET #index returns an empty array if no lts exist" />
       <item itemvalue="RSpec.Gk" />
+      <item itemvalue="RSpec.GkController" />
+      <item itemvalue="RSpec.GkController PUT #update returns an unprocessable entity status code with invalid params" />
+      <item itemvalue="RSpec.LawType" />
       <item itemvalue="RSpec.LtController" />
-      <item itemvalue="RSpec.Quantity" />
-      <item itemvalue="RSpec.quantities" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="RSpec.LawType" />
+        <item itemvalue="RSpec.GkController PUT #update returns an unprocessable entity status code with invalid params" />
+        <item itemvalue="RSpec.GkController" />
         <item itemvalue="RSpec.Gk" />
         <item itemvalue="RSpec.LtController" />
-        <item itemvalue="RSpec.LtController" />
-        <item itemvalue="RSpec.LtController GET #index returns an empty array if no lts exist" />
-        <item itemvalue="RSpec.quantities" />
       </list>
     </recent_temporary>
   </component>
@@ -447,15 +448,7 @@
       <workItem from="1696166146941" duration="12297000" />
       <workItem from="1696351054915" duration="2695000" />
       <workItem from="1696354384749" duration="1016000" />
-      <workItem from="1696437245823" duration="7449000" />
-    </task>
-    <task id="LOCAL-00066" summary="undo commit">
-      <option name="closed" value="true" />
-      <created>1693684896007</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1693684896007</updated>
+      <workItem from="1696437245823" duration="8692000" />
     </task>
     <task id="LOCAL-00067" summary="undo commit">
       <option name="closed" value="true" />
@@ -841,7 +834,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696443469576</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="gk &amp; lt spec tests">
+      <option name="closed" value="true" />
+      <created>1696448427386</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1696448427386</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -859,7 +860,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="new methods for gk and lt" />
     <MESSAGE value="old represents controller methods" />
     <MESSAGE value="add color column in law types" />
     <MESSAGE value="delete gk_setting" />
@@ -884,7 +884,8 @@
     <MESSAGE value="little styles" />
     <MESSAGE value="quantity uncomment" />
     <MESSAGE value="change cellid formula" />
-    <option name="LAST_COMMIT_MESSAGE" value="change cellid formula" />
+    <MESSAGE value="gk &amp; lt spec tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="gk &amp; lt spec tests" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@Quantities_POST__create.rcov" NAME="Quantities POST #create Coverage Results" MODIFIED="1696158493050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
@@ -894,6 +895,7 @@
     <SUITE FILE_PATH="coverage/fviz_web@Quantities.rcov" NAME="Quantities Coverage Results" MODIFIED="1696158554247" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@LtController.rcov" NAME="LtController Coverage Results" MODIFIED="1696447351661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Lt_Validation_tests_should_save_successfully.rcov" NAME="Lt Validation tests should save successfully Coverage Results" MODIFIED="1696106055458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@LawType.rcov" NAME="LawType Coverage Results" MODIFIED="1696449161045" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_PUT__update_returns_a_not_found_response.rcov" NAME="QuantitiesController PUT #update returns a not found response Coverage Results" MODIFIED="1696188357747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_GET__index.rcov" NAME="QuantitiesController GET #index Coverage Results" MODIFIED="1696181966423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_PUT__update.rcov" NAME="QuantitiesController PUT #update Coverage Results" MODIFIED="1696187353967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
@@ -904,12 +906,14 @@
     <SUITE FILE_PATH="coverage/fviz_web@LtController_GET__index_returns_an_empty_array_if_no_lts_exist.rcov" NAME="LtController GET #index returns an empty array if no lts exist Coverage Results" MODIFIED="1696446854260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@law_types.rcov" NAME="law_types Coverage Results" MODIFIED="1694449991631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController.rcov" NAME="QuantitiesController Coverage Results" MODIFIED="1696189383016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@GkController.rcov" NAME="GkController Coverage Results" MODIFIED="1696448273241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@lt.rcov" NAME="lt Coverage Results" MODIFIED="1696161840899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_GET__index_returns_a_PDF_file.rcov" NAME="QuantitiesController GET #index returns a PDF file Coverage Results" MODIFIED="1696060909273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_GET__lt_values_returns_quantities_associated_with_a_specific_lt.rcov" NAME="QuantitiesController GET #lt_values returns quantities associated with a specific lt Coverage Results" MODIFIED="1696189039618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@quantities.rcov" NAME="quantities Coverage Results" MODIFIED="1696190447808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_GET__show_returns_a_success_response.rcov" NAME="QuantitiesController GET #show returns a success response Coverage Results" MODIFIED="1696060727668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Quntities_POST__create.rcov" NAME="Quntities POST #create Coverage Results" MODIFIED="1696158449026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@GkController_PUT__update_returns_an_unprocessable_entity_status_code_with_invalid_params.rcov" NAME="GkController PUT #update returns an unprocessable entity status code with invalid params Coverage Results" MODIFIED="1696448317178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_PUT__update_returns_a_success_response.rcov" NAME="QuantitiesController PUT #update returns a success response Coverage Results" MODIFIED="1696184477777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Lt_Validation_tests_ensures_lt_sign_length_is_not_more_than_50.rcov" NAME="Lt Validation tests ensures lt_sign length is not more than 50 Coverage Results" MODIFIED="1696106098631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
   </component>

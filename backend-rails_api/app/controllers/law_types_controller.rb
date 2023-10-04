@@ -16,7 +16,11 @@ class LawTypesController < ApplicationController
     #   return
     # end
 
-    render json: { data: @law_type }, status: :ok
+    if @law_type
+      render json: { data: @law_type }, status: :ok
+    else
+      render json: { error: ['Тип закона не найден'] }, status: :not_found
+    end
   end
 
   def create
@@ -40,10 +44,14 @@ class LawTypesController < ApplicationController
     #   return
     # end
 
-    if @law_type.update(law_type_params)
-      render json: { data: @law_type }, status: :ok
+    if @law_type
+      if @law_type.update(law_type_params)
+        render json: { data: @law_type }, status: :ok
+      else
+        render json: { error: @law_type.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { error: @law_type.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: ['Тип закона не найден'] }, status: :not_found
     end
   end
 
@@ -53,14 +61,18 @@ class LawTypesController < ApplicationController
     #   return
     # end
 
-    @law_type.destroy
-    head :ok
+    if @law_type
+      @law_type.destroy
+      head :ok
+    else
+      render json: { error: ['Тип закона не найден'] }, status: :not_found
+    end
   end
 
   private
 
   def set_law_type
-    @law_type = LawType.find(params[:id])
+    @law_type = LawType.find_by(id_type: params[:id])
   end
 
   def law_type_params
