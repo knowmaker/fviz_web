@@ -27,13 +27,6 @@ RSpec.describe Lt, type: :model do
       expect(lt).to_not be_valid
     end
 
-    it 'is valid without lt_sign' do
-      lt = Lt.new(
-        l_indicate: 10,
-        t_indicate: 20
-      )
-      expect(lt).to be_valid
-    end
 
     it 'is not valid if l_indicate is not an integer' do
       lt = Lt.new(

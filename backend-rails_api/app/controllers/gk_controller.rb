@@ -16,7 +16,11 @@ class GkController < ApplicationController
     #   return
     # end
 
-    render json: { data: @gk }, status: :ok
+    if @gk
+      render json: { data: @gk }, status: :ok
+    else
+      render json: { error: ['Слой не найден'] }, status: :not_found
+    end
   end
 
   def update
@@ -25,17 +29,22 @@ class GkController < ApplicationController
     #   return
     # end
 
-    if @gk.update(gk_params)
-      render json: { data: @gk }, status: :ok
+    if @gk
+      if @gk.update(gk_params)
+        render json: { data: @gk }, status: :ok
+      else
+        render json: { error: @gk.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { error: @gk.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: ['Слой не найден'] }, status: :not_found
     end
+
   end
 
   private
 
   def set_gk
-    @gk = Gk.find(params[:id])
+    @gk = Gk.find_by(id_gk: params[:id])
   end
 
   def gk_params
