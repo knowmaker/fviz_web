@@ -3,7 +3,7 @@
 # Контроллер для работы с закономерностями
 class LawsController < ApplicationController
   before_action :authorize_request
-  before_action :set_law, only: %i[show update destroy]
+  before_action :set_law, only: %i[update destroy]
 
   def index
     laws = @current_user.laws.left_joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.*').order(:id_law).all
@@ -23,9 +23,12 @@ class LawsController < ApplicationController
                           Law.column_names - ['combination'],
                           'CONCAT_WS(\' * \', first_element_quantities.value_name, second_element_quantities.value_name, third_element_quantities.value_name, fourth_element_quantities.value_name) AS text_formula',
                           'CONCAT_WS(\' * \', first_element_quantities.symbol, second_element_quantities.symbol, third_element_quantities.symbol, fourth_element_quantities.symbol) AS formula'
-                        ).find(params[:id])
-
-    render json: { data: @law }, status: :ok
+                        ).find_by(id_law: params[:id])
+    if @law
+      render json: { data: @law }, status: :ok
+    else
+      render json: { error: ['Закон не найден'] }, status: :not_found
+    end
   end
 
   def create
@@ -39,33 +42,33 @@ class LawsController < ApplicationController
   end
 
   def update
-    if @law.update(law_params)
-      render json: { data: @law }, status: :ok
+    if @law
+      if @law.update(law_params)
+        render json: { data: @law }, status: :ok
+      else
+        render json: { error: @law.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { error: @law.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: ['Закон не найден'] }, status: :not_found
     end
   end
 
   def destroy
-    @law.destroy
-    head :ok
+    if @law
+      @law.destroy
+      head :ok
+    else
+      render json: { error: ['Закон не найден'] }, status: :not_found
+    end
   end
 
   private
 
   def set_law
-    @law = @current_user.laws.find(params[:id])
+    @law = @current_user.laws.find_by(id_law: params[:id])
   end
 
   def law_params
-    law_params = params.require(:law).permit(:law_name, :first_element, :second_element, :third_element,
-                                             :fourth_element, :id_type)
-
-    if action_name == 'create'
-      combination = [params[:law][:first_element], params[:law][:second_element], params[:law][:third_element],
-                     params[:law][:fourth_element]]
-      law_params[:combination] = combination.sort
-    end
-    law_params
+    params.require(:law).permit(:law_name, :first_element, :second_element, :third_element, :fourth_element, :id_type)
   end
 end
