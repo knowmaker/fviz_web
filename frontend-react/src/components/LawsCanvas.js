@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, forwardRef, useRef } from 'reac
 import setStateFromGetAPI from '../misc/api';
 import { TableContext } from '../misc/contexts.js';
 
-export default function LawsCanvas({lawCells}) {
+export default function LawsCanvas({lawCells,color}) {
 
   const canvasRef = useRef(null)
 
@@ -36,7 +36,7 @@ export default function LawsCanvas({lawCells}) {
 
 
 
-
+    ctx.strokeStyle = color
 
     ctx.beginPath();
     const firstCellCoords = convertCellIdToCoords(cellsArray[0])

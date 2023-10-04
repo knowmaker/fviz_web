@@ -208,7 +208,7 @@ export default function Home() {
         setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
         setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
         // fix later
-        setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/laws`,testShow,headers)
+        setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
         setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
         setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/active_view`,undefined,headers)
 
@@ -251,7 +251,7 @@ export default function Home() {
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
 
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState}/>
                 <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage}/>
 
                 <div id="modal-mask" className='hidden'></div>                  

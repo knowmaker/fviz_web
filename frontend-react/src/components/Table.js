@@ -9,7 +9,7 @@ const Color = require('color');
 const rowCount = 21
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState}) {
 
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
@@ -30,7 +30,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
     <>
       <Navbar revStates={revStates} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={refTable} modalsVisibility={modalsVisibility}/>
+      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={refTable} modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
 
 
     </>  
@@ -114,7 +114,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility}, ref) => {
+const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility,lawsGroupsState}, ref) => {
 
 
   const tableState = useContext(TableContext)
@@ -204,9 +204,6 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
     
 
 
-  //console.log(emptyCells)
-
-  //console.log( selectedLawState.selectedLaw)
   let selectedLawCellsLTId = selectedLawState.selectedLaw.cells.map(cell => cell.id_lt)
   if (hoveredCellState.hoveredCell !== null && selectedLawCellsLTId.length >= 1 && selectedLawCellsLTId.length < 3) {
     selectedLawCellsLTId.push(hoveredCellState.hoveredCell)
@@ -216,8 +213,16 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
     
   }
 
-  //console.log(selectedLawCellsLTId)
-  
+
+  // console.log(selectedLawState)
+  const selectedLawGroup = lawsGroupsState.lawsGroups.find(group => group.id_type === selectedLawState.selectedLaw.id_type)
+  // console.log(selectedLawGroup)
+  let color = "#000000"
+  if (selectedLawGroup) {
+    color = selectedLawGroup.color
+  }
+
+
 
   if (isLoaded) {
     const rowList = Array.from({length: rowCount}, (_, rowId) => {
@@ -235,7 +240,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       return (
         <div className="tables" id='table' ref={ref}>
         {rowList}
-        <LawsCanvas lawCells={ selectedLawCellsLTId}/>
+        <LawsCanvas lawCells={ selectedLawCellsLTId} color={color}/>
         </div>
       )
   }
@@ -302,7 +307,10 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
 
   if (isEven) {
-    return <div className="row"><div className="half-cell"></div>{cellList}</div>
+    return (<div className="row">
+      <div className="half-cell"></div>
+      {cellList}
+      </div>)
   } else {
     return <div className="row">{cellList}</div>
   }
@@ -493,12 +501,20 @@ function getColumn(cellId) {
 function findFourthCell(lawCells) {
 
   const firstAndSecondCellDifference = {x: getColumn(lawCells[1])-getColumn(lawCells[0]),y: getRow(lawCells[1])- getRow(lawCells[0])}
+  const firstCellRow = getRow(lawCells[0])
+  const thirdCellRow = getRow(lawCells[2])
 
-  const fourthCellCoords = {x: getColumn(lawCells[2])- firstAndSecondCellDifference.x, y:  getRow(lawCells[2]) - firstAndSecondCellDifference.y}
 
+  let fourthCellCoords = {x: getColumn(lawCells[2])- firstAndSecondCellDifference.x, y:  getRow(lawCells[2]) - firstAndSecondCellDifference.y}
+  if ((firstCellRow % 2) === (thirdCellRow % 2)) {
+    fourthCellCoords = {x: fourthCellCoords.x  ,y: fourthCellCoords.y}
+  }
+  console.log(fourthCellCoords)
   const fourthCellId = Math.floor((fourthCellCoords.y-1)*19.5)+(fourthCellCoords.y%2 === 0 ? 1 : 0)+fourthCellCoords.x
+  const cellId = (fourthCellCoords.y-1) * 19 + ((fourthCellCoords.y-1) % 2 === 0 ? 0 : 1) + (fourthCellCoords.x-1) + 1 + Math.floor((fourthCellCoords.y-1) / 2)
+  console.log(firstAndSecondCellDifference)
+  console.log(cellId)
 
-
-  return fourthCellId
+  return cellId
 }
 
