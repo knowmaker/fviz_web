@@ -262,7 +262,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
   //console.log(emptyCellsData)
 
-  const cellList = Array.from({length: cellCount - 1 - isEven}, (_, cellId) => {
+  const cellList = Array.from({length: cellCount - isEven}, (_, cellId) => {
 
 
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
