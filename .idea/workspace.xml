@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="represents spec tests &amp; spec debug">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="download PDF">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/components/Table.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/components/Table.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -447,15 +449,7 @@
       <workItem from="1696351054915" duration="2695000" />
       <workItem from="1696354384749" duration="1016000" />
       <workItem from="1696437245823" duration="13677000" />
-      <workItem from="1696489718275" duration="9693000" />
-    </task>
-    <task id="LOCAL-00071" summary="json format">
-      <option name="closed" value="true" />
-      <created>1694072457593</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1694072457593</updated>
+      <workItem from="1696489718275" duration="10472000" />
     </task>
     <task id="LOCAL-00072" summary="json format">
       <option name="closed" value="true" />
@@ -841,7 +835,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696499418411</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL-00120" summary="download PDF">
+      <option name="closed" value="true" />
+      <created>1696500196996</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1696500196996</updated>
+    </task>
+    <option name="localTasksCounter" value="121" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -859,7 +861,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="trying bag" />
     <MESSAGE value="trying bag 2" />
     <MESSAGE value="debug controllers and swagger. Rename routes" />
     <MESSAGE value="debug controllers after Artem last commit" />
@@ -884,7 +885,8 @@
     <MESSAGE value="law_types spec tests" />
     <MESSAGE value="laws spec tests &amp; all spec debug" />
     <MESSAGE value="represents spec tests &amp; spec debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="represents spec tests &amp; spec debug" />
+    <MESSAGE value="download PDF" />
+    <option name="LAST_COMMIT_MESSAGE" value="download PDF" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@Quantities_POST__create.rcov" NAME="Quantities POST #create Coverage Results" MODIFIED="1696158493050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

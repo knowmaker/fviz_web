@@ -443,7 +443,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   return  (  
     <Modal
     modalVisibility={modalVisibility}
-    title={"Edit cell"}
+    title={"Редактирование величины"}
     hasBackground={false}
     sizeX={650}
     >
@@ -494,7 +494,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     </div>
     <div className="modal-footer2">
       <button type="button" className="btn btn-danger" onClick={() => deleteCell()}>Удалить</button>
-      <button type="button" className="btn btn-primary" onClick={() => updateCell()}>Сохранить</button>
+      <button type="button" className="btn btn-success" onClick={() => updateCell()}>Сохранить</button>
     </div>
 
     </Modal>
@@ -627,7 +627,7 @@ function EditProfileModal({modalsVisibility}) {
       </div>
       <div className="modal-footer2">
         <button type="button" className="btn btn-danger" onClick={() => deleteUser()}>Удалить аккаунт</button>
-        <button type="button" className="btn btn-primary" onClick={() => editProfile()}>Редактировать</button>
+        <button type="button" className="btn btn-success" onClick={() => editProfile()}>Сохранить</button>
       </div>
 
       </Modal>
@@ -1370,7 +1370,7 @@ function RegModal({modalVisibility, setUserToken}) {
   return (
     <Modal
       modalVisibility={modalVisibility}
-      title={"Регитстрация / Авторизация"}
+      title={"Авторизация / Регистрация"}
       hasBackground={true}
       >
       <div className="modal-content2">
@@ -1393,7 +1393,7 @@ function RegModal({modalVisibility, setUserToken}) {
               </div>
 
               <div className="modal-footer2">
-                  <button type="button" className="btn btn-primary" onClick={() => login()}>Отправить</button>
+                  <button type="button" className="btn btn-primary" onClick={() => login()}>Вход</button>
               </div>
           </div>
           <div className="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab" tabIndex="0">
@@ -1410,7 +1410,7 @@ function RegModal({modalVisibility, setUserToken}) {
 
 
               <div className="modal-footer2">
-                  <button type="button" className="btn btn-primary" onClick={() => register()}>Отправить</button>
+                  <button type="button" className="btn btn-primary" onClick={() => register()}>Регистрация</button>
               </div>
           </div>
           <div className="tab-pane fade" id="forgot-password" role="tabpanel" aria-labelledby="forgot-password-tab" tabIndex="0">
@@ -1421,7 +1421,7 @@ function RegModal({modalVisibility, setUserToken}) {
           </div>
 
           <div className="modal-footer2">
-              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Отправить</button>
+              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Сброс</button>
           </div>
           </div>
       </div>

@@ -98,7 +98,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     return (
       <div className="data-window">
         <div className="data-window-top">
-        <span>Choose cell</span>
+        <span>Другие уровни</span>
         <button type="button" className="btn-close" onClick={() => setSelectedCell(null)}></button>
         </div>
         {cellOptions}
