@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   scope 'api' do
-    resources :represents, only: %i[index create update destroy]
+    resources :represents, only: %i[index show create update destroy]
     get '/active_view', to: 'represents#represent_view_index'
     get '/active_view/:id', to: 'represents#represent_view_show'
     get '/layers/:id', to: 'quantities#lt_values'

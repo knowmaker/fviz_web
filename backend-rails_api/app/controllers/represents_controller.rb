@@ -11,6 +11,15 @@ class RepresentsController < ApplicationController
     render json: { data: represents }, status: :ok
   end
 
+  def show
+    @represent = @current_user.represents.select('represents.id_repr, represents.title').find_by(id_repr: params[:id])
+    if @represent
+      render json: { data: @represent }, status: :ok
+    else
+      render json: { error: ['Представление не найдено'] }, status: :not_found
+    end
+  end
+
   def create
     represent = @current_user.represents.new(represent_params)
 
@@ -22,16 +31,24 @@ class RepresentsController < ApplicationController
   end
 
   def update
-    if @represent.update(represent_params)
-      render json: { data: @represent }, status: :ok
+    if @represent
+      if @represent.update(represent_params)
+        render json: { data: @represent }, status: :ok
+      else
+        render json: { error: @represent.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { error: @represent.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: ['Представление не найдено'] }, status: :not_found
     end
   end
 
   def destroy
-    @represent.destroy
-    head :ok
+    if @represent
+      @represent.destroy
+      head :ok
+    else
+      render json: { error: ['Представление не найдено'] }, status: :not_found
+    end
   end
 
   def represent_view_index
@@ -48,24 +65,28 @@ class RepresentsController < ApplicationController
   end
 
   def represent_view_show
-    quantity_ids = @represent.active_quantities.flatten
-    active_quantities = Quantity.where(id_value: quantity_ids).order(:id_lt).all
+    if @represent
+      quantity_ids = @represent.active_quantities.flatten
+      active_quantities = Quantity.where(id_value: quantity_ids).order(:id_lt).all
 
-    json_output = {
-      id_repr: @represent.id_repr,
-      title: @represent.title,
-      active_quantities:
-    }
-    @current_user.active_repr = params[:id]
-    @current_user.save
+      json_output = {
+        id_repr: @represent.id_repr,
+        title: @represent.title,
+        active_quantities:
+      }
+      @current_user.active_repr = params[:id]
+      @current_user.save
 
-    render json: { data: json_output }, status: :ok
+      render json: { data: json_output }, status: :ok
+    else
+      render json: { error: ['Представление не найдено'] }, status: :not_found
+    end
   end
 
   private
 
   def set_represent
-    @represent = @current_user.represents.find(params[:id])
+    @represent = @current_user.represents.find_by(id_repr: params[:id])
   end
 
   def represent_params

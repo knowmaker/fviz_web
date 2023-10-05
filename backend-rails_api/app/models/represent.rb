@@ -15,11 +15,16 @@ class Represent < ApplicationRecord
   private
 
   def active_quantities_array
-    unless active_quantities.is_a?(Array) && active_quantities.all? do |q|
-             q.is_a?(Integer)
-           end
-      errors.add(:active_quantities,
-                 'должны быть целыми числами')
+    return unless active_quantities.present?
+
+    active_quantities.each do |quantity|
+      number = quantity.to_i
+
+      if number.to_s != quantity.to_s || number == 0
+        errors.add(:active_quantities, 'должны быть непустыми целыми числами')
+        break
+      end
     end
   end
+
 end

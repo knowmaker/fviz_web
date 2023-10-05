@@ -478,6 +478,8 @@ paths:
       responses:
         '200':
           description: successful
+        '500':
+          description: server error
     post:
       summary: create represent
       tags:
@@ -490,6 +492,8 @@ paths:
           description: created
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -516,6 +520,17 @@ paths:
       required: true
       schema:
         type: string
+    get:
+      summary: show represent
+      tags:
+      - Represents
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+        '500':
+          description: server error
     put:
       summary: update represent
       security:
@@ -530,6 +545,8 @@ paths:
           description: not found
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -556,6 +573,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
   "/api/active_view":
     get:
       summary: get active quantities for represent view
