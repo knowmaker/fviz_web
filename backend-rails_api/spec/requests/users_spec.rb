@@ -1,15 +1,6 @@
 require 'swagger_helper'
 
 RSpec.describe 'users', type: :request do
-  let(:user_params) do
-    { user:
-        {
-          email: 'example@sample.com',
-          password: '123456789',
-        }
-    }
-  end
-
   path '/api/users/login' do
     post('user login') do
       tags 'Users'
@@ -27,9 +18,17 @@ RSpec.describe 'users', type: :request do
           }
         }
       }
-      response(200, 'successful') do
-        let(:user) { user_params }
 
+      response(200, 'successful') do
+        run_test!
+      end
+      response(401, 'not authorized') do
+        run_test!
+      end
+      response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -54,8 +53,12 @@ RSpec.describe 'users', type: :request do
       }
 
       response(201, 'created') do
-        let(:user) { user_params }
-
+        run_test!
+      end
+      response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -65,7 +68,14 @@ RSpec.describe 'users', type: :request do
     get('show user profile') do
       tags 'Users'
       security [{ bearerAuth: [] }]
+
       response(200, 'successful') do
+        run_test!
+      end
+      response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -88,6 +98,15 @@ RSpec.describe 'users', type: :request do
       response(200, 'successful') do
         run_test!
       end
+      response(404, 'not found') do
+        run_test!
+      end
+      response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
+        run_test!
+      end
     end
   end
 
@@ -95,13 +114,14 @@ RSpec.describe 'users', type: :request do
     delete('delete user') do
       tags 'Users'
       security [{ bearerAuth: [] }]
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -115,11 +135,13 @@ RSpec.describe 'users', type: :request do
       tags 'Users'
       produces 'application/json'
 
-      response(200, 'email confirmed') do
+      response(200, 'successful') do
         run_test!
       end
-
-      response(422, 'invalid confirmation token') do
+      response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -142,15 +164,16 @@ RSpec.describe 'users', type: :request do
         }
       }
 
-      response(200, 'email sent') do
+      response(200, 'successful') do
         run_test!
       end
-
-      response(401, 'email not confirmed') do
+      response(401, 'not authorized') do
         run_test!
       end
-
-      response(404, 'user not found') do
+      response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -164,11 +187,13 @@ RSpec.describe 'users', type: :request do
       tags 'Users'
       produces 'application/json'
 
-      response(200, 'new password generated and sent') do
+      response(200, 'successful') do
         run_test!
       end
-
-      response(422, 'invalid reset token') do
+      response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end

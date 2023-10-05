@@ -611,6 +611,12 @@ paths:
       responses:
         '200':
           description: successful
+        '401':
+          description: not authorized
+        '404':
+          description: not found
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -636,6 +642,10 @@ paths:
       responses:
         '201':
           description: created
+        '422':
+          description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -662,6 +672,10 @@ paths:
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
+        '500':
+          description: server error
   "/api/users/update":
     patch:
       summary: update user
@@ -673,6 +687,12 @@ paths:
       responses:
         '200':
           description: successful
+        '404':
+          description: not found
+        '422':
+          description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -697,6 +717,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
   "/api/users/{id}/confirm":
     parameters:
     - name: id
@@ -717,9 +739,11 @@ paths:
       - Users
       responses:
         '200':
-          description: email confirmed
+          description: successful
         '422':
-          description: invalid confirmation token
+          description: unprocessable entity
+        '500':
+          description: server error
   "/api/users/reset":
     post:
       summary: Send reset password email
@@ -728,11 +752,13 @@ paths:
       parameters: []
       responses:
         '200':
-          description: email sent
+          description: successful
         '401':
-          description: email not confirmed
+          description: not authorized
         '404':
-          description: user not found
+          description: not found
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -766,9 +792,11 @@ paths:
       - Users
       responses:
         '200':
-          description: new password generated and sent
+          description: successful
         '422':
-          description: invalid reset token
+          description: unprocessable entity
+        '500':
+          description: server error
 components:
   securitySchemes:
     bearerAuth:
