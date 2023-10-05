@@ -63,6 +63,19 @@ export function deleteDataFromAPI(adress,data, headers = undefined) {
 
 }
 
+export function getAllCellDataFromAPI(cells,headers) {
+
+  let requests = cells.map(cell => axios.get(`http://localhost:5000/api/quantities/${cell}`, {headers: headers}));
+
+  return new Promise(async function(resolve) {
+
+    const responses = await Promise.allSettled(requests)
+    resolve(responses.map(cellResponse => cellResponse.value))
+  })
+
+
+}
+
 export default function setStateFromGetAPI(setStateFunction, adress, afterRequestFunction, headers, extraData) {
 
   axios
@@ -164,31 +177,3 @@ export function getAllCellData(cells,headers,callbackFunction, extraData) {
 
 }
 
-export function patchAllLayerData(layers,headers,callbackFunction, extraData) {
-
-
-
-
-  // let requests = layers.map((layer) => {
-
-  //   const newLayerBrightness = {
-  //     "gk_setting": {
-  //       "gk_bright": layer.brightness
-  //     }
-  //   }
-
-  //   console.log(newLayerBrightness,headers)
-
-  //   return axios.patch(`http://localhost:5000/api/gk/${layer.id}`,newLayerBrightness, {headers: headers})});
-
-  // Promise.all(requests)
-  //   .then(responses => {
-
-  //     console.log(responses)
-
-  //     const results = responses.map(response => response.data.data)
-  //     //callbackFunction(responses)
-  //     callbackFunction(results, extraData)
-  //   })
-
-}

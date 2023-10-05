@@ -2,7 +2,7 @@ import React,{useEffect,useState, useContext, useRef} from 'react';
 import TableUI from '../components/Table';
 import Draggable from 'react-draggable';
 import setStateFromGetAPI, { postData, putData, patchData, deleteData, getAllCellData, 
-  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI} from '../misc/api.js';
+  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI,getAllCellDataFromAPI} from '../misc/api.js';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile,TableContext } from '../misc/contexts.js';
 import { EditorState, convertToRaw , ContentState } from 'draft-js';
@@ -14,7 +14,7 @@ import { useDownloadableScreenshot } from '../misc/Screenshot.js';
 import draftToMarkdown from 'draftjs-to-markdown';
 import htmlToDraft from 'html-to-draftjs';
 
-const Color = require('color');
+// const Color = require('color');
 
 export default function Home() {
 
@@ -53,7 +53,7 @@ export default function Home() {
     const tableViewState = {tableView,setTableView}
 
     const setFullTableData = (result) => {
-      console.log(result.id_repr)
+
       setTableData(result.active_quantities)
       setTableView({id_repr:result.id_repr,title:result.title})
     }
@@ -133,7 +133,7 @@ export default function Home() {
 
       // add key handler for special actions
       const keyDownHandler = event => {
-        //console.log('User pressed: ', event.key);
+
 
         // when escape pressed deselect any law
         if (event.key === 'Escape') {
@@ -175,7 +175,7 @@ export default function Home() {
             return
           }
           const cellData = cellResponseData.data.data
-          //console.log(cellData)
+
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
           convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
@@ -636,21 +636,17 @@ function EditProfileModal({modalsVisibility}) {
 
 function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsState}) {
 
+  const tableState = useContext(TableContext)
   const userInfoState = useContext(UserProfile) 
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }  
-  
-  const testShow = (result,_,info) => {
-
-    console.log("result:",result,"input:",info)
-  }
 
   const createLaw = () => {
-    console.log(lawsState.lawsGroups)
+
     if (lawsState.lawsGroups === undefined) {
-      setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/laws`,testShow,headers)
-      console.log("ts")
+      setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
+
     }
 
     if (selectedLawState.selectedLaw.cells.length !== 4) {
@@ -683,7 +679,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   
   const afterCreateLaw = () => {
 
-    //console.log("success")
+
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
   }
 
@@ -699,7 +695,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
 
 
-    //console.log(selectedLawCellId)
+
 
     const newLaw = {
       law: {
@@ -711,26 +707,34 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
         id_type: document.getElementById("inputLawGroup3").value
       }
     }
-    //console.log(newLaw)
+
     patchData(undefined, `${process.env.REACT_APP_API_LINK}/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
     
   }
 
-  // console.log(lawsGroupsState)
-
-  const selectLaw = (selectedLaw) => {
 
 
-    //console.log(selectedLaw)
+  const selectLaw = async (selectedLaw) => {
 
-    const lawCells = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
 
-    getAllCellData(lawCells,headers,afterSelectSearch,selectedLaw)
-  }
+    const lawCellsIds = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
+   
+    const lawCellsResponse = await getAllCellDataFromAPI(lawCellsIds,headers)
+    if (!isResponseSuccessful(lawCellsResponse[0])) {
+      showMessage(lawCellsResponse[0].data.error,"error")
+      return
+    }
+    const lawCells = lawCellsResponse.map(cellResponse => cellResponse.data.data)
 
-  const afterSelectSearch = (cells,selectedLaw) => {
+    selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
+ 
+    let newTable = tableState.tableData
+    lawCells.forEach(cellData => {
 
-    selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:cells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
+      newTable = newTable.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData)
+    })
+
+    tableState.setTableData(newTable)
   }
 
   const deleteLaw = (law) => {
@@ -746,7 +750,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const checkLaw = (cells) => {
 
 
-    //console.log(cells)
+
 
     const firstThirdCellsMLTI = {
       M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
@@ -783,7 +787,6 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const allOptions = [chooseOption,...lawsGroupList]
 
   let lawsMarkup
-  //console.log(lawsState.laws)
   if (lawsState.laws) {
     lawsMarkup = lawsState.laws.map(law => {
 
@@ -868,10 +871,10 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   const afterSelectTableView = (fullTableView,id_repr) => {
 
 
-    tableViewState.setTableView({id_repr:id_repr,title:fullTableView.represent_title})
+    tableViewState.setTableView({id_repr:id_repr,title:fullTableView.title})
     tableState.setTableData(fullTableView.active_quantities)
 
-    document.getElementById("InputTableViewName3").value = fullTableView.represent_title
+    document.getElementById("InputTableViewName3").value = fullTableView.title
 
     //modalsVisibility.tableViewsModalVisibility.setVisibility(false)
   }
@@ -903,7 +906,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     
     // fix filter later
     const cellIds = Object.values(tableState)[0].map(cell => cell.id_value).filter(id => id !== -1)
-    //console.log(cellIds)
+
 
     const tableViewTitle = document.getElementById("InputTableViewName3").value
 
@@ -924,8 +927,6 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   if (tableViews) {
     tableViewsMarkup = tableViews.map(tableView => {
 
-
-    //console.log(tableView.id_repr,tableViewState.tableView.id_repr)
     const isCurrent = tableView.id_repr === tableViewState.tableView.id_repr
 
     return (
@@ -992,7 +993,6 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   }    
   const lawsGroups = lawsGroupsState.lawsGroups
   const setLawsGroups = lawsGroupsState.setLawsGroups
-  //console.log(lawsGroups)
 
   const [selectedLawGroup, setSelectedLawGroup] = useState({ type_name:null,id_type:null})
   const [lawGroupEditorState, setLawGroupEditorState] = useState(EditorState.createEmpty())
@@ -1139,8 +1139,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
           <input type="color" className="form-control form-control-color"  id="InputLawGroupColor3" />
         </div>
       </div>
-      <details>
-        <summary>Группы</summary>
+
         <table className="table">
         <thead>
           <tr>
@@ -1155,7 +1154,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
           {lawsGroupsMarkup}
         </tbody>
         </table>
-      </details>
+
 
       </div>
 
@@ -1263,8 +1262,7 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
         <input type="color" className="form-control form-control-color"  id="InputGKLayerColor3" />
         </div>
       </div>
-      <details>
-        <summary>Уровни</summary>
+
         <table className="table">
         <thead>
           <tr>
@@ -1279,7 +1277,6 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
           {GKLayersMarkup}
         </tbody>
         </table>
-      </details>
 
       </div>
 
@@ -1332,7 +1329,7 @@ function RegModal({modalVisibility, setUserToken}) {
 
     // try to log in 
     const loginResponse = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/users/login`, userLoginData)
-    console.log(loginResponse, loginResponse.data.error)     
+    
     if (!isResponseSuccessful(loginResponse)) {
       showMessage(loginResponse.data.error,"error")
       return
@@ -1470,7 +1467,7 @@ function Modal({ children, modalVisibility, title, hasBackground = false, sizeX 
       );
 }
 
-function showMessage(messages,type = "success") {
+export function showMessage(messages,type = "success") {
 
   // check if passed argument is array and if not then put it into array
   const messagesArray = Array.isArray(messages) ? messages : [messages]
@@ -1506,7 +1503,7 @@ function showMessage(messages,type = "success") {
 
 }
 
-function isResponseSuccessful(response) {
+export function isResponseSuccessful(response) {
   if (response.status < 300) {return true}
   return false
 }

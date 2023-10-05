@@ -2,9 +2,10 @@ import React, { useEffect, useState, useContext, forwardRef, useRef } from 'reac
 import Navbar from './Navbar';
 import { TableContext, UserProfile } from '../misc/contexts.js';
 
-import setStateFromGetAPI, {getAllCellData} from '../misc/api';
+import setStateFromGetAPI, {getAllCellDataFromAPI} from '../misc/api.js';
 import LawsCanvas from './LawsCanvas';
-const Color = require('color');
+import {showMessage,isResponseSuccessful} from '../pages/Home.js';
+// const Color = require('color');
 
 const rowCount = 21
 const cellCount = 20
@@ -50,7 +51,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     } else {setCellAlternatives(null)}
   }, [selectedCell]);
 
-  //console.log(cellAlternatives,selectedCell)
+
 
   if (cellAlternatives !== null && selectedCell) {
 
@@ -62,7 +63,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
       const cellFullId = cellData.id_value
       const cellColor = `${gkColors.find((setting) => setting.id_gk === cellData.id_gk).color}`
 
-      //console.log(cellData)
+
       return (
         <Cell 
         key={cellFullId} 
@@ -144,7 +145,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
   }
 
   if (zoom.current !== undefined) {
-  //console.log(zoom.current.scrollTop,zoom.current.scrollLeft)
+
   }
 
   useEffect(() => {
@@ -154,7 +155,6 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
 
     function setTransform() {
-      //console.log(pointX.current)
       //zoom.current.style.transform = "scale(" + scale.current + ")";
       zoom.current.scrollTop = 1947 - pointY.current;
       zoom.current.scrollLeft = 1841 - pointX.current;
@@ -205,18 +205,20 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
 
   let selectedLawCellsLTId = selectedLawState.selectedLaw.cells.map(cell => cell.id_lt)
+
   if (hoveredCellState.hoveredCell !== null && selectedLawCellsLTId.length >= 1 && selectedLawCellsLTId.length < 3) {
-    selectedLawCellsLTId.push(hoveredCellState.hoveredCell)
+    selectedLawCellsLTId.push(hoveredCellState.hoveredCell.id_lt)
   }
+
+
   if (hoveredCellState.hoveredCell !== null && selectedLawCellsLTId.length === 3) {
     selectedLawCellsLTId.push(findFourthCell(selectedLawCellsLTId))
-    
   }
 
 
-  // console.log(selectedLawState)
+
   const selectedLawGroup = lawsGroupsState.lawsGroups.find(group => group.id_type === selectedLawState.selectedLaw.id_type)
-  // console.log(selectedLawGroup)
+
   let color = "#000000"
   if (selectedLawGroup) {
     color = selectedLawGroup.color
@@ -260,7 +262,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
   const isEven = (rowId % 2 === 0 ? 0 : 1)
   const setSelectedCell = selectedCellState.setSelectedCell
 
-  //console.log(emptyCellsData)
+
 
   const cellList = Array.from({length: cellCount - isEven}, (_, cellId) => {
 
@@ -275,7 +277,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
         const cellGKLayer = fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk)
         const cellNormalColor = cellGKLayer.color
         cellColor = cellNormalColor
-        //console.log(cellColor)
+
         hoverData.GKLayer = cellGKLayer
 
         if (selectedCellState.selectedCell) {
@@ -325,13 +327,17 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
   const borderColor = cellFullData.borderColor
   const tableState = useContext(TableContext)
   const userInfoState = useContext(UserProfile)
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }  
 
   
   const handleCellRightClick = (event) => {
     
     event.preventDefault()
-    //console.log(cellData)
     
+
+
     cellRightClick(cellData)
 
   };
@@ -340,6 +346,8 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     
 
       event.preventDefault()
+
+      
       const cellData = selectedCells.find(cell => cell.id_value === cellId);
 
       cellData.lt_sign = tableState.tableData.find(cell => cell.id_lt !== cellData.id_lt).lt_sign
@@ -355,11 +363,9 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
   };
 
-  const handleLawSelection = (event, cellId) => {
+  const handleLawSelection = async (event, cellId) => {
 
       const selectedCellData = tableState.tableData.find(cell => cell.id_lt === cellId)
-
-
 
       if (selectedLawState.selectedLaw.cells.map(cell=>cell.id_lt).find(cellId => cellId === selectedCellData.id_lt) === undefined && selectedLawState.selectedLaw.cells.length < 2) {
         selectedLawState.setSelectedLaw(
@@ -375,6 +381,14 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
         const selectedLawCellsLTId = selectedLawState.selectedLaw.cells.map(cell => cell.id_lt)
         selectedLawCellsLTId.push(selectedCellData.id_lt)
         const fourthCellData = tableState.tableData.find(cell => cell.id_lt === findFourthCell(selectedLawCellsLTId))
+
+        if (!fourthCellData) {
+          selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
+          showMessage("Выбрана пустая ячейка")
+  
+          return
+        }
+
         selectedLawState.setSelectedLaw(
           {
             law_name: null,
@@ -382,53 +396,34 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
             id_type: null,
           } 
           );
-        //[...currentCells,selectedCellData,fourthCellData]
 
+        const lawCellsResponse = await getAllCellDataFromAPI([...selectedLawState.selectedLaw.cells,selectedCellData,fourthCellData].map(cell=>cell.id_value),headers)
+        if (!isResponseSuccessful(lawCellsResponse[0])) {
+          showMessage(lawCellsResponse[0].data.error,"error")
+          return
+        }
+        const lawCells = lawCellsResponse.map(cellResponse => cellResponse.data.data)
 
+        const isCorrectLaw = checkLaw(lawCells)
 
-        const headers = {
-          Authorization: `Bearer ${userInfoState.userToken}`
-        }    
-        getAllCellData([...selectedLawState.selectedLaw.cells,selectedCellData,fourthCellData].map(cell=>cell.id_value),headers,checkLaw)
+        if (!isCorrectLaw) {
+          selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
+          showMessage("Данного закона не существует")
+          return
+        }
+
+        modalsVisibility.lawsModalVisibility.setVisibility(true)
 
       }
 
   }
 
-  const checkLaw = (cells) => {
 
-
-    //console.log(cells)
-
-    const firstThirdCellsMLTI = {
-      M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
-      L: cells[0].l_indicate_auto + cells[2].l_indicate_auto,
-      T: cells[0].t_indicate_auto + cells[2].t_indicate_auto,
-      I: cells[0].i_indicate_auto + cells[2].i_indicate_auto
-    }
-
-
-
-    const secondFourthCellsMLTI = {
-      M: cells[1].m_indicate_auto + cells[3].m_indicate_auto,
-      L: cells[1].l_indicate_auto + cells[3].l_indicate_auto,
-      T: cells[1].t_indicate_auto + cells[3].t_indicate_auto,
-      I: cells[1].i_indicate_auto + cells[3].i_indicate_auto
-    }
-
-    const sameMLTI = JSON.stringify(firstThirdCellsMLTI) === JSON.stringify(secondFourthCellsMLTI)
-
-    if (sameMLTI) {
-      modalsVisibility.lawsModalVisibility.setVisibility(true)
-    }
-  }
-
-  //const checkLawExistence = (selectedLaw)
 
   const handleCellHover = (event, cellData) => {
 
     hoverData.hoveredCellState.setHoveredCell(cellData)
-    //console.log(selectedLawState.selectedLaw.cells)
+
   }
 
 
@@ -444,8 +439,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     const cellContent_symbol = cellData.symbol;
     const cellContent_unit = cellData.unit;
     const cellContent_mlti = cellData.mlti_sign;
-    //console.log(borderColor === "orange")
-    
+
     return (
       <div className="cell" style={{ backgroundColor: borderColor }}>
         <div
@@ -504,19 +498,36 @@ function findFourthCell(lawCells) {
   const firstCellRow = getRow(lawCells[0])
   const secondCellRow = getRow(lawCells[1])
   const thirdCellRow = getRow(lawCells[2])
-  console.log(firstCellRow%2,secondCellRow%2,thirdCellRow%2)
 
 
   let fourthCellCoords = {x: getColumn(lawCells[2])- firstAndSecondCellDifference.x, y:  getRow(lawCells[2]) - firstAndSecondCellDifference.y}
   if (((firstCellRow % 2) === (thirdCellRow % 2) && (secondCellRow % 2 ) !== (thirdCellRow % 2))) {
-    console.log("corrected")
     fourthCellCoords = {x: fourthCellCoords.x + ((firstCellRow % 2 === 0) ? 1:-1) ,y: fourthCellCoords.y}
   }
 
-  const fourthCellId = Math.floor((fourthCellCoords.y-1)*19.5)+(fourthCellCoords.y%2 === 0 ? 1 : 0)+fourthCellCoords.x
   const cellId = (fourthCellCoords.y-1) * 19 + ((fourthCellCoords.y-1) % 2 === 0 ? 0 : 1) + (fourthCellCoords.x-1) + 1 + Math.floor((fourthCellCoords.y-1) / 2)
 
 
   return cellId
 }
 
+function checkLaw(cells) {
+
+  const firstThirdCellsMLTI = {
+    M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
+    L: cells[0].l_indicate_auto + cells[2].l_indicate_auto,
+    T: cells[0].t_indicate_auto + cells[2].t_indicate_auto,
+    I: cells[0].i_indicate_auto + cells[2].i_indicate_auto
+  }
+
+  const secondFourthCellsMLTI = {
+    M: cells[1].m_indicate_auto + cells[3].m_indicate_auto,
+    L: cells[1].l_indicate_auto + cells[3].l_indicate_auto,
+    T: cells[1].t_indicate_auto + cells[3].t_indicate_auto,
+    I: cells[1].i_indicate_auto + cells[3].i_indicate_auto
+  }
+
+  const isSameMLTI = JSON.stringify(firstThirdCellsMLTI) === JSON.stringify(secondFourthCellsMLTI)
+
+  return isSameMLTI
+}
