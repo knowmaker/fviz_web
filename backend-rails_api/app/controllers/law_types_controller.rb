@@ -5,11 +5,13 @@ class LawTypesController < ApplicationController
   before_action :authorize_request
   before_action :set_law_type, only: %i[show update destroy]
 
+  # Метод для получения перечня типов законов
   def index
     law_types = LawType.order(:id_type).all
     render json: { data: law_types }, status: :ok
   end
 
+  # Метод для получения одного типа закона. Параметр - id тип закона
   def show
     # unless @current_user.role
     #   render json: {error: ['Только админ может просматривать тип закона']}, status: :forbidden
@@ -23,6 +25,7 @@ class LawTypesController < ApplicationController
     end
   end
 
+  # Метод для создания нового типа закона
   def create
     # unless @current_user.role
     #   render json: {error: ['Только админ может создавать законы']}, status: :forbidden
@@ -38,6 +41,7 @@ class LawTypesController < ApplicationController
     end
   end
 
+  # Метод для обновления параметров типа закона. Параметр - id тип закона
   def update
     # unless @current_user.role
     #   render json: {error: ['Только админ может обновлять законы']}, status: :forbidden
@@ -55,6 +59,7 @@ class LawTypesController < ApplicationController
     end
   end
 
+  # Метод для удаления типа закона. Параметр - id тип закона
   def destroy
     # unless @current_user.role
     #   render json: {error: ['Только админ может удалять законы']}, status: :forbidden

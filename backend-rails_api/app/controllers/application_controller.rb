@@ -4,6 +4,8 @@
 class ApplicationController < ActionController::API
   attr_reader :current_user
 
+  # Метод для проведения авторизации пользователя по токену
+  # Параметр необходим для возможности доступа к методу без авторизации (по умолчанию нужна)
   def authorize_request(check_current_user: true)
     token = request.headers['Authorization']
     if token

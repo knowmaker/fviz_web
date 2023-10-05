@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe RepresentsController, type: :controller do
@@ -11,8 +13,8 @@ RSpec.describe RepresentsController, type: :controller do
 
   describe 'GET #index' do
     it 'returns a list of represents for the current user' do
-      represent1 = @user.represents.create(title: 'Sample title', active_quantities: [1,2,3,4,5,6,7])
-      represent2 = @user.represents.create(title: 'Sample title2', active_quantities: [1,2,3,4,5,6,7])
+      represent1 = @user.represents.create(title: 'Sample title', active_quantities: [1, 2, 3, 4, 5, 6, 7])
+      represent2 = @user.represents.create(title: 'Sample title2', active_quantities: [1, 2, 3, 4, 5, 6, 7])
 
       get :index
       expect(response).to have_http_status(:ok)
@@ -35,7 +37,7 @@ RSpec.describe RepresentsController, type: :controller do
 
   describe 'GET #show' do
     it 'returns a specific represent for the current user' do
-      represent = @user.represents.create(title: 'Sample title', active_quantities: [1,2,3,4,5,6,7])
+      represent = @user.represents.create(title: 'Sample title', active_quantities: [1, 2, 3, 4, 5, 6, 7])
       get :show, params: { id: represent.id_repr }
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body)['data']['id_repr']).to eq(represent.id_repr)
@@ -49,9 +51,9 @@ RSpec.describe RepresentsController, type: :controller do
 
   describe 'POST #create' do
     it 'creates a new represent for the current user' do
-      expect {
+      expect do
         post :create, params: { represent: { title: 'New Represent', active_quantities: [1, 2] } }
-      }.to change(Represent, :count).by(1)
+      end.to change(Represent, :count).by(1)
       expect(response).to have_http_status(:created)
     end
 
@@ -63,7 +65,7 @@ RSpec.describe RepresentsController, type: :controller do
 
   describe 'PUT #update' do
     it 'updates the requested represent' do
-      represent = @user.represents.create(title: 'Sample title', active_quantities: [1,2,3,4,5,6,7])
+      represent = @user.represents.create(title: 'Sample title', active_quantities: [1, 2, 3, 4, 5, 6, 7])
 
       put :update, params: { id: represent.id_repr, represent: { title: 'Updated Represent' } }
       expect(response).to have_http_status(:ok)
@@ -73,7 +75,7 @@ RSpec.describe RepresentsController, type: :controller do
     end
 
     it 'returns unprocessable entity status with invalid params' do
-      represent = @user.represents.create(title: 'Sample title', active_quantities: [1,2,3,4,5,6,7])
+      represent = @user.represents.create(title: 'Sample title', active_quantities: [1, 2, 3, 4, 5, 6, 7])
 
       put :update, params: { id: represent.id_repr, represent: { title: nil } }
       expect(response).to have_http_status(:unprocessable_entity)
@@ -87,10 +89,10 @@ RSpec.describe RepresentsController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'destroys the requested represent' do
-      represent = @user.represents.create(title: 'Sample title', active_quantities: [1,2,3,4,5,6,7])
-      expect {
+      represent = @user.represents.create(title: 'Sample title', active_quantities: [1, 2, 3, 4, 5, 6, 7])
+      expect do
         delete :destroy, params: { id: represent.id_repr }
-      }.to change(Represent, :count).by(-1)
+      end.to change(Represent, :count).by(-1)
     end
 
     it 'returns a success response' do
@@ -116,7 +118,7 @@ RSpec.describe RepresentsController, type: :controller do
 
   describe 'GET #represent_view_show' do
     it 'returns the active quantities for a specific represent' do
-      represent = @user.represents.create(title: 'Sample title', active_quantities: [1,2,3,4,5,6,7])
+      represent = @user.represents.create(title: 'Sample title', active_quantities: [1, 2, 3, 4, 5, 6, 7])
 
       get :represent_view_show, params: { id: represent.id_repr }
       expect(response).to have_http_status(:ok)

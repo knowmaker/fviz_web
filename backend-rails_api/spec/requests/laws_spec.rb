@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'swagger_helper'
 
 RSpec.describe 'laws', type: :request do
@@ -31,7 +33,7 @@ RSpec.describe 'laws', type: :request do
               fourth_element: { type: :integer },
               id_type: { type: :integer }
             },
-            required: ['law_name', 'first_element', 'second_element', 'third_element', 'fourth_element', 'id_type']
+            required: %w[law_name first_element second_element third_element fourth_element id_type]
           }
         }
       }

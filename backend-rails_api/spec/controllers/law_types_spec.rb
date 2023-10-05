@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe LawTypesController, type: :controller do
@@ -41,9 +43,9 @@ RSpec.describe LawTypesController, type: :controller do
       end
 
       it 'creates a new law type' do
-        expect {
+        expect do
           post :create, params: { law_type: valid_attributes }
-        }.to change(LawType, :count).by(1)
+        end.to change(LawType, :count).by(1)
       end
 
       it 'returns a 201 status code' do
@@ -61,9 +63,9 @@ RSpec.describe LawTypesController, type: :controller do
       end
 
       it 'does not create a new law type' do
-        expect {
+        expect do
           post :create, params: { law_type: invalid_attributes }
-        }.to_not change(LawType, :count)
+        end.to_not change(LawType, :count)
       end
 
       it 'returns an unprocessable entity status code' do
@@ -121,9 +123,9 @@ RSpec.describe LawTypesController, type: :controller do
   describe 'DELETE #destroy' do
     it 'destroys the requested law type' do
       law_type = LawType.create(type_name: 'Sample Type', color: 'Red')
-      expect {
+      expect do
         delete :destroy, params: { id: law_type.id_type }
-      }.to change(LawType, :count).by(-1)
+      end.to change(LawType, :count).by(-1)
     end
 
     it 'returns a success response' do

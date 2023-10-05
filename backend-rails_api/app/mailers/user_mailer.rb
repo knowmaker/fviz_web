@@ -1,5 +1,7 @@
-class UserMailer < ApplicationMailer
+# frozen_string_literal: true
 
+# Класс для рассылок пользователя на тему работы с их аккаунтом
+class UserMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #

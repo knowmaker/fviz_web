@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Класс для сброса токена
 class ResetConfirmationTokenJob < ApplicationJob
   queue_as :default
 

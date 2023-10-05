@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'swagger_helper'
 
 RSpec.describe 'represents', type: :request do
@@ -30,7 +32,7 @@ RSpec.describe 'represents', type: :request do
                 items: { type: :integer }
               }
             },
-            required: ['title', 'active_quantities']
+            required: %w[title active_quantities]
           }
         }
       }

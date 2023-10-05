@@ -5,12 +5,15 @@ class LawsController < ApplicationController
   before_action :authorize_request
   before_action :set_law, only: %i[show update destroy]
 
+  # Метод для получения перечня личных законов пользователя
   def index
-    laws = @current_user.laws.left_joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.*').order(:id_law).all
+    laws = @current_user.laws.left_joins(:law_type).select(Law.column_names - ['combination'],
+                                                           'laws_type.*').order(:id_law).all
 
     render json: { data: laws }, status: :ok
   end
 
+  # Метод для получения одного закона пользователя. Параметр - id закона
   def show
     if @law
       render json: { data: @law }, status: :ok
@@ -19,6 +22,7 @@ class LawsController < ApplicationController
     end
   end
 
+  # Метод для создания нового закона пользователя
   def create
     law = @current_user.laws.new(law_params)
 
@@ -29,6 +33,7 @@ class LawsController < ApplicationController
     end
   end
 
+  # Метод для обновления параметров закона пользователя. Параметр - id закона
   def update
     if @law
       if @law.update(law_params)
@@ -41,6 +46,7 @@ class LawsController < ApplicationController
     end
   end
 
+  # Метод для удаления закона пользователя. Параметр - id закона
   def destroy
     if @law
       @law.destroy

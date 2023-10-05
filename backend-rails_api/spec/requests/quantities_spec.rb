@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'swagger_helper'
 
 RSpec.describe 'quantities', type: :request do
@@ -35,7 +37,8 @@ RSpec.describe 'quantities', type: :request do
               t_indicate: { type: :integer },
               id_gk: { type: :integer }
             },
-            required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit l_indicate t_indicate id_gk]
+            required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit
+                         l_indicate t_indicate id_gk]
           }
         }
       }
@@ -90,7 +93,8 @@ RSpec.describe 'quantities', type: :request do
               t_indicate: { type: :integer },
               id_gk: { type: :integer }
             },
-            required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit l_indicate t_indicate id_gk]
+            required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit
+                         l_indicate t_indicate id_gk]
           }
         }
       }

@@ -6,6 +6,8 @@ class QuantitiesController < ApplicationController
   before_action :authorize_request, only: %i[index create update destroy]
   before_action :set_quantity, only: %i[update destroy]
 
+  # Метод для получения перечня физических величин
+  # Сохраняется в виде PDF файла
   def index
     # unless @current_user.role
     #   render json: {error: ['Только админ может загружать списко величин']}, status: :forbidden
@@ -20,6 +22,7 @@ class QuantitiesController < ApplicationController
     send_data pdf, filename: 'quantities_table.pdf', type: 'application/pdf', disposition: 'attachment'
   end
 
+  # Метод для получения одной величины. Параметр - id величины
   def show
     @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find_by(id_value: params[:id])
     if @quantity
@@ -29,6 +32,7 @@ class QuantitiesController < ApplicationController
     end
   end
 
+  # Метод для создания новой величины
   def create
     # unless @current_user.role
     #   render json: {error: ['Только админ может создавать величины']}, status: :forbidden
@@ -51,6 +55,7 @@ class QuantitiesController < ApplicationController
     end
   end
 
+  # Метод для обновления параметров величины. Параметр - id величины
   def update
     # unless @current_user.role
     #   render json: {error: ['Только админ может обновлять величины']}, status: :forbidden
@@ -75,6 +80,7 @@ class QuantitiesController < ApplicationController
     end
   end
 
+  # Метод для удаления величины. Параметр - id величины
   def destroy
     # unless @current_user.role
     #   render json: {error: ['Только админ может удалять величины']}, status: :forbidden
@@ -87,19 +93,19 @@ class QuantitiesController < ApplicationController
     else
       render json: { error: ['Величина не найдена'] }, status: :not_found
     end
-
   end
 
+  # Метод для получения перечня физических величин, расположенных в одной ячейке
   def lt_values
-    if !Lt.find_by(id_lt: params[:id])
-      render json: { error: ['Ячейки не существует'] }, status: :not_found
-    else
+    if Lt.find_by(id_lt: params[:id])
       quantities = Quantity.where(id_lt: params[:id])
       if quantities.any?
         render json: { data: quantities }, status: :ok
       else
         render json: { data: [] }, status: :ok
       end
+    else
+      render json: { error: ['Ячейки не существует'] }, status: :not_found
     end
   end
 

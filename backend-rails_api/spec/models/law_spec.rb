@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Law, type: :model do
@@ -6,8 +8,8 @@ RSpec.describe Law, type: :model do
       LawType.destroy_all
       LawType.create(
         id_type: 1,
-        type_name: "Sample name",
-        color: "Red"
+        type_name: 'Sample name',
+        color: 'Red'
       )
       User.destroy_all
       User.create(
@@ -17,7 +19,7 @@ RSpec.describe Law, type: :model do
       )
       User.create(
         id_user: 2,
-        email:'example2@ru.com',
+        email: 'example2@ru.com',
         password: '12345678'
       )
     end

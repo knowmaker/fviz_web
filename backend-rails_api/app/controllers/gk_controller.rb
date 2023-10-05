@@ -5,11 +5,13 @@ class GkController < ApplicationController
   before_action :authorize_request, except: %i[index]
   before_action :set_gk, only: %i[show update]
 
+  # Метод для получения перечня всех системных уровней
   def index
     gks = Gk.order(:id_gk).all
     render json: { data: gks }, status: :ok
   end
 
+  # Метод для получения одного системного уровня по его id
   def show
     # unless @current_user.role
     #   render json: {error: ['Только админ может просматривать слой']}, status: :forbidden
@@ -23,6 +25,7 @@ class GkController < ApplicationController
     end
   end
 
+  # Метод для обновления параметров системного уровня по его id
   def update
     # unless @current_user.role
     #   render json: {error: ['Только админ может обновлять законы']}, status: :forbidden
@@ -38,7 +41,6 @@ class GkController < ApplicationController
     else
       render json: { error: ['Слой не найден'] }, status: :not_found
     end
-
   end
 
   private

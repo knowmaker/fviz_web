@@ -4,6 +4,8 @@
 class UsersController < ApplicationController
   include UserHelper
   before_action :authorize_request, only: %i[profile update destroy]
+
+  # Метод регистрации пользователя
   def register
     user = User.new(user_params)
     user.confirmation_token = SecureRandom.urlsafe_base64.to_s
@@ -12,7 +14,9 @@ class UsersController < ApplicationController
       user.password = hash_password(params[:user][:password])
       user.save
 
+      # Высылается письмо для подтверждения почты
       UserMailer.confirmation_email(user).deliver_now
+      # Через 30 мин удаляется ссылка на подтверждение
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
       render json: { data: user }, status: :created
@@ -21,6 +25,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Метод авторизации пользователя
   def login
     @user = User.find_by(email: params[:user][:email])
 
@@ -38,10 +43,12 @@ class UsersController < ApplicationController
     end
   end
 
+  # Метод получения данных пользователя
   def profile
     render json: { data: @current_user }, status: :ok
   end
 
+  # Метод для обновления данных пользователя
   def update
     if @current_user.update(user_params)
       if params[:user][:password].present?
@@ -54,6 +61,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Метод для подтвержения почты после регистрации пользователя
   def confirm
     user = User.find_by(confirmation_token: params[:confirmation_token])
 
@@ -65,6 +73,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Метод для сброса пароля по почте пользователя
   def reset
     user = User.find_by(email: params[:user][:email])
 
@@ -72,7 +81,9 @@ class UsersController < ApplicationController
       user.confirmation_token = SecureRandom.urlsafe_base64.to_s
       user.save
 
+      # Высылается ссылка для сброса пароля
       UserMailer.reset_password_email(user).deliver_now
+      # Через 30 мин удаляется ссылка на сброс
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
       head :ok
@@ -83,6 +94,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Метод для создания нового пароля пользователя
   def new_password
     user = User.find_by(confirmation_token: params[:confirmation_token])
 
@@ -92,6 +104,7 @@ class UsersController < ApplicationController
       user.confirmation_token = nil
       user.save
 
+      # Высылается новый пароль
       UserMailer.new_password_email(user, new_password).deliver_now
 
       render json: 'Новый пароль сгенерирован и выслан на почту', status: :ok
@@ -100,6 +113,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Метод для удаления аккаунта пользователя.
   def destroy
     @current_user.destroy
     head :ok

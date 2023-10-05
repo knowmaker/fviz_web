@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe QuantitiesController, type: :controller do
@@ -48,9 +50,9 @@ RSpec.describe QuantitiesController, type: :controller do
       end
 
       it 'creates a new quantity' do
-        expect {
+        expect do
           post :create, params: { quantity: valid_attributes }
-        }.to change(Quantity, :count).by(1)
+        end.to change(Quantity, :count).by(1)
       end
 
       it 'returns a 201 status code' do
@@ -76,9 +78,9 @@ RSpec.describe QuantitiesController, type: :controller do
       end
 
       it 'does not create a new quantity' do
-        expect {
+        expect do
           post :create, params: { quantity: invalid_attributes }
-        }.to_not change(Quantity, :count)
+        end.to_not change(Quantity, :count)
       end
 
       it 'returns an unprocessable entity status code' do
@@ -101,9 +103,9 @@ RSpec.describe QuantitiesController, type: :controller do
           id_gk: 1
         }
 
-        expect {
+        expect do
           post :create, params: { quantity: invalid_attributes }
-        }.to_not change(Quantity, :count)
+        end.to_not change(Quantity, :count)
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -185,9 +187,9 @@ RSpec.describe QuantitiesController, type: :controller do
                                  l_indicate_auto: 1, t_indicate_auto: 2, i_indicate_auto: 3,
                                  unit: 'Unit', id_lt: 1, id_gk: 1)
 
-      expect {
+      expect do
         delete :destroy, params: { id: quantity.id_value }
-      }.to change(Quantity, :count).by(-1)
+      end.to change(Quantity, :count).by(-1)
     end
 
     it 'returns a success response' do

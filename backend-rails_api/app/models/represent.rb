@@ -20,11 +20,10 @@ class Represent < ApplicationRecord
     active_quantities.each do |quantity|
       number = quantity.to_i
 
-      if number.to_s != quantity.to_s || number == 0
+      if number.to_s != quantity.to_s || number.zero?
         errors.add(:active_quantities, 'должны быть непустыми целыми числами')
         break
       end
     end
   end
-
 end

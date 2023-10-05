@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Lt, type: :model do
@@ -26,7 +28,6 @@ RSpec.describe Lt, type: :model do
       )
       expect(lt).to_not be_valid
     end
-
 
     it 'is not valid if l_indicate is not an integer' do
       lt = Lt.new(

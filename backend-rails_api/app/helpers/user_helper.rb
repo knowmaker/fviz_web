@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Модуль дополнительных функций для работы с методами класса пользователей
 module UserHelper
   def hash_password(password)
     Argon2::Password.create(password)

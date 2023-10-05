@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'swagger_helper'
 
 RSpec.describe 'gk', type: :request do
@@ -42,7 +44,7 @@ RSpec.describe 'gk', type: :request do
           gk: {
             type: :object,
             properties: {
-              gk_name: {type: :string},
+              gk_name: { type: :string },
               color: { type: :string }
             }
           }

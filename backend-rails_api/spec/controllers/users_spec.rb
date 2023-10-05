@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
@@ -11,9 +13,9 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'creates a new user' do
-        expect {
+        expect do
           post :register, params: { user: valid_attributes }
-        }.to change(User, :count).by(1)
+        end.to change(User, :count).by(1)
       end
 
       it 'returns a 201 status code' do
@@ -31,9 +33,9 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'does not create a new user' do
-        expect {
+        expect do
           post :register, params: { user: invalid_attributes }
-        }.to_not change(User, :count)
+        end.to_not change(User, :count)
       end
 
       it 'returns an unprocessable entity status code' do
@@ -44,7 +46,9 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe 'POST #login' do
-    let!(:user) { User.create(email: 'test@example.com', password: Argon2::Password.create('password'), confirmed: true) }
+    let!(:user) do
+      User.create(email: 'test@example.com', password: Argon2::Password.create('password'), confirmed: true)
+    end
 
     context 'with valid credentials' do
       it 'returns a token' do
@@ -154,9 +158,9 @@ RSpec.describe UsersController, type: :controller do
 
     context 'with valid email' do
       it 'sends reset password email' do
-        expect {
+        expect do
           post :reset, params: { user: { email: 'test@example.com' } }
-        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
       it 'returns a success response' do
@@ -183,7 +187,9 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe 'GET #new_password' do
-    let!(:user) { User.create(email: 'test@example.com', password: 'password', confirmed: true, confirmation_token: 'valid_token') }
+    let!(:user) do
+      User.create(email: 'test@example.com', password: 'password', confirmed: true, confirmation_token: 'valid_token')
+    end
 
     context 'with valid confirmation token' do
       it 'resets the password' do
@@ -215,9 +221,9 @@ RSpec.describe UsersController, type: :controller do
     end
 
     it 'destroys the user' do
-      expect {
+      expect do
         delete :destroy
-      }.to change(User, :count).by(-1)
+      end.to change(User, :count).by(-1)
     end
 
     it 'returns a success response' do

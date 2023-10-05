@@ -25,12 +25,8 @@ class Law < ApplicationRecord
   private
 
   def set_combination
-    elements = [self.first_element, self.second_element, self.third_element, self.fourth_element]
-    non_nil_elements = elements.reject(&:nil?)
-    if non_nil_elements.length == 4
-      self.combination = non_nil_elements.sort
-    else
-      self.combination = nil
-    end
+    elements = [first_element, second_element, third_element, fourth_element]
+    non_nil_elements = elements.compact
+    self.combination = (non_nil_elements.sort if non_nil_elements.length == 4)
   end
 end
