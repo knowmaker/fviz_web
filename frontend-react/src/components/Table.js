@@ -507,7 +507,7 @@ function findFourthCell(lawCells) {
 
   let fourthCellCoords = {x: getColumn(lawCells[2])- firstAndSecondCellDifference.x, y:  getRow(lawCells[2]) - firstAndSecondCellDifference.y}
   if ((firstCellRow % 2) === (thirdCellRow % 2)) {
-    fourthCellCoords = {x: fourthCellCoords.x  ,y: fourthCellCoords.y}
+    fourthCellCoords = {x: fourthCellCoords.x + ((firstCellRow % 2 === 0) ? 1:-1) ,y: fourthCellCoords.y}
   }
   console.log(fourthCellCoords)
   const fourthCellId = Math.floor((fourthCellCoords.y-1)*19.5)+(fourthCellCoords.y%2 === 0 ? 1 : 0)+fourthCellCoords.x
