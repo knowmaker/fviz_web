@@ -49,8 +49,11 @@ class RepresentsController < ApplicationController
   # Метод для удаления представления. Параметр - id представления
   def destroy
     if @represent
-      @represent.destroy
-      head :ok
+      if @represent.destroy
+        head :ok
+      else
+        render json: { error: @represent.errors.full_messages }, status: :unprocessable_entity
+      end
     else
       render json: { error: ['Представление не найдено'] }, status: :not_found
     end

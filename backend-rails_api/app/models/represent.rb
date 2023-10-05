@@ -7,6 +7,8 @@ class Represent < ApplicationRecord
   belongs_to :user, foreign_key: 'id_user'
   has_many :users, foreign_key: 'active_repr'
 
+  before_destroy :check_user_represents_count
+
   validates :title, presence: true, length: { maximum: 100 }
   validates :id_user, presence: true, numericality: { only_integer: true }
   validates :active_quantities, presence: true
@@ -24,6 +26,13 @@ class Represent < ApplicationRecord
         errors.add(:active_quantities, 'должны быть непустыми целыми числами')
         break
       end
+    end
+  end
+
+  def check_user_represents_count
+    if user.represents.count == 1
+      errors.add(:base, 'Нельзя удалить все представления')
+      throw(:abort)
     end
   end
 end

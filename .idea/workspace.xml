@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user swagger">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="add comments &amp;&amp; rubocop">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/mailers/confirmation_mailer.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/mailers/new_password_mailer.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/mailers/reset_password_mailer.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/confirmation_mailer/confirmation_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/confirmation_email.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/new_password_mailer/new_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/new_password_email.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/reset_password_mailer/reset_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/reset_password_email.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/confirmation_spec.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/new_password_spec.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/previews/confirmation_preview.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/previews/new_password_preview.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/previews/reset_password_preview.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/reset_password_spec.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +82,39 @@
       <recent name="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\app\controllers" />
     </key>
   </component>
-  <component name="RunManager" selected="Rails.backend-rails_api">
+  <component name="RunManager" selected="RSpec.LawTypesController DELETE #destroy destroys the requested law type">
+    <configuration name="LawTypesController DELETE #destroy destroys the requested law type" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
+      <module name="backend-rails_api" />
+      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="RAILS_ENV" value="test" />
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
+      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/../../backend-rails_api/spec/controllers/law_types_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="LawTypesController DELETE #destroy destroys the requested law type" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="UsersController DELETE #destroy" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
       <module name="backend-rails_api" />
       <predefined_log_file enabled="true" id="RUBY_RSPEC" />
@@ -180,38 +200,6 @@
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="UsersController POST #reset" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="UsersController PUT #update" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
-      <module name="backend-rails_api" />
-      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$/../../backend-rails_api" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-      <envs>
-        <env name="RAILS_ENV" value="test" />
-        <env name="JRUBY_OPTS" value="-X+O" />
-      </envs>
-      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
-      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true" />
-      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/../../backend-rails_api/spec/controllers/users_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
-      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="UsersController PUT #update" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="LINE_NUMBER_EXAMPLE_IDS" VALUE="" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
       <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
@@ -336,19 +324,19 @@
       <item itemvalue="Rails.backend-rails_api" />
       <item itemvalue="Rake.spec: backend-rails_api" />
       <item itemvalue="Rake.test: backend-rails_api" />
+      <item itemvalue="RSpec.LawTypesController DELETE #destroy destroys the requested law type" />
       <item itemvalue="RSpec.UsersController" />
       <item itemvalue="RSpec.UsersController DELETE #destroy" />
       <item itemvalue="RSpec.UsersController POST #reset" />
       <item itemvalue="RSpec.UsersController POST #reset with valid email" />
-      <item itemvalue="RSpec.UsersController PUT #update" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="RSpec.LawTypesController DELETE #destroy destroys the requested law type" />
         <item itemvalue="RSpec.UsersController" />
         <item itemvalue="RSpec.UsersController POST #reset" />
         <item itemvalue="RSpec.UsersController POST #reset with valid email" />
         <item itemvalue="RSpec.UsersController DELETE #destroy" />
-        <item itemvalue="RSpec.UsersController PUT #update" />
       </list>
     </recent_temporary>
   </component>
@@ -430,23 +418,7 @@
       <workItem from="1696354384749" duration="1016000" />
       <workItem from="1696437245823" duration="13677000" />
       <workItem from="1696489718275" duration="11006000" />
-      <workItem from="1696516768428" duration="6359000" />
-    </task>
-    <task id="LOCAL-00076" summary="gk_set &amp; law &amp; law_type &amp; represent validates">
-      <option name="closed" value="true" />
-      <created>1694081111364</created>
-      <option name="number" value="00076" />
-      <option name="presentableId" value="LOCAL-00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1694081111364</updated>
-    </task>
-    <task id="LOCAL-00077" summary="user password update">
-      <option name="closed" value="true" />
-      <created>1694081830358</created>
-      <option name="number" value="00077" />
-      <option name="presentableId" value="LOCAL-00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1694081830358</updated>
+      <workItem from="1696516768428" duration="10396000" />
     </task>
     <task id="LOCAL-00078" summary="user password update">
       <option name="closed" value="true" />
@@ -824,7 +796,23 @@
       <option name="project" value="LOCAL" />
       <updated>1696523830220</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL-00125" summary="user mailer">
+      <option name="closed" value="true" />
+      <created>1696524770516</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1696524770516</updated>
+    </task>
+    <task id="LOCAL-00126" summary="add comments &amp;&amp; rubocop">
+      <option name="closed" value="true" />
+      <created>1696535606015</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1696535606015</updated>
+    </task>
+    <option name="localTasksCounter" value="127" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -842,8 +830,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="little fix" />
-    <MESSAGE value="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации" />
     <MESSAGE value="Обновлен механизм авторизации для методов, позволяющих выдавать данные для авторизованных и неавторизованных пользователй" />
     <MESSAGE value="represents_controller.rb add json_output in basic" />
     <MESSAGE value="represents_controller.rb add json_output in basic 2t" />
@@ -867,7 +853,9 @@
     <MESSAGE value="represent spec" />
     <MESSAGE value="user spec" />
     <MESSAGE value="user swagger" />
-    <option name="LAST_COMMIT_MESSAGE" value="user swagger" />
+    <MESSAGE value="user mailer" />
+    <MESSAGE value="add comments &amp;&amp; rubocop" />
+    <option name="LAST_COMMIT_MESSAGE" value="add comments &amp;&amp; rubocop" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696524421148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
@@ -919,6 +907,7 @@
     <SUITE FILE_PATH="coverage/fviz_web@law_types.rcov" NAME="law_types Coverage Results" MODIFIED="1694449991631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@GkController.rcov" NAME="GkController Coverage Results" MODIFIED="1696448273241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@lt.rcov" NAME="lt Coverage Results" MODIFIED="1696161840899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@LawTypesController_DELETE__destroy_destroys_the_requested_law_type.rcov" NAME="LawTypesController DELETE #destroy destroys the requested law type Coverage Results" MODIFIED="1696535339200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController_GET__index_returns_a_PDF_file.rcov" NAME="QuantitiesController GET #index returns a PDF file Coverage Results" MODIFIED="1696060909273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Quntities_POST__create.rcov" NAME="Quntities POST #create Coverage Results" MODIFIED="1696158449026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@GkController_PUT__update_returns_an_unprocessable_entity_status_code_with_invalid_params.rcov" NAME="GkController PUT #update returns an unprocessable entity status code with invalid params Coverage Results" MODIFIED="1696448317178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
