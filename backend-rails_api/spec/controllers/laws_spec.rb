@@ -17,7 +17,7 @@ RSpec.describe LawsController, type: :controller do
                         id_type: 1)
       law2 = @user.laws.create(law_name: 'Another name', first_element: 5, second_element: 6, third_element: 7, fourth_element: 8,
                         id_type: 1)
-      p law1
+
       get :index
       expect(response).to have_http_status(:ok)
 

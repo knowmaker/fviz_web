@@ -1,20 +1,15 @@
 require 'swagger_helper'
 
 RSpec.describe 'represents', type: :request do
-  let(:represent_params) do
-    { represent:
-      {
-        title: 'Sample Represent',
-        active_quantities: [1, 2, 3]
-      }
-    }
-  end
-
   path '/api/represents' do
     get('list represents') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
+
       response(200, 'successful') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -41,12 +36,12 @@ RSpec.describe 'represents', type: :request do
       }
 
       response(201, 'created') do
-        let(:represent) { represent_params }
-
         run_test!
       end
-
       response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -54,6 +49,20 @@ RSpec.describe 'represents', type: :request do
 
   path '/api/represents/{id}' do
     parameter name: 'id', in: :path, type: :string, description: 'id'
+
+    get('show represent') do
+      tags 'Represents'
+
+      response(200, 'successful') do
+        run_test!
+      end
+      response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
+        run_test!
+      end
+    end
 
     put('update represent') do
       security [{ bearerAuth: [] }]
@@ -76,17 +85,15 @@ RSpec.describe 'represents', type: :request do
       }
 
       response(200, 'successful') do
-        let(:id) { '123' }
-        let(:represent) { represent_params }
-
         run_test!
       end
-
       response(404, 'not found') do
         run_test!
       end
-
       response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -94,13 +101,14 @@ RSpec.describe 'represents', type: :request do
     delete('delete represent') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
