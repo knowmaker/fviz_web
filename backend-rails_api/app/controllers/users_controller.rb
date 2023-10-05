@@ -76,7 +76,7 @@ class UsersController < ApplicationController
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
       head :ok
-    elsif !user.confirmed
+    elsif user && !user.confirmed
       render json: { error: ['Email не подтвержден'] }, status: :unauthorized
     else
       render json: { error: ['Пользователь не найден'] }, status: :not_found
