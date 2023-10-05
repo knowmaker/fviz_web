@@ -502,18 +502,20 @@ function findFourthCell(lawCells) {
 
   const firstAndSecondCellDifference = {x: getColumn(lawCells[1])-getColumn(lawCells[0]),y: getRow(lawCells[1])- getRow(lawCells[0])}
   const firstCellRow = getRow(lawCells[0])
+  const secondCellRow = getRow(lawCells[1])
   const thirdCellRow = getRow(lawCells[2])
+  console.log(firstCellRow%2,secondCellRow%2,thirdCellRow%2)
 
 
   let fourthCellCoords = {x: getColumn(lawCells[2])- firstAndSecondCellDifference.x, y:  getRow(lawCells[2]) - firstAndSecondCellDifference.y}
-  if ((firstCellRow % 2) === (thirdCellRow % 2)) {
-    fourthCellCoords = {x: fourthCellCoords.x  ,y: fourthCellCoords.y}
+  if (((firstCellRow % 2) === (thirdCellRow % 2) && (secondCellRow % 2 ) !== (thirdCellRow % 2))) {
+    console.log("corrected")
+    fourthCellCoords = {x: fourthCellCoords.x + ((firstCellRow % 2 === 0) ? 1:-1) ,y: fourthCellCoords.y}
   }
-  console.log(fourthCellCoords)
+
   const fourthCellId = Math.floor((fourthCellCoords.y-1)*19.5)+(fourthCellCoords.y%2 === 0 ? 1 : 0)+fourthCellCoords.x
   const cellId = (fourthCellCoords.y-1) * 19 + ((fourthCellCoords.y-1) % 2 === 0 ? 0 : 1) + (fourthCellCoords.x-1) + 1 + Math.floor((fourthCellCoords.y-1) / 2)
-  console.log(firstAndSecondCellDifference)
-  console.log(cellId)
+
 
   return cellId
 }
