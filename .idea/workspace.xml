@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="download PDF">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="Artyom: changed text">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/components/Table.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/components/Table.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/pages/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/represents_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/controllers/represents_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/controllers/represents_spec.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +82,7 @@
       <recent name="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\app\controllers" />
     </key>
   </component>
-  <component name="RunManager" selected="RSpec.RepresentsController">
+  <component name="RunManager" selected="RSpec.RepresentsController GET #represent_view_show updates the current user's active represent">
     <configuration type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
       <module name="backend-rails_api" />
       <predefined_log_file enabled="true" id="RUBY_RSPEC" />
@@ -364,10 +364,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="RSpec.RepresentsController GET #represent_view_show updates the current user's active represent" />
         <item itemvalue="RSpec.RepresentsController" />
         <item itemvalue="RSpec.RepresentsController GET #represent_view_index" />
         <item itemvalue="RSpec.RepresentsController GET #represent_view_index returns the active quantities for the current user's active represent" />
-        <item itemvalue="RSpec.RepresentsController GET #represent_view_show updates the current user's active represent" />
         <item itemvalue="RSpec.RepresentsController GET #represent_view_show" />
       </list>
     </recent_temporary>
@@ -449,15 +449,8 @@
       <workItem from="1696351054915" duration="2695000" />
       <workItem from="1696354384749" duration="1016000" />
       <workItem from="1696437245823" duration="13677000" />
-      <workItem from="1696489718275" duration="10472000" />
-    </task>
-    <task id="LOCAL-00072" summary="json format">
-      <option name="closed" value="true" />
-      <created>1694072785637</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1694072785637</updated>
+      <workItem from="1696489718275" duration="11006000" />
+      <workItem from="1696516768428" duration="305000" />
     </task>
     <task id="LOCAL-00073" summary="db">
       <option name="closed" value="true" />
@@ -843,7 +836,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696500196996</updated>
     </task>
-    <option name="localTasksCounter" value="121" />
+    <task id="LOCAL-00121" summary="Artyom: changed text">
+      <option name="closed" value="true" />
+      <created>1696501287912</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1696501287912</updated>
+    </task>
+    <option name="localTasksCounter" value="122" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -861,7 +862,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="trying bag 2" />
     <MESSAGE value="debug controllers and swagger. Rename routes" />
     <MESSAGE value="debug controllers after Artem last commit" />
     <MESSAGE value="change text names" />
@@ -886,7 +886,8 @@
     <MESSAGE value="laws spec tests &amp; all spec debug" />
     <MESSAGE value="represents spec tests &amp; spec debug" />
     <MESSAGE value="download PDF" />
-    <option name="LAST_COMMIT_MESSAGE" value="download PDF" />
+    <MESSAGE value="Artyom: changed text" />
+    <option name="LAST_COMMIT_MESSAGE" value="Artyom: changed text" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@Quantities_POST__create.rcov" NAME="Quantities POST #create Coverage Results" MODIFIED="1696158493050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
@@ -914,7 +915,7 @@
     <SUITE FILE_PATH="coverage/fviz_web@Lt.rcov" NAME="Lt Coverage Results" MODIFIED="1696106205859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@LtController_GET__index_returns_an_empty_array_if_no_lts_exist.rcov" NAME="LtController GET #index returns an empty array if no lts exist Coverage Results" MODIFIED="1696446854260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@RepresentsController_PUT__update.rcov" NAME="RepresentsController PUT #update Coverage Results" MODIFIED="1696497287014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
-    <SUITE FILE_PATH="coverage/fviz_web@RepresentsController_GET__represent_view_show_updates_the_current_user_s_active_represent.rcov" NAME="RepresentsController GET #represent_view_show updates the current user's active represent Coverage Results" MODIFIED="1696498321363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@RepresentsController_GET__represent_view_show_updates_the_current_user_s_active_represent.rcov" NAME="RepresentsController GET #represent_view_show updates the current user's active represent Coverage Results" MODIFIED="1696516995588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Represent.rcov" NAME="Represent Coverage Results" MODIFIED="1696493398974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@law_types.rcov" NAME="law_types Coverage Results" MODIFIED="1694449991631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@QuantitiesController.rcov" NAME="QuantitiesController Coverage Results" MODIFIED="1696189383016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

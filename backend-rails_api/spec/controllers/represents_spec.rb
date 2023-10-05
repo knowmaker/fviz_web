@@ -108,8 +108,8 @@ RSpec.describe RepresentsController, type: :controller do
   describe 'GET #represent_view_index' do
     it 'returns the active quantities for user' do
       get :represent_view_index
+
       expect(response).to have_http_status(:ok)
-      p JSON.parse(response.body)
       expect(JSON.parse(response.body)['data']).not_to be_empty
     end
   end
@@ -122,17 +122,6 @@ RSpec.describe RepresentsController, type: :controller do
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body)['data']['id_repr']).to eq(represent.id_repr)
     end
-
-    # it 'updates the current user\'s active represent' do
-    #   represent = @user.represents.create(title: 'Sample title', active_quantities: [1,2,3,4,5,6,7])
-    #
-    #   # @user.active_repr = 2
-    #   # @user.save
-    #
-    #   get :represent_view_show, params: { id: represent.id_repr }
-    #   @user.reload
-    #   expect(@user.active_repr).to eq(represent.id_repr)
-    # end
 
     it 'returns a not found response if represent does not exist' do
       get :represent_view_show, params: { id: 999 }

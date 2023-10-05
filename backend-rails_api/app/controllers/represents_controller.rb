@@ -66,6 +66,7 @@ class RepresentsController < ApplicationController
 
   def represent_view_show
     if @represent
+      @current_user.update(active_repr: @represent.id_repr)
       quantity_ids = @represent.active_quantities.flatten
       active_quantities = Quantity.where(id_value: quantity_ids).order(:id_lt).all
 
@@ -74,8 +75,6 @@ class RepresentsController < ApplicationController
         title: @represent.title,
         active_quantities:
       }
-      @current_user.active_repr = params[:id]
-      @current_user.save
 
       render json: { data: json_output }, status: :ok
     else
