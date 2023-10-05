@@ -3,7 +3,7 @@
 # Контроллер для работы с закономерностями
 class LawsController < ApplicationController
   before_action :authorize_request
-  before_action :set_law, only: %i[update destroy]
+  before_action :set_law, only: %i[show update destroy]
 
   def index
     laws = @current_user.laws.left_joins(:law_type).select(Law.column_names - ['combination'], 'laws_type.*').order(:id_law).all
@@ -12,18 +12,6 @@ class LawsController < ApplicationController
   end
 
   def show
-    @law = @current_user.laws
-                        .joins(
-                          'LEFT JOIN quantity AS first_element_quantities ON laws.first_element = first_element_quantities.id_value',
-                          'LEFT JOIN quantity AS second_element_quantities ON laws.second_element = second_element_quantities.id_value',
-                          'LEFT JOIN quantity AS third_element_quantities ON laws.third_element = third_element_quantities.id_value',
-                          'LEFT JOIN quantity AS fourth_element_quantities ON laws.fourth_element = fourth_element_quantities.id_value'
-                        )
-                        .select(
-                          Law.column_names - ['combination'],
-                          'CONCAT_WS(\' * \', first_element_quantities.value_name, second_element_quantities.value_name, third_element_quantities.value_name, fourth_element_quantities.value_name) AS text_formula',
-                          'CONCAT_WS(\' * \', first_element_quantities.symbol, second_element_quantities.symbol, third_element_quantities.symbol, fourth_element_quantities.symbol) AS formula'
-                        ).find_by(id_law: params[:id])
     if @law
       render json: { data: @law }, status: :ok
     else

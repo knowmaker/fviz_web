@@ -12,6 +12,8 @@ paths:
       responses:
         '200':
           description: successful
+        '500':
+          description: server error
   "/api/gk/{id}":
     parameters:
     - name: id
@@ -31,6 +33,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
     patch:
       summary: update GK
       tags:
@@ -45,6 +49,8 @@ paths:
           description: not found
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -68,6 +74,8 @@ paths:
       responses:
         '200':
           description: successful
+        '500':
+          description: server error
     post:
       summary: create law type
       tags:
@@ -80,6 +88,8 @@ paths:
           description: created
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -114,6 +124,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
     put:
       summary: update law type
       tags:
@@ -128,6 +140,8 @@ paths:
           description: not found
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -152,6 +166,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
   "/api/laws":
     get:
       summary: list laws
@@ -162,6 +178,8 @@ paths:
       responses:
         '200':
           description: successful
+        '500':
+          description: server error
     post:
       summary: create law
       tags:
@@ -174,6 +192,8 @@ paths:
           description: created
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -221,6 +241,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
     patch:
       summary: update law
       tags:
@@ -235,6 +257,8 @@ paths:
           description: not found
         '422':
           description: unprocessable entity
+        '500':
+          description: server error
       requestBody:
         content:
           application/json:
@@ -259,6 +283,8 @@ paths:
           description: successful
         '404':
           description: not found
+        '500':
+          description: server error
   "/api/lt":
     get:
       summary: list lt
@@ -267,6 +293,8 @@ paths:
       responses:
         '200':
           description: successful
+        '500':
+          description: server error
   "/api/quantities":
     get:
       summary: list quantities

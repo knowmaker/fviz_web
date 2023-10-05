@@ -1,21 +1,14 @@
 require 'swagger_helper'
 
 RSpec.describe 'gk', type: :request do
-  let(:gk_params) do
-    { gk:
-        {
-          g_indicate: 1,
-          k_indicate: 2,
-          gk_name: "Sample",
-          color: '#fff'
-        }
-    }
-  end
-
   path '/api/gk' do
     get('list gk') do
       tags 'GK'
+
       response(200, 'successful') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -27,13 +20,14 @@ RSpec.describe 'gk', type: :request do
     get('show GK') do
       tags 'GK'
       security [{ bearerAuth: [] }]
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -56,17 +50,15 @@ RSpec.describe 'gk', type: :request do
       }
 
       response(200, 'successful') do
-        let(:id) { '123' }
-        let(:gk) { gk_params }
-
         run_test!
       end
-
       response(404, 'not found') do
         run_test!
       end
-
       response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end

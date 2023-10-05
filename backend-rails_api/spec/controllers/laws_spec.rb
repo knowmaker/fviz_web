@@ -4,13 +4,20 @@ RSpec.describe LawsController, type: :controller do
   before do
     @token = user_login(1)
     request.headers['Authorization'] = "Bearer #{@token}"
+    @user = User.find_by(id_user: 1)
+
+    Law.destroy_all
+    LawType.destroy_all
+    LawType.create(id_type: 1, type_name: 'Name', color: 'Red')
   end
 
   describe 'GET #index' do
     it 'returns a list of laws for the current user' do
-      law1 = create_law(@user)
-      law2 = create_law(@user)
-
+      law1 = @user.laws.create(law_name: 'Sample name', first_element: 1, second_element: 2, third_element: 3, fourth_element: 4,
+                        id_type: 1)
+      law2 = @user.laws.create(law_name: 'Another name', first_element: 5, second_element: 6, third_element: 7, fourth_element: 8,
+                        id_type: 1)
+      p law1
       get :index
       expect(response).to have_http_status(:ok)
 
@@ -32,7 +39,8 @@ RSpec.describe LawsController, type: :controller do
 
   describe 'GET #show' do
     it 'returns the details of a law for the current user' do
-      law = create_law(@user)
+      law = @user.laws.create(law_name: 'Sample name', first_element: 1, second_element: 2, third_element: 3, fourth_element: 4,
+                               id_type: 1)
 
       get :show, params: { id: law.id_law }
       expect(response).to have_http_status(:ok)
@@ -85,7 +93,8 @@ RSpec.describe LawsController, type: :controller do
 
   describe 'PUT #update' do
     it 'updates the requested law' do
-      law = create_law(@user)
+      law = @user.laws.create(law_name: 'Sample name', first_element: 1, second_element: 2, third_element: 3, fourth_element: 4,
+                               id_type: 1)
       new_law_name = 'Updated Law'
 
       put :update, params: { id: law.id_law, law: { law_name: new_law_name } }
@@ -96,7 +105,8 @@ RSpec.describe LawsController, type: :controller do
     end
 
     it 'returns an unprocessable entity status code with invalid params' do
-      law = create_law(@user)
+      law = @user.laws.create(law_name: 'Sample name', first_element: 1, second_element: 2, third_element: 3, fourth_element: 4,
+                               id_type: 1)
 
       put :update, params: { id: law.id_law, law: { first_element: nil } }
       expect(response).to have_http_status(:unprocessable_entity)
@@ -110,7 +120,8 @@ RSpec.describe LawsController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'destroys the requested law' do
-      law = create_law(@user)
+      law = @user.laws.create(law_name: 'Sample name', first_element: 1, second_element: 2, third_element: 3, fourth_element: 4,
+                               id_type: 1)
 
       expect {
         delete :destroy, params: { id: law.id_law }

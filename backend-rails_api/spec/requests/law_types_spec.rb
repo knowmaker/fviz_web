@@ -1,20 +1,15 @@
 require 'swagger_helper'
 
 RSpec.describe 'law_types', type: :request do
-  let(:law_type_params) do
-    { law_type:
-        {
-          type_name: 'Sample Type',
-          color: '#000000'
-        }
-    }
-  end
-
   path '/api/law_types' do
     get('list law types') do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
+
       response(200, 'successful') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -38,12 +33,12 @@ RSpec.describe 'law_types', type: :request do
       }
 
       response(201, 'created') do
-        let(:law_type) { law_type_params }
-
         run_test!
       end
-
       response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -55,13 +50,14 @@ RSpec.describe 'law_types', type: :request do
     get('show law type') do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -84,17 +80,15 @@ RSpec.describe 'law_types', type: :request do
       }
 
       response(200, 'successful') do
-        let(:id) { '123' }
-        let(:law_type) { law_type_params }
-
         run_test!
       end
-
       response(404, 'not found') do
         run_test!
       end
-
       response(422, 'unprocessable entity') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -102,13 +96,14 @@ RSpec.describe 'law_types', type: :request do
     delete('delete law type') do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
-      response(200, 'successful') do
-        let(:id) { '123' }
 
+      response(200, 'successful') do
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
