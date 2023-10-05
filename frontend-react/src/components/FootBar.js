@@ -19,31 +19,35 @@ export default function Footbar({hoveredCell,selectedLawState,getImage}) {
   }
 
   const downloadPDF = async () => {
-  
+    try {
+      const headers = {
+        Authorization: `Bearer ${userInfoState.userToken}`,
+      };
 
-    const headers = {
-      Authorization: `Bearer ${userInfoState.userToken}`,
-      responseType: 'blob',
-    }    
-    const PDFFile = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities`, headers)
-    await new Promise(resolve => setTimeout(resolve,2000))
-    const blob = new Blob([PDFFile.data], { type: 'application/pdf' });
-    const url = window.URL.createObjectURL(blob);
+      const response = await fetch(`${process.env.REACT_APP_API_LINK}/quantities`, {
+        method: 'GET',
+        headers: headers,
+      });
 
-    // Создаем ссылку для скачивания
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'quantities_table.pdf';
-    document.body.appendChild(a);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-    // Нажимаем на ссылку для скачивания
-    a.click();
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
 
-    // Удаляем ссылку после скачивания
-    window.URL.revokeObjectURL(url);
-  
-  
-  }
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'quantities_table.pdf';
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+  };
+
 
   
 
