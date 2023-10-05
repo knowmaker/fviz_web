@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       user.password = hash_password(params[:user][:password])
       user.save
 
-      ConfirmationMailer.confirmation_email(user).deliver_now
+      UserMailer.confirmation_email(user).deliver_now
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
       render json: { data: user }, status: :created
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
       user.confirmation_token = SecureRandom.urlsafe_base64.to_s
       user.save
 
-      ResetPasswordMailer.reset_password_email(user).deliver_now
+      UserMailer.reset_password_email(user).deliver_now
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
       head :ok
@@ -92,7 +92,7 @@ class UsersController < ApplicationController
       user.confirmation_token = nil
       user.save
 
-      NewPasswordMailer.new_password_email(user, new_password).deliver_now
+      UserMailer.new_password_email(user, new_password).deliver_now
 
       render json: 'Новый пароль сгенерирован и выслан на почту', status: :ok
     else

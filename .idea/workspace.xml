@@ -4,8 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user spec">
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="user swagger">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/mailers/confirmation_mailer.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/mailers/new_password_mailer.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/mailers/reset_password_mailer.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/confirmation_mailer/confirmation_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/confirmation_email.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/new_password_mailer/new_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/new_password_email.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/reset_password_mailer/reset_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/reset_password_email.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/confirmation_spec.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/new_password_spec.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/previews/confirmation_preview.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/previews/new_password_preview.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/previews/reset_password_preview.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/mailers/reset_password_spec.rb" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +93,7 @@
       <recent name="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\app\controllers" />
     </key>
   </component>
-  <component name="RunManager" selected="RSpec.UsersController">
+  <component name="RunManager" selected="Rails.backend-rails_api">
     <configuration name="UsersController DELETE #destroy" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
       <module name="backend-rails_api" />
       <predefined_log_file enabled="true" id="RUBY_RSPEC" />
@@ -416,15 +429,7 @@
       <workItem from="1696354384749" duration="1016000" />
       <workItem from="1696437245823" duration="13677000" />
       <workItem from="1696489718275" duration="11006000" />
-      <workItem from="1696516768428" duration="5180000" />
-    </task>
-    <task id="LOCAL-00075" summary="law validates">
-      <option name="closed" value="true" />
-      <created>1694078756665</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1694078756665</updated>
+      <workItem from="1696516768428" duration="6359000" />
     </task>
     <task id="LOCAL-00076" summary="gk_set &amp; law &amp; law_type &amp; represent validates">
       <option name="closed" value="true" />
@@ -810,7 +815,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696523259541</updated>
     </task>
-    <option name="localTasksCounter" value="124" />
+    <task id="LOCAL-00124" summary="user swagger">
+      <option name="closed" value="true" />
+      <created>1696523830220</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1696523830220</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -828,7 +841,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change text names" />
     <MESSAGE value="little fix" />
     <MESSAGE value="Удален триггер сбора MLTI; добавлено поддержание целостности массива, новое поле в бд, отвечающее за последнее открытое представление (и его поддержание) (без обработки в контроллерах).&#10;Изменены возвращаемые ошибки при авторизации" />
     <MESSAGE value="Обновлен механизм авторизации для методов, позволяющих выдавать данные для авторизованных и неавторизованных пользователй" />
@@ -853,10 +865,11 @@
     <MESSAGE value="Artyom: changed text" />
     <MESSAGE value="represent spec" />
     <MESSAGE value="user spec" />
-    <option name="LAST_COMMIT_MESSAGE" value="user spec" />
+    <MESSAGE value="user swagger" />
+    <option name="LAST_COMMIT_MESSAGE" value="user swagger" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696489996641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696524421148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@RepresentsController_GET__represent_view_index_returns_the_active_quantities_for_the_current_user_s_active_represent.rcov" NAME="RepresentsController GET #represent_view_index returns the active quantities for the current user's active represent Coverage Results" MODIFIED="1696498578558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Gk.rcov" NAME="Gk Coverage Results" MODIFIED="1696447769671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@LawTypesController.rcov" NAME="LawTypesController Coverage Results" MODIFIED="1696449558509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
