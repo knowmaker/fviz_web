@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="add comments &amp;&amp; rubocop">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="you cannot delete the last represent">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/misc/Screenshot.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/misc/Screenshot.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -418,15 +418,8 @@
       <workItem from="1696354384749" duration="1016000" />
       <workItem from="1696437245823" duration="13677000" />
       <workItem from="1696489718275" duration="11006000" />
-      <workItem from="1696516768428" duration="10396000" />
-    </task>
-    <task id="LOCAL-00078" summary="user password update">
-      <option name="closed" value="true" />
-      <created>1694082139845</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1694082139845</updated>
+      <workItem from="1696516768428" duration="14180000" />
+      <workItem from="1696604677702" duration="580000" />
     </task>
     <task id="LOCAL-00079" summary="debug">
       <option name="closed" value="true" />
@@ -812,7 +805,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696535606015</updated>
     </task>
-    <option name="localTasksCounter" value="127" />
+    <task id="LOCAL-00127" summary="you cannot delete the last represent">
+      <option name="closed" value="true" />
+      <created>1696536610309</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1696536610309</updated>
+    </task>
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -830,7 +831,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Обновлен механизм авторизации для методов, позволяющих выдавать данные для авторизованных и неавторизованных пользователй" />
     <MESSAGE value="represents_controller.rb add json_output in basic" />
     <MESSAGE value="represents_controller.rb add json_output in basic 2t" />
     <MESSAGE value="trying tests" />
@@ -855,7 +855,8 @@
     <MESSAGE value="user swagger" />
     <MESSAGE value="user mailer" />
     <MESSAGE value="add comments &amp;&amp; rubocop" />
-    <option name="LAST_COMMIT_MESSAGE" value="add comments &amp;&amp; rubocop" />
+    <MESSAGE value="you cannot delete the last represent" />
+    <option name="LAST_COMMIT_MESSAGE" value="you cannot delete the last represent" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696524421148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
