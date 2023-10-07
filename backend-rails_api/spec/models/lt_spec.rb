@@ -7,24 +7,21 @@ RSpec.describe Lt, type: :model do
     it 'is valid with valid attributes' do
       lt = Lt.new(
         l_indicate: 10,
-        t_indicate: 20,
-        lt_sign: 'Example Sign'
+        t_indicate: 20
       )
       expect(lt).to be_valid
     end
 
     it 'is not valid without l_indicate' do
       lt = Lt.new(
-        t_indicate: 20,
-        lt_sign: 'Example Sign'
+        t_indicate: 20
       )
       expect(lt).to_not be_valid
     end
 
     it 'is not valid without t_indicate' do
       lt = Lt.new(
-        l_indicate: 10,
-        lt_sign: 'Example Sign'
+        l_indicate: 10
       )
       expect(lt).to_not be_valid
     end
@@ -32,8 +29,7 @@ RSpec.describe Lt, type: :model do
     it 'is not valid if l_indicate is not an integer' do
       lt = Lt.new(
         l_indicate: 'invalid',
-        t_indicate: 20,
-        lt_sign: 'Example Sign'
+        t_indicate: 20
       )
       expect(lt).to_not be_valid
     end
@@ -41,17 +37,7 @@ RSpec.describe Lt, type: :model do
     it 'is not valid if t_indicate is not an integer' do
       lt = Lt.new(
         l_indicate: 10,
-        t_indicate: 'invalid',
-        lt_sign: 'Example Sign'
-      )
-      expect(lt).to_not be_valid
-    end
-
-    it 'is not valid if lt_sign is too long' do
-      lt = Lt.new(
-        l_indicate: 10,
-        t_indicate: 20,
-        lt_sign: 'a' * 51
+        t_indicate: 'invalid'
       )
       expect(lt).to_not be_valid
     end

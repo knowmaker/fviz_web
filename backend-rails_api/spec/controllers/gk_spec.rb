@@ -20,7 +20,7 @@ RSpec.describe GkController, type: :controller do
 
   describe 'GET #show' do
     it 'returns the requested gk' do
-      gk = Gk.create(g_indicate: 1, k_indicate: 2, gk_name: 'GK1', gk_sign: 'Sign 1', color: 'Red')
+      gk = Gk.create(g_indicate: 1, k_indicate: 2, gk_name: 'GK1', color: 'Red')
 
       get :show, params: { id: gk.id_gk }
       expect(response).to have_http_status(:ok)
@@ -36,7 +36,7 @@ RSpec.describe GkController, type: :controller do
 
   describe 'PUT #update' do
     let(:gk) do
-      Gk.create(g_indicate: 1, k_indicate: 2, gk_name: 'GK1', gk_sign: 'Sign 1', color: 'Red')
+      Gk.create(g_indicate: 1, k_indicate: 2, gk_name: 'GK1', color: 'Red')
     end
 
     let(:valid_attributes) do

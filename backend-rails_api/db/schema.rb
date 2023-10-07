@@ -17,7 +17,6 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "gk", primary_key: "id_gk", id: :serial, force: :cascade do |t|
     t.integer "g_indicate", limit: 2, null: false
     t.integer "k_indicate", limit: 2, null: false
-    t.string "gk_sign", limit: 50
     t.string "color", limit: 50, null: false
   end
 
@@ -56,7 +55,6 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "lt", primary_key: "id_lt", id: :serial, force: :cascade do |t|
     t.integer "l_indicate", limit: 2, null: false
     t.integer "t_indicate", limit: 2, null: false
-    t.string "lt_sign", limit: 50
   end
 
   create_table "quantity", primary_key: "id_value", id: :serial, force: :cascade do |t|
@@ -67,7 +65,6 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.integer "i_indicate_auto", limit: 2, null: false
     t.integer "id_lt", null: false
     t.integer "id_gk", null: false
-    t.string "mlti_sign", limit: 100
     t.index ["id_lt", "id_gk"], name: "idx_unique_id_lt_id_gk", unique: true
   end
 

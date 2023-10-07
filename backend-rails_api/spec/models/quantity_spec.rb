@@ -14,8 +14,7 @@ RSpec.describe Quantity, type: :model do
         i_indicate_auto: 40,
         unit: 'Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       expect(quantity).to be_valid
     end
@@ -30,8 +29,7 @@ RSpec.describe Quantity, type: :model do
         i_indicate_auto: 40,
         unit: 'Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       expect(quantity).to_not be_valid
     end
@@ -45,8 +43,7 @@ RSpec.describe Quantity, type: :model do
         i_indicate_auto: 40,
         unit: 'Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       expect(quantity).to_not be_valid
     end
@@ -60,8 +57,7 @@ RSpec.describe Quantity, type: :model do
         i_indicate_auto: 40,
         unit: 'Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       expect(quantity).to_not be_valid
     end
@@ -75,8 +71,7 @@ RSpec.describe Quantity, type: :model do
         i_indicate_auto: 40,
         unit: 'Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       expect(quantity).to_not be_valid
     end
@@ -90,8 +85,7 @@ RSpec.describe Quantity, type: :model do
         t_indicate_auto: 30,
         unit: 'Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       expect(quantity).to_not be_valid
     end
@@ -105,8 +99,7 @@ RSpec.describe Quantity, type: :model do
         t_indicate_auto: 30,
         i_indicate_auto: 40,
         unit: 'Example Unit',
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       expect(quantity).to_not be_valid
     end
@@ -120,8 +113,7 @@ RSpec.describe Quantity, type: :model do
         t_indicate_auto: 30,
         i_indicate_auto: 40,
         unit: 'Example Unit',
-        id_lt: 1,
-        mlti_sign: 'Example Sign'
+        id_lt: 1
       )
       expect(quantity).to_not be_valid
     end
@@ -136,8 +128,7 @@ RSpec.describe Quantity, type: :model do
         i_indicate_auto: 40,
         unit: 'Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Example Sign'
+        id_gk: 1
       )
       quantity = Quantity.new(
         value_name: 'Another Example Value',
@@ -148,8 +139,7 @@ RSpec.describe Quantity, type: :model do
         i_indicate_auto: 45,
         unit: 'Another Example Unit',
         id_lt: 1,
-        id_gk: 1,
-        mlti_sign: 'Another Example Sign'
+        id_gk: 1
       )
       expect(quantity).to_not be_valid
     end

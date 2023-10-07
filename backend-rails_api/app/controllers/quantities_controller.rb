@@ -119,7 +119,7 @@ class QuantitiesController < ApplicationController
     quantity_params = params.require(:quantity)
                             .permit(:value_name, :symbol,
                                     :m_indicate_auto, :l_indicate_auto, :t_indicate_auto, :i_indicate_auto,
-                                    :unit, :l_indicate, :t_indicate, :id_gk, :mlti_sign)
+                                    :unit, :l_indicate, :t_indicate, :id_gk)
 
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])
     return { error: 'Такой ячейки не существует' } unless lt

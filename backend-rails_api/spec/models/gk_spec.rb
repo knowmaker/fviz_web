@@ -9,7 +9,6 @@ RSpec.describe Gk, type: :model do
         g_indicate: 10,
         k_indicate: 20,
         gk_name: 'Example Name',
-        gk_sign: 'Example Sign',
         color: 'Red'
       )
       expect(gk).to be_valid
@@ -19,7 +18,6 @@ RSpec.describe Gk, type: :model do
       gk = Gk.new(
         k_indicate: 20,
         gk_name: 'Example Name',
-        gk_sign: 'Example Sign',
         color: 'Red'
       )
       expect(gk).to_not be_valid
@@ -29,7 +27,6 @@ RSpec.describe Gk, type: :model do
       gk = Gk.new(
         g_indicate: 10,
         gk_name: 'Example Name',
-        gk_sign: 'Example Sign',
         color: 'Red'
       )
       expect(gk).to_not be_valid
@@ -40,18 +37,6 @@ RSpec.describe Gk, type: :model do
         g_indicate: 10,
         k_indicate: 20,
         gk_name: 'a' * 101,
-        gk_sign: 'Example Sign',
-        color: 'Red'
-      )
-      expect(gk).to_not be_valid
-    end
-
-    it 'is not valid with too long gk_sign' do
-      gk = Gk.new(
-        g_indicate: 10,
-        k_indicate: 20,
-        gk_name: 'Example Name',
-        gk_sign: 'a' * 51,
         color: 'Red'
       )
       expect(gk).to_not be_valid
@@ -61,8 +46,7 @@ RSpec.describe Gk, type: :model do
       gk = Gk.new(
         g_indicate: 10,
         k_indicate: 20,
-        gk_name: 'Example Name',
-        gk_sign: 'Example Sign'
+        gk_name: 'Example Name'
       )
       expect(gk).to_not be_valid
     end
@@ -72,7 +56,6 @@ RSpec.describe Gk, type: :model do
         g_indicate: 10,
         k_indicate: 20,
         gk_name: 'Example Name',
-        gk_sign: 'Example Sign',
         color: 'a' * 51
       )
       expect(gk).to_not be_valid

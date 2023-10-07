@@ -3,7 +3,7 @@
 # Модуль дополнительных функций для работы с методами класса величин
 module QuantitiesHelper
   def generate_html_table(quantities)
-    grouped_quantities = quantities.group_by(&:gk_sign)
+    grouped_quantities = quantities.group_by { |quantity| [quantity.g_indicate, quantity.k_indicate] }
 
     html = "<html lang='en'><head><meta charset='UTF-8'><title>Таблица всех физических величин в системе</title>"
     html += "<style>
@@ -22,8 +22,9 @@ module QuantitiesHelper
             </style>"
     html += '</head><body>'
 
-    grouped_quantities.each do |gk_sign, quantities_group|
-      html += "<h1>Таблица величин для #{gk_sign}</h1>"
+    grouped_quantities.each do |indicates, quantities_group|
+      g_indicate, k_indicate = indicates
+      html += "<h1>Таблица величин для G<sup>#{g_indicate}</sup>K<sup>#{k_indicate}</sup></h1>"
       html += '<table><thead><tr><th>Название</th><th>Обозначение</th><th>Ед. измер.</th><th>MLTI</th></tr></thead><tbody>'
 
       quantities_group.each do |quantity|
@@ -32,7 +33,7 @@ module QuantitiesHelper
           <td>#{quantity.value_name}</td>
           <td>#{quantity.symbol}</td>
           <td>#{quantity.unit}</td>
-          <td>#{quantity.mlti_sign}</td>
+          <td>#{generate_mlti(quantity.m_indicate_auto,quantity.l_indicate_auto,quantity.t_indicate_auto,quantity.i_indicate_auto)}</td>
         </tr>
         HTML
       end
@@ -42,5 +43,31 @@ module QuantitiesHelper
 
     html += '</body></html>'
     html
+  end
+
+  def generate_mlti(m_indicate, l_indicate, t_indicate, i_indicate)
+    mlti_string = ""
+
+    if m_indicate != 0
+      mlti_string += "M<sup>#{m_indicate}</sup>"
+    end
+
+    if l_indicate != 0
+      mlti_string += "L<sup>#{l_indicate}</sup>"
+    end
+
+    if t_indicate != 0
+      mlti_string += "T<sup>#{t_indicate}</sup>"
+    end
+
+    if i_indicate != 0
+      mlti_string += "I<sup>#{i_indicate}</sup>"
+    end
+
+    if (m_indicate == 0 && l_indicate == 0 && t_indicate == 0 && i_indicate == 0)
+      mlti_string = "L<sup>0</sup>T<sup>0</sup>"
+    end
+
+    mlti_string
   end
 end

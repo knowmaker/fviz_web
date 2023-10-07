@@ -8,5 +8,4 @@ class Lt < ApplicationRecord
 
   validates :l_indicate, presence: true, numericality: { only_integer: true }
   validates :t_indicate, presence: true, numericality: { only_integer: true }
-  validates :lt_sign, length: { maximum: 50 }
 end
