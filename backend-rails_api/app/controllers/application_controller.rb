@@ -2,6 +2,7 @@
 
 # Базовый контроллер приложения. Позволяет проверять автооризацию пользователя
 class ApplicationController < ActionController::API
+  include Locale
   attr_reader :current_user
 
   # Метод для проведения авторизации пользователя по токену
