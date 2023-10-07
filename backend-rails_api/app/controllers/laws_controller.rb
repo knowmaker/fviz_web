@@ -8,7 +8,7 @@ class LawsController < ApplicationController
   # Метод для получения перечня личных законов пользователя
   def index
     laws = @current_user.laws.left_joins(:law_type).select(Law.column_names - ['combination'],
-                                                           'laws_type.*').order(:id_law).all
+                                                           'law_types.*').order(:id_law).all
 
     render json: { data: laws }, status: :ok
   end

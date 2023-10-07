@@ -22,6 +22,11 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.string "color", limit: 50, null: false
   end
 
+  create_table "law_types", primary_key: "id_type", id: :serial, force: :cascade do |t|
+    t.string "type_name", limit: 100, null: false
+    t.string "color", limit: 50, null: false
+  end
+
   create_table "laws", primary_key: "id_law", id: :serial, force: :cascade do |t|
     t.string "law_name"
     t.integer "first_element", null: false
@@ -32,11 +37,6 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.integer "id_type"
     t.integer "combination", array: true
     t.index ["combination", "id_user"], name: "unique_combination_user", unique: true
-  end
-
-  create_table "laws_type", primary_key: "id_type", id: :serial, force: :cascade do |t|
-    t.string "type_name", limit: 100, null: false
-    t.string "color", limit: 50, null: false
   end
 
   create_table "lt", primary_key: "id_lt", id: :serial, force: :cascade do |t|
@@ -78,7 +78,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.index ["email"], name: "unique_email", unique: true
   end
 
-  add_foreign_key "laws", "laws_type", column: "id_type", primary_key: "id_type", name: "laws_id_type_fkey", on_update: :cascade, on_delete: :nullify
+  add_foreign_key "laws", "law_types", column: "id_type", primary_key: "id_type", name: "laws_id_type_fkey", on_update: :cascade, on_delete: :nullify
   add_foreign_key "laws", "quantity", column: "first_element", primary_key: "id_value", name: "laws_first_element_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "laws", "quantity", column: "fourth_element", primary_key: "id_value", name: "laws_fourth_element_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "laws", "quantity", column: "second_element", primary_key: "id_value", name: "laws_second_element_fkey", on_update: :cascade, on_delete: :cascade

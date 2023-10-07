@@ -2,7 +2,7 @@
 
 # Модель для хранения типов закономерностей
 class LawType < ApplicationRecord
-  self.table_name = 'laws_type'
+  self.table_name = 'law_types'
 
   has_many :laws, foreign_key: 'id_type'
 

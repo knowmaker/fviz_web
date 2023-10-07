@@ -68,7 +68,7 @@ class RepresentsController < ApplicationController
 
     json_output = {
       id_repr: represent_id,
-      title: Represent.where(id_repr: represent_id).select('title'),
+      title: Represent.where(id_repr: represent_id).pluck(:title).first,
       active_quantities:
     }
     render json: { data: json_output }, status: :ok
