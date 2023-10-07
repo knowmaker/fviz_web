@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   create_table "gk_translations", primary_key: "id_gk_transl", id: :serial, force: :cascade do |t|
-    t.string "gk_name", limit: 100
+    t.string "gk_name", limit: 100, null: false
     t.string "locale", limit: 2, null: false
     t.integer "id_gk", null: false
     t.index ["id_gk", "locale"], name: "index_gk_translations_on_id_gk_and_locale", unique: true
@@ -34,7 +34,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   create_table "law_types_translations", primary_key: "id_type_transl", id: :serial, force: :cascade do |t|
-    t.string "type_name", limit: 100
+    t.string "type_name", limit: 100, null: false
     t.string "locale", limit: 2, null: false
     t.integer "id_type", null: false
     t.index ["id_type", "locale"], name: "index_law_types_translations_on_id_type_and_locale", unique: true
@@ -60,17 +60,24 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   create_table "quantity", primary_key: "id_value", id: :serial, force: :cascade do |t|
-    t.string "value_name", limit: 200
     t.string "symbol", limit: 100
     t.integer "m_indicate_auto", limit: 2, null: false
     t.integer "l_indicate_auto", limit: 2, null: false
     t.integer "t_indicate_auto", limit: 2, null: false
     t.integer "i_indicate_auto", limit: 2, null: false
-    t.string "unit", limit: 200
     t.integer "id_lt", null: false
     t.integer "id_gk", null: false
     t.string "mlti_sign", limit: 100
     t.index ["id_lt", "id_gk"], name: "idx_unique_id_lt_id_gk", unique: true
+  end
+
+  create_table "quantity_translations", primary_key: "id_value_transl", id: :serial, force: :cascade do |t|
+    t.string "value_name", limit: 200
+    t.string "unit", limit: 100
+    t.string "locale", limit: 2, null: false
+    t.integer "id_value", null: false
+    t.index ["id_value", "locale"], name: "index_quantity_translations_on_id_value_and_locale", unique: true
+    t.index ["locale"], name: "index_quantity_translations_on_locale"
   end
 
   create_table "represents", primary_key: "id_repr", id: :serial, force: :cascade do |t|
@@ -102,6 +109,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   add_foreign_key "laws", "users", column: "id_user", primary_key: "id_user", name: "laws_id_user_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "quantity", "gk", column: "id_gk", primary_key: "id_gk", name: "level", on_update: :cascade, on_delete: :cascade
   add_foreign_key "quantity", "lt", column: "id_lt", primary_key: "id_lt", name: "cell", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "quantity_translations", "quantity", column: "id_value", primary_key: "id_value", name: "quantity_translations_id_value_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "represents", "users", column: "id_user", primary_key: "id_user", name: "represents_id_user_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "users", "represents", column: "active_repr", primary_key: "id_repr", name: "fk_active_repr", on_update: :cascade, on_delete: :nullify
 end
