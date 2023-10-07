@@ -56,7 +56,7 @@ export default function Navbar({revStates, modalsVisibility}) {
         userInfo.setUserProfile(null)
         userInfo.setUserToken(null)
 
-        toast.success('successfully logged off', {
+        toast.success('Сеанс завершен', {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: true,

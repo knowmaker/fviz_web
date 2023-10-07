@@ -96,6 +96,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.string "confirmation_token"
     t.boolean "confirmed", default: false
     t.integer "active_repr"
+    t.string "locale", limit: 2, default: "ru"
     t.index ["email"], name: "unique_email", unique: true
   end
 

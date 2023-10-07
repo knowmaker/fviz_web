@@ -7,6 +7,6 @@
 <body>
 <h1>Подтверждение почты</h1>
 <p>Добро пожаловать <%#= @user.first_name %> <%#= @user.last_name %>!</p>
-<p>Пожалуйста, <a href="<%= confirm_user_url(@user, confirmation_token: @user.confirmation_token, host: 'localhost:5000') %>">подтвердите свою почту.</a></p>
+<p>Пожалуйста, <a href="<%= confirm_user_url(I18n.locale, @user, confirmation_token: @user.confirmation_token, host: 'localhost:5000') %>">подтвердите свою почту.</a></p>
 </body>
 </html>

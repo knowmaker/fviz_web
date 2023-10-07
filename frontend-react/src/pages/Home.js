@@ -577,7 +577,7 @@ function EditProfileModal({modalsVisibility}) {
     }
 
     // send profile update request
-    const editUserResponse = await patchDataToAPI(`${process.env.REACT_APP_API_LINK}/update`,newUserData,headers)
+    const editUserResponse = await patchDataToAPI(`${process.env.REACT_APP_API_LINK}/users/update`,newUserData,headers)
     if (!isResponseSuccessful(editUserResponse)) {
       showMessage(editUserResponse.data.error,"error")
       return

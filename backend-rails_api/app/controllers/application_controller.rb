@@ -15,6 +15,7 @@ class ApplicationController < ActionController::API
         # @decoded = JsonWebToken.decode(token)
         @decoded = decode(token)
         @current_user = User.find(@decoded[:id_user])
+        I18n.locale = @current_user.locale
       rescue ActiveRecord::RecordNotFound
         render json: { error: ['Пользователь не найден'] }, status: :not_found
       rescue JWT::DecodeError
