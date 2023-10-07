@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="the lastest commit before checkout (debug represents and rename table law_types">
-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="gk translations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk_translation.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk_translation.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law_type.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law_type.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/db/schema.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,29 +52,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master-localization",
-    "last_opened_file_path": "C:/Users/Alexander/Desktop/Дисциплины МГТУ/Курсовые работы/Технология разработки программных систем/fill_db_fviz",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ruby.rails.projectView.checked": "true",
-    "ruby.structure.view.model.defaults.configured": "true",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.uml",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alexander/Desktop/BMSTU_works/kursaches/fviz_web/backend-rails_api/spec/controllers&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;,
+    &quot;ruby.structure.view.model.defaults.configured&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Alexander\Desktop\BMSTU_works\kursaches\fviz_web\backend-rails_api\spec\controllers" />
@@ -427,7 +424,16 @@
       <workItem from="1696516768428" duration="14180000" />
       <workItem from="1696604677702" duration="580000" />
       <workItem from="1696625096099" duration="540000" />
-      <workItem from="1696669165515" duration="12919000" />
+      <workItem from="1696669165515" duration="1377000" />
+      <workItem from="1696698210143" duration="2057000" />
+    </task>
+    <task id="LOCAL-00079" summary="debug">
+      <option name="closed" value="true" />
+      <created>1694119097083</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1694119097083</updated>
     </task>
     <task id="LOCAL-00080" summary="debug represent with id_lt">
       <option name="closed" value="true" />
@@ -813,15 +819,7 @@
       <option name="project" value="LOCAL" />
       <updated>1696536610309</updated>
     </task>
-    <task id="LOCAL-00128" summary="the lastest commit before checkout (debug represents and rename table law_types">
-      <option name="closed" value="true" />
-      <created>1696670831888</created>
-      <option name="number" value="00128" />
-      <option name="presentableId" value="LOCAL-00128" />
-      <option name="project" value="LOCAL" />
-      <updated>1696670831888</updated>
-    </task>
-    <option name="localTasksCounter" value="129" />
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -839,6 +837,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="represents_controller.rb add json_output in basic" />
     <MESSAGE value="represents_controller.rb add json_output in basic 2t" />
     <MESSAGE value="trying tests" />
     <MESSAGE value="debug swagger test with auth" />
@@ -863,11 +862,10 @@
     <MESSAGE value="user mailer" />
     <MESSAGE value="add comments &amp;&amp; rubocop" />
     <MESSAGE value="you cannot delete the last represent" />
-    <MESSAGE value="the lastest commit before checkout (debug represents and rename table law_types" />
-    <option name="LAST_COMMIT_MESSAGE" value="the lastest commit before checkout (debug represents and rename table law_types" />
+    <option name="LAST_COMMIT_MESSAGE" value="you cannot delete the last represent" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696683915142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696699502126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@RepresentsController_GET__represent_view_index_returns_the_active_quantities_for_the_current_user_s_active_represent.rcov" NAME="RepresentsController GET #represent_view_index returns the active quantities for the current user's active represent Coverage Results" MODIFIED="1696498578558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Gk.rcov" NAME="Gk Coverage Results" MODIFIED="1696447769671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@LawTypesController.rcov" NAME="LawTypesController Coverage Results" MODIFIED="1696449558509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

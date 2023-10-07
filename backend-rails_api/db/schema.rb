@@ -30,8 +30,15 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   create_table "law_types", primary_key: "id_type", id: :serial, force: :cascade do |t|
-    t.string "type_name", limit: 100, null: false
     t.string "color", limit: 50, null: false
+  end
+
+  create_table "law_types_translations", primary_key: "id_type_transl", id: :serial, force: :cascade do |t|
+    t.string "type_name", limit: 100
+    t.string "locale", limit: 2, null: false
+    t.integer "id_type", null: false
+    t.index ["id_type", "locale"], name: "index_law_types_translations_on_id_type_and_locale", unique: true
+    t.index ["locale"], name: "index_law_types_translations_on_locale"
   end
 
   create_table "laws", primary_key: "id_law", id: :serial, force: :cascade do |t|
@@ -86,6 +93,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   end
 
   add_foreign_key "gk_translations", "gk", column: "id_gk", primary_key: "id_gk", name: "gk_translations_id_gk_fkey", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "law_types_translations", "law_types", column: "id_type", primary_key: "id_type", name: "law_types_translations_id_type_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "laws", "law_types", column: "id_type", primary_key: "id_type", name: "laws_id_type_fkey", on_update: :cascade, on_delete: :nullify
   add_foreign_key "laws", "quantity", column: "first_element", primary_key: "id_value", name: "laws_first_element_fkey", on_update: :cascade, on_delete: :cascade
   add_foreign_key "laws", "quantity", column: "fourth_element", primary_key: "id_value", name: "laws_fourth_element_fkey", on_update: :cascade, on_delete: :cascade
