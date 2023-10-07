@@ -65,7 +65,7 @@ export function deleteDataFromAPI(adress,data, headers = undefined) {
 
 export function getAllCellDataFromAPI(cells,headers) {
 
-  let requests = cells.map(cell => axios.get(`http://localhost:5000/api/quantities/${cell}`, {headers: headers}));
+  let requests = cells.map(cell => axios.get(`${process.env.REACT_APP_API_LINK}/quantities/${cell}`, {headers: headers}));
 
   return new Promise(async function(resolve) {
 
@@ -160,20 +160,8 @@ export function deleteData(setStateFunction, adress, headers, afterRequestFuncti
     console.log(adress, headers);
   });
 }
-
-export function getAllCellData(cells,headers,callbackFunction, extraData) {
-
-  let requests = cells.map(cell => axios.get(`http://localhost:5000/api/quantities/${cell}`, {headers: headers}));
-
-  Promise.all(requests)
-    .then(responses => {
-
-      //console.log(responses)
-
-      const cells = responses.map(response => response.data.data)
-      //callbackFunction(responses)
-      callbackFunction(cells, extraData)
-    })
-
+export function isResponseSuccessful(response) {
+  if (response.status < 300) { return true; }
+  return false;
 }
 

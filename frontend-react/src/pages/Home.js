@@ -1,8 +1,8 @@
 import React,{useEffect,useState, useContext, useRef} from 'react';
 import TableUI from '../components/Table';
 import Draggable from 'react-draggable';
-import setStateFromGetAPI, { postData, putData, patchData, deleteData, getAllCellData, 
-  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,patchAllLayerData,deleteDataFromAPI,getAllCellDataFromAPI} from '../misc/api.js';
+import setStateFromGetAPI, { postData, putData, patchData, deleteData, 
+  getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,deleteDataFromAPI,getAllCellDataFromAPI} from '../misc/api.js';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile,TableContext } from '../misc/contexts.js';
 import { EditorState, convertToRaw , ContentState } from 'draft-js';
@@ -13,6 +13,7 @@ import { useDownloadableScreenshot } from '../misc/Screenshot.js';
 
 import draftToMarkdown from 'draftjs-to-markdown';
 import htmlToDraft from 'html-to-draftjs';
+import { isResponseSuccessful } from '../misc/api';
 
 // const Color = require('color');
 
@@ -55,6 +56,7 @@ export default function Home() {
     const setFullTableData = (result) => {
 
       setTableData(result.active_quantities)
+      console.log(result)
       setTableView({id_repr:result.id_repr,title:result.title})
     }
     // get table and layers when page is loaded
@@ -251,8 +253,8 @@ export default function Home() {
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
 
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState}/>
-                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
+                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken}/>               
@@ -383,7 +385,8 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   // generate gk layer list
   const cellList = gkColors.map(gkLevel => {
 
-    const shownText = `${gkLevel.gk_name}  ${gkLevel.gk_sign}`
+
+    const shownText = `${gkLevel.gk_name} G<sup>${gkLevel.g_indicate}</sup>K<sup>${gkLevel.k_indicate}</sup>`
 
     return (
       <option key={gkLevel.id_gk} value={gkLevel.id_gk} dangerouslySetInnerHTML={{__html: shownText}}/>
@@ -393,7 +396,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
   const [previewCell, setPreviewCell] = useState({
     cellFullId:-1,
-    cellData:{value_name:"не выбрано",symbol:"",unit:"",mlti_sign:""},
+    cellData:{value_name:"не выбрано",symbol:"",unit:""},
     cellColor:undefined
   })
 
@@ -430,7 +433,11 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
             value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value),
             symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value),
             unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value),
-            mlti_sign: convertToMLTI(M_indicate,L_indicate,T_indicate,I_indicate),
+            m_indicate_auto:M_indicate,
+            l_indicate_auto:L_indicate,
+            t_indicate_auto:T_indicate,
+            i_indicate_auto:I_indicate,
+            
           },
           cellColor: cellColor,
         }
@@ -728,6 +735,8 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
     selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
  
+    console.log({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
+
     let newTable = tableState.tableData
     lawCells.forEach(cellData => {
 
@@ -862,68 +871,104 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   const tableState = useContext(TableContext)  
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
-  }      
+  }     
+  
+  const [tableViewEditorState, setTableViewEditorState] = useState(EditorState.createEmpty())
 
-  const selectTableView = (tableView) => {
-    setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/active_view/${tableView.id_repr}`,afterSelectTableView,headers,tableView.id_repr)
+  const selectTableView = async (tableView) => {
+
+    // send full table view data request
+    const tableViewDataResponse = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/active_view/${tableView.id_repr}`,headers)
+    if (!isResponseSuccessful(tableViewDataResponse)) {
+      showMessage(tableViewDataResponse.data.error,"error")
+      return
+    }
+    const tableViewData = tableViewDataResponse.data.data
+
+    // set it as selected
+    tableViewState.setTableView({id_repr:tableView.id_repr,title:tableViewData.title})
+    tableState.setTableData(tableViewData.active_quantities)
+
+    // change input to current table view name
+    convertMarkdownToEditorState(setTableViewEditorState, tableViewData.title) 
+
   }
 
-  const afterSelectTableView = (fullTableView,id_repr) => {
+  const updateTableView = async () => {
 
-
-    tableViewState.setTableView({id_repr:id_repr,title:fullTableView.title})
-    tableState.setTableData(fullTableView.active_quantities)
-
-    document.getElementById("InputTableViewName3").value = fullTableView.title
-
-    //modalsVisibility.tableViewsModalVisibility.setVisibility(false)
-  }
-
-  const updateTableView = () => {
-
+    // get all current visible cells ids
     const cellIds = Object.values(tableState)[0].map(cell => cell.id_value)
 
-    const tableViewTitle = document.getElementById("InputTableViewName3").value
+    // get new table view name
+    const tableViewTitle = convertMarkdownFromEditorState(tableViewEditorState)
 
     const newTableView = {
       title: tableViewTitle,
       active_quantities: cellIds,
     }
+  
+    // send table view update request
+    const changedTableViewResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/represents/${tableViewState.tableView.id_repr}`,newTableView,headers)
+    if (!isResponseSuccessful(changedTableViewResponseData)) {
+      showMessage(changedTableViewResponseData.data.error,"error")
+      return
+    }
 
-    putData(undefined,`${process.env.REACT_APP_API_LINK}/represents/${tableViewState.tableView.id_repr}`,newTableView,headers,afterCreateTableView)
-  }
-
-  const deleteTableView = (tableView) => {
-    
-    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/represents/${tableView.id_repr}`,headers,afterDeleteTableView)
-  }
-
-  const afterDeleteTableView = () => {
+    // update current table views
     setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+
+    // show message
+    showMessage("Представление обновлено")
+  
   }
 
-  const createTableView = () => {
+  const deleteTableView = async (tableView) => {
+
+    // send delete request
+    const tableViewDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/represents/${tableView.id_repr}`,undefined,headers)
+    if (!isResponseSuccessful(tableViewDeleteResponseData)) {
+      showMessage(tableViewDeleteResponseData.data.error,"error")
+      return
+    }
+
+    // update current table views
+    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+
+    // show message
+    showMessage("Представление удалено")
+  
+  }
+
+  const createTableView = async () => {
     
     // fix filter later
+    // get all current visible cells ids
     const cellIds = Object.values(tableState)[0].map(cell => cell.id_value).filter(id => id !== -1)
 
-
-    const tableViewTitle = document.getElementById("InputTableViewName3").value
+    // get new table view name
+    const tableViewTitle = convertMarkdownFromEditorState(tableViewEditorState)
 
     const newTableView = {
       title: tableViewTitle,
       active_quantities: cellIds,
     }
+    // send table view create request
+    const newTableViewResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/represents`, newTableView, headers)
+    if (!isResponseSuccessful(newTableViewResponseData)) {
+      showMessage(newTableViewResponseData.data.error,"error")
+      return
+    }
 
-    postData(undefined, `${process.env.REACT_APP_API_LINK}/represents`, newTableView, headers, afterCreateTableView)
-
-  }
-
-  const afterCreateTableView = () => {
+    // update current table views
     setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+
+    // show message
+    showMessage("Представление создано")
+
   }
+
   
-  let tableViewsMarkup
+  let tableViewsMarkup = null
   if (tableViews) {
     tableViewsMarkup = tableViews.map(tableView => {
 
@@ -932,13 +977,13 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     return (
       <tr key={tableView.id_repr}>
         <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
-        <td>{tableView.title}</td>
+        <td dangerouslySetInnerHTML={{__html: tableView.title}}></td>
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectTableView(tableView)}>↓</button></td>
         <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteTableView(tableView)}>🗑</button></td>
       </tr>
     );
   })
-  } else {tableViewsMarkup = null}
+  }
 
 
 
@@ -956,7 +1001,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
             Название:
       </div>
         <div className="col-5">
-          <input type="text" className="form-control" id="InputTableViewName3" placeholder="Моё представление"/>
+          <RichTextEditor editorState={tableViewEditorState} setEditorState={setTableViewEditorState}/>
         </div>
         <div className="col-2">
         <button type="button" className="btn btn-success" onClick={() => createTableView()}>Создать</button>
@@ -994,6 +1039,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   const lawsGroups = lawsGroupsState.lawsGroups
   const setLawsGroups = lawsGroupsState.setLawsGroups
 
+  // define current law group and editor state
   const [selectedLawGroup, setSelectedLawGroup] = useState({ type_name:null,id_type:null})
   const [lawGroupEditorState, setLawGroupEditorState] = useState(EditorState.createEmpty())
 
@@ -1503,11 +1549,6 @@ export function showMessage(messages,type = "success") {
 
 }
 
-export function isResponseSuccessful(response) {
-  if (response.status < 300) {return true}
-  return false
-}
-
 function convertMarkdownToEditorState(stateFunction, markdown) {
 
   const blocksFromHtml = htmlToDraft(markdown);
@@ -1523,7 +1564,7 @@ function convertMarkdownFromEditorState(state) {
   return html
 }
 
-function convertToMLTI(M,L,T,I) {
+export function convertToMLTI(M,L,T,I) {
 
   let MLTIHTMLString = ""
   if (M !== 0) {

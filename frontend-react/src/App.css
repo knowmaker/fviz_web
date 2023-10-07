@@ -173,9 +173,27 @@ sup, sub {
   margin-right: 10px;
 }
 
+.nameinput {
+  display: block;
+  width: 150px;
+  font-size: 15px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
 .v-align {
   display: inline;
   vertical-align: middle;
+}
+
+.footbar-button {
+  margin-right: 10px;
 }
 
 .diminput sup {

@@ -4,13 +4,15 @@ import { TableContext, UserProfile } from '../misc/contexts.js';
 
 import setStateFromGetAPI, {getAllCellDataFromAPI} from '../misc/api.js';
 import LawsCanvas from './LawsCanvas';
-import {showMessage,isResponseSuccessful} from '../pages/Home.js';
+import {showMessage} from '../pages/Home.js';
+import { isResponseSuccessful } from '../misc/api';
+import { convertToMLTI } from '../pages/Home.js';
 // const Color = require('color');
 
 const rowCount = 21
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState ,lawsState}) {
 
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
@@ -31,7 +33,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
     <>
       <Navbar revStates={revStates} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={refTable} modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
+      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={refTable} modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
 
 
     </>  
@@ -115,7 +117,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility,lawsGroupsState}, ref) => {
+const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility,lawsGroupsState,lawsState}, ref) => {
 
 
   const tableState = useContext(TableContext)
@@ -129,7 +131,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
   useEffect(() => {
 
-    setStateFromGetAPI(setEmptyCells, `http://localhost:5000/api/lt`)
+    setStateFromGetAPI(setEmptyCells, `${process.env.REACT_APP_API_LINK}/lt`)
 
   }, []);
 
@@ -237,6 +239,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       selectedLawState={selectedLawState}
       modalsVisibility={modalsVisibility}
       emptyCellsData={emptyCells}
+      lawsState={lawsState}
       />
     });
       return (
@@ -257,7 +260,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
 })
 
-function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData}) {
+function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData,lawsState}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
   const setSelectedCell = selectedCellState.setSelectedCell
@@ -304,6 +307,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
             selectedLawState={cellColor ? selectedLawState : undefined}
             modalsVisibility={modalsVisibility}
             isEmpty={cellColor ? false:true}
+            lawsState={lawsState}
             />);
   });
 
@@ -319,7 +323,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
 }
 
-export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = ""}) {
+export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = "",lawsState}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -349,8 +353,6 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
       
       const cellData = selectedCells.find(cell => cell.id_value === cellId);
-
-      cellData.lt_sign = tableState.tableData.find(cell => cell.id_lt !== cellData.id_lt).lt_sign
 
       tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
@@ -389,6 +391,28 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
           return
         }
 
+        const dublicateLaw = lawsState.laws.find(law => {
+          const lawInArray = [law.first_element,law.second_element,law.third_element,law.fourth_element]
+          const currentLaw = [...selectedLawState.selectedLaw.cells,selectedCellData,fourthCellData].map(cell=>cell.id_value)
+          return arraysEqual(lawInArray,currentLaw)
+        })
+        
+        if (dublicateLaw) {
+          console.log(dublicateLaw)
+          const lawCellsIds = [dublicateLaw.first_element,dublicateLaw.second_element,dublicateLaw.third_element,dublicateLaw.fourth_element]
+          
+          const lawCellsFullData = lawCellsIds.map(cellId => tableState.tableData.find(tableCell => tableCell.id_value === cellId))
+
+          console.log(lawCellsFullData)
+          
+          selectedLawState.setSelectedLaw({
+            ...dublicateLaw,
+            cells:lawCellsFullData,
+          })
+          showMessage("Этот закон уже существует","error")
+          return
+        }
+
         selectedLawState.setSelectedLaw(
           {
             law_name: null,
@@ -408,9 +432,11 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
         if (!isCorrectLaw) {
           selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
-          showMessage("Данного закона не существует")
+          showMessage("Данного закона не существует","error")
           return
         }
+
+
 
         modalsVisibility.lawsModalVisibility.setVisibility(true)
 
@@ -435,10 +461,13 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
   if (!isEmpty) {
 
+
     const cellContent_name = cellData.value_name;
     const cellContent_symbol = cellData.symbol;
     const cellContent_unit = cellData.unit;
-    const cellContent_mlti = cellData.mlti_sign;
+    const cellContent_mlti = convertToMLTI(cellData.m_indicate_auto,cellData.l_indicate_auto,cellData.t_indicate_auto,cellData.i_indicate_auto);
+
+
 
     return (
       <div className="cell" style={{ backgroundColor: borderColor }}>
@@ -530,4 +559,18 @@ function checkLaw(cells) {
   const isSameMLTI = JSON.stringify(firstThirdCellsMLTI) === JSON.stringify(secondFourthCellsMLTI)
 
   return isSameMLTI
+}
+
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
+
+  let aSorted = a.toSorted()
+  let bSorted = b.toSorted()
+
+  for (let i = 0; i < aSorted.length; ++i) {
+    if (aSorted[i] !== bSorted[i]) return false;
+  }
+  return true;
 }
