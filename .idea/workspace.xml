@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="drop all &quot;_sign&quot; columns in DB">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="ru and en yml files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -424,15 +424,7 @@
       <workItem from="1696669165515" duration="1377000" />
       <workItem from="1696698210143" duration="9334000" />
       <workItem from="1696714019056" duration="771000" />
-      <workItem from="1696760625888" duration="4037000" />
-    </task>
-    <task id="LOCAL-00083" summary="rubocop controllers">
-      <option name="closed" value="true" />
-      <created>1694181991315</created>
-      <option name="number" value="00083" />
-      <option name="presentableId" value="LOCAL-00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1694181991317</updated>
+      <workItem from="1696760625888" duration="5728000" />
     </task>
     <task id="LOCAL-00084" summary="rubocop models">
       <option name="closed" value="true" />
@@ -818,7 +810,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696711269228</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="ru and en yml files">
+      <option name="closed" value="true" />
+      <created>1696772965841</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1696772965841</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -836,7 +836,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="debug user register" />
     <MESSAGE value="debug quantity rspec" />
     <MESSAGE value="debug quantity rspec 2" />
     <MESSAGE value="debug quantity rspec 3" />
@@ -861,7 +860,8 @@
     <MESSAGE value="quantity translations" />
     <MESSAGE value="user add language" />
     <MESSAGE value="drop all &quot;_sign&quot; columns in DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="drop all &quot;_sign&quot; columns in DB" />
+    <MESSAGE value="ru and en yml files" />
+    <option name="LAST_COMMIT_MESSAGE" value="ru and en yml files" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696772755988" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

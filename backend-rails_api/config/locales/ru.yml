@@ -1,6 +1,70 @@
 ---
 ru:
   activerecord:
+    models:
+      gk: "Системный уровень"
+      gk_translation: "Переводы системных уровней"
+      law_type: "Тип закона"
+      law_type_translation: "Переводы типа закона"
+      law: "Закон"
+      lt: "Ячейка"
+      quantity: "Физическая величина"
+      quantity_translation: "Переводы физических величин"
+      represent: "Представление"
+      user: "Пользователь"
+      attributes:
+        gk:
+          g_indicate: "Показатель степени G"
+          k_indicate: "Показатель степени K"
+          color: "Цвет системного уровня"
+        gk_translation:
+          gk_name: "Название системного уровня"
+          locale: "Язык"
+        law_type:
+          color: "Цвет типа закона"
+        law_type_translation:
+          type_name: "Имя типа закона"
+          locale: "Язык"
+        law:
+          law_name: "Название закона"
+          first_element: "Первый элемент"
+          second_element: "Второй элемент"
+          third_element: "Третий элемент"
+          fourth_element: "Четвертый элемент"
+          id_user: "Идентификатор пользователя"
+          id_type: "Идентификатор типа закона"
+          combination: "Комбинация"
+        lt:
+          l_indicate: "Показатель степени L"
+          t_indicate: "Показатель степени T"
+        quantity:
+          symbol: "Символ"
+          m_indicate_auto: "Показатель степени M"
+          l_indicate_auto: "Показатель степени L"
+          t_indicate_auto: "Показатель степени T"
+          i_indicate_auto: "Показатель степени I"
+          id_lt: "Идентификатор LT"
+          id_gk: "Идентификатор GK"
+        quantity_translation:
+          value_name: "Название величины"
+          unit: "Единица измерения"
+          locale: "Язык"
+          id_value: "Идентификатор величины"
+        represent:
+          title: "Название представления"
+          id_user: "Идентификатор пользователя"
+          active_quantities: "Активные физические величины"
+        user:
+          email: "Email"
+          password: "Пароль"
+          last_name: "Фамилия"
+          first_name: "Имя"
+          patronymic: "Отчество"
+          role: "Роль"
+          confirmation_token: "Токен подтверждения"
+          confirmed: "Подтвержден"
+          active_repr: "Активное представлние"
+          locale: "Язык"
     errors:
       messages:
         record_invalid: 'Возникли ошибки: %{errors}'
