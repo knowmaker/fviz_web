@@ -35,11 +35,11 @@ class UsersController < ApplicationController
       token = encode(id_user: @user.id_user)
       render json: { data: token }, status: :ok
     elsif !@user
-      render json: { error: ['Пользователь не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.users.not_found')] }, status: :not_found
     elsif !@user.confirmed
-      render json: { error: ['Email не подтвержден'] }, status: :unauthorized
+      render json: { error: [I18n.t('errors.users.unauthorized')] }, status: :unauthorized
     else
-      render json: { error: ['Неправильный логин или пароль'] }, status: :unauthorized
+      render json: { error: [I18n.t('errors.users.invalid_credentials')] }, status: :unauthorized
     end
   end
 
@@ -67,9 +67,9 @@ class UsersController < ApplicationController
 
     if user
       user.update(confirmed: true, confirmation_token: nil)
-      render json: 'Email успешно подтвержден', status: :ok
+      render json: I18n.t('errors.users.confirmation_email_sent'), status: :ok
     else
-      render json: 'Некорректная ссылка', status: :unprocessable_entity
+      render json: I18n.t('errors.users.incorrect_link'), status: :unprocessable_entity
     end
   end
 
@@ -88,9 +88,9 @@ class UsersController < ApplicationController
 
       head :ok
     elsif user && !user.confirmed
-      render json: { error: ['Email не подтвержден'] }, status: :unauthorized
+      render json: { error: [I18n.t('errors.users.unauthorized')] }, status: :unauthorized
     else
-      render json: { error: ['Пользователь не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.users.not_found')] }, status: :not_found
     end
   end
 
@@ -107,9 +107,9 @@ class UsersController < ApplicationController
       # Высылается новый пароль
       UserMailer.new_password_email(user, new_password).deliver_now
 
-      render json: 'Новый пароль сгенерирован и выслан на почту', status: :ok
+      render json: I18n.t('errors.users.new_password_generated'), status: :ok
     else
-      render json: 'Некорректная ссылка', status: :unprocessable_entity
+      render json: I18n.t('errors.users.incorrect_link'), status: :unprocessable_entity
     end
   end
 

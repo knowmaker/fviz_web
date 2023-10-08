@@ -18,7 +18,7 @@ class RepresentsController < ApplicationController
     if @represent
       render json: { data: @represent }, status: :ok
     else
-      render json: { error: ['Представление не найдено'] }, status: :not_found
+      render json: { error: [I18n.t('errors.represents.not_found')] }, status: :not_found
     end
   end
 
@@ -42,7 +42,7 @@ class RepresentsController < ApplicationController
         render json: { error: @represent.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { error: ['Представление не найдено'] }, status: :not_found
+      render json: { error: [I18n.t('errors.represents.not_found')] }, status: :not_found
     end
   end
 
@@ -55,7 +55,7 @@ class RepresentsController < ApplicationController
         render json: { error: @represent.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { error: ['Представление не найдено'] }, status: :not_found
+      render json: { error: [I18n.t('errors.represents.not_found')] }, status: :not_found
     end
   end
 
@@ -89,7 +89,7 @@ class RepresentsController < ApplicationController
 
       render json: { data: json_output }, status: :ok
     else
-      render json: { error: ['Представление не найдено'] }, status: :not_found
+      render json: { error: [I18n.t('errors.represents.not_found')] }, status: :not_found
     end
   end
 

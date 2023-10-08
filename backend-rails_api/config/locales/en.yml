@@ -12,59 +12,59 @@ en:
       quantity_translation: "Quantity Translations"
       represent: "Represent"
       user: "User"
-      attributes:
-        gk:
-          g_indicate: "G Indicator"
-          k_indicate: "K Indicator"
-          color: "System level color"
-        gk_translation:
-          gk_name: "System level name"
-          locale: "Language"
-        law_type:
-          color: "Law type color"
-        law_type_translation:
-          type_name: "Law type Name"
-          locale: "Language"
-        law:
-          law_name: "Law Name"
-          first_element: "First Element"
-          second_element: "Second Element"
-          third_element: "Third Element"
-          fourth_element: "Fourth Element"
-          id_user: "User ID"
-          id_type: "Type ID"
-          combination: "Combination"
-        lt:
-          l_indicate: "L Indicator"
-          t_indicate: "T Indicator"
-        quantity:
-          symbol: "Symbol"
-          m_indicate_auto: "M Indicator"
-          l_indicate_auto: "L Indicator"
-          t_indicate_auto: "T Indicator"
-          i_indicate_auto: "I Indicator"
-          id_lt: "LT ID"
-          id_gk: "GK ID"
-        quantity_translation:
-          value_name: "Quantity Name"
-          unit: "Unit"
-          locale: "Language"
-          id_value: "Quantity ID"
-        represent:
-          title: "Represent title"
-          id_user: "User ID"
-          active_quantities: "Active Quantities"
-        user:
-          email: "Email"
-          password: "Password"
-          last_name: "Last Name"
-          first_name: "First Name"
-          patronymic: "Patronymic"
-          role: "Role"
-          confirmation_token: "Confirmation Token"
-          confirmed: "Confirmed"
-          active_repr: "Active Represent"
-          locale: "Language"
+    attributes:
+      gk:
+        g_indicate: "G Indicator"
+        k_indicate: "K Indicator"
+        color: "System level color"
+      gk_translation:
+        gk_name: "System level name"
+        locale: "Language"
+      law_type:
+        color: "Law type color"
+      law_type_translation:
+        type_name: "Law type Name"
+        locale: "Language"
+      law:
+        law_name: "Law Name"
+        first_element: "First Element"
+        second_element: "Second Element"
+        third_element: "Third Element"
+        fourth_element: "Fourth Element"
+        id_user: "User ID"
+        id_type: "Type ID"
+        combination: "Combination"
+      lt:
+        l_indicate: "L Indicator"
+        t_indicate: "T Indicator"
+      quantity:
+        symbol: "Symbol"
+        m_indicate_auto: "M Indicator"
+        l_indicate_auto: "L Indicator"
+        t_indicate_auto: "T Indicator"
+        i_indicate_auto: "I Indicator"
+        id_lt: "LT ID"
+        id_gk: "GK ID"
+      quantity_translation:
+        value_name: "Quantity Name"
+        unit: "Unit"
+        locale: "Language"
+        id_value: "Quantity ID"
+      represent:
+        title: "Represent title"
+        id_user: "User ID"
+        active_quantities: "Active Quantities"
+      user:
+        email: "Email"
+        password: "Password"
+        last_name: "Last Name"
+        first_name: "First Name"
+        patronymic: "Patronymic"
+        role: "Role"
+        confirmation_token: "Confirmation Token"
+        confirmed: "Confirmed"
+        active_repr: "Active Represent"
+        locale: "Language"
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -171,6 +171,15 @@ en:
       month: Month
       year: Year
   errors:
+    users:
+      not_found: "User not found"
+      unauthorized: "Email not confirmed"
+      invalid_credentials: "Invalid login or password"
+      incorrect_link: "Incorrect link"
+      confirmation_email_sent: "Email successfully confirmed"
+      new_password_generated: "New password generated and sent to email"
+    represents:
+      not_found: "Representation not found"
     format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted
