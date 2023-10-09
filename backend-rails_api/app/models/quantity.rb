@@ -20,5 +20,5 @@ class Quantity < ApplicationRecord
                                                                                     numericality: { only_integer: true }
   validates :unit, length: { maximum: 100 }
   validates :id_lt, :id_gk, presence: true, numericality: { only_integer: true }
-  validates :id_gk, uniqueness: { scope: :id_lt, message: 'должен быть уникальным в сочетании с LT' }
+  validates :id_gk, uniqueness: { scope: :id_lt, message: I18n.t('errors.messages.gk_lt_combination_taken') }
 end

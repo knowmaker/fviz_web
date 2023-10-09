@@ -227,6 +227,9 @@ en:
       present: must be blank
       required: must exist
       taken: has already been taken
+      gk_lt_combination_taken: "must be unique for cell"
+      combination_user_combination_taken: "must be unique for user"
+      delete_represent: "You cannot delete all views"
       too_long:
         one: is too long (maximum is %{count} character)
         other: is too long (maximum is %{count} characters)

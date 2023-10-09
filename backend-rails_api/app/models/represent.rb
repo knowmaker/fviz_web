@@ -23,7 +23,7 @@ class Represent < ApplicationRecord
       number = quantity.to_i
 
       if number.to_s != quantity.to_s || number.zero?
-        errors.add(:active_quantities, 'должны быть непустыми целыми числами')
+        errors.add(:active_quantities,  :not_a_number)
         break
       end
     end
@@ -31,7 +31,7 @@ class Represent < ApplicationRecord
 
   def check_user_represents_count
     if user.represents.count == 1
-      errors.add(:base, 'Нельзя удалить все представления')
+      errors.add(:base, I18n.t('errors.messages.delete_represent'))
       throw(:abort)
     end
   end
