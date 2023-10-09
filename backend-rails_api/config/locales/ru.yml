@@ -14,6 +14,7 @@ ru:
       user: "Пользователь"
     attributes:
       gk:
+        id_gk: "Системный уровень"
         g_indicate: "Показатель степени G"
         k_indicate: "Показатель степени K"
         color: "Цвет системного уровня"
@@ -21,40 +22,46 @@ ru:
         gk_name: "Название системного уровня"
         locale: "Язык"
       law_type:
+        id_type: "Тип закона"
         color: "Цвет типа закона"
       law_type_translation:
         type_name: "Имя типа закона"
         locale: "Язык"
       law:
+        id_law: "Закон"
         law_name: "Название закона"
         first_element: "Первый элемент"
         second_element: "Второй элемент"
         third_element: "Третий элемент"
         fourth_element: "Четвертый элемент"
-        id_user: "Идентификатор пользователя"
-        id_type: "Идентификатор типа закона"
-        combination: "Комбинация"
+        id_user: "Пользователь"
+        id_type: "Тип закона"
+        combination: "Комбинация элементов"
       lt:
+        id_lt: "Ячейка"
         l_indicate: "Показатель степени L"
         t_indicate: "Показатель степени T"
       quantity:
+        id_value: "Величина"
         symbol: "Символ"
         m_indicate_auto: "Показатель степени M"
         l_indicate_auto: "Показатель степени L"
         t_indicate_auto: "Показатель степени T"
         i_indicate_auto: "Показатель степени I"
-        id_lt: "Идентификатор LT"
-        id_gk: "Идентификатор GK"
+        id_lt: "Ячейка"
+        id_gk: "Системный уровень"
       quantity_translation:
         value_name: "Название величины"
         unit: "Единица измерения"
         locale: "Язык"
-        id_value: "Идентификатор величины"
+        id_value: "Величина"
       represent:
+        id_repr: "Представление"
         title: "Название представления"
-        id_user: "Идентификатор пользователя"
+        id_user: "Пользователь"
         active_quantities: "Активные физические величины"
       user:
+        id_user: "Пользователь"
         email: "Email"
         password: "Пароль"
         last_name: "Фамилия"
@@ -195,6 +202,10 @@ ru:
       month: Месяц
       year: Год
   errors:
+    application:
+      not_found: "Пользователь не найден"
+      token_not_found: "Токен авторизации не найден"
+      token_error: "Ошибка декодирования токена"
     users:
       not_found: "Пользователь не найден"
       unauthorized: "Email не подтвержден"
@@ -204,6 +215,18 @@ ru:
       new_password_generated: "Новый пароль сгенерирован и выслан на почту"
     represents:
       not_found: "Представление не найдено"
+    laws:
+      not_found: "Закон не найден"
+    law_types:
+      not_found: "Тип закона не найден"
+      admin_forbidden: "Управление типами законов доступно только админу"
+    gk:
+      not_found: "Системный уровень не найден"
+      admin_forbidden: "Управление системными уровнями доступно только админу"
+    quantities:
+      not_found: "Величина не найдена"
+      admin_forbidden: "Управление величинами доступно только админу"
+      cell_not_found: "Ячейка не найдена"
     format: "%{attribute} %{message}"
     messages:
       accepted: нужно подтвердить

@@ -10,7 +10,7 @@ class QuantitiesController < ApplicationController
   # Сохраняется в виде PDF файла
   def index
     # unless @current_user.role
-    #   render json: {error: ['Только админ может загружать списко величин']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -28,14 +28,14 @@ class QuantitiesController < ApplicationController
     if @quantity
       render json: { data: @quantity }, status: :ok
     else
-      render json: { error: ['Величина не найдена'] }, status: :not_found
+      render json: { error: [I18n.t('errors.quantities.not_found')] }, status: :not_found
     end
   end
 
   # Метод для создания новой величины
   def create
     # unless @current_user.role
-    #   render json: {error: ['Только админ может создавать величины']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -58,7 +58,7 @@ class QuantitiesController < ApplicationController
   # Метод для обновления параметров величины. Параметр - id величины
   def update
     # unless @current_user.role
-    #   render json: {error: ['Только админ может обновлять величины']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -76,14 +76,14 @@ class QuantitiesController < ApplicationController
         render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { error: ['Величина не найдена'] }, status: :not_found
+      render json: { error: [I18n.t('errors.quantities.not_found')] }, status: :not_found
     end
   end
 
   # Метод для удаления величины. Параметр - id величины
   def destroy
     # unless @current_user.role
-    #   render json: {error: ['Только админ может удалять величины']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -91,7 +91,7 @@ class QuantitiesController < ApplicationController
       @quantity.destroy
       head :ok
     else
-      render json: { error: ['Величина не найдена'] }, status: :not_found
+      render json: { error: [I18n.t('errors.quantities.not_found')] }, status: :not_found
     end
   end
 
@@ -105,7 +105,7 @@ class QuantitiesController < ApplicationController
         render json: { data: [] }, status: :ok
       end
     else
-      render json: { error: ['Ячейки не существует'] }, status: :not_found
+      render json: { error: [I18n.t('errors.quantities.cell_not_found')] }, status: :not_found
     end
   end
 
@@ -122,7 +122,7 @@ class QuantitiesController < ApplicationController
                                     :unit, :l_indicate, :t_indicate, :id_gk)
 
     lt = Lt.find_by(l_indicate: quantity_params[:l_indicate], t_indicate: quantity_params[:t_indicate])
-    return { error: 'Такой ячейки не существует' } unless lt
+    return { error: I18n.t('errors.quantities.not_found') } unless lt
 
     quantity_params[:id_lt] = lt.id_lt if lt
 

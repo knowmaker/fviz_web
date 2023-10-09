@@ -13,22 +13,17 @@ class LawTypesController < ApplicationController
 
   # Метод для получения одного типа закона. Параметр - id тип закона
   def show
-    # unless @current_user.role
-    #   render json: {error: ['Только админ может просматривать тип закона']}, status: :forbidden
-    #   return
-    # end
-
     if @law_type
       render json: { data: @law_type }, status: :ok
     else
-      render json: { error: ['Тип закона не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.law_types.not_found')] }, status: :not_found
     end
   end
 
   # Метод для создания нового типа закона
   def create
     # unless @current_user.role
-    #   render json: {error: ['Только админ может создавать законы']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -44,7 +39,7 @@ class LawTypesController < ApplicationController
   # Метод для обновления параметров типа закона. Параметр - id тип закона
   def update
     # unless @current_user.role
-    #   render json: {error: ['Только админ может обновлять законы']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -55,14 +50,14 @@ class LawTypesController < ApplicationController
         render json: { error: @law_type.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { error: ['Тип закона не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.law_types.not_found')] }, status: :not_found
     end
   end
 
   # Метод для удаления типа закона. Параметр - id тип закона
   def destroy
     # unless @current_user.role
-    #   render json: {error: ['Только админ может удалять законы']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -70,7 +65,7 @@ class LawTypesController < ApplicationController
       @law_type.destroy
       head :ok
     else
-      render json: { error: ['Тип закона не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.law_types.not_found')] }, status: :not_found
     end
   end
 

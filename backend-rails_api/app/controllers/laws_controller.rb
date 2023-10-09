@@ -18,7 +18,7 @@ class LawsController < ApplicationController
     if @law
       render json: { data: @law }, status: :ok
     else
-      render json: { error: ['Закон не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.laws.not_found')] }, status: :not_found
     end
   end
 
@@ -42,7 +42,7 @@ class LawsController < ApplicationController
         render json: { error: @law.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { error: ['Закон не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.laws.not_found')] }, status: :not_found
     end
   end
 
@@ -52,7 +52,7 @@ class LawsController < ApplicationController
       @law.destroy
       head :ok
     else
-      render json: { error: ['Закон не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.laws.not_found')] }, status: :not_found
     end
   end
 

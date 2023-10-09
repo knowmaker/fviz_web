@@ -17,12 +17,12 @@ class ApplicationController < ActionController::API
         @current_user = User.find(@decoded[:id_user])
         # I18n.locale = @current_user.locale
       rescue ActiveRecord::RecordNotFound
-        render json: { error: ['Пользователь не найден'] }, status: :not_found
+        render json: { error: [I18n.t('errors.application.not_found')] }, status: :not_found
       rescue JWT::DecodeError
-        render json: { error: ['Ошибка декодирования токена'] }, status: :unprocessable_entity
+        render json: { error: [I18n.t('errors.application.token_not_found')] }, status: :unprocessable_entity
       end
     elsif check_current_user
-      render json: { error: ['Токен авторизации не найден'] }, status: :unauthorized
+      render json: { error: [I18n.t('errors.application.token_error')] }, status: :unauthorized
     else
       @current_user = nil
     end

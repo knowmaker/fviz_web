@@ -13,22 +13,17 @@ class GkController < ApplicationController
 
   # Метод для получения одного системного уровня по его id
   def show
-    # unless @current_user.role
-    #   render json: {error: ['Только админ может просматривать слой']}, status: :forbidden
-    #   return
-    # end
-
     if @gk
       render json: { data: @gk }, status: :ok
     else
-      render json: { error: ['Слой не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.gk.not_found')] }, status: :not_found
     end
   end
 
   # Метод для обновления параметров системного уровня по его id
   def update
     # unless @current_user.role
-    #   render json: {error: ['Только админ может обновлять законы']}, status: :forbidden
+    #   render json: {error: [I18n.t('errors.gk.admin_forbidden')]}, status: :forbidden
     #   return
     # end
 
@@ -39,7 +34,7 @@ class GkController < ApplicationController
         render json: { error: @gk.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { error: ['Слой не найден'] }, status: :not_found
+      render json: { error: [I18n.t('errors.represents.not_found')] }, status: :not_found
     end
   end
 

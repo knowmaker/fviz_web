@@ -14,6 +14,7 @@ en:
       user: "User"
     attributes:
       gk:
+        id_gk: "System level"
         g_indicate: "G Indicator"
         k_indicate: "K Indicator"
         color: "System level color"
@@ -21,40 +22,46 @@ en:
         gk_name: "System level name"
         locale: "Language"
       law_type:
+        id_type: "Law type"
         color: "Law type color"
       law_type_translation:
         type_name: "Law type Name"
         locale: "Language"
       law:
+        id_law: "Law"
         law_name: "Law Name"
         first_element: "First Element"
         second_element: "Second Element"
         third_element: "Third Element"
         fourth_element: "Fourth Element"
-        id_user: "User ID"
-        id_type: "Type ID"
-        combination: "Combination"
+        id_user: "User"
+        id_type: "Law type"
+        combination: "Combination of elements"
       lt:
+        id_lt: "Cell"
         l_indicate: "L Indicator"
         t_indicate: "T Indicator"
       quantity:
+        id_value: "Quantity"
         symbol: "Symbol"
         m_indicate_auto: "M Indicator"
         l_indicate_auto: "L Indicator"
         t_indicate_auto: "T Indicator"
         i_indicate_auto: "I Indicator"
-        id_lt: "LT ID"
-        id_gk: "GK ID"
+        id_lt: "Cell"
+        id_gk: "System level"
       quantity_translation:
         value_name: "Quantity Name"
         unit: "Unit"
         locale: "Language"
-        id_value: "Quantity ID"
+        id_value: "Quantity"
       represent:
+        id_repr: "Represent"
         title: "Represent title"
-        id_user: "User ID"
+        id_user: "User"
         active_quantities: "Active Quantities"
       user:
+        id_user: "User"
         email: "Email"
         password: "Password"
         last_name: "Last Name"
@@ -171,6 +178,10 @@ en:
       month: Month
       year: Year
   errors:
+    application:
+      not_found: "User not found"
+      token_not_found: "Authorization token not found"
+      token_error: "Token decoding error"
     users:
       not_found: "User not found"
       unauthorized: "Email not confirmed"
@@ -180,6 +191,18 @@ en:
       new_password_generated: "New password generated and sent to email"
     represents:
       not_found: "Representation not found"
+    laws:
+      not_found: "Law not found"
+    law_types:
+      not_found: "Law type not found"
+      admin_forbidden: "Management of types of laws is available only to the administrator"
+    gk:
+      not_found: "System level not found"
+      admin_forbidden: "Management of system levels is available only to the administrator"
+    quantities:
+      not_found: "Quantity not found"
+      admin_forbidden: "Management of quantities is available only to the administrator"
+      cell_not_found: "Cell not found"
     format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted
