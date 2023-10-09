@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="css empty cell">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="localisation email subject">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/confirmation_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/confirmation_email.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/new_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/new_password_email.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/reset_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/reset_password_email.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/environments/development.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/environments/development.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/environments/production.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/environments/production.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
     </list>
@@ -426,15 +431,7 @@
       <workItem from="1696698210143" duration="9334000" />
       <workItem from="1696714019056" duration="771000" />
       <workItem from="1696760625888" duration="7826000" />
-      <workItem from="1696864459371" duration="10942000" />
-    </task>
-    <task id="LOCAL-00089" summary="new methods for gk and lt">
-      <option name="closed" value="true" />
-      <created>1694534385583</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1694534385583</updated>
+      <workItem from="1696864459371" duration="11929000" />
     </task>
     <task id="LOCAL-00090" summary="new methods for gk and lt">
       <option name="closed" value="true" />
@@ -820,7 +817,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696879699663</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="localisation email subject">
+      <option name="closed" value="true" />
+      <created>1696881349751</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1696881349751</updated>
+    </task>
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -838,7 +843,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="little styles" />
     <MESSAGE value="quantity uncomment" />
     <MESSAGE value="change cellid formula" />
     <MESSAGE value="gk &amp; lt spec tests" />
@@ -863,7 +867,8 @@
     <MESSAGE value="ru and en yml files above controllers" />
     <MESSAGE value="ru and en yml files above models" />
     <MESSAGE value="css empty cell" />
-    <option name="LAST_COMMIT_MESSAGE" value="css empty cell" />
+    <MESSAGE value="localisation email subject" />
+    <option name="LAST_COMMIT_MESSAGE" value="localisation email subject" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696877576382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

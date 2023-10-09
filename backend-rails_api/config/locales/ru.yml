@@ -286,10 +286,16 @@ ru:
   user_mailer:
     confirmation_email:
       subject: 'Подтверждение почты'
+      welcome_message: 'Добро пожаловать!'
+      confirm_email: 'Пожалуйста, подтвердите свою почту'
     new_password_email:
       subject: 'Новый пароль'
+      new_password: 'Ваш новый пароль:'
+      keep_safe: 'Пожалуйста, сохраните его в надежном месте'
     reset_password_email:
       subject: 'Сброс пароля'
+      reset_link: 'Для сброса пароля, пожалуйста, перейдите по следующей ссылке'
+      reset_password: 'Сбросить пароль'
   number:
     currency:
       format:

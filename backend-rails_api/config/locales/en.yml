@@ -254,10 +254,16 @@ en:
   user_mailer:
     confirmation_email:
       subject: 'Mail confirmation'
+      welcome_message: 'Welcome!'
+      confirm_email: 'Please confirm your email'
     new_password_email:
       subject: 'New password'
+      new_password: 'Your new password:'
+      keep_safe: 'Please keep it in a safe place'
     reset_password_email:
       subject: 'Password Reset'
+      reset_link: 'To reset your password, please follow the following link'
+      reset_password: 'Reset password'
   number:
     currency:
       format:
