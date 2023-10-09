@@ -137,6 +137,12 @@
       "value": "Name"
     }
   ],
+  "Нет альтернативных ячеек": [
+    {
+      "type": 0,
+      "value": "No cell alternatives"
+    }
+  ],
   "Новый пароль": [
     {
       "type": 0,

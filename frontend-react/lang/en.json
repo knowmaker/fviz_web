@@ -104,8 +104,8 @@
   "Представление удалено": {
     "defaultMessage": "Table view has been deleted"
   },
-  "Представление.pdf": {
-    "defaultMessage": "Table_view.pdf"
+  "Представление.png": {
+    "defaultMessage": "Table_view.png"
   },
   "Представления": {
     "defaultMessage": "Table views"
@@ -202,5 +202,8 @@
   },
   "Показать уровни GK": {
     "defaultMessage": "Show GK levels"
+  },
+  "Нет альтернативных ячеек": {
+    "defaultMessage": "No cell alternatives"
   }
 }

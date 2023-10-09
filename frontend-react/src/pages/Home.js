@@ -81,20 +81,23 @@ export default function Home() {
 
   useEffect(() => {
 
-    if (currentLocale && userToken) {
+    // get all required localized data without authorization
+    setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,testShow,undefined)
+    setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`,undefined,undefined)
+
+    if (userToken) {
 
       // set header for API queries
       const headers = {
         Authorization: `Bearer ${userToken}`
       }    
 
-      console.log(intl.locale)
+
       // get all required localized data
-      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`,undefined,headers)
       setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
       setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
       setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
-      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,testShow,headers)
+    
 
 
     }

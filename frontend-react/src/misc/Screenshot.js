@@ -13,7 +13,7 @@ export const useDownloadableScreenshot = (intl) => {
     const download = (image) => {
         const a = document.createElement("a");
         a.href = image;
-        a.download = `${intl.formatMessage({id:`Представление.pdf`,defaultMessage: `Представление.pdf`})}`;
+        a.download = `${intl.formatMessage({id:`Представление.png`,defaultMessage: `Представление.png`})}`;
         a.click();
     };
 
