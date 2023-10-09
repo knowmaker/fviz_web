@@ -5,7 +5,7 @@ import setStateFromGetAPI,{ putDataToAPI,isResponseSuccessful } from '../misc/ap
 import {FormattedMessage,useIntl} from 'react-intl'
 
 
-export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews}) {
+export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility}) {
   
   const userInfoState = useContext(UserProfile) 
   const tableState = useContext(TableContext)  
@@ -78,6 +78,10 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
      showMessage(intl.formatMessage({id:`Представление обновлено`,defaultMessage: `Представление обновлено`}))
       
   }
+
+  const showGKLayersImageModal = () => {
+    modalsVisibility.GKLayersImageModalVisibility.setVisibility(true)
+  }
   
   return (
   <nav className="navbar navbar-expand fixed-bottom bg-body-tertiary">
@@ -94,7 +98,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
           </div>
           <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></div>
           <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={removeCurrentLaw}><FormattedMessage id='Стереть закон' defaultMessage="Стереть закон"/></div>
-
+          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
         </div>
         <div className="navbar-text">
           <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</div>

@@ -102,7 +102,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
       )  
     }
 
-    const cellOptions = cells.length !== 0 ? cells : "нет альтернативных ячеек"
+    const cellOptions = cells.length !== 0 ? cells : intl.formatMessage({id:`Нет альтернативных ячеек`,defaultMessage: `Нет альтернативных ячеек`})
 
 
 

@@ -120,9 +120,14 @@ export default function Home() {
     const [isGKColorsEditModalVisible, setGKColorsEditModalVisibility] = useState(false);
     const GKColorsEditModalVisibility = {isVisible: isGKColorsEditModalVisible, setVisibility: setGKColorsEditModalVisibility}
 
+    const [isGKLayersImageModalVisible, setGKLayersImageModalVisibility] = useState(false);
+    const GKLayersImageModalVisibility = {isVisible: isGKLayersImageModalVisible, setVisibility: setGKLayersImageModalVisibility}
+
+
     const modalsVisibility={regModalVisibility,editProfileModalVisibility,
                             editCellModalVisibility,lawsModalVisibility,
-                            tableViewsModalVisibility,lawsGroupsModalVisibility,GKColorsEditModalVisibility}
+                            tableViewsModalVisibility,lawsGroupsModalVisibility
+                            ,GKColorsEditModalVisibility,GKLayersImageModalVisibility}
 
 
     const [tableData, setTableData] = useState([]);
@@ -293,7 +298,7 @@ export default function Home() {
           <TableContext.Provider value={tableState}>
 
                 <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState}/>
-                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews}/>
+                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               
@@ -303,6 +308,7 @@ export default function Home() {
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
                 <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
                 <GKColorModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
+                <GKLayersImageModal modalVisibility={modalsVisibility.GKLayersImageModalVisibility} />
 
                 <ToastContainer />
           </TableContext.Provider>
@@ -1471,7 +1477,7 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
   return (
     <Modal
       modalVisibility={modalVisibility}
-      title={"Авторизация / Регистрация"}
+      title={intl.formatMessage({id:`Авторизация / Регистрация`,defaultMessage: `Авторизация / Регистрация`})}
       hasBackground={true}
       >
       <div className="modal-content2">
@@ -1527,6 +1533,25 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
 
                    
       </Modal>
+  )
+}
+
+
+function GKLayersImageModal({modalVisibility}) {
+
+  const intl = useIntl()
+
+  return (
+    <Modal
+      modalVisibility={modalVisibility}
+      title={intl.formatMessage({id:`Соотношение уровней GK`,defaultMessage: `Соотношение уровней GK`})}
+      sizeX={600}
+      >
+      <div className="modal-content2">
+        <img src="/image.png" alt="Loading" className='GK-layers-image'/>
+      </div>
+          
+    </Modal>
   )
 }
 
