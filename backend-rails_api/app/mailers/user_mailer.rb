@@ -2,24 +2,19 @@
 
 # Класс для рассылок пользователя на тему работы с их аккаунтом
 class UserMailer < ApplicationMailer
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.user_mailer.confirmation_email.subject
-  #
   def confirmation_email(user)
     @user = user
-    mail(to: @user.email, subject: 'Подтверждение почты')
+    mail(to: @user.email, subject: I18n.t('user_mailer.confirmation_email.subject'))
   end
 
   def new_password_email(user, new_password)
     @user = user
     @new_password = new_password
-    mail(to: @user.email, subject: 'Новый пароль')
+    mail(to: @user.email, subject: I18n.t('user_mailer.new_password_email.subject'))
   end
 
   def reset_password_email(user)
     @user = user
-    mail(to: @user.email, subject: 'Сброс пароля')
+    mail(to: @user.email, subject: I18n.t('user_mailer.reset_password_email.subject'))
   end
 end

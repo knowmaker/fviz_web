@@ -283,6 +283,13 @@ ru:
       create: Создать %{model}
       submit: Сохранить %{model}
       update: Сохранить %{model}
+  user_mailer:
+    confirmation_email:
+      subject: 'Подтверждение почты'
+    new_password_email:
+      subject: 'Новый пароль'
+    reset_password_email:
+      subject: 'Сброс пароля'
   number:
     currency:
       format:

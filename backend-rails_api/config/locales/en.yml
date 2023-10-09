@@ -251,6 +251,13 @@ en:
       create: Create %{model}
       submit: Save %{model}
       update: Update %{model}
+  user_mailer:
+    confirmation_email:
+      subject: 'Mail confirmation'
+    new_password_email:
+      subject: 'New password'
+    reset_password_email:
+      subject: 'Password Reset'
   number:
     currency:
       format:
