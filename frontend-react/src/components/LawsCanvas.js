@@ -1,6 +1,4 @@
-import React, { useEffect, useState, useContext, forwardRef, useRef } from 'react';
-import setStateFromGetAPI from '../misc/api';
-import { TableContext } from '../misc/contexts.js';
+import React, { useEffect, useRef } from 'react';
 
 export default function LawsCanvas({lawCells,color}) {
 

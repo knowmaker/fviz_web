@@ -1,0 +1,393 @@
+{
+  "Авторизация": [
+    {
+      "type": 0,
+      "value": "Authorization"
+    }
+  ],
+  "Авторизация успешна": [
+    {
+      "type": 0,
+      "value": "Authorization successful"
+    }
+  ],
+  "Аккаунт удалён": [
+    {
+      "type": 0,
+      "value": "Account deleted"
+    }
+  ],
+  "Алфавит": [
+    {
+      "type": 0,
+      "value": "Greek Alphabet"
+    }
+  ],
+
+  "Базовое": [
+    {
+      "type": 0,
+      "value": "Base"
+    }
+  ],
+  "Величины.pdf": [
+    {
+      "type": 0,
+      "value": "Variables.pdf"
+    }
+  ],
+  "Возврат": [
+    {
+      "type": 0,
+      "value": "Return"
+    }
+  ],
+  "Вход": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "Выберите опцию": [
+    {
+      "type": 0,
+      "value": "Select an option"
+    }
+  ],
+  "Выбрать": [
+    {
+      "type": 0,
+      "value": "Select"
+    }
+  ],
+  "Выход": [
+    {
+      "type": 0,
+      "value": "Sign out"
+    }
+  ],
+  "Группа была обновлена": [
+    {
+      "type": 0,
+      "value": "Group has been updated"
+    }
+  ],
+  "Группа была создана": [
+    {
+      "type": 0,
+      "value": "Group has been created"
+    }
+  ],
+  "Группа была удалена": [
+    {
+      "type": 0,
+      "value": "Group has been deleted"
+    }
+  ],
+  "Группы": [
+    {
+      "type": 0,
+      "value": "Groups"
+    }
+  ],
+  "Группы законов": [
+    {
+      "type": 0,
+      "value": "Law groups"
+    }
+  ],
+  "Другие уровни": [
+    {
+      "type": 0,
+      "value": "Other layers"
+    }
+  ],
+  "Единица измерения": [
+    {
+      "type": 0,
+      "value": "Unit of measurement"
+    }
+  ],
+  "Законы": [
+    {
+      "type": 0,
+      "value": "Laws"
+    }
+  ],
+  "Имя": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "Мой профиль": [
+    {
+      "type": 0,
+      "value": "My profile"
+    }
+  ],
+  "Название": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "Новый пароль": [
+    {
+      "type": 0,
+      "value": "New password"
+    }
+  ],
+  "Обновить": [
+    {
+      "type": 0,
+      "value": "Update"
+    }
+  ],
+  "Отмена": [
+    {
+      "type": 0,
+      "value": "Cancel"
+    }
+  ],
+  "Отчество": [
+    {
+      "type": 0,
+      "value": "Middle name"
+    }
+  ],
+  "Пароль": [
+    {
+      "type": 0,
+      "value": "Password"
+    }
+  ],
+  "Письмо подтверждения почты": [
+    {
+      "type": 0,
+      "value": "A confirmation email has been sent"
+    }
+  ],
+  "Письмо сброса пароля": [
+    {
+      "type": 0,
+      "value": "Password reset email has been sent"
+    }
+  ],
+  "Подтверждение действия": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to do this? This will lead to consequences for other users."
+    }
+  ],
+  "Почта": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
+  "Превью": [
+    {
+      "type": 0,
+      "value": "Previev"
+    }
+  ],
+  "Представление обновлено": [
+    {
+      "type": 0,
+      "value": "Table view has been updated"
+    }
+  ],
+  "Представление создано": [
+    {
+      "type": 0,
+      "value": "Table view has been created"
+    }
+  ],
+  "Представление удалено": [
+    {
+      "type": 0,
+      "value": "Table view has been deleted"
+    }
+  ],
+  "Представление.pdf": [
+    {
+      "type": 0,
+      "value": "Table_view.pdf"
+    }
+  ],
+  "Представления": [
+    {
+      "type": 0,
+      "value": "Table views"
+    }
+  ],
+  "Представления ФВ": [
+    {
+      "type": 0,
+      "value": "Table views FV"
+    }
+  ],
+  "Профиль обновлён": [
+    {
+      "type": 0,
+      "value": "Profile has been updated"
+    }
+  ],
+  "Регистрация": [
+    {
+      "type": 0,
+      "value": "Registration"
+    }
+  ],
+  "Редактирование величины": [
+    {
+      "type": 0,
+      "value": "Edit value"
+    }
+  ],
+  "Редактирование профиля": [
+    {
+      "type": 0,
+      "value": "Edit profile"
+    }
+  ],
+  "Редактирование ячейки": [
+    {
+      "type": 0,
+      "value": "Edit cell"
+    }
+  ],
+  "Сброс": [
+    {
+      "type": 0,
+      "value": "Reset"
+    }
+  ],
+  "Сброс пароля": [
+    {
+      "type": 0,
+      "value": "Reset password"
+    }
+  ],
+  "Сеанс завершен": [
+    {
+      "type": 0,
+      "value": "Session ended"
+    }
+  ],
+  "Системные уровни": [
+    {
+      "type": 0,
+      "value": "System levels"
+    }
+  ],
+  "Системный уровень обновлен": [
+    {
+      "type": 0,
+      "value": "System level has been updated"
+    }
+  ],
+  "Скачать ": [
+    {
+      "type": 0,
+      "value": "Download"
+    }
+  ],
+  "Скачать скриншот": [
+    {
+      "type": 0,
+      "value": "Download screenshot"
+    }
+  ],
+  "Создать": [
+    {
+      "type": 0,
+      "value": "Create"
+    }
+  ],
+  "Сохранить": [
+    {
+      "type": 0,
+      "value": "Save"
+    }
+  ],
+  "Сохранить представление": [
+    {
+      "type": 0,
+      "value": "Save table view"
+    }
+  ],
+  "Стереть закон": [
+    {
+      "type": 0,
+      "value": "Erase current law"
+    }
+  ],
+  "Удалить": [
+    {
+      "type": 0,
+      "value": "Delete"
+    }
+  ],
+  "Удалить аккаунт": [
+    {
+      "type": 0,
+      "value": "Delete account"
+    }
+  ],
+  "Уровень": [
+    {
+      "type": 0,
+      "value": "Layer"
+    }
+  ],
+  "Условное обозначение": [
+    {
+      "type": 0,
+      "value": "Conditional designation"
+    }
+  ],
+  "ФВиЗ": [
+    {
+      "type": 0,
+      "value": "FViZ"
+    }
+  ],
+  "Фамилия": [
+    {
+      "type": 0,
+      "value": "Surname"
+    }
+  ],
+  "Цвет": [
+    {
+      "type": 0,
+      "value": "Color"
+    }
+  ],
+  "Цвета ячеек": [
+    {
+      "type": 0,
+      "value": "Cells color"
+    }
+  ],
+  "Ячейка была изменена": [
+    {
+      "type": 0,
+      "value": "Cell has been updated"
+    }
+  ],
+  "Ячейка удалена": [
+    {
+      "type": 0,
+      "value": "Cell has been deleted"
+    }
+  ],
+  "не выбрано": [
+    {
+      "type": 0,
+      "value": "Not chosen"
+    }
+  ]
+}

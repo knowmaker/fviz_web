@@ -2,6 +2,7 @@ import React,{useContext} from 'react';
 import { UserProfile,TableContext } from '../misc/contexts.js';
 import { showMessage } from '../pages/Home.js';
 import setStateFromGetAPI,{ putDataToAPI,isResponseSuccessful } from '../misc/api.js';
+import {FormattedMessage,useIntl} from 'react-intl'
 
 
 export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews}) {
@@ -10,7 +11,9 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   const tableState = useContext(TableContext)  
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
-  }      
+  }     
+  
+  const intl = useIntl()
 
   let cellLT = "?"
   let cellGK = "?"
@@ -44,7 +47,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
 
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Величины.pdf';
+      a.download = `${intl.formatMessage({id:`Величины.pdf`,defaultMessage: `Величины.pdf`})}`;
       document.body.appendChild(a);
       a.click();
 
@@ -72,7 +75,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
      setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
  
      // show message
-     showMessage("Представление обновлено")
+     showMessage(intl.formatMessage({id:`Представление обновлено`,defaultMessage: `Представление обновлено`}))
       
   }
   
@@ -89,13 +92,13 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
           <div className="nameinput" id="outName"> 
             <div className="v-align" dangerouslySetInnerHTML={{__html: tableViewState.tableView.title}}></div>
           </div>
-          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}>Сохранить представление</div>
-          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={removeCurrentLaw}>Стереть закон</div>
+          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></div>
+          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={removeCurrentLaw}><FormattedMessage id='Стереть закон' defaultMessage="Стереть закон"/></div>
 
         </div>
         <div className="navbar-text">
-          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}>Скачать pdf</div>
-          <div className="btn-sm btn-primary btn" aria-current="page" onClick={getImage}>Скачать скриншот</div>
+          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</div>
+          <div className="btn-sm btn-primary btn" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
         </div>
     </div>
   </nav>

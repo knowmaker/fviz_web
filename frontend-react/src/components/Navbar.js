@@ -2,10 +2,10 @@ import React,{useEffect,useState} from 'react';
 import { TableContext, UserProfile } from '../misc/contexts.js';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
-import { getTextFromState, getStateFromText} from '../pages/Home.js'
+import {FormattedMessage,useIntl} from 'react-intl'
 
 
-export default function Navbar({revStates, modalsVisibility}) {
+export default function Navbar({revStates, modalsVisibility,currentLocaleState}) {
   
     const tableState = useContext(TableContext)
 
@@ -15,7 +15,9 @@ export default function Navbar({revStates, modalsVisibility}) {
     const setRedoStack = revStates.setRedoStack
     const setData = tableState.setTableData
     const data = tableState.tableData
-    const currentData = data;    
+    const currentData = data;  
+    
+    const intl = useIntl()
 
     const undo = () => {
         if (undoStack.length > 0) {
@@ -56,7 +58,7 @@ export default function Navbar({revStates, modalsVisibility}) {
         userInfo.setUserProfile(null)
         userInfo.setUserToken(null)
 
-        toast.success('Сеанс завершен', {
+        toast.success(intl.formatMessage({id:`Сеанс завершен`,defaultMessage: `Сеанс завершен`}), {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: true,
@@ -95,15 +97,23 @@ export default function Navbar({revStates, modalsVisibility}) {
         modalsVisibility.GKColorsEditModalVisibility.setVisibility(true)
     }
 
+    const changeLocale = () => {
+        if (currentLocaleState.currentLocale === "en") {
+            currentLocaleState.setCurrentLocale("ru")
+        } else {
+            currentLocaleState.setCurrentLocale("en")
+        }
+
+    }
 
     let loginButtons;
 
     if (userInfo.userProfile) {
         loginButtons = (
             <>
-                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (Мой профиль)</span>
+                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (<FormattedMessage id='Мой профиль' defaultMessage="Мой профиль"/>)</span>
                 <span style={{margin:10}}>/</span>
-                <span onClick={() => signOut()} style={{cursor: "pointer"}}>Выход</span>
+                <span onClick={() => signOut()} style={{cursor: "pointer"}}><FormattedMessage id='Выход' defaultMessage="Выход"/></span>
             </>
         )
     }   
@@ -111,9 +121,9 @@ export default function Navbar({revStates, modalsVisibility}) {
     {
         loginButtons = (
             <>
-                <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}>Вход</span>
+                <span onClick={() => openLoginForm()} style={{cursor: "pointer"}}><FormattedMessage id='Вход' defaultMessage="Вход"/></span>
                 <span style={{margin:10}}>/</span>
-                <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}>Регистрация</span>
+                <span onClick={() => openRegistrationForm()} style={{cursor: "pointer"}}><FormattedMessage id='Регистрация' defaultMessage="Регистрация"/></span>
             </>
         )
     }
@@ -122,23 +132,26 @@ export default function Navbar({revStates, modalsVisibility}) {
         <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
 
             <div className="container-fluid">
-                <a className="navbar-brand">ФВиЗ</a>
+                <a className="navbar-brand"><FormattedMessage id='ФВиЗ' defaultMessage="ФВиЗ"/></a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className="navbar-nav">
-                        <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺Отмена</div>
-                        <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻Возврат</div>
-                        <div className="nav-link active" aria-current="page" onClick={openEditForm}>Редактирование ячейки</div>
-                        <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}>Представления</div>
-                        <div className="nav-link active" aria-current="page" onClick={openLawsForm}>Законы</div>
-                        <div className="nav-link active" aria-current="page" onClick={openLawsGroupsForm}>Группы законов</div>
-                        <div className="nav-link active" aria-current="page" onClick={openGKColorsEditForm}>Цвета ячеек</div>
+                        <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺<FormattedMessage id='Отмена' defaultMessage="Отмена"/></div>
+                        <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻<FormattedMessage id='Возврат' defaultMessage="Возврат"/></div>
+                        <div className="nav-link active" aria-current="page" onClick={openEditForm}><FormattedMessage id='Редактирование ячейки' defaultMessage="Редактирование ячейки"/></div>
+                        <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}><FormattedMessage id='Представления' defaultMessage="Представления"/></div>
+                        <div className="nav-link active" aria-current="page" onClick={openLawsForm}><FormattedMessage id='Законы' defaultMessage="Законы"/></div>
+                        <div className="nav-link active" aria-current="page" onClick={openLawsGroupsForm}><FormattedMessage id='Группы законов' defaultMessage="Группы законов"/></div>
+                        <div className="nav-link active" aria-current="page" onClick={openGKColorsEditForm}><FormattedMessage id='Цвета ячеек' defaultMessage="Цвета ячеек"/></div>
                     </div>
                 </div>
                 <div className="navbar-text">
                     {loginButtons}
+                <span style={{margin:10}}> </span>
+
+                <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={changeLocale}>{currentLocaleState.currentLocale}</div>
                 </div>
             </div>
         </nav>

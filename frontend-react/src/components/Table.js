@@ -7,12 +7,13 @@ import LawsCanvas from './LawsCanvas';
 import {showMessage} from '../pages/Home.js';
 import { isResponseSuccessful } from '../misc/api';
 import { convertToMLTI } from '../pages/Home.js';
+import {FormattedMessage,useIntl} from 'react-intl'
 // const Color = require('color');
 
 const rowCount = 21
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState ,lawsState}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState ,lawsState,currentLocaleState}) {
 
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
@@ -31,11 +32,17 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
  
   return (
     <>
-      <Navbar revStates={revStates} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell}/>
+      <Navbar revStates={revStates} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell} currentLocaleState={currentLocaleState}/>
       <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
-      <Table gkColors={gkState.gkColors} selectedCellState={selectedCellState} hoveredCellState={hoveredCellState} selectedLawState={selectedLawState} ref={refTable} modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
-
-
+      <Table 
+      gkColors={gkState.gkColors} 
+      selectedCellState={selectedCellState} 
+      hoveredCellState={hoveredCellState} 
+      selectedLawState={selectedLawState} 
+      ref={refTable} 
+      modalsVisibility={modalsVisibility} 
+      lawsGroupsState={lawsGroupsState} 
+      lawsState={lawsState}/>
     </>  
     );
 }
@@ -46,6 +53,8 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   const setSelectedCell = selectedCellState.setSelectedCell
 
   const [cellAlternatives, setCellAlternatives] = useState(null);
+
+  const intl = useIntl()
 
   useEffect(() => {
     if (selectedCell) {
@@ -100,7 +109,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     return (
       <div className="data-window">
         <div className="data-window-top">
-        <span>Другие уровни</span>
+        <span><FormattedMessage id='Другие уровни' defaultMessage="Другие уровни"/></span>
         <button type="button" className="btn-close" onClick={() => setSelectedCell(null)}></button>
         </div>
         {cellOptions}
@@ -127,7 +136,6 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
   const [emptyCells, setEmptyCells] = useState([]);
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0 && emptyCells.length !== 0 
-
 
   useEffect(() => {
 
@@ -334,6 +342,8 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }  
+
+  const intl = useIntl()
 
   
   const handleCellRightClick = (event) => {

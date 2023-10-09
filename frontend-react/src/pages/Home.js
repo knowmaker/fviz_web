@@ -1,4 +1,5 @@
 import React,{useEffect,useState, useContext, useRef} from 'react';
+
 import TableUI from '../components/Table';
 import Draggable from 'react-draggable';
 import setStateFromGetAPI, { postData, putData, patchData, deleteData, 
@@ -10,14 +11,93 @@ import { Editor } from 'react-draft-wysiwyg';
 import { Cell } from '../components/Table.js';
 import Footbar from '../components/FootBar';
 import { useDownloadableScreenshot } from '../misc/Screenshot.js';
-
 import draftToMarkdown from 'draftjs-to-markdown';
 import htmlToDraft from 'html-to-draftjs';
 import { isResponseSuccessful } from '../misc/api';
 
+import {IntlProvider} from 'react-intl'
+import {FormattedMessage,createIntl,useIntl} from 'react-intl'
 // const Color = require('color');
 
+import translationEN from '../compiled-lang/en.json';
+import translationRU from '../compiled-lang/ru.json';
+
+function getTranslationMessages(locale) {
+
+
+  if (locale === "en") {
+    return translationEN
+  }
+  if (locale === "ru") {
+    return translationRU
+  }
+}
+
 export default function Home() {
+
+  const [userToken, setUserToken] = useState(null)
+  const [userProfile, setUserProfile] = useState(null)
+  
+  const userInfoState = {userToken, setUserToken,userProfile, setUserProfile}
+
+  console.log(userProfile)
+  const [currentLocale, setCurrentLocale] = useState("ru")
+  
+  const currentLocaleState = {currentLocale, setCurrentLocale}
+  const translatedMessages = getTranslationMessages(currentLocale)
+  console.log(currentLocale,translatedMessages)
+
+  const intl = createIntl({
+    locale: currentLocale,
+    messages: translatedMessages,
+  })
+
+  useEffect(() => {
+
+    if (userToken) {
+
+      // set header for API queries
+      const headers = {
+        Authorization: `Bearer ${userToken}`
+      }    
+
+      // get all required data
+      setStateFromGetAPI(setUserProfile, `${process.env.REACT_APP_API_LINK}/users/profile`, undefined, headers )
+      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
+      setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+      // fix later
+      setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
+      setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/active_view`,undefined,headers)
+
+      // set up localstorage to authenticate automatically
+      localStorage.setItem('token', userToken);
+
+    } else {
+      // if there is no user token delete user profile
+      setUserProfile(null)
+    }
+
+  }, [userToken]);
+
+  useEffect(() => {
+
+    // if user profile is not null set edit form
+    if (userProfile) {
+      document.getElementById("InputEmail3").value = userProfile.email
+      document.getElementById("InputFirstName3").value = userProfile.first_name
+      document.getElementById("InputLastName3").value = userProfile.last_name
+      document.getElementById("InputPatronymic3").value = userProfile.patronymic
+      setCurrentLocale(userProfile.locale)
+    } else {
+      document.getElementById("InputEmail3").value = ""
+      document.getElementById("InputFirstName3").value = ""
+      document.getElementById("InputLastName3").value = ""
+      document.getElementById("InputPatronymic3").value = ""
+    }
+  }, [userProfile]);
+
+
 
     const [isRegModalVisible, setRegModalVisibility] = useState(false);
     const regModalVisibility = {isVisible: isRegModalVisible, setVisibility: setRegModalVisibility}
@@ -50,7 +130,7 @@ export default function Home() {
     const [GKLayers, setGKLayers] = useState([]);
     const GKLayersState = {gkColors: GKLayers, setGkColors: setGKLayers}
 
-    const [tableView, setTableView] = useState({id_repr:1,title:"Базовое"}); 
+    const [tableView, setTableView] = useState({id_repr:1,title:intl.formatMessage({id:`Базовое`,defaultMessage: `Базовое`})}); 
     const tableViewState = {tableView,setTableView}
 
     const setFullTableData = (result) => {
@@ -77,7 +157,7 @@ export default function Home() {
             localStorage.removeItem('token')
             return
           }
-          showMessage("Авторизация успешна")
+          showMessage(intl.formatMessage({id:`Авторизация успешна`,defaultMessage: `Авторизация успешна`}))
 
           setUserToken(storageToken)
 
@@ -191,56 +271,8 @@ export default function Home() {
 
     }, [selectedCell]);
 
-    const [userToken, setUserToken] = useState(null)
-    const [userProfile, setUserProfile] = useState(null)
-    
-    const userInfoState = {userToken, setUserToken,userProfile, setUserProfile}
 
-    useEffect(() => {
-
-      if (userToken) {
-
-        // set header for API queries
-        const headers = {
-          Authorization: `Bearer ${userToken}`
-        }    
-
-        // get all required data
-        setStateFromGetAPI(setUserProfile, `${process.env.REACT_APP_API_LINK}/users/profile`, undefined, headers )
-        setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
-        setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
-        // fix later
-        setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
-        setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
-        setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/active_view`,undefined,headers)
-
-        // set up localstorage to authenticate automatically
-        localStorage.setItem('token', userToken);
-
-      } else {
-        // if there is no user token delete user profile
-        setUserProfile(null)
-      }
-
-    }, [userToken]);
-
-    useEffect(() => {
-
-      // if user profile is not null set edit form
-      if (userProfile) {
-        document.getElementById("InputEmail3").value = userProfile.email
-        document.getElementById("InputFirstName3").value = userProfile.first_name
-        document.getElementById("InputLastName3").value = userProfile.last_name
-        document.getElementById("InputPatronymic3").value = userProfile.patronymic
-      } else {
-        document.getElementById("InputEmail3").value = ""
-        document.getElementById("InputFirstName3").value = ""
-        document.getElementById("InputLastName3").value = ""
-        document.getElementById("InputPatronymic3").value = ""
-      }
-    }, [userProfile]);
-
-    const { ref, getImage } = useDownloadableScreenshot();
+    const { ref, getImage } = useDownloadableScreenshot(intl);
 
     // DELETE LATER <------------------------
     
@@ -249,17 +281,24 @@ export default function Home() {
       console.log("result:",result)
     }
 
+
+
     return (
+      <IntlProvider
+      locale={currentLocale}
+      defaultLocale="ru"
+      messages={translatedMessages}
+      >
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
 
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState}/>
                 <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
-                <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken}/>               
+                <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               
                 <EditCellModal modalVisibility={modalsVisibility.editCellModalVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
-                <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState}/>
+                <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState} currentLocaleState={currentLocaleState}/>
                 <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
                 <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
@@ -268,6 +307,7 @@ export default function Home() {
                 <ToastContainer />
           </TableContext.Provider>
         </UserProfile.Provider>
+      </IntlProvider>
     );
 }
 
@@ -278,6 +318,8 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }  
+
+  const intl = useIntl()
 
   const updateCell = async () => {
 
@@ -321,7 +363,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     const cellData = changedCellResponseData.data.data
 
     // show message
-    showMessage("Ячейка была изменена")
+    showMessage(intl.formatMessage({id:`Ячейка была изменена`,defaultMessage: `Ячейка была изменена`}))
 
     // remove old cell and set new one
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
@@ -346,7 +388,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   }
 
   const deleteCell = async () => {
-    if (!window.confirm("Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.")) {
+    if (!window.confirm(intl.formatMessage({id:`Подтверждение действия`,defaultMessage: `Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.`}))) {
       return
     }
 
@@ -375,7 +417,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
 
     // selectedCell.id_value
-    showMessage("Ячейка удалена")
+    showMessage(intl.formatMessage({id:`Ячейка удалена`,defaultMessage: `Ячейка удалена`}))
 
     // hide modal
     modalVisibility.setVisibility(false)
@@ -396,7 +438,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
   const [previewCell, setPreviewCell] = useState({
     cellFullId:-1,
-    cellData:{value_name:"не выбрано",symbol:"",unit:""},
+    cellData:{value_name:intl.formatMessage({id:`не выбрано`,defaultMessage: `не выбрано`}),symbol:"",unit:""},
     cellColor:undefined
   })
 
@@ -450,34 +492,34 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
   return  (  
     <Modal
     modalVisibility={modalVisibility}
-    title={"Редактирование величины"}
+    title={intl.formatMessage({id:`Редактирование величины`,defaultMessage: `Редактирование величины`})}
     hasBackground={false}
     sizeX={650}
     >
     <div className="modal-content2">
     <div className="row">
       <details>
-        <summary>Превью</summary>
+        <summary><FormattedMessage id='Превью' defaultMessage="Превью"/></summary>
         <Cell cellFullData={previewCell} />
       </details>
     </div>
       <div className="row">
       <div className="col-6">
-        <label className="form-label">Имя</label>
+        <label className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя"/></label>
         <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set}/>
       </div>
       <div className="col-6">
-        <label className="form-label">Условное обозначение</label>
+        <label className="form-label"><FormattedMessage id='Условное обозначение' defaultMessage="Условное обозначение"/></label>
         <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set}/>
       </div>
       </div>
       <div className="row">
       <div className="col-6">
-      <label htmlFor="InputFirstName3" className="form-label">Единица измерения</label>
+      <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Единица измерения' defaultMessage="Единица измерения"/></label>
       <RichTextEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set}/>
       </div>
       <div className="col">
-      <label htmlFor="InputFirstName3" className="form-label">Уровень GK</label>
+      <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Уровень' defaultMessage="Уровень"/> GK</label>
       <select className="form-select" aria-label="Default select example" id='inputGK3' onChange={() => setGKoption(parseInt(document.getElementById("inputGK3").value))}>
         {cellList}
       </select>
@@ -500,8 +542,8 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
     </div>
     <div className="modal-footer2">
-      <button type="button" className="btn btn-danger" onClick={() => deleteCell()}>Удалить</button>
-      <button type="button" className="btn btn-success" onClick={() => updateCell()}>Сохранить</button>
+      <button type="button" className="btn btn-danger" onClick={() => deleteCell()}><FormattedMessage id='Удалить' defaultMessage="Удалить"/></button>
+      <button type="button" className="btn btn-success" onClick={() => updateCell()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить"/></button>
     </div>
 
     </Modal>
@@ -510,7 +552,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
 function RichTextEditor({editorState,setEditorState}) {
 
-
+  const intl = useIntl()
 
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState)
@@ -532,7 +574,7 @@ function RichTextEditor({editorState,setEditorState}) {
             },
             emoji: {
                 icon: '/svg.svg',
-                title: 'Алфавит',
+                title: intl.formatMessage({id:`Алфавит`,defaultMessage: `Алфавит`}),
                 emojis: [
                     "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ",
                     "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω",
@@ -546,13 +588,15 @@ function RichTextEditor({editorState,setEditorState}) {
   )
 }
 
-function EditProfileModal({modalsVisibility}) {
+function EditProfileModal({modalsVisibility,currentLocaleState}) {
 
   const modalVisibility = modalsVisibility.editProfileModalVisibility
   const userInfoState = useContext(UserProfile) 
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }      
+
+  const intl = useIntl()
 
   const editProfile = async () => {
 
@@ -561,12 +605,14 @@ function EditProfileModal({modalsVisibility}) {
     const lastName = document.getElementById("InputLastName3").value 
     const patronymic = document.getElementById("InputPatronymic3").value
     const password = document.getElementById("InputPassword3").value
+    const locale = currentLocaleState.currentLocale
 
     let newUserData = {
       user: {
         last_name: lastName,
         first_name: firstName,
         patronymic: patronymic,
+        locale: locale,
       }
       
     }
@@ -585,7 +631,7 @@ function EditProfileModal({modalsVisibility}) {
    
     // hide modal
     modalVisibility.setVisibility(false)
-    showMessage("Профиль обновлён")
+    showMessage(intl.formatMessage({id:`Профиль обновлён`,defaultMessage: `Профиль обновлён`}))
 
     // empty input fields
     document.getElementById("InputEmail2").value = ""
@@ -607,7 +653,7 @@ function EditProfileModal({modalsVisibility}) {
       return
     }
     // show message and delete user token
-    showMessage("Аккаунт удалён")
+    showMessage(intl.formatMessage({id:`Аккаунт удалён`,defaultMessage: `Аккаунт удалён`}))
     userInfoState.setUserToken(null)
 
   }
@@ -615,26 +661,26 @@ function EditProfileModal({modalsVisibility}) {
   return (
     <Modal
       modalVisibility={modalVisibility}
-      title={"Редактирование профиля"}
+      title={intl.formatMessage({id:`Редактирование профиля`,defaultMessage: `Редактирование профиля`})}
       hasBackground={true}
       >
       <div className="modal-content2">
 
-        <label htmlFor="InputEmail3" className="form-label">Почта</label>
+        <label htmlFor="InputEmail3" className="form-label"><FormattedMessage id='Почта' defaultMessage="Почта"/></label>
         <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com" disabled={true}/>
-        <label htmlFor="InputLastName3" className="form-label">Новый пароль</label>
-        <input type="password" className="form-control" id="InputPassword3" placeholder="Пароль"/>
-        <label htmlFor="InputLastName3" className="form-label">Фамилия</label>
-        <input type="text" className="form-control" id="InputLastName3" placeholder="Воронин"/>
-        <label htmlFor="InputFirstName3" className="form-label">Имя</label>
-        <input type="text" className="form-control" id="InputFirstName3" placeholder="Александр"/>
-        <label htmlFor="InputPatronymic3" className="form-label">Отчество</label>
-        <input type="text" className="form-control" id="InputPatronymic3" placeholder="Максимович"/>
+        <label htmlFor="InputLastName3" className="form-label"><FormattedMessage id='Новый пароль' defaultMessage="Новый пароль"/></label>
+        <input type="password" className="form-control" id="InputPassword3"/>
+        <label htmlFor="InputLastName3" className="form-label"><FormattedMessage id='Фамилия' defaultMessage="Фамилия"/></label>
+        <input type="text" className="form-control" id="InputLastName3"/>
+        <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя"/></label>
+        <input type="text" className="form-control" id="InputFirstName3"/>
+        <label htmlFor="InputPatronymic3" className="form-label"><FormattedMessage id='Отчество' defaultMessage="Отчество"/></label>
+        <input type="text" className="form-control" id="InputPatronymic3" />
             
       </div>
       <div className="modal-footer2">
-        <button type="button" className="btn btn-danger" onClick={() => deleteUser()}>Удалить аккаунт</button>
-        <button type="button" className="btn btn-success" onClick={() => editProfile()}>Сохранить</button>
+        <button type="button" className="btn btn-danger" onClick={() => deleteUser()}><FormattedMessage id='Удалить аккаунт' defaultMessage="Удалить аккаунт"/></button>
+        <button type="button" className="btn btn-success" onClick={() => editProfile()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить"/></button>
       </div>
 
       </Modal>
@@ -648,6 +694,8 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }  
+
+  const intl = useIntl()
 
   const createLaw = () => {
 
@@ -782,7 +830,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     return(sameMLTI)
   }
 
-  const chooseOption = <option key={-1} value={-1} dangerouslySetInnerHTML={{__html: "Выберите опцию"}}/>
+  const chooseOption = <option key={-1} value={-1} dangerouslySetInnerHTML={{__html: intl.formatMessage({id:`Выберите опцию`,defaultMessage: `Выберите опцию`})}}/>
 
   const lawsGroupList = lawsGroupsState.lawsGroups.map(lawGroup => {
 
@@ -815,28 +863,28 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   return (
     <Modal
       modalVisibility={modalsVisibility.lawsModalVisibility}
-      title={"Законы"}
+      title={intl.formatMessage({id:`Законы`,defaultMessage: `Законы`})}
       hasBackground={false}
       sizeX={600}
       >
       <div className="modal-content2">
         <div className="row">
           <div className="col-2">
-            Название:
+            <FormattedMessage id='Название' defaultMessage="Название"/>:
           </div>
           <div className="col-5">
             <input type="text" className="form-control" id="InputLawName3" placeholder="Мой закон"/>
           </div>
           <div className="col-2">
-          <button type="button" className="btn btn-success" onClick={() => createLaw()}>Создать</button>
+          <button type="button" className="btn btn-success" onClick={() => createLaw()}><FormattedMessage id='Создать' defaultMessage="Создать"/></button>
           </div>
           <div className="col-3">
-          <button type="button" className="btn btn-info" onClick={() => updateLaw()}>Обновить</button>
+          <button type="button" className="btn btn-info" onClick={() => updateLaw()}><FormattedMessage id='Обновить' defaultMessage="Обновить"/></button>
           </div>
         </div>
         <div className="row">
         <div className="col-2">
-          Группы:
+          <FormattedMessage id='Группы' defaultMessage="Группы"/>:
         </div>
           <div className="col-5">
           <select className="form-select" aria-label="Default select example" id='inputLawGroup3'>
@@ -849,9 +897,9 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Название</th>
-              <th scope="col">Выбрать</th>
-              <th scope="col">Удалить</th>
+              <th scope="col"><FormattedMessage id='Название' defaultMessage="Название"/></th>
+              <th scope="col"><FormattedMessage id='Выбрать' defaultMessage="Выбрать"/></th>
+              <th scope="col"><FormattedMessage id='Удалить' defaultMessage="Удалить"/></th>
             </tr>
           </thead>
           <tbody>
@@ -872,6 +920,8 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }     
+
+  const intl = useIntl()
   
   const [tableViewEditorState, setTableViewEditorState] = useState(EditorState.createEmpty())
 
@@ -918,7 +968,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
 
     // show message
-    showMessage("Представление обновлено")
+    showMessage(intl.formatMessage({id:`Представление обновлено`,defaultMessage: `Представление обновлено`}))
   
   }
 
@@ -935,7 +985,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
 
     // show message
-    showMessage("Представление удалено")
+    showMessage(intl.formatMessage({id:`Представление удалено`,defaultMessage: `Представление удалено`}))
   
   }
 
@@ -963,7 +1013,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
 
     // show message
-    showMessage("Представление создано")
+    showMessage(intl.formatMessage({id:`Представление создано`,defaultMessage: `Представление создано`}))
 
   }
 
@@ -990,7 +1040,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   return (
     <Modal
       modalVisibility={modalsVisibility.tableViewsModalVisibility}
-      title={"Представления ФВ"}
+      title={intl.formatMessage({id:`Представления ФВ`,defaultMessage: `Представления ФВ`})}
       hasBackground={false}
       sizeX={600}
       >
@@ -998,25 +1048,25 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
 
       <div className="row">
       <div className="col-2">
-            Название:
+            <FormattedMessage id='Название' defaultMessage="Название"/>:
       </div>
         <div className="col-5">
           <RichTextEditor editorState={tableViewEditorState} setEditorState={setTableViewEditorState}/>
         </div>
         <div className="col-2">
-        <button type="button" className="btn btn-success" onClick={() => createTableView()}>Создать</button>
+        <button type="button" className="btn btn-success" onClick={() => createTableView()}><FormattedMessage id='Создать' defaultMessage="Создать"/></button>
         </div>
         <div className="col-3">
-        <button type="button" className="btn btn-info" onClick={() => updateTableView()}>Обновить</button>
+        <button type="button" className="btn btn-info" onClick={() => updateTableView()}><FormattedMessage id='Обновить' defaultMessage="Обновить"/></button>
         </div>
       </div>
       <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Название</th>
-            <th scope="col">Выбрать</th>
-            <th scope="col">Удалить</th>
+            <th scope="col"><FormattedMessage id='Название' defaultMessage="Название"/></th>
+            <th scope="col"><FormattedMessage id='Выбрать' defaultMessage="Выбрать"/></th>
+            <th scope="col"><FormattedMessage id='Удалить' defaultMessage="Удалить"/></th>
           </tr>
         </thead>
         <tbody>
@@ -1042,6 +1092,8 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   // define current law group and editor state
   const [selectedLawGroup, setSelectedLawGroup] = useState({ type_name:null,id_type:null})
   const [lawGroupEditorState, setLawGroupEditorState] = useState(EditorState.createEmpty())
+
+  const intl = useIntl()
 
   const selectLawGroup = (group) => {
    
@@ -1078,12 +1130,12 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
     setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
 
     // show message
-    showMessage("Группа была обновлена")
+    showMessage(intl.formatMessage({id:`Группа была обновлена`,defaultMessage: `Группа была обновлена`}))
 
   }
 
   const deleteLawGroup = async (group) => {
-    if (!window.confirm("Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.")) {
+    if (!window.confirm(intl.formatMessage({id:`Подтверждение действия`,defaultMessage: `Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.`}))) {
       return
     }
     
@@ -1100,7 +1152,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
     setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
    
     // show message
-    showMessage("Группа была удалена")
+    showMessage(intl.formatMessage({id:`Группа была удалена`,defaultMessage: `Группа была удалена`}))
   
   }
 
@@ -1129,7 +1181,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
     setLawGroupEditorState(EditorState.createEmpty())
     document.getElementById("InputLawGroupColor3").value = "#FF0000"
 
-    showMessage("Группа была создана")
+    showMessage(intl.formatMessage({id:`Группа была создана`,defaultMessage: `Группа была создана`}))
 
   }
 
@@ -1156,7 +1208,7 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   return (
     <Modal
       modalVisibility={modalsVisibility.lawsGroupsModalVisibility}
-      title={"Группы законов"}
+      title={intl.formatMessage({id:`Группы законов`,defaultMessage: `Группы законов`})}
       hasBackground={false}
       sizeX={600}
       >
@@ -1164,22 +1216,22 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 
       <div className="row">
       <div className="col-2">
-            Название:
+            <FormattedMessage id='Название' defaultMessage="Название"/>:
       </div>
         <div className="col-5">
           <RichTextEditor editorState={lawGroupEditorState} setEditorState={setLawGroupEditorState}/>
 
         </div>
         <div className="col-2">
-        <button type="button" className="btn btn-success" onClick={() => createLawGroup()}>Создать</button>
+        <button type="button" className="btn btn-success" onClick={() => createLawGroup()}><FormattedMessage id='Создать' defaultMessage="Создать"/></button>
         </div>
         <div className="col-3">
-        <button type="button" className="btn btn-info" onClick={() => updateLawGroup()}>Обновить</button>
+        <button type="button" className="btn btn-info" onClick={() => updateLawGroup()}><FormattedMessage id='Обновить' defaultMessage="Обновить"/></button>
         </div>
       </div>
       <div className="row">
       <div className="col-2">
-            Цвет:
+            <FormattedMessage id='Цвет' defaultMessage="Цвет"/>:
       </div>
         <div className="col-5">
           <input type="color" className="form-control form-control-color"  id="InputLawGroupColor3" />
@@ -1190,10 +1242,10 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Название</th>
-            <th scope="col">Цвет</th>
-            <th scope="col">Выбрать</th>
-            <th scope="col">Удалить</th>
+            <th scope="col"><FormattedMessage id='Название' defaultMessage="Название"/></th>
+            <th scope="col"><FormattedMessage id='Цвет' defaultMessage="Цвет"/></th>
+            <th scope="col"><FormattedMessage id='Выбрать' defaultMessage="Выбрать"/></th>
+            <th scope="col"><FormattedMessage id='Удалить' defaultMessage="Удалить"/></th>
           </tr>
         </thead>
         <tbody>
@@ -1220,6 +1272,8 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
 
   const [selectedGKLayer, setSelectedGKLayer] = useState({ type_name:null,id_type:null})
   const [GKLayerEditorState, setGKLayerEditorState] = useState(EditorState.createEmpty())
+
+  const intl = useIntl()
 
   const selectGKLayer = (layer) => {
    
@@ -1256,7 +1310,7 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
     setStateFromGetAPI(setGKLayers, `${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
 
     // show message
-    showMessage("Системный уровень обновлен")
+    showMessage(intl.formatMessage({id:`Системный уровень обновлен`,defaultMessage: `Системный уровень обновлен`}))
 
   }
 
@@ -1283,7 +1337,7 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
   return (
     <Modal
       modalVisibility={modalsVisibility.GKColorsEditModalVisibility}
-      title={"Системные уровни"}
+      title={intl.formatMessage({id:`Системные уровни`,defaultMessage: `Системные уровни`})}
       hasBackground={false}
       sizeX={600}
       >
@@ -1291,18 +1345,18 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
 
       <div className="row">
       <div className="col-2">
-            Название:
+            <FormattedMessage id='Название' defaultMessage="Название"/>:
       </div>
         <div className="col-5">
           <RichTextEditor editorState={GKLayerEditorState} setEditorState={setGKLayerEditorState}/>
         </div>
         <div className="col-2">
-        <button type="button" className="btn btn-info" onClick={() => updateLawGroup()}>Обновить</button>
+        <button type="button" className="btn btn-info" onClick={() => updateLawGroup()}><FormattedMessage id='Обновить' defaultMessage="Обновить"/></button>
         </div>
       </div>
       <div className="row">
       <div className="col-2">
-            Цвет:
+            <FormattedMessage id='Цвет' defaultMessage="Цвет"/>:
       </div>
         <div className="col-5">
         <input type="color" className="form-control form-control-color"  id="InputGKLayerColor3" />
@@ -1313,10 +1367,10 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Имя</th>
+            <th scope="col"><FormattedMessage id='Имя' defaultMessage="Имя"/></th>
             <th scope="col">GK</th>
-            <th scope="col">Цвет</th>
-            <th scope="col">Выбрать</th>
+            <th scope="col"><FormattedMessage id='Цвет' defaultMessage="Цвет"/></th>
+            <th scope="col"><FormattedMessage id='Выбрать' defaultMessage="Выбрать"/></th>
           </tr>
         </thead>
         <tbody>
@@ -1330,21 +1384,22 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
   )
 }
 
-function RegModal({modalVisibility, setUserToken}) {
+function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
 
-
+  const intl = useIntl()
 
   const register = async () => {
 
     // get email and password from fields
     const email = document.getElementById("InputEmail1").value
     const password = document.getElementById("InputPassword1").value
+    const locale = currentLocaleState.currentLocale
 
     const userData = {
       user: {
         email: email,
         password: password,
-
+        locale: locale,
       }
     }
 
@@ -1357,7 +1412,7 @@ function RegModal({modalVisibility, setUserToken}) {
 
     // hide modal and show message
     modalVisibility.setVisibility(false)
-    showMessage("Было выслано письмо подтверждения почты")
+    showMessage(intl.formatMessage({id:`Письмо подтверждения почты`,defaultMessage: `Было выслано письмо подтверждения почты`}))
   }
 
   // on login function
@@ -1387,7 +1442,7 @@ function RegModal({modalVisibility, setUserToken}) {
     
     // hide modal and show message
     modalVisibility.setVisibility(false)
-    showMessage("Авторизация успешна")    
+    showMessage(intl.formatMessage({id:`Авторизация успешна`,defaultMessage: `Авторизация успешна`}))    
   }
 
 
@@ -1409,7 +1464,7 @@ function RegModal({modalVisibility, setUserToken}) {
       return
     }
     // show message
-    showMessage("Письмо сброса пароля выслано")
+    showMessage(intl.formatMessage({id:`Письмо сброса пароля`,defaultMessage: `Письмо сброса пароля выслано`}))
   }
 
 
@@ -1423,51 +1478,48 @@ function RegModal({modalVisibility, setUserToken}) {
 
       <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
-              <button className="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Авторизация</button>
-              <button className="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false">Регистрация</button>
-              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false">Сброс пароля</button>
+              <button className="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true"><FormattedMessage id='Авторизация' defaultMessage="Авторизация"/></button>
+              <button className="nav-link" id="nav-register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="false"><FormattedMessage id='Регистрация' defaultMessage="Регистрация"/></button>
+              <button className="nav-link" id="nav-forgot-password-tab" data-bs-toggle="tab" data-bs-target="#forgot-password" type="button" role="tab" aria-controls="forgot-password" aria-selected="false"><FormattedMessage id='Сброс пароля' defaultMessage="Сброс пароля"/></button>
           </div>
       </nav>
       <div className="tab-content" id="nav-tabContent">
           <div className="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab" tabIndex="0">
 
               <div className="modal-content2">
-                <label htmlFor="InputEmail2" className="form-label">Почта</label>
+                <label htmlFor="InputEmail2" className="form-label"><FormattedMessage id='Почта' defaultMessage="Почта"/></label>
                 <input type="email" className="form-control" id="InputEmail2" aria-describedby="emailHelp" placeholder="name@example.com"/>
-                <label htmlFor="InputPassword2" className="form-label">Пароль</label>
+                <label htmlFor="InputPassword2" className="form-label"><FormattedMessage id='Пароль' defaultMessage="Пароль"/></label>
                 <input type="password" className="form-control" id="InputPassword2"/>
               </div>
 
               <div className="modal-footer2">
-                  <button type="button" className="btn btn-primary" onClick={() => login()}>Вход</button>
+                  <button type="button" className="btn btn-primary" onClick={() => login()}><FormattedMessage id='Вход' defaultMessage="Вход"/></button>
               </div>
           </div>
           <div className="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab" tabIndex="0">
 
               <div className="modal-content2">
-                  <label htmlFor="InputEmail1" className="form-label">Почта</label>
+                  <label htmlFor="InputEmail1" className="form-label"><FormattedMessage id='Почта' defaultMessage="Почта"/></label>
                   <input type="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="name@example.com"/>
-                  <label htmlFor="InputPassword1" className="form-label">Пароль</label>
+                  <label htmlFor="InputPassword1" className="form-label"><FormattedMessage id='Пароль' defaultMessage="Пароль"/></label>
                   <input type="password" className="form-control" id="InputPassword1"/>
-                  {/* <div id="passwordHelpBlock" className="form-text">
-                      Your password must be 8-20 characters long.
-                  </div> */}
               </div>
 
 
               <div className="modal-footer2">
-                  <button type="button" className="btn btn-primary" onClick={() => register()}>Регистрация</button>
+                  <button type="button" className="btn btn-primary" onClick={() => register()}><FormattedMessage id='Регистрация' defaultMessage="Регистрация"/></button>
               </div>
           </div>
           <div className="tab-pane fade" id="forgot-password" role="tabpanel" aria-labelledby="forgot-password-tab" tabIndex="0">
 
           <div className="modal-content2">
-              <label htmlFor="InputEmail5" className="form-label">Почта</label>
+              <label htmlFor="InputEmail5" className="form-label"><FormattedMessage id='Почта' defaultMessage="Почта"/></label>
               <input type="email" className="form-control" id="InputEmail5" aria-describedby="emailHelp" placeholder="name@example.com"/>
           </div>
 
           <div className="modal-footer2">
-              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}>Сброс</button>
+              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}><FormattedMessage id='Сброс' defaultMessage="Сброс"/></button>
           </div>
           </div>
       </div>
