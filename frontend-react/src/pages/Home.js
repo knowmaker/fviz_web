@@ -40,12 +40,11 @@ export default function Home() {
   
   const userInfoState = {userToken, setUserToken,userProfile, setUserProfile}
 
-  console.log(userProfile)
   const [currentLocale, setCurrentLocale] = useState("ru")
   
   const currentLocaleState = {currentLocale, setCurrentLocale}
   const translatedMessages = getTranslationMessages(currentLocale)
-  console.log(currentLocale,translatedMessages)
+  //console.log(currentLocale,translatedMessages)
 
   const intl = createIntl({
     locale: currentLocale,
@@ -62,13 +61,13 @@ export default function Home() {
       }    
 
       // get all required data
-      setStateFromGetAPI(setUserProfile, `${process.env.REACT_APP_API_LINK}/users/profile`, undefined, headers )
-      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
-      setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+      setStateFromGetAPI(setUserProfile, `${process.env.REACT_APP_API_LINK}/${intl.locale}/users/profile`, undefined, headers )
+      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`,undefined,headers)
+      setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
       // fix later
-      setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
-      setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
-      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/active_view`,undefined,headers)
+      setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
+      setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
+      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,headers)
 
       // set up localstorage to authenticate automatically
       localStorage.setItem('token', userToken);
@@ -79,6 +78,30 @@ export default function Home() {
     }
 
   }, [userToken]);
+
+  useEffect(() => {
+
+    if (currentLocale && userToken) {
+
+      // set header for API queries
+      const headers = {
+        Authorization: `Bearer ${userToken}`
+      }    
+
+      console.log(intl.locale)
+      // get all required localized data
+      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`,undefined,headers)
+      setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
+      setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
+      setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
+      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,testShow,headers)
+
+
+    }
+
+  }, [currentLocale]);
+
+
 
   useEffect(() => {
 
@@ -138,16 +161,17 @@ export default function Home() {
     const [tableView, setTableView] = useState({id_repr:1,title:intl.formatMessage({id:`Базовое`,defaultMessage: `Базовое`})}); 
     const tableViewState = {tableView,setTableView}
 
+
+
     const setFullTableData = (result) => {
 
       setTableData(result.active_quantities)
-      console.log(result)
       setTableView({id_repr:result.id_repr,title:result.title})
     }
     // get table and layers when page is loaded
     useEffect(() => {
-      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/active_view`)
-      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/gk`)
+      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`)
+      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`)
 
       async function logInByLocalStorage() {
         
@@ -157,7 +181,7 @@ export default function Home() {
             Authorization: `Bearer ${storageToken}`
           }   
   
-          const profileResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/users/profile`,headers)
+          const profileResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/users/profile`,headers)
           if (!isResponseSuccessful(profileResponseData)) {
             localStorage.removeItem('token')
             return
@@ -256,7 +280,7 @@ export default function Home() {
           }
 
           // get full data about cell
-          const cellResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`)
+          const cellResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`)
           if (!isResponseSuccessful(cellResponseData)) {
             showMessage(cellResponseData.data.error,"error")
             return
@@ -283,6 +307,8 @@ export default function Home() {
     
     const testShow = (result,_,info) => {
 
+      // 
+      console.log("input:",info)
       console.log("result:",result)
     }
 
@@ -361,7 +387,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     }
 
     // send cell update request
-    const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`, newCell, headers)
+    const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`, newCell, headers)
     if (!isResponseSuccessful(changedCellResponseData)) {
       showMessage(changedCellResponseData.data.error,"error")
       return
@@ -375,7 +401,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
     // send request to replace missing cell
-    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/layers/${selectedCell.id_lt}`,headers)
+    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`,headers)
     if (!isResponseSuccessful(cellAlternativesResponseData)) {
       showMessage(cellAlternativesResponseData.data.error,"error")
       return
@@ -399,7 +425,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     }
 
     // send delete request
-    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/quantities/${selectedCell.id_value}`,undefined,headers)
+    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`,undefined,headers)
     if (!isResponseSuccessful(cellDeleteResponseData)) {
       showMessage(cellDeleteResponseData.data.error,"error")
       return
@@ -408,7 +434,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value))
 
     // send request to replace missing cell
-    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/layers/${selectedCell.id_lt}`,headers)
+    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`,headers)
     if (!isResponseSuccessful(cellAlternativesResponseData)) {
       showMessage(cellAlternativesResponseData.data.error,"error")
       return
@@ -629,7 +655,7 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
     }
 
     // send profile update request
-    const editUserResponse = await patchDataToAPI(`${process.env.REACT_APP_API_LINK}/users/update`,newUserData,headers)
+    const editUserResponse = await patchDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/users/update`,newUserData,headers)
     if (!isResponseSuccessful(editUserResponse)) {
       showMessage(editUserResponse.data.error,"error")
       return
@@ -653,7 +679,7 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
     }
 
     // send delete request
-    const deleteUserResponse = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/delete`,undefined,headers)
+    const deleteUserResponse = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/delete`,undefined,headers)
     if (!isResponseSuccessful(deleteUserResponse)) {
       showMessage(deleteUserResponse.data.error,"error")
       return
@@ -706,7 +732,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const createLaw = () => {
 
     if (lawsState.lawsGroups === undefined) {
-      setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
+      setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
 
     }
 
@@ -731,7 +757,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
       }
     }
 
-    postData(undefined, `${process.env.REACT_APP_API_LINK}/laws`, newLaw, headers, afterCreateLaw)
+    postData(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`, newLaw, headers, afterCreateLaw)
     
 
 
@@ -741,7 +767,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   const afterCreateLaw = () => {
 
 
-    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
+    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
   }
 
 
@@ -769,7 +795,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
       }
     }
 
-    patchData(undefined, `${process.env.REACT_APP_API_LINK}/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
+    patchData(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
     
   }
 
@@ -788,8 +814,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     const lawCells = lawCellsResponse.map(cellResponse => cellResponse.data.data)
 
     selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
- 
-    console.log({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
+
 
     let newTable = tableState.tableData
     lawCells.forEach(cellData => {
@@ -802,11 +827,11 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
   const deleteLaw = (law) => {
 
-    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/laws/${law.id_law}`,headers,afterDeleteLaw)
+    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws/${law.id_law}`,headers,afterDeleteLaw)
   }
 
   const afterDeleteLaw = () => {
-    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/laws`,undefined,headers)
+    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
   }
 
   // dublicate, remove later
@@ -934,7 +959,7 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   const selectTableView = async (tableView) => {
 
     // send full table view data request
-    const tableViewDataResponse = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/active_view/${tableView.id_repr}`,headers)
+    const tableViewDataResponse = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view/${tableView.id_repr}`,headers)
     if (!isResponseSuccessful(tableViewDataResponse)) {
       showMessage(tableViewDataResponse.data.error,"error")
       return
@@ -964,14 +989,14 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
     }
   
     // send table view update request
-    const changedTableViewResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/represents/${tableViewState.tableView.id_repr}`,newTableView,headers)
+    const changedTableViewResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/represents/${tableViewState.tableView.id_repr}`,newTableView,headers)
     if (!isResponseSuccessful(changedTableViewResponseData)) {
       showMessage(changedTableViewResponseData.data.error,"error")
       return
     }
 
     // update current table views
-    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
 
     // show message
     showMessage(intl.formatMessage({id:`Представление обновлено`,defaultMessage: `Представление обновлено`}))
@@ -981,14 +1006,14 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   const deleteTableView = async (tableView) => {
 
     // send delete request
-    const tableViewDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/represents/${tableView.id_repr}`,undefined,headers)
+    const tableViewDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/represents/${tableView.id_repr}`,undefined,headers)
     if (!isResponseSuccessful(tableViewDeleteResponseData)) {
       showMessage(tableViewDeleteResponseData.data.error,"error")
       return
     }
 
     // update current table views
-    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
 
     // show message
     showMessage(intl.formatMessage({id:`Представление удалено`,defaultMessage: `Представление удалено`}))
@@ -1009,14 +1034,14 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
       active_quantities: cellIds,
     }
     // send table view create request
-    const newTableViewResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/represents`, newTableView, headers)
+    const newTableViewResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`, newTableView, headers)
     if (!isResponseSuccessful(newTableViewResponseData)) {
       showMessage(newTableViewResponseData.data.error,"error")
       return
     }
 
     // update current table views
-    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+    setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
 
     // show message
     showMessage(intl.formatMessage({id:`Представление создано`,defaultMessage: `Представление создано`}))
@@ -1126,14 +1151,14 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
     }
   
     // send group update request
-    const changedGroupResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers)
+    const changedGroupResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types/${selectedLawGroup.id_type}`,newLawGroup,headers)
     if (!isResponseSuccessful(changedGroupResponseData)) {
       showMessage(changedGroupResponseData.data.error,"error")
       return
     }
 
     // update current groups
-    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
 
     // show message
     showMessage(intl.formatMessage({id:`Группа была обновлена`,defaultMessage: `Группа была обновлена`}))
@@ -1145,17 +1170,17 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
       return
     }
     
-    //deleteData(undefined,`${process.env.REACT_APP_API_LINK}/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
+    //deleteData(undefined,`${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types/${group.id_type}`,headers,afterDeleteLawGroup)
   
     // send delete group request
-    const groupDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/law_types/${group.id_type}`,undefined,headers)
+    const groupDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types/${group.id_type}`,undefined,headers)
     if (!isResponseSuccessful(groupDeleteResponseData)) {
       showMessage(groupDeleteResponseData.data.error,"error")
       return
     }
 
     // update current groups
-    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
    
     // show message
     showMessage(intl.formatMessage({id:`Группа была удалена`,defaultMessage: `Группа была удалена`}))
@@ -1176,13 +1201,13 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
     }
 
 
-    const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/law_types`,newLawGroup,headers)
+    const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,newLawGroup,headers)
     if (!isResponseSuccessful(newGroupResponseData)) {
       showMessage(newGroupResponseData.data.error,"error")
       return
     }
 
-    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/law_types`,undefined,headers)
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
 
     setLawGroupEditorState(EditorState.createEmpty())
     document.getElementById("InputLawGroupColor3").value = "#FF0000"
@@ -1306,14 +1331,14 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
     }
   
     // send group update request
-    const changedGKLayerResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/gk/${selectedGKLayer.id_gk}`,newLawGroup,headers)
+    const changedGKLayerResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk/${selectedGKLayer.id_gk}`,newLawGroup,headers)
     if (!isResponseSuccessful(changedGKLayerResponseData)) {
       showMessage(changedGKLayerResponseData.data.error,"error")
       return
     }
 
     // update current groups
-    setStateFromGetAPI(setGKLayers, `${process.env.REACT_APP_API_LINK}/gk`,undefined,headers)
+    setStateFromGetAPI(setGKLayers, `${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`,undefined,headers)
 
     // show message
     showMessage(intl.formatMessage({id:`Системный уровень обновлен`,defaultMessage: `Системный уровень обновлен`}))
@@ -1410,7 +1435,7 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
     }
 
     // try to register
-    const registerResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/users/register`, userData)
+    const registerResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/users/register`, userData)
     if (!isResponseSuccessful(registerResponseData)) {
       showMessage(registerResponseData.data.error,"error")
       return
@@ -1435,7 +1460,7 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
     }
 
     // try to log in 
-    const loginResponse = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/users/login`, userLoginData)
+    const loginResponse = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/users/login`, userLoginData)
     
     if (!isResponseSuccessful(loginResponse)) {
       showMessage(loginResponse.data.error,"error")
@@ -1464,7 +1489,7 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
     }
 
     // send password reset request
-    const resetPasswordResponse = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/users/reset`, userData,)
+    const resetPasswordResponse = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/users/reset`, userData,)
     if (!isResponseSuccessful(resetPasswordResponse)) {
       showMessage(resetPasswordResponse.data.error,"error")
       return

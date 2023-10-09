@@ -5,6 +5,12 @@
       "value": "Authorization"
     }
   ],
+  "Авторизация / Регистрация": [
+    {
+      "type": 0,
+      "value": "Authorization / Registration"
+    }
+  ],
   "Авторизация успешна": [
     {
       "type": 0,
@@ -23,7 +29,6 @@
       "value": "Greek Alphabet"
     }
   ],
-
   "Базовое": [
     {
       "type": 0,
@@ -180,6 +185,12 @@
       "value": "Are you sure you want to do this? This will lead to consequences for other users."
     }
   ],
+  "Показать уровни GK": [
+    {
+      "type": 0,
+      "value": "Show GK levels"
+    }
+  ],
   "Почта": [
     {
       "type": 0,
@@ -304,6 +315,12 @@
     {
       "type": 0,
       "value": "Create"
+    }
+  ],
+  "Соотношение уровней GK": [
+    {
+      "type": 0,
+      "value": "GK ratios"
     }
   ],
   "Сохранить": [

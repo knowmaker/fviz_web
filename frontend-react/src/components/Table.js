@@ -58,7 +58,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
 
   useEffect(() => {
     if (selectedCell) {
-      setStateFromGetAPI(setCellAlternatives,`${process.env.REACT_APP_API_LINK}/layers/${selectedCell.id_lt}`) 
+      setStateFromGetAPI(setCellAlternatives,`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`) 
     } else {setCellAlternatives(null)}
   }, [selectedCell]);
 
@@ -137,9 +137,11 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0 && emptyCells.length !== 0 
 
+  const intl = useIntl()
+
   useEffect(() => {
 
-    setStateFromGetAPI(setEmptyCells, `${process.env.REACT_APP_API_LINK}/lt`)
+    setStateFromGetAPI(setEmptyCells, `${process.env.REACT_APP_API_LINK}/${intl.locale}/lt`)
 
   }, []);
 

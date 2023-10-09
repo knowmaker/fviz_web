@@ -33,7 +33,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
         Authorization: `Bearer ${userInfoState.userToken}`,
       };
 
-      const response = await fetch(`${process.env.REACT_APP_API_LINK}/quantities`, {
+      const response = await fetch(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities`, {
         method: 'GET',
         headers: headers,
       });
@@ -65,14 +65,14 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
      }
    
      // send table view update request
-     const changedTableViewResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/represents/${tableViewState.tableView.id_repr}`,newTableView,headers)
+     const changedTableViewResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/represents/${tableViewState.tableView.id_repr}`,newTableView,headers)
      if (!isResponseSuccessful(changedTableViewResponseData)) {
        showMessage(changedTableViewResponseData.data.error,"error")
        return
      }
  
      // update current table views
-     setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/represents`,undefined,headers)
+     setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
  
      // show message
      showMessage(intl.formatMessage({id:`Представление обновлено`,defaultMessage: `Представление обновлено`}))
