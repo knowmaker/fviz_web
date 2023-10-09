@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="ru and en yml files above controllers">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/quantity.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/quantity.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="ru and en yml files above models">
+      <change beforePath="$PROJECT_DIR$/frontend-react/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-react/src/App.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -429,15 +424,7 @@
       <workItem from="1696698210143" duration="9334000" />
       <workItem from="1696714019056" duration="771000" />
       <workItem from="1696760625888" duration="7826000" />
-      <workItem from="1696864459371" duration="8619000" />
-    </task>
-    <task id="LOCAL-00087" summary="color + difference">
-      <option name="closed" value="true" />
-      <created>1694358689857</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
-      <option name="project" value="LOCAL" />
-      <updated>1694358689858</updated>
+      <workItem from="1696864459371" duration="9101000" />
     </task>
     <task id="LOCAL-00088" summary="fviz add #">
       <option name="closed" value="true" />
@@ -823,7 +810,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696877541418</updated>
     </task>
-    <option name="localTasksCounter" value="136" />
+    <task id="LOCAL-00136" summary="ru and en yml files above models">
+      <option name="closed" value="true" />
+      <created>1696879015678</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1696879015678</updated>
+    </task>
+    <option name="localTasksCounter" value="137" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -841,7 +836,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="debug quantity rspec 4" />
     <MESSAGE value="fix law index method" />
     <MESSAGE value="little styles" />
     <MESSAGE value="quantity uncomment" />
@@ -866,7 +860,8 @@
     <MESSAGE value="update ru and en yml files" />
     <MESSAGE value="update2 ru and en yml files" />
     <MESSAGE value="ru and en yml files above controllers" />
-    <option name="LAST_COMMIT_MESSAGE" value="ru and en yml files above controllers" />
+    <MESSAGE value="ru and en yml files above models" />
+    <option name="LAST_COMMIT_MESSAGE" value="ru and en yml files above models" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696877576382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
