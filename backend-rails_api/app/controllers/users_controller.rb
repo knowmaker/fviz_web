@@ -31,7 +31,6 @@ class UsersController < ApplicationController
 
     if @user&.confirmed && validate_password(params[:user][:password], @user.password)
 
-      # token = JsonWebToken.encode(user_id: @user.id)
       token = encode(id_user: @user.id_user)
       render json: { data: token }, status: :ok
     elsif !@user

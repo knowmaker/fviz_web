@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="localisation email subject">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="delete file">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/confirmation_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/confirmation_email.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/new_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/new_password_email.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/reset_password_email.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/views/user_mailer/reset_password_email.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/environments/development.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/environments/development.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/environments/production.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/environments/production.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/application_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -431,23 +426,8 @@
       <workItem from="1696698210143" duration="9334000" />
       <workItem from="1696714019056" duration="771000" />
       <workItem from="1696760625888" duration="7826000" />
-      <workItem from="1696864459371" duration="11929000" />
-    </task>
-    <task id="LOCAL-00090" summary="new methods for gk and lt">
-      <option name="closed" value="true" />
-      <created>1694534407037</created>
-      <option name="number" value="00090" />
-      <option name="presentableId" value="LOCAL-00090" />
-      <option name="project" value="LOCAL" />
-      <updated>1694534407037</updated>
-    </task>
-    <task id="LOCAL-00091" summary="old represents controller methods">
-      <option name="closed" value="true" />
-      <created>1694535314631</created>
-      <option name="number" value="00091" />
-      <option name="presentableId" value="LOCAL-00091" />
-      <option name="project" value="LOCAL" />
-      <updated>1694535314631</updated>
+      <workItem from="1696864459371" duration="12790000" />
+      <workItem from="1696954797654" duration="3615000" />
     </task>
     <task id="LOCAL-00092" summary="add color column in law types">
       <option name="closed" value="true" />
@@ -825,7 +805,23 @@
       <option name="project" value="LOCAL" />
       <updated>1696881349751</updated>
     </task>
-    <option name="localTasksCounter" value="139" />
+    <task id="LOCAL-00139" summary="localisation email">
+      <option name="closed" value="true" />
+      <created>1696882455350</created>
+      <option name="number" value="00139" />
+      <option name="presentableId" value="LOCAL-00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1696882455351</updated>
+    </task>
+    <task id="LOCAL-00140" summary="delete file">
+      <option name="closed" value="true" />
+      <created>1696959954254</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1696959954255</updated>
+    </task>
+    <option name="localTasksCounter" value="141" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -843,8 +839,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="quantity uncomment" />
-    <MESSAGE value="change cellid formula" />
     <MESSAGE value="gk &amp; lt spec tests" />
     <MESSAGE value="law_types spec tests" />
     <MESSAGE value="laws spec tests &amp; all spec debug" />
@@ -868,10 +862,12 @@
     <MESSAGE value="ru and en yml files above models" />
     <MESSAGE value="css empty cell" />
     <MESSAGE value="localisation email subject" />
-    <option name="LAST_COMMIT_MESSAGE" value="localisation email subject" />
+    <MESSAGE value="localisation email" />
+    <MESSAGE value="delete file" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete file" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696877576382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1696959055584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@RepresentsController_GET__represent_view_index_returns_the_active_quantities_for_the_current_user_s_active_represent.rcov" NAME="RepresentsController GET #represent_view_index returns the active quantities for the current user's active represent Coverage Results" MODIFIED="1696498578558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Gk.rcov" NAME="Gk Coverage Results" MODIFIED="1696447769671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@LawTypesController.rcov" NAME="LawTypesController Coverage Results" MODIFIED="1696449558509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

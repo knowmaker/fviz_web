@@ -12,9 +12,8 @@ class ApplicationController < ActionController::API
     if token
       token = token.split.last
       begin
-        # @decoded = JsonWebToken.decode(token)
         @decoded = decode(token)
-        @current_user = User.find(@decoded[:id_user])
+        @current_user = User.find_by(id_user: @decoded[:id_user])
         # I18n.locale = @current_user.locale
       rescue ActiveRecord::RecordNotFound
         render json: { error: [I18n.t('errors.application.not_found')] }, status: :not_found
@@ -34,7 +33,5 @@ class ApplicationController < ActionController::API
   def decode(token)
     decoded = JWT.decode(token, SECRET_KEY)[0]
     HashWithIndifferentAccess.new(decoded)
-  rescue JWT::DecodeError
-    nil
   end
 end
