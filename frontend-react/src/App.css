@@ -286,3 +286,7 @@ td button {
 .GK-layers-image {
   width: 566px;
 }
+
+.showPassword {
+  cursor: pointer;
+}

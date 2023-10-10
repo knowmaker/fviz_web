@@ -459,9 +459,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
 
   const handleCellHover = (event, cellData) => {
-
     hoverData.hoveredCellState.setHoveredCell(cellData)
-
   }
 
 
@@ -498,7 +496,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
           </div>
           <div className="su-pos" >
           <span dangerouslySetInnerHTML={{__html: cellContent_symbol}}></span>
-              {(cellContent_unit === "\n") ? '' : ', '}
+              {(cellContent_unit === "\n" || cellContent_unit === "") ? '' : ', '}
           <span dangerouslySetInnerHTML={{__html: cellContent_unit}}></span>   
               <br />
           </div>

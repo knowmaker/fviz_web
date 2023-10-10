@@ -114,6 +114,7 @@ export default function Home() {
       document.getElementById("InputFirstName3").value = userProfile.first_name
       document.getElementById("InputLastName3").value = userProfile.last_name
       document.getElementById("InputPatronymic3").value = userProfile.patronymic
+      document.getElementById("inputLocale").value = userProfile.locale
       setCurrentLocale(userProfile.locale)
     } else {
       document.getElementById("InputEmail3").value = ""
@@ -640,7 +641,7 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
     const lastName = document.getElementById("InputLastName3").value 
     const patronymic = document.getElementById("InputPatronymic3").value
     const password = document.getElementById("InputPassword3").value
-    const locale = currentLocaleState.currentLocale
+    const locale = document.getElementById("inputLocale").value
 
     let newUserData = {
       user: {
@@ -693,6 +694,9 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
 
   }
 
+  const InputPassword = useRef()
+  const InputPasswordEye = useRef()
+
   return (
     <Modal
       modalVisibility={modalVisibility}
@@ -704,14 +708,23 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
         <label htmlFor="InputEmail3" className="form-label"><FormattedMessage id='Почта' defaultMessage="Почта"/></label>
         <input type="email" className="form-control" id="InputEmail3" aria-describedby="emailHelp" placeholder="name@example.com" disabled={true}/>
         <label htmlFor="InputLastName3" className="form-label"><FormattedMessage id='Новый пароль' defaultMessage="Новый пароль"/></label>
-        <input type="password" className="form-control" id="InputPassword3"/>
+        <div className="input-group" id="show_hide_password">
+          <input type="password" className="form-control" id="InputPassword3" ref={InputPassword}/>
+          <div className="input-group-text">
+            <span className='showPassword' onClick={() => {showPassword(InputPassword,InputPasswordEye)}}><i className="fa fa-eye-slash" aria-hidden="true" ref={InputPasswordEye}/></span>
+          </div>
+        </div>
         <label htmlFor="InputLastName3" className="form-label"><FormattedMessage id='Фамилия' defaultMessage="Фамилия"/></label>
         <input type="text" className="form-control" id="InputLastName3"/>
         <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя"/></label>
         <input type="text" className="form-control" id="InputFirstName3"/>
         <label htmlFor="InputPatronymic3" className="form-label"><FormattedMessage id='Отчество' defaultMessage="Отчество"/></label>
         <input type="text" className="form-control" id="InputPatronymic3" />
-            
+        <label htmlFor="InputPatronymic3" className="form-label"><FormattedMessage id='Язык' defaultMessage="Язык"/></label>
+        <select className="form-select" aria-label="Default select example" id='inputLocale'>
+          <option value={"en"}>English</option>
+          <option value={"ru"}>Русский</option>
+        </select>
       </div>
       <div className="modal-footer2">
         <button type="button" className="btn btn-danger" onClick={() => deleteUser()}><FormattedMessage id='Удалить аккаунт' defaultMessage="Удалить аккаунт"/></button>
@@ -732,19 +745,21 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
   const intl = useIntl()
 
-  const createLaw = () => {
+  const createLaw = async () => {
 
-    if (lawsState.lawsGroups === undefined) {
-      setStateFromGetAPI(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
-
-    }
-
+    // check length of current law
     if (selectedLawState.selectedLaw.cells.length !== 4) {
+      showMessage(intl.formatMessage({id:`выбрать 4 ячейки`,defaultMessage: `Для закона нужно выбрать 4 ячейки`}))
       return
     }
+
+    // check if this law is correct
     if (!checkLaw(selectedLawState.selectedLaw.cells)) {
+      showMessage(intl.formatMessage({id:`выбран некорректный закон`,defaultMessage: `выбран некорректный закон`}))
       return
     }
+
+    // get current selected cells
     const selectedLawCellId = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
 
 
@@ -760,17 +775,22 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
       }
     }
 
-    postData(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`, newLaw, headers, afterCreateLaw)
+    //postData(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`, newLaw, headers, afterCreateLaw)
     
+    const newLawResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,newLaw,headers)
+    if (!isResponseSuccessful(newLawResponseData)) {
+      showMessage(newLawResponseData.data.error,"error")
+      return
+    }
 
-
+    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
 
   }
   
   const afterCreateLaw = () => {
 
 
-    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
+   
   }
 
 
@@ -1501,6 +1521,11 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
     showMessage(intl.formatMessage({id:`Письмо сброса пароля`,defaultMessage: `Письмо сброса пароля выслано`}))
   }
 
+  const InputRegisterPassword = useRef()
+  const InputRegisterPasswordEye = useRef()
+
+  const InputLoginPassword = useRef()
+  const InputLoginPasswordEye = useRef()
 
   return (
     <Modal
@@ -1524,7 +1549,13 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
                 <label htmlFor="InputEmail2" className="form-label"><FormattedMessage id='Почта' defaultMessage="Почта"/></label>
                 <input type="email" className="form-control" id="InputEmail2" aria-describedby="emailHelp" placeholder="name@example.com"/>
                 <label htmlFor="InputPassword2" className="form-label"><FormattedMessage id='Пароль' defaultMessage="Пароль"/></label>
-                <input type="password" className="form-control" id="InputPassword2"/>
+
+                <div className="input-group" id="show_hide_password">
+                <input type="password" className="form-control" id="InputPassword2" ref={InputRegisterPassword}/>
+                    <div className="input-group-text">
+                      <span className='showPassword' onClick={() => {showPassword(InputRegisterPassword,InputRegisterPasswordEye)}}><i className="fa fa-eye-slash" aria-hidden="true" ref={InputRegisterPasswordEye}/></span>
+                    </div>
+                  </div>
               </div>
 
               <div className="modal-footer2">
@@ -1537,7 +1568,12 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
                   <label htmlFor="InputEmail1" className="form-label"><FormattedMessage id='Почта' defaultMessage="Почта"/></label>
                   <input type="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="name@example.com"/>
                   <label htmlFor="InputPassword1" className="form-label"><FormattedMessage id='Пароль' defaultMessage="Пароль"/></label>
-                  <input type="password" className="form-control" id="InputPassword1"/>
+                  <div className="input-group" id="show_hide_password">
+                    <input type="password" className="form-control" id="InputPassword1" ref={InputLoginPassword}/>
+                    <div className="input-group-text">
+                      <span className='showPassword' onClick={() => {showPassword(InputLoginPassword,InputLoginPasswordEye)}}><i className="fa fa-eye-slash" aria-hidden="true" ref={InputLoginPasswordEye}/></span>
+                    </div>
+                  </div>
               </div>
 
 
@@ -1692,4 +1728,16 @@ export function convertToMLTI(M,L,T,I) {
   return MLTIHTMLString
 }
 
+function showPassword(inputElementRef,eyeElementRef) {
+  console.log(eyeElementRef.current)
+  if(inputElementRef.current.getAttribute("type") === "text") {
+    inputElementRef.current.setAttribute('type', 'password');
+    eyeElementRef.current.classList.add( "fa-eye-slash" );
+    eyeElementRef.current.classList.remove( "fa-eye" );
+  } else if(inputElementRef.current.getAttribute("type") === "password"){
+    inputElementRef.current.setAttribute('type', 'text');
+    eyeElementRef.current.classList.remove( "fa-eye-slash" );
+    eyeElementRef.current.classList.add( "fa-eye" );
+}
+}
 

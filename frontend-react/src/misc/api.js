@@ -20,6 +20,7 @@ export function postDataToAPI(adress,data, headers = undefined) {
       resolve(response)
     } catch (error) {
       resolve(error.response)
+      console.log(adress,data, headers)
     }
   })
   //return axios.post(adress, data, {headers: headers})
