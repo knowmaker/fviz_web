@@ -162,7 +162,8 @@ export function deleteData(setStateFunction, adress, headers, afterRequestFuncti
   });
 }
 export function isResponseSuccessful(response) {
-  if (response.status < 300) { return true; }
+  if (response === undefined) { return false }
+  if (response.status < 300) { return true }
   return false;
 }
 

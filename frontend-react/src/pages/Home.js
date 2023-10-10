@@ -749,13 +749,13 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
     // check length of current law
     if (selectedLawState.selectedLaw.cells.length !== 4) {
-      showMessage(intl.formatMessage({id:`выбрать 4 ячейки`,defaultMessage: `Для закона нужно выбрать 4 ячейки`}))
+      showMessage(intl.formatMessage({id:`Выбрать 4 ячейки`,defaultMessage: `Для закона нужно выбрать 4 ячейки`}))
       return
     }
 
     // check if this law is correct
     if (!checkLaw(selectedLawState.selectedLaw.cells)) {
-      showMessage(intl.formatMessage({id:`выбран некорректный закон`,defaultMessage: `выбран некорректный закон`}))
+      showMessage(intl.formatMessage({id:`Выбран некорректный закон`,defaultMessage: `выбран некорректный закон`}))
       return
     }
 
@@ -777,12 +777,14 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
     //postData(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`, newLaw, headers, afterCreateLaw)
     
+    // send create group request
     const newLawResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,newLaw,headers)
     if (!isResponseSuccessful(newLawResponseData)) {
       showMessage(newLawResponseData.data.error,"error")
       return
     }
 
+    // update laws
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
 
   }
@@ -794,13 +796,21 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
   }
 
 
-  const updateLaw = () => {
+  const updateLaw = async () => {
+
+    // check length of current law
     if (selectedLawState.selectedLaw.cells.length !== 4) {
+      showMessage(intl.formatMessage({id:`Выбрать 4 ячейки`,defaultMessage: `Для закона нужно выбрать 4 ячейки`}))
       return
     }
+
+    // check if this law is correct
     if (!checkLaw(selectedLawState.selectedLaw.cells)) {
+      showMessage(intl.formatMessage({id:`Выбран некорректный закон`,defaultMessage: `выбран некорректный закон`}))
       return
     }
+
+    // get current selected cells
     const selectedLawCellId = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
 
 
@@ -818,15 +828,23 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
       }
     }
 
-    patchData(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws/${selectedLawState.selectedLaw.id_law}`, newLaw, headers, afterCreateLaw)
-    
+    // send update request
+    const changedLawResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws/${selectedLawState.selectedLaw.id_law}`,newLaw,headers)
+    if (!isResponseSuccessful(changedLawResponseData)) {
+      showMessage(changedLawResponseData.data.error,"error")
+      return
+    }
+
+    // update laws
+    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
+  
   }
 
 
 
   const selectLaw = async (selectedLaw) => {
 
-
+    // get all cell Id's into an array
     const lawCellsIds = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
    
     const lawCellsResponse = await getAllCellDataFromAPI(lawCellsIds,headers)
@@ -1223,18 +1241,21 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
       }
     }
 
-
+    // send create group request
     const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,newLawGroup,headers)
     if (!isResponseSuccessful(newGroupResponseData)) {
       showMessage(newGroupResponseData.data.error,"error")
       return
     }
 
+    // update groups
     setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
 
+    // reset group editors
     setLawGroupEditorState(EditorState.createEmpty())
     document.getElementById("InputLawGroupColor3").value = "#FF0000"
 
+    // show message 
     showMessage(intl.formatMessage({id:`Группа была создана`,defaultMessage: `Группа была создана`}))
 
   }
