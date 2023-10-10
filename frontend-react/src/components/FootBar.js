@@ -12,6 +12,10 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   }     
+  let isAdmin = false
+  if (userInfoState.userProfile) {
+    //isAdmin = userInfoState.userProfile.role
+  }
   
   const intl = useIntl()
 
@@ -101,7 +105,10 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
           <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
         </div>
         <div className="navbar-text">
+          {isAdmin ? 
+          (<>  
           <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</div>
+          </>) : (null)}
           <div className="btn-sm btn-primary btn" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
         </div>
     </div>

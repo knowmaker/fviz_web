@@ -9,10 +9,10 @@ class QuantitiesController < ApplicationController
   # Метод для получения перечня физических величин
   # Сохраняется в виде PDF файла
   def index
-    # unless @current_user.role
-    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
-    #   return
-    # end
+    unless @current_user.role
+      render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
+      return
+    end
 
     quantities = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*')
 
@@ -34,10 +34,10 @@ class QuantitiesController < ApplicationController
 
   # Метод для создания новой величины
   def create
-    # unless @current_user.role
-    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
-    #   return
-    # end
+    unless @current_user.role
+      render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
+      return
+    end
 
     quantity_params_result = quantity_params
     if quantity_params_result.key?(:error)
@@ -57,10 +57,10 @@ class QuantitiesController < ApplicationController
 
   # Метод для обновления параметров величины. Параметр - id величины
   def update
-    # unless @current_user.role
-    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
-    #   return
-    # end
+    unless @current_user.role
+      render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
+      return
+    end
 
     if @quantity
       quantity_params_result = quantity_params
@@ -82,10 +82,10 @@ class QuantitiesController < ApplicationController
 
   # Метод для удаления величины. Параметр - id величины
   def destroy
-    # unless @current_user.role
-    #   render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
-    #   return
-    # end
+    unless @current_user.role
+      render json: {error: [I18n.t('errors.quantities.admin_forbidden')]}, status: :forbidden
+      return
+    end
 
     if @quantity
       @quantity.destroy

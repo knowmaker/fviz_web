@@ -2,7 +2,7 @@ import React,{useEffect,useState, useContext, useRef} from 'react';
 
 import TableUI from '../components/Table';
 import Draggable from 'react-draggable';
-import setStateFromGetAPI, { postData, putData, patchData, deleteData, 
+import setStateFromGetAPI, {
   getDataFromAPI, postDataToAPI, putDataToAPI,patchDataToAPI,deleteDataFromAPI,getAllCellDataFromAPI} from '../misc/api.js';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile,TableContext } from '../misc/contexts.js';
@@ -332,7 +332,7 @@ export default function Home() {
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               
-                <EditCellModal modalVisibility={modalsVisibility.editCellModalVisibility} selectedCell={selectedCell} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
+                <EditCellModal modalVisibility={modalsVisibility.editCellModalVisibility} selectedCell={selectedCell} selectedCellState={selectedCellState} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
                 <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState} currentLocaleState={currentLocaleState}/>
                 <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
@@ -347,7 +347,7 @@ export default function Home() {
     );
 }
 
-function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColors}) {
+function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColors,selectedCellState}) {
 
   const tableState = useContext(TableContext)
   const userInfoState = useContext(UserProfile) 
@@ -355,7 +355,20 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     Authorization: `Bearer ${userInfoState.userToken}`
   }  
 
+  let isAdmin = false
+  if (userInfoState.userProfile) {
+    isAdmin = userInfoState.userProfile.role
+  }
+  
+
   const intl = useIntl()
+
+  useEffect(() => {
+    if (modalVisibility.isVisible === false) {
+      selectedCellState.setSelectedCell(null)
+
+    }
+  }, [modalVisibility.isVisible]);
 
   const updateCell = async () => {
 
@@ -534,29 +547,32 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     >
     <div className="modal-content2">
     <div className="row">
+      {isAdmin ? 
+      (<>  
       <details>
         <summary><FormattedMessage id='Превью' defaultMessage="Превью"/></summary>
         <Cell cellFullData={previewCell} />
       </details>
+      </>) : (null)}
     </div>
       <div className="row">
       <div className="col-6">
         <label className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя"/></label>
-        <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set}/>
+        <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set} readOnly={!isAdmin}/>
       </div>
       <div className="col-6">
         <label className="form-label"><FormattedMessage id='Условное обозначение' defaultMessage="Условное обозначение"/></label>
-        <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set}/>
+        <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set} readOnly={!isAdmin}/>
       </div>
       </div>
       <div className="row">
       <div className="col-6">
       <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Единица измерения' defaultMessage="Единица измерения"/></label>
-      <RichTextEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set}/>
+      <RichTextEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set} readOnly={!isAdmin}/>
       </div>
       <div className="col">
       <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Уровень' defaultMessage="Уровень"/> GK</label>
-      <select className="form-select" aria-label="Default select example" id='inputGK3' onChange={() => setGKoption(parseInt(document.getElementById("inputGK3").value))}>
+      <select className="form-select" aria-label="Default select example" id='inputGK3' onChange={() => setGKoption(parseInt(document.getElementById("inputGK3").value))} disabled={!isAdmin}>
         {cellList}
       </select>
 
@@ -566,27 +582,29 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
       <div className="row">
       <div className="col">
       <label className="form-label">L</label>
-      <input type="number" min="-10" max="10" step="1" className="form-control" id="inputL3" onChange={() => updatePreviewCell()}/>
+      <input type="number" min="-10" max="10" step="1" className="form-control" id="inputL3" onChange={() => updatePreviewCell()} disabled={!isAdmin}/>
       </div>
 
       <div className="col">
       <label className="form-label">T</label>
-      <input type="number" min="-10" step="1" className="form-control" id="inputT3" onChange={() => updatePreviewCell()}/>
+      <input type="number" min="-10" step="1" className="form-control" id="inputT3" onChange={() => updatePreviewCell()} disabled={!isAdmin}/>
       </div>
 
       </div>
 
     </div>
-    <div className="modal-footer2">
-      <button type="button" className="btn btn-danger" onClick={() => deleteCell()}><FormattedMessage id='Удалить' defaultMessage="Удалить"/></button>
-      <button type="button" className="btn btn-success" onClick={() => updateCell()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить"/></button>
-    </div>
-
+      {isAdmin ? 
+      (<>  
+      <div className="modal-footer2"> 
+        <button type="button" className="btn btn-danger" onClick={() => deleteCell()}><FormattedMessage id='Удалить' defaultMessage="Удалить"/></button>
+        <button type="button" className="btn btn-success" onClick={() => updateCell()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить"/></button>
+      </div>  
+      </>) : (null)}
     </Modal>
   )
 }
 
-function RichTextEditor({editorState,setEditorState}) {
+function RichTextEditor({editorState,setEditorState,readOnly = false}) {
 
   const intl = useIntl()
 
@@ -600,8 +618,10 @@ function RichTextEditor({editorState,setEditorState}) {
           editorState={editorState}
           onEditorStateChange={onEditorStateChange}
           wrapperClassName=""
-          editorClassName="form-control"
+          editorClassName={`form-control ${readOnly ? "grey-background" : ""}`}
           toolbarClassName="toolbar-class"
+          readOnly={readOnly}
+          toolbarHidden={readOnly}
 
           toolbar={{
             options: [ 'emoji', 'inline', 'remove'],
@@ -675,10 +695,13 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
     document.getElementById("InputEmail1").value = ""
     document.getElementById("InputPassword1").value = ""
 
+    // change current locate acctording to user preferences
+    currentLocaleState.setCurrentLocale(locale)
+
   }
 
   const deleteUser = async () => {
-    if (!window.confirm("Вы уверены что хотите удалить аккаунт? Это приведёт к потере всех ваших данных.")) {
+    if (!window.confirm(intl.formatMessage({id:`Подтверждение действия`,defaultMessage: `Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.`}))) {
       return
     }
 
@@ -711,7 +734,7 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
         <div className="input-group" id="show_hide_password">
           <input type="password" className="form-control" id="InputPassword3" ref={InputPassword}/>
           <div className="input-group-text">
-            <span className='showPassword' onClick={() => {showPassword(InputPassword,InputPasswordEye)}}><i className="fa fa-eye-slash" aria-hidden="true" ref={InputPasswordEye}/></span>
+            <span className='showPassword' onClick={() => {showPassword(InputPassword,InputPasswordEye)}}>👁<i className="fa fa-eye-slash" aria-hidden="true" ref={InputPasswordEye}/></span>
           </div>
         </div>
         <label htmlFor="InputLastName3" className="form-label"><FormattedMessage id='Фамилия' defaultMessage="Фамилия"/></label>
@@ -745,6 +768,14 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
   const intl = useIntl()
 
+  useEffect(() => {
+    if (modalsVisibility.lawsModalVisibility.isVisible === false) {
+      selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
+      document.getElementById("InputLawName3").value = ""
+      document.getElementById("inputLawGroup3").value = -1
+    }
+  }, [modalsVisibility.lawsModalVisibility.isVisible]);
+
   const createLaw = async () => {
 
     // check length of current law
@@ -774,8 +805,6 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
         id_type: document.getElementById("inputLawGroup3").value
       }
     }
-
-    //postData(undefined, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`, newLaw, headers, afterCreateLaw)
     
     // send create group request
     const newLawResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,newLaw,headers)
@@ -788,13 +817,6 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
 
   }
-  
-  const afterCreateLaw = () => {
-
-
-   
-  }
-
 
   const updateLaw = async () => {
 
@@ -812,10 +834,6 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
     // get current selected cells
     const selectedLawCellId = selectedLawState.selectedLaw.cells.map(cell => cell.id_value)
-
-
-
-
 
     const newLaw = {
       law: {
@@ -838,15 +856,16 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     // update laws
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
   
+    showMessage(intl.formatMessage({id:`Закон обновлён`,defaultMessage: `Закон обновлён`}))
+
   }
-
-
 
   const selectLaw = async (selectedLaw) => {
 
     // get all cell Id's into an array
     const lawCellsIds = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
    
+    // get all required cells from API
     const lawCellsResponse = await getAllCellDataFromAPI(lawCellsIds,headers)
     if (!isResponseSuccessful(lawCellsResponse[0])) {
       showMessage(lawCellsResponse[0].data.error,"error")
@@ -854,25 +873,34 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     }
     const lawCells = lawCellsResponse.map(cellResponse => cellResponse.data.data)
 
+    // set request law as selected
     selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
 
-
+    // update cells to reflect new law
     let newTable = tableState.tableData
     lawCells.forEach(cellData => {
 
       newTable = newTable.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData)
     })
-
     tableState.setTableData(newTable)
+
+    showMessage(intl.formatMessage({id:`Закон выбран`,defaultMessage: `Закон выбран`}))
+
   }
 
-  const deleteLaw = (law) => {
+  const deleteLaw = async (law) => {
+  
+    // send delete law request
+    const lawDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws/${law.id_law}`,undefined,headers)
+    if (!isResponseSuccessful(lawDeleteResponseData)) {
+      showMessage(lawDeleteResponseData.data.error,"error")
+      return
+    }
 
-    deleteData(undefined,`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws/${law.id_law}`,headers,afterDeleteLaw)
-  }
-
-  const afterDeleteLaw = () => {
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
+
+    showMessage(intl.formatMessage({id:`Закон удалён`,defaultMessage: `Закон удалён`}))
+
   }
 
   // dublicate, remove later
@@ -994,8 +1022,15 @@ function TableViewsModal({modalsVisibility, tableViews, setTableViews,tableViewS
   }     
 
   const intl = useIntl()
-  
+
   const [tableViewEditorState, setTableViewEditorState] = useState(EditorState.createEmpty())
+ 
+  useEffect(() => {
+    if (modalsVisibility.tableViewsModalVisibility.isVisible === false) {
+      convertMarkdownToEditorState(setTableViewEditorState, "") 
+    }
+  }, [modalsVisibility.tableViewsModalVisibility.isVisible]);
+  
 
   const selectTableView = async (tableView) => {
 
@@ -1161,11 +1196,25 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
   const lawsGroups = lawsGroupsState.lawsGroups
   const setLawsGroups = lawsGroupsState.setLawsGroups
 
+  let isAdmin = false
+  if (userInfoState.userProfile) {
+    isAdmin = userInfoState.userProfile.role
+  }
+
   // define current law group and editor state
   const [selectedLawGroup, setSelectedLawGroup] = useState({ type_name:null,id_type:null})
   const [lawGroupEditorState, setLawGroupEditorState] = useState(EditorState.createEmpty())
 
   const intl = useIntl()
+
+
+
+  useEffect(() => {
+    if (modalsVisibility.lawsGroupsModalVisibility.isVisible === false && isAdmin) {
+      convertMarkdownToEditorState(setLawGroupEditorState, "") 
+      document.getElementById("InputLawGroupColor3").value = "#000000"
+    }
+  }, [modalsVisibility.lawsGroupsModalVisibility.isVisible]);
 
   const selectLawGroup = (group) => {
    
@@ -1268,11 +1317,17 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
 
     return (
       <tr key={group.id_type}>
+      {isAdmin ? 
+      (<>  
         <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
+      </>) : (null)}
         <td dangerouslySetInnerHTML={{__html: group.type_name}}></td>
         <td><input type="color" className="form-control form-control-color disabled" value={group.color} readOnly onClick={(e) => {e.preventDefault()}}/></td>
+      {isAdmin ? 
+      (<>    
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLawGroup(group)}>↓</button></td>
         <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLawGroup(group)}>🗑</button></td>
+        </>) : (null)}
       </tr>
     );
   })
@@ -1289,6 +1344,8 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
       >
       <div className="modal-content2">
 
+      {isAdmin ? 
+      (<>  
       <div className="row">
       <div className="col-2">
             <FormattedMessage id='Название' defaultMessage="Название"/>:
@@ -1312,15 +1369,22 @@ function LawsGroupsModal({modalsVisibility,lawsGroupsState}) {
           <input type="color" className="form-control form-control-color"  id="InputLawGroupColor3" />
         </div>
       </div>
+      </>) : (null)}
 
         <table className="table">
         <thead>
           <tr>
+            {isAdmin ? 
+            (<>  
             <th scope="col">#</th>
+            </>) : (null)}
             <th scope="col"><FormattedMessage id='Название' defaultMessage="Название"/></th>
             <th scope="col"><FormattedMessage id='Цвет' defaultMessage="Цвет"/></th>
+            {isAdmin ? 
+            (<> 
             <th scope="col"><FormattedMessage id='Выбрать' defaultMessage="Выбрать"/></th>
             <th scope="col"><FormattedMessage id='Удалить' defaultMessage="Удалить"/></th>
+            </>) : (null)}
           </tr>
         </thead>
         <tbody>
@@ -1348,7 +1412,19 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
   const [selectedGKLayer, setSelectedGKLayer] = useState({ type_name:null,id_type:null})
   const [GKLayerEditorState, setGKLayerEditorState] = useState(EditorState.createEmpty())
 
+  let isAdmin = false
+  if (userInfoState.userProfile) {
+    isAdmin = userInfoState.userProfile.role
+  }
+
   const intl = useIntl()
+
+  useEffect(() => {
+    if (modalsVisibility.GKColorsEditModalVisibility.isVisible === false && isAdmin) {
+      convertMarkdownToEditorState(setGKLayerEditorState, "") 
+      document.getElementById("InputGKLayerColor3").value = "#000000"
+    }
+  }, [modalsVisibility.GKColorsEditModalVisibility.isVisible]);
 
   const selectGKLayer = (layer) => {
    
@@ -1397,11 +1473,17 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
 
     return (
       <tr key={GKLayer.id_gk}>
+        {isAdmin ? 
+        (<>  
         <th scope="row" className='small-cell'>{isCurrent ? `+` : ""}</th>
+        </>) : (null)}
         <td dangerouslySetInnerHTML={{__html: GKLayer.gk_name}}></td>        
         <td>G<sup>{GKLayer.g_indicate}</sup>K<sup>{GKLayer.k_indicate}</sup></td>
         <td><input type="color" className="form-control form-control-color disabled" value={GKLayer.color} readOnly onClick={(e) => {e.preventDefault()}}/></td>
+        {isAdmin ? 
+        (<>  
         <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectGKLayer(GKLayer)}>↓</button></td>
+        </>) : (null)}
       </tr>
     );
   })
@@ -1417,7 +1499,8 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
       sizeX={600}
       >
       <div className="modal-content2">
-
+      {isAdmin ? 
+      (<> 
       <div className="row">
       <div className="col-2">
             <FormattedMessage id='Название' defaultMessage="Название"/>:
@@ -1437,15 +1520,22 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
         <input type="color" className="form-control form-control-color"  id="InputGKLayerColor3" />
         </div>
       </div>
+      </>) : (null)}
 
         <table className="table">
         <thead>
           <tr>
+            {isAdmin ? 
+            (<> 
             <th scope="col">#</th>
+            </>) : (null)}
             <th scope="col"><FormattedMessage id='Имя' defaultMessage="Имя"/></th>
             <th scope="col">GK</th>
             <th scope="col"><FormattedMessage id='Цвет' defaultMessage="Цвет"/></th>
+            {isAdmin ? 
+            (<> 
             <th scope="col"><FormattedMessage id='Выбрать' defaultMessage="Выбрать"/></th>
+            </>) : (null)}
           </tr>
         </thead>
         <tbody>
@@ -1462,6 +1552,16 @@ function GKColorModal({modalsVisibility,GKLayersState}) {
 function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
 
   const intl = useIntl()
+
+  useEffect(() => {
+    if (modalVisibility.isVisible === false) {
+      document.getElementById("InputEmail1").value = ""
+      document.getElementById("InputPassword1").value = ""
+      document.getElementById("InputEmail2").value = ""
+      document.getElementById("InputPassword2").value = ""
+      document.getElementById("InputEmail5").value = ""
+    }
+  }, [modalVisibility.isVisible]);
 
   const register = async () => {
 
@@ -1574,7 +1674,7 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
                 <div className="input-group" id="show_hide_password">
                 <input type="password" className="form-control" id="InputPassword2" ref={InputRegisterPassword}/>
                     <div className="input-group-text">
-                      <span className='showPassword' onClick={() => {showPassword(InputRegisterPassword,InputRegisterPasswordEye)}}><i className="fa fa-eye-slash" aria-hidden="true" ref={InputRegisterPasswordEye}/></span>
+                      <span className='showPassword' onClick={() => {showPassword(InputRegisterPassword,InputRegisterPasswordEye)}}>👁<i className="fa fa-eye-slash" aria-hidden="true" ref={InputRegisterPasswordEye}/></span>
                     </div>
                   </div>
               </div>
@@ -1592,7 +1692,7 @@ function RegModal({modalVisibility, setUserToken, currentLocaleState}) {
                   <div className="input-group" id="show_hide_password">
                     <input type="password" className="form-control" id="InputPassword1" ref={InputLoginPassword}/>
                     <div className="input-group-text">
-                      <span className='showPassword' onClick={() => {showPassword(InputLoginPassword,InputLoginPasswordEye)}}><i className="fa fa-eye-slash" aria-hidden="true" ref={InputLoginPasswordEye}/></span>
+                      <span className='showPassword' onClick={() => {showPassword(InputLoginPassword,InputLoginPasswordEye)}}>👁<i className="fa fa-eye-slash" aria-hidden="true" ref={InputLoginPasswordEye}/></span>
                     </div>
                   </div>
               </div>
@@ -1750,7 +1850,6 @@ export function convertToMLTI(M,L,T,I) {
 }
 
 function showPassword(inputElementRef,eyeElementRef) {
-  console.log(eyeElementRef.current)
   if(inputElementRef.current.getAttribute("type") === "text") {
     inputElementRef.current.setAttribute('type', 'password');
     eyeElementRef.current.classList.add( "fa-eye-slash" );

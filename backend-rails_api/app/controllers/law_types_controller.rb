@@ -22,10 +22,10 @@ class LawTypesController < ApplicationController
 
   # Метод для создания нового типа закона
   def create
-    # unless @current_user.role
-    #   render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
-    #   return
-    # end
+    unless @current_user.role
+      render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
+      return
+    end
 
     law_type = LawType.new(law_type_params)
 
@@ -38,10 +38,10 @@ class LawTypesController < ApplicationController
 
   # Метод для обновления параметров типа закона. Параметр - id тип закона
   def update
-    # unless @current_user.role
-    #   render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
-    #   return
-    # end
+    unless @current_user.role
+      render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
+      return
+    end
 
     if @law_type
       if @law_type.update(law_type_params)
@@ -56,10 +56,10 @@ class LawTypesController < ApplicationController
 
   # Метод для удаления типа закона. Параметр - id тип закона
   def destroy
-    # unless @current_user.role
-    #   render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
-    #   return
-    # end
+    unless @current_user.role
+      render json: {error: [I18n.t('errors.law_types.admin_forbidden')]}, status: :forbidden
+      return
+    end
 
     if @law_type
       @law_type.destroy

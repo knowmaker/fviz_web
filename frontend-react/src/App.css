@@ -289,4 +289,9 @@ td button {
 
 .showPassword {
   cursor: pointer;
+  user-select: none;
+}
+
+.grey-background {
+  background-color: #e9ecef;
 }

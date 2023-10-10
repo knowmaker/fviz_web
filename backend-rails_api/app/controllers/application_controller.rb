@@ -19,10 +19,10 @@ class ApplicationController < ActionController::API
       rescue ActiveRecord::RecordNotFound
         render json: { error: [I18n.t('errors.application.not_found')] }, status: :not_found
       rescue JWT::DecodeError
-        render json: { error: [I18n.t('errors.application.token_not_found')] }, status: :unprocessable_entity
+        render json: { error: [I18n.t('errors.application.token_error')] }, status: :unprocessable_entity
       end
     elsif check_current_user
-      render json: { error: [I18n.t('errors.application.token_error')] }, status: :unauthorized
+      render json: { error: [I18n.t('errors.application.token_not_found')] }, status: :unauthorized
     else
       @current_user = nil
     end
