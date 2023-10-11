@@ -88,28 +88,33 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   }
   
   return (
-  <nav className="navbar navbar-expand fixed-bottom bg-body-tertiary">
+  <nav className="navbar navbar-expand-lg fixed-bottom bg-body-tertiary">
     <div className="container-fluid">
-        <div className="navbar-nav">
-          <div className="diminput" id="outLT"> 
-            <div className="v-align" dangerouslySetInnerHTML={{__html: cellLT}}/> 
-          </div>
-          <div className="diminput" id="outGK"> 
-            <div className="v-align" dangerouslySetInnerHTML={{__html: cellGK}}/> 
-          </div>
-          <div className="nameinput" id="outName"> 
-            <div className="v-align" dangerouslySetInnerHTML={{__html: tableViewState.tableView.title}}></div>
-          </div>
-          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></div>
-          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={removeCurrentLaw}><FormattedMessage id='Стереть закон' defaultMessage="Стереть закон"/></div>
-          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#footerSupportedContent" aria-controls="footerSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="footerSupportedContent">
+            <div className="navbar-nav">
+              <div className="diminput" id="outLT">
+                <div className="v-align" dangerouslySetInnerHTML={{__html: cellLT}}/>
+              </div>
+              <div className="diminput" id="outGK">
+                <div className="v-align" dangerouslySetInnerHTML={{__html: cellGK}}/>
+              </div>
+              <div className="nameinput" id="outName">
+                <div className="v-align" dangerouslySetInnerHTML={{__html: tableViewState.tableView.title}}></div>
+              </div>
+              <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></div>
+              <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
+                <div className="btn-sm btn-primary btn" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
+                {isAdmin ?
+                    (<>
+                        <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</div>
+                    </>) : (null)}
+            </div>
         </div>
         <div className="navbar-text">
-          {isAdmin ? 
-          (<>  
-          <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</div>
-          </>) : (null)}
-          <div className="btn-sm btn-primary btn" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
+            <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={removeCurrentLaw}><FormattedMessage id='Стереть закон' defaultMessage="Стереть закон"/></div>
         </div>
     </div>
   </nav>
