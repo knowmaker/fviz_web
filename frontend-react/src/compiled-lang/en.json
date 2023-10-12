@@ -56,7 +56,7 @@
   "Выберите опцию": [
     {
       "type": 0,
-      "value": "Select an option"
+      "value": "Not chosen"
     }
   ],
   "Выбрать": [
@@ -116,7 +116,7 @@
   "Законы": [
     {
       "type": 0,
-      "value": "Laws"
+      "value": "Law"
     }
   ],
   "Имя": [

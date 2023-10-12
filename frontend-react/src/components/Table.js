@@ -8,12 +8,13 @@ import {showMessage} from '../pages/Home.js';
 import { isResponseSuccessful } from '../misc/api';
 import { convertToMLTI } from '../pages/Home.js';
 import {FormattedMessage,useIntl} from 'react-intl'
+import { convertMarkdownFromEditorState,convertMarkdownToEditorState } from '../pages/Home.js';
 // const Color = require('color');
 
 const rowCount = 21
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState ,lawsState,currentLocaleState}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState ,lawsState,currentLocaleState,lawEditorsStates}) {
 
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
@@ -42,7 +43,10 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
       ref={refTable} 
       modalsVisibility={modalsVisibility} 
       lawsGroupsState={lawsGroupsState} 
-      lawsState={lawsState}/>
+      lawsState={lawsState}
+      lawEditorsStates={lawEditorsStates}
+      />
+      <LawOptions lawsState={lawsState} lawsGroupsState={lawsGroupsState} selectedLawState={selectedLawState} lawEditorsStates={lawEditorsStates} modalsVisibility={modalsVisibility}/>
     </>  
     );
 }
@@ -126,7 +130,132 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   
 }
 
-const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility,lawsGroupsState,lawsState}, ref) => {
+function LawOptions({lawsState,lawsGroupsState,selectedLawState,lawEditorsStates,modalsVisibility}) {
+
+  const tableState = useContext(TableContext)
+  const userInfoState = useContext(UserProfile) 
+  const headers = {
+    Authorization: `Bearer ${userInfoState.userToken}`
+  }  
+  const intl = useIntl()
+  
+  const selectLaw = async (selectedLaw) => {
+
+    // get all cell Id's into an array
+    const lawCellsIds = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
+   
+    // get all required cells from API
+    const lawCellsResponse = await getAllCellDataFromAPI(lawCellsIds,headers)
+    if (!isResponseSuccessful(lawCellsResponse[0])) {
+      showMessage(lawCellsResponse[0].data.error,"error")
+      return
+    }
+    const lawCells = lawCellsResponse.map(cellResponse => cellResponse.data.data)
+
+    // set request law as selected
+    selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
+
+    // update cells to reflect new law
+    let newTable = tableState.tableData
+    lawCells.forEach(cellData => {
+      newTable = newTable.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData)
+    })
+    tableState.setTableData(newTable)
+
+    // show message
+    showMessage(intl.formatMessage({id:`Закон выбран`,defaultMessage: `Закон выбран`}))
+
+  }
+
+  const editLaw = async (selectedLaw) => {
+
+    convertMarkdownToEditorState(lawEditorsStates.lawNameEditorState.set, selectedLaw.law_name)
+
+    lawEditorsStates.lawGroupEditorState.set(selectedLaw.id_type)
+
+    selectLaw(selectedLaw)
+
+    modalsVisibility.lawsModalVisibility.setVisibility(true)
+
+  }
+
+  const lawsGroups = lawsGroupsState.lawsGroups
+
+  if (!lawsState.laws || !lawsGroups) {
+    return null
+  }
+
+  const lawOptions = [...lawsGroups,{ type_name:"Без группы",id_type:null}].map((lawGroup) => {
+
+  const lawsInThisGroup = lawsState.laws.filter(law => law.id_type === lawGroup.id_type)
+      
+
+    if (lawsInThisGroup.length === 0) {
+      return (
+        <details key={lawGroup.id_type}>
+        <summary>{lawGroup.type_name}</summary>
+        <FormattedMessage id='Законов нет' defaultMessage="Законов нет"/>
+        </details>
+      )
+    }
+      
+    const lawsInThisGroupMarkup = lawsInThisGroup.map(law => {
+
+      const isCurrent = selectedLawState.selectedLaw.id_law === law.id_law
+
+      return (
+        <tr key={law.id_law}>
+          <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
+          <td onClick={() => {selectLaw(law)}} className="hover-table-cell" dangerouslySetInnerHTML={{__html: law.law_name}}/>
+          <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => editLaw(law)}>↓</button></td>
+        </tr>
+      )
+    })
+
+
+
+    return (
+
+      <details key={lawGroup.id_type}>
+        <summary>{lawGroup.type_name}</summary>
+          <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col"><FormattedMessage id='Название' defaultMessage="Название"/></th>
+              <th scope="col">ⓘ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lawsInThisGroupMarkup}
+          </tbody>
+        </table>
+      </details>
+
+    )
+
+  })
+
+  if (modalsVisibility.LawsMenuVisibility.isVisible) {
+
+    return (
+
+      <div className="data-window data-window-left">
+        <div className="data-window-top">
+        <span><FormattedMessage id='Выбор закона' defaultMessage="Выбор закона"/></span>
+        <button type="button" className="btn-close" onClick={() => {modalsVisibility.LawsMenuVisibility.setVisibility(false)}}></button>
+        </div>
+        {lawOptions}
+      </div>
+  
+    )
+  } else {return null}
+
+
+
+}
+
+const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility,lawsGroupsState,lawsState,lawEditorsStates}, ref) => {
 
 
   const tableState = useContext(TableContext)
@@ -250,6 +379,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       modalsVisibility={modalsVisibility}
       emptyCellsData={emptyCells}
       lawsState={lawsState}
+      lawEditorsStates={lawEditorsStates}
       />
     });
       return (
@@ -270,7 +400,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
 })
 
-function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData,lawsState}) {
+function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData,lawsState,lawEditorsStates}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
   const setSelectedCell = selectedCellState.setSelectedCell
@@ -318,6 +448,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
             modalsVisibility={modalsVisibility}
             isEmpty={cellColor ? false:true}
             lawsState={lawsState}
+            lawEditorsStates={lawEditorsStates}
             />);
   });
 
@@ -333,7 +464,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
 }
 
-export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = "",lawsState}) {
+export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = "",lawsState,lawEditorsStates}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -403,26 +534,33 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
           return
         }
 
-        const dublicateLaw = lawsState.laws.find(law => {
-          const lawInArray = [law.first_element,law.second_element,law.third_element,law.fourth_element]
-          const currentLaw = [...selectedLawState.selectedLaw.cells,selectedCellData,fourthCellData].map(cell=>cell.id_value)
-          return arraysEqual(lawInArray,currentLaw)
-        })
-        
-        if (dublicateLaw) {
-          console.log(dublicateLaw)
-          const lawCellsIds = [dublicateLaw.first_element,dublicateLaw.second_element,dublicateLaw.third_element,dublicateLaw.fourth_element]
-          
-          const lawCellsFullData = lawCellsIds.map(cellId => tableState.tableData.find(tableCell => tableCell.id_value === cellId))
-
-          console.log(lawCellsFullData)
-          
-          selectedLawState.setSelectedLaw({
-            ...dublicateLaw,
-            cells:lawCellsFullData,
+        if (lawsState.laws) {
+          const dublicateLaw = lawsState.laws.find(law => {
+            const lawInArray = [law.first_element,law.second_element,law.third_element,law.fourth_element]
+            const currentLaw = [...selectedLawState.selectedLaw.cells,selectedCellData,fourthCellData].map(cell=>cell.id_value)
+            return arraysEqual(lawInArray,currentLaw)
           })
-          showMessage("Этот закон уже существует","error")
-          return
+          
+          if (dublicateLaw) {
+            const lawCellsIds = [dublicateLaw.first_element,dublicateLaw.second_element,dublicateLaw.third_element,dublicateLaw.fourth_element]
+            
+            const lawCellsFullData = lawCellsIds.map(cellId => tableState.tableData.find(tableCell => tableCell.id_value === cellId))
+  
+            modalsVisibility.lawsModalVisibility.setVisibility(true)
+            
+            selectedLawState.setSelectedLaw({
+              ...dublicateLaw,
+              cells:lawCellsFullData,
+            })
+            convertMarkdownToEditorState(lawEditorsStates.lawNameEditorState.set, dublicateLaw.law_name)
+            lawEditorsStates.lawGroupEditorState.set(dublicateLaw.id_type)
+  
+  
+            showMessage("Этот закон уже существует","warn")
+  
+  
+            return
+          }
         }
 
         selectedLawState.setSelectedLaw(
@@ -444,14 +582,18 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
         if (!isCorrectLaw) {
           selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
-          showMessage("Данного закона не существует","error")
+          showMessage(intl.formatMessage({id:"Данного закона не существует",defaultMessage: "Данного закона не существует"}),"error")
           return
         }
 
+        convertMarkdownToEditorState(lawEditorsStates.lawNameEditorState.set, "")
+        lawEditorsStates.lawGroupEditorState.set(-1)
 
+        showMessage(intl.formatMessage({id:`Закон выбран`,defaultMessage: `Закон выбран`}))
 
+        if (lawsState.laws) {
         modalsVisibility.lawsModalVisibility.setVisibility(true)
-
+        }
       }
 
   }
@@ -550,7 +692,7 @@ function findFourthCell(lawCells) {
   return cellId
 }
 
-function checkLaw(cells) {
+export function checkLaw(cells) {
 
   const firstThirdCellsMLTI = {
     M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,

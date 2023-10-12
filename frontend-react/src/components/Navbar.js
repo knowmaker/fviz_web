@@ -97,6 +97,10 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
         modalsVisibility.GKColorsEditModalVisibility.setVisibility(true)
     }
 
+    const openLawsMenu = () => {
+        modalsVisibility.LawsMenuVisibility.setVisibility(true)
+    }
+
     const changeLocale = () => {
         if (currentLocaleState.currentLocale === "en") {
             currentLocaleState.setCurrentLocale("ru")
@@ -132,7 +136,7 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
         <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary">
 
             <div className="container-fluid">
-                <a className="navbar-brand" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Made by: Voronin & Shatskiy  © Web FViZ, 2023"><FormattedMessage id='ФВиЗ' defaultMessage="ФВиЗ"/></a>
+                <a className="navbar-brand" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Made by: Voronin © Web FViZ, 2023"><FormattedMessage id='ФВиЗ' defaultMessage="ФВиЗ"/></a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -142,7 +146,7 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
                         <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻<FormattedMessage id='Возврат' defaultMessage="Возврат"/></div>
                         <div className="nav-link active" aria-current="page" onClick={openEditForm}><FormattedMessage id='Редактирование ячейки' defaultMessage="Редактирование ячейки"/></div>
                         <div className="nav-link active" aria-current="page" onClick={openTableViewsForm}><FormattedMessage id='Представления' defaultMessage="Представления"/></div>
-                        <div className="nav-link active" aria-current="page" onClick={openLawsForm}><FormattedMessage id='Законы' defaultMessage="Законы"/></div>
+                        <div className="nav-link active" aria-current="page" onClick={openLawsMenu}><FormattedMessage id='Законы' defaultMessage="Законы"/></div>
                         <div className="nav-link active" aria-current="page" onClick={openLawsGroupsForm}><FormattedMessage id='Группы законов' defaultMessage="Группы законов"/></div>
                         <div className="nav-link active" aria-current="page" onClick={openGKColorsEditForm}><FormattedMessage id='Цвета ячеек' defaultMessage="Цвета ячеек"/></div>
                     </div>

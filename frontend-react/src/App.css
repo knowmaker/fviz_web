@@ -122,15 +122,20 @@ sup, sub {
 
 .data-window {
   position: fixed;
-  top: 60px;
+  top: 67px;
   left: 2px;
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  max-height: calc(100% - 108px);
+  max-height: calc(100% - 150px);
   overflow: auto;
+}
+
+.data-window-left {
+  left: calc(100% - 300px);
+  max-width: 279px;
 }
 
 .data-window-top {
@@ -139,6 +144,15 @@ sup, sub {
   font-size: 1.25rem;
   justify-content: space-between;
 
+}
+
+.hover-table-cell {
+  cursor: pointer;
+}
+
+.hover-table-cell:hover {
+    color: #0d6efd;
+    text-decoration: underline;
 }
 
 .modal-content2 {

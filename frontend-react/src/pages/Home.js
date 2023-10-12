@@ -17,6 +17,7 @@ import { isResponseSuccessful } from '../misc/api';
 
 import {IntlProvider} from 'react-intl'
 import {FormattedMessage,createIntl,useIntl} from 'react-intl'
+import { checkLaw } from '../components/Table';
 // const Color = require('color');
 
 import translationEN from '../compiled-lang/en.json';
@@ -44,7 +45,7 @@ export default function Home() {
   
   const currentLocaleState = {currentLocale, setCurrentLocale}
   const translatedMessages = getTranslationMessages(currentLocale)
-  //console.log(currentLocale,translatedMessages)
+
 
   const intl = createIntl({
     locale: currentLocale,
@@ -150,11 +151,15 @@ export default function Home() {
     const [isGKLayersImageModalVisible, setGKLayersImageModalVisibility] = useState(false);
     const GKLayersImageModalVisibility = {isVisible: isGKLayersImageModalVisible, setVisibility: setGKLayersImageModalVisibility}
 
+    const [isLawsMenuVisible, setLawsMenuVisibility] = useState(false);
+    const LawsMenuVisibility = {isVisible: isLawsMenuVisible, setVisibility: setLawsMenuVisibility}
+
 
     const modalsVisibility={regModalVisibility,editProfileModalVisibility,
                             editCellModalVisibility,lawsModalVisibility,
                             tableViewsModalVisibility,lawsGroupsModalVisibility
-                            ,GKColorsEditModalVisibility,GKLayersImageModalVisibility}
+                            ,GKColorsEditModalVisibility,GKLayersImageModalVisibility,
+                            LawsMenuVisibility}
 
 
     const [tableData, setTableData] = useState([]);
@@ -234,6 +239,13 @@ export default function Home() {
     const cellTEditorState = {value: cellTEditor, set: setCellTEditor}
     const cellEditorsStates = {cellNameEditorState,cellSymbolEditorState,cellUnitEditorState,cellLEditorState,cellTEditorState,cellMLTIEditorState}
 
+    const [lawNameEditor, setLawNameEditor] = useState(EditorState.createEmpty())
+    const lawNameEditorState = {value: lawNameEditor,set: setLawNameEditor}
+    const [lawGroupEditor, setLawGroupEditor] = useState(0)
+    const lawGroupEditorState = {value: lawGroupEditor,set: setLawGroupEditor}
+
+    const lawEditorsStates = {lawNameEditorState,lawGroupEditorState}
+    
     const [tableViews, setTableViews] = useState(null)
     const [laws, setLaws] = useState(null)
     const lawsState = {laws, setLaws}
@@ -248,7 +260,6 @@ export default function Home() {
 
       // add key handler for special actions
       const keyDownHandler = event => {
-
 
         // when escape pressed deselect any law
         if (event.key === 'Escape') {
@@ -304,14 +315,12 @@ export default function Home() {
 
     }, [selectedCell]);
 
-
     const { ref, getImage } = useDownloadableScreenshot(intl);
 
     // DELETE LATER <------------------------
     
     const testShow = (result,_,info) => {
 
-      // 
       console.log("input:",info)
       console.log("result:",result)
     }
@@ -327,14 +336,14 @@ export default function Home() {
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
 
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState} lawEditorsStates={lawEditorsStates}/>
                 <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               
                 <EditCellModal modalVisibility={modalsVisibility.editCellModalVisibility} selectedCell={selectedCell} selectedCellState={selectedCellState} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
                 <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState} currentLocaleState={currentLocaleState}/>
-                <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState}/>
+                <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState} lawEditorsStates={lawEditorsStates}/>
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
                 <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
                 <GKColorModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
@@ -363,12 +372,22 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
 
   const intl = useIntl()
 
-  useEffect(() => {
-    if (modalVisibility.isVisible === false) {
-      selectedCellState.setSelectedCell(null)
+  // useEffect(() => {
+  //   if (modalVisibility.isVisible === false) {
+  //     selectedCellState.setSelectedCell(null)
 
+  //   }
+  // }, [modalVisibility.isVisible]);
+
+  const saveButtonClick = () => {
+
+    if (selectedCell.id_value === -1) {
+      createCell()
+      return
     }
-  }, [modalVisibility.isVisible]);
+    updateCell()
+
+  }
 
   const updateCell = async () => {
 
@@ -430,6 +449,58 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
     if (cellAlternatives.length > 0 && cellData.id_lt !== selectedCell.id_lt) {
       tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value).concat(cellAlternatives[0]))
     }
+
+    // hide modal
+    modalVisibility.setVisibility(false)
+
+  }
+
+  const createCell = async () => {
+
+    // get all MLTI parameters
+    const id_gk = parseInt(document.getElementById("inputGK3").value)
+
+    const G_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).g_indicate
+    const K_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).k_indicate
+    const l_indicate = parseInt(document.getElementById("inputL3").value)
+    const t_indicate = parseInt(document.getElementById("inputT3").value)
+
+    const M_indicate = 0 - (G_indicate*-1+K_indicate)
+    const L_indicate = l_indicate - G_indicate*3
+    const T_indicate = t_indicate - G_indicate*-2
+    const I_indicate = 0 - K_indicate*-1
+
+    // create new cell
+    const newCell = {
+      quantity: {
+        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
+        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
+        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
+        l_indicate: l_indicate,
+        t_indicate: t_indicate,
+        id_gk: id_gk,
+        m_indicate_auto: M_indicate,
+        l_indicate_auto: L_indicate,
+        t_indicate_auto: T_indicate,
+        i_indicate_auto: I_indicate,
+        mlti_sign: convertToMLTI(M_indicate,L_indicate,T_indicate,I_indicate)
+      }
+
+    }
+
+    // send cell create request
+    const createdCellResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities`, newCell, headers)
+    if (!isResponseSuccessful(createdCellResponseData)) {
+      showMessage(createdCellResponseData.data.error,"error")
+      return
+    }
+    const cellData = createdCellResponseData.data.data
+
+    // show message
+    showMessage(intl.formatMessage({id:`Ячейка была изменена`,defaultMessage: `Ячейка была изменена`}))
+
+    // set new cell
+    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData))
 
     // hide modal
     modalVisibility.setVisibility(false)
@@ -597,7 +668,7 @@ function EditCellModal({modalVisibility, selectedCell, cellEditorsStates, gkColo
       (<>  
       <div className="modal-footer2"> 
         <button type="button" className="btn btn-danger" onClick={() => deleteCell()}><FormattedMessage id='Удалить' defaultMessage="Удалить"/></button>
-        <button type="button" className="btn btn-success" onClick={() => updateCell()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить"/></button>
+        <button type="button" className="btn btn-success" onClick={() => saveButtonClick()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить"/></button>
       </div>  
       </>) : (null)}
     </Modal>
@@ -758,7 +829,7 @@ function EditProfileModal({modalsVisibility,currentLocaleState}) {
   )
 }
 
-function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsState}) {
+function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsState,lawEditorsStates}) {
 
   const tableState = useContext(TableContext)
   const userInfoState = useContext(UserProfile) 
@@ -766,15 +837,42 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     Authorization: `Bearer ${userInfoState.userToken}`
   }  
 
+  let isAdmin = false
+  if (userInfoState.userProfile) {
+    isAdmin = userInfoState.userProfile.role
+  }
+
   const intl = useIntl()
 
+  // useEffect(() => {
+  //   if (modalsVisibility.lawsModalVisibility.isVisible === false) {
+  //     selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
+  //     document.getElementById("InputLawName3").value = ""
+  //     document.getElementById("inputLawGroup3").value = -1
+  //   }
+  // }, [modalsVisibility.lawsModalVisibility.isVisible]);
+
+  //lawEditorsStates.lawGroupEditorState
+
+
   useEffect(() => {
-    if (modalsVisibility.lawsModalVisibility.isVisible === false) {
-      selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
-      document.getElementById("InputLawName3").value = ""
+    if (lawEditorsStates.lawGroupEditorState.value === null) {
       document.getElementById("inputLawGroup3").value = -1
+      return
     }
-  }, [modalsVisibility.lawsModalVisibility.isVisible]);
+    if (lawEditorsStates.lawGroupEditorState.value) {
+      document.getElementById("inputLawGroup3").value = lawEditorsStates.lawGroupEditorState.value
+      
+    }
+  }, [lawEditorsStates.lawGroupEditorState.value]);
+
+  const saveButtonClick = () => {
+    if (selectedLawState.selectedLaw.id_law) {
+      updateLaw()
+      return
+    }
+    createLaw()
+  }
 
   const createLaw = async () => {
 
@@ -797,7 +895,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
     const newLaw = {
       law: {
-        law_name: document.getElementById("InputLawName3").value,
+        law_name: convertMarkdownFromEditorState(lawEditorsStates.lawNameEditorState.value),
         first_element: selectedLawCellId[0],
         second_element: selectedLawCellId[1],
         third_element: selectedLawCellId[2],
@@ -816,6 +914,10 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     // update laws
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
 
+    selectedLawState.setSelectedLaw(newLawResponseData.data.data)
+    // show message
+    showMessage(intl.formatMessage({id:`Закон создан`,defaultMessage: `Закон создан`}))
+ 
   }
 
   const updateLaw = async () => {
@@ -837,7 +939,7 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
 
     const newLaw = {
       law: {
-        law_name: document.getElementById("InputLawName3").value,
+        law_name: convertMarkdownFromEditorState(lawEditorsStates.lawNameEditorState.value),
         first_element: selectedLawCellId[0],
         second_element: selectedLawCellId[1],
         third_element: selectedLawCellId[2],
@@ -856,35 +958,8 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     // update laws
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
   
+    // show message
     showMessage(intl.formatMessage({id:`Закон обновлён`,defaultMessage: `Закон обновлён`}))
-
-  }
-
-  const selectLaw = async (selectedLaw) => {
-
-    // get all cell Id's into an array
-    const lawCellsIds = [selectedLaw.first_element,selectedLaw.second_element,selectedLaw.third_element,selectedLaw.fourth_element]
-   
-    // get all required cells from API
-    const lawCellsResponse = await getAllCellDataFromAPI(lawCellsIds,headers)
-    if (!isResponseSuccessful(lawCellsResponse[0])) {
-      showMessage(lawCellsResponse[0].data.error,"error")
-      return
-    }
-    const lawCells = lawCellsResponse.map(cellResponse => cellResponse.data.data)
-
-    // set request law as selected
-    selectedLawState.setSelectedLaw({law_name: selectedLaw.law_name,cells:lawCells,id_type:selectedLaw.id_type,id_law:selectedLaw.id_law})
-
-    // update cells to reflect new law
-    let newTable = tableState.tableData
-    lawCells.forEach(cellData => {
-
-      newTable = newTable.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData)
-    })
-    tableState.setTableData(newTable)
-
-    showMessage(intl.formatMessage({id:`Закон выбран`,defaultMessage: `Закон выбран`}))
 
   }
 
@@ -897,37 +972,12 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
       return
     }
 
+    // update laws
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
 
+    // show message
     showMessage(intl.formatMessage({id:`Закон удалён`,defaultMessage: `Закон удалён`}))
 
-  }
-
-  // dublicate, remove later
-  const checkLaw = (cells) => {
-
-
-
-
-    const firstThirdCellsMLTI = {
-      M: cells[0].m_indicate_auto + cells[2].m_indicate_auto,
-      L: cells[0].l_indicate_auto + cells[2].l_indicate_auto,
-      T: cells[0].t_indicate_auto + cells[2].t_indicate_auto,
-      I: cells[0].i_indicate_auto + cells[2].i_indicate_auto
-    }
-
-
-
-    const secondFourthCellsMLTI = {
-      M: cells[1].m_indicate_auto + cells[3].m_indicate_auto,
-      L: cells[1].l_indicate_auto + cells[3].l_indicate_auto,
-      T: cells[1].t_indicate_auto + cells[3].t_indicate_auto,
-      I: cells[1].i_indicate_auto + cells[3].i_indicate_auto
-    }
-
-    const sameMLTI = JSON.stringify(firstThirdCellsMLTI) === JSON.stringify(secondFourthCellsMLTI)
-
-    return(sameMLTI)
   }
 
   const chooseOption = <option key={-1} value={-1} dangerouslySetInnerHTML={{__html: intl.formatMessage({id:`Выберите опцию`,defaultMessage: `Выберите опцию`})}}/>
@@ -941,24 +991,14 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
     );
 
   });
+
   const allOptions = [chooseOption,...lawsGroupList]
 
-  let lawsMarkup
-  if (lawsState.laws) {
-    lawsMarkup = lawsState.laws.map(law => {
+  const selectedLaw = selectedLawState.selectedLaw
 
-    const isCurrent = selectedLawState.selectedLaw.id_law === law.id_law
 
-    return ( 
-      <tr key={law.id_law}>
-        <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
-        <td>{law.law_name}</td>
-        <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLaw(law)}>↓</button></td>
-        <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLaw(law)}>🗑</button></td>
-      </tr>
-    );
-  })
-  } else {lawsMarkup = null}
+  const lawFormulaSymbols = selectedLaw.cells.length >=4 ? `${selectedLaw.cells[0].symbol} * ${selectedLaw.cells[2].symbol} = ${selectedLaw.cells[1].symbol} * ${selectedLaw.cells[3].symbol}` : ""
+  const lawFormulaNames = selectedLaw.cells.length >=4 ?  `${selectedLaw.cells[0].value_name} * ${selectedLaw.cells[2].value_name} = <br> = ${selectedLaw.cells[1].value_name} * ${selectedLaw.cells[3].value_name}` : ""
 
   return (
     <Modal
@@ -972,41 +1012,45 @@ function LawsModal({modalsVisibility, lawsState, selectedLawState, lawsGroupsSta
           <div className="col-2">
             <FormattedMessage id='Название' defaultMessage="Название"/>:
           </div>
-          <div className="col-5">
-            <input type="text" className="form-control" id="InputLawName3" placeholder="Мой закон"/>
-          </div>
-          <div className="col-2">
-          <button type="button" className="btn btn-success" onClick={() => createLaw()}><FormattedMessage id='Создать' defaultMessage="Создать"/></button>
-          </div>
-          <div className="col-3">
-          <button type="button" className="btn btn-info" onClick={() => updateLaw()}><FormattedMessage id='Обновить' defaultMessage="Обновить"/></button>
+          <div className="col">
+          <RichTextEditor editorState={lawEditorsStates.lawNameEditorState.value} setEditorState={lawEditorsStates.lawNameEditorState.set}/>
           </div>
         </div>
         <div className="row">
         <div className="col-2">
           <FormattedMessage id='Группы' defaultMessage="Группы"/>:
         </div>
-          <div className="col-5">
+          <div className="col">
           <select className="form-select" aria-label="Default select example" id='inputLawGroup3'>
               {allOptions}
-            </select>
+          </select>
           </div>
         </div>
-
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col"><FormattedMessage id='Название' defaultMessage="Название"/></th>
-              <th scope="col"><FormattedMessage id='Выбрать' defaultMessage="Выбрать"/></th>
-              <th scope="col"><FormattedMessage id='Удалить' defaultMessage="Удалить"/></th>
-            </tr>
-          </thead>
-          <tbody>
-            {lawsMarkup}
-          </tbody>
-        </table>
+        <div className="row">
+          <div className="col-2">
+            <FormattedMessage id='Формулы' defaultMessage="Формулы"/>:
+          </div>
+          <div className="col">
+          <div className="" dangerouslySetInnerHTML={{__html: lawFormulaSymbols}}/>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-2 invisible">
+            <FormattedMessage id='Формулы' defaultMessage="Формулы"/>:
+          </div>
+          <div className="col">
+          <div className="" dangerouslySetInnerHTML={{__html: lawFormulaNames}}/>
+          </div>
+        </div>
       </div>
+      
+      <div className="modal-footer2"> 
+        <button type="button" className="btn btn-success" onClick={() => saveButtonClick()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить"/></button>
+        {selectedLaw.id_law ? 
+        (<> 
+        <button type="button" className="btn btn-danger" onClick={() => deleteLaw()}><FormattedMessage id='Удалить' defaultMessage="Удалить"/></button>
+        </>) : (null)}
+      </div> 
 
       </Modal>
   )
@@ -1805,13 +1849,25 @@ export function showMessage(messages,type = "success") {
     });
     }
 
+    if (type == "warn") {
+      toast.warn(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined,
+      theme: "colored",
+    });
+    }
+
   })
 
 
 
 }
 
-function convertMarkdownToEditorState(stateFunction, markdown) {
+export function convertMarkdownToEditorState(stateFunction, markdown) {
 
   const blocksFromHtml = htmlToDraft(markdown);
   const { contentBlocks, entityMap } = blocksFromHtml;
@@ -1820,7 +1876,7 @@ function convertMarkdownToEditorState(stateFunction, markdown) {
 
 }
 
-function convertMarkdownFromEditorState(state) {
+export function convertMarkdownFromEditorState(state) {
 
   const html = draftToMarkdown(convertToRaw(state.getCurrentContent())).replace('\n','');
   return html
