@@ -296,7 +296,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
 
     function setTransform() {
-      //zoom.current.style.transform = "scale(" + scale.current + ")";
+      document.getElementById("table-scale").style.transform = "scale(" + scale.current + ")";
       zoom.current.scrollTop = 1947 - pointY.current;
       zoom.current.scrollLeft = 1841 - pointX.current;
       
@@ -306,6 +306,8 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
       pointY.current = 1947 - zoom.current.scrollTop
       pointX.current = 1841 - zoom.current.scrollLeft 
+      pointY.current = pointY.current>1947 ? 1947 : pointY.current
+      pointX.current = pointX.current>1841 ? 1841 : pointX.current
     }
 
     zoom.current.onmousedown = function (e) {
@@ -328,17 +330,22 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       setTransform();
     }
 
-    // zoom.current.onwheel = function (e) {
-    //   e.preventDefault();
-    //   var xs = (e.clientX - pointX.current) / scale.current,
-    //     ys = (e.clientY - pointY.current) / scale.current,
-    //     delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
-    //   (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
-    //   pointX.current = e.clientX - xs * scale.current;
-    //   pointY.current = e.clientY - ys * scale.current;
+    zoom.current.onwheel = function (e) {
+      e.preventDefault();
+      // var xs = (e.clientX - pointX.current) / scale.current,
+      //   ys = (e.clientY - pointY.current) / scale.current,
+      //   delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+      // (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
+      // if (scale.current > 1.2**3) {scale.current = 1.2**3}
+      // if (scale.current < 1.2**-3) {scale.current = 1.2**-3}
+      // console.log(scale.current)
+      // console.log(pointX.current - (e.clientX - (xs) * scale.current))
+      // console.log(pointY.current - (e.clientY - (ys) * scale.current))
+      // pointX.current = e.clientX - (xs) * scale.current;
+      // pointY.current = e.clientY - (ys) * scale.current;
 
-    //   setTransform();
-    // }
+      // setTransform();
+    }
   }
 
   }, [zoom.current]);
@@ -384,8 +391,10 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
     });
       return (
         <div className="tables" id='table' ref={ref}>
-        {rowList}
-        <LawsCanvas lawCells={ selectedLawCellsLTId} color={color}/>
+          <div id='table-scale'>
+            {rowList}
+            <LawsCanvas lawCells={ selectedLawCellsLTId} color={color}/>
+          </div>
         </div>
       )
   }
@@ -556,7 +565,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
             lawEditorsStates.lawGroupEditorState.set(dublicateLaw.id_type)
   
   
-            showMessage("Этот закон уже существует","warn")
+            showMessage(intl.formatMessage({id:`Закон существует`,defaultMessage: `Этот закон уже существует`}),"warn")
   
   
             return

@@ -75,7 +75,6 @@ canvas {
   top: 0;
   /* width: 3726px;
   height: 2537px; */
-  padding-left: 230px;
   pointer-events: none;
 }
 
@@ -202,7 +201,26 @@ sup, sub {
 
 .footbar-button {
   margin-right: 10px;
+  max-width: fit-content;
 }
+
+@media (max-width:992px) {
+  .footbar-button {
+    margin: 5px;
+  }
+  .footbar-input {
+    margin: 5px;
+  }
+  .navbar-nav {
+    align-items: center;
+  }
+}
+
+#table-scale {
+  transform: scale(1);
+}
+
+
 
 .diminput sup {
   display:inline-flex;

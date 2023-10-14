@@ -95,18 +95,18 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
         </button>
         <div className="collapse navbar-collapse" id="footerSupportedContent">
             <div className="navbar-nav">
-              <div className="diminput" id="outLT">
+              <div className="diminput footbar-input" id="outLT">
                 <div className="v-align" dangerouslySetInnerHTML={{__html: cellLT}}/>
               </div>
-              <div className="diminput" id="outGK">
+              <div className="diminput footbar-input" id="outGK">
                 <div className="v-align" dangerouslySetInnerHTML={{__html: cellGK}}/>
               </div>
-              <div className="nameinput" id="outName">
-                <div className="v-align" dangerouslySetInnerHTML={{__html: tableViewState.tableView.title}}></div>
+              <div className="nameinput footbar-input" id="outName">
+                <div className="v-align " dangerouslySetInnerHTML={{__html: tableViewState.tableView.title}}></div>
               </div>
               <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></div>
               <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
-                <div className="btn-sm btn-primary btn" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
+              <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
                 {isAdmin ?
                     (<>
                         <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</div>
