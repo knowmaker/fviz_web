@@ -538,7 +538,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
         if (!fourthCellData) {
           selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
-          showMessage("Выбрана пустая ячейка")
+          showMessage(intl.formatMessage({id:`Выбрана пустая ячейка`,defaultMessage: `Выбрана пустая ячейка`}))
   
           return
         }
@@ -606,8 +606,6 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
       }
 
   }
-
-
 
   const handleCellHover = (event, cellData) => {
     hoverData.hoveredCellState.setHoveredCell(cellData)

@@ -205,5 +205,12 @@
   },
   "Нет альтернативных ячеек": {
     "defaultMessage": "No cell alternatives"
+  },
+  "Формулы": {
+    "defaultMessage": "Formulas"
+  },
+  "Язык": {
+    "defaultMessage": "Language"
   }
+
 }
