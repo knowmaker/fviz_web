@@ -33,6 +33,7 @@ module BackendRails
     # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.available_locales = %i[en ru]
     config.i18n.default_locale = :ru
+    config.i18n.fallbacks = { en: :ru, ru: :en }
 
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.

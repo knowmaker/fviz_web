@@ -6,7 +6,7 @@ class Gk < ApplicationRecord
 
   has_many :quantities, foreign_key: 'id_gk'
   has_many :gk_translations, foreign_key: 'id_gk'
-  translates :gk_name, foreign_key: 'id_gk', table_name: 'gk_translations'
+  translates :gk_name, foreign_key: 'id_gk', table_name: 'gk_translations', fallbacks_for_empty_translations: true
 
   validates :g_indicate, presence: true, numericality: { only_integer: true }
   validates :k_indicate, presence: true, numericality: { only_integer: true }

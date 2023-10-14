@@ -14,7 +14,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   }     
   let isAdmin = false
   if (userInfoState.userProfile) {
-    //isAdmin = userInfoState.userProfile.role
+    isAdmin = userInfoState.userProfile.role
   }
   let isAuthorized = false;
   if (userInfoState.userProfile) {
