@@ -10,7 +10,6 @@ export function getDataFromAPI(adress, headers = undefined) {
       resolve(error.response)
     }
   })
-  // return axios.get(adress, {headers: headers})
 }
 
 export function postDataToAPI(adress,data, headers = undefined) {
@@ -23,7 +22,6 @@ export function postDataToAPI(adress,data, headers = undefined) {
       console.log(adress,data, headers)
     }
   })
-  //return axios.post(adress, data, {headers: headers})
 }
 
 export function putDataToAPI(adress,data, headers = undefined) {

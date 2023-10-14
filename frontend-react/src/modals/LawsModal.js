@@ -4,7 +4,7 @@ import { UserProfile, TableContext } from '../misc/contexts.js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { checkLaw } from '../components/Table.js';
-import { RichTextEditor } from '../pages/RichTextEditor.js';
+import { RichTextEditor } from '../misc/RichTextEditor.js';
 import { showMessage, convertMarkdownFromEditorState } from '../pages/Home.js';
 import { Modal } from './Modal.js';
 

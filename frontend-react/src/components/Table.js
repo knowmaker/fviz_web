@@ -285,15 +285,9 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
     zoom.current = document.getElementById("table")
   }
 
-  if (zoom.current !== undefined) {
-
-  }
-
   useEffect(() => {
   
     if (zoom.current) {
-
-
 
     function setTransform() {
       document.getElementById("table-scale").style.transform = "scale(" + scale.current + ")";
@@ -330,22 +324,19 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       setTransform();
     }
 
-    zoom.current.onwheel = function (e) {
-      e.preventDefault();
-      var xs = (e.clientX - pointX.current) / scale.current,
-        ys = (e.clientY - pointY.current) / scale.current,
-        delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
-      (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
-      if (scale.current > 1.2**3) {return}
-      if (scale.current < 1.2**-3) {return}
-      console.log(scale.current)
-      console.log(pointX.current - (e.clientX - (150*scale.current) - (xs) * scale.current))
-      console.log(pointY.current - (e.clientY - (ys) * scale.current))
-      pointX.current = e.clientX - (150*scale.current) - (xs) * scale.current;
-      //pointY.current = e.clientY - (ys) * scale.current;
+    // zoom.current.onwheel = function (e) {
+    //   e.preventDefault();
+    //   var xs = (e.clientX - pointX.current) / scale.current,
+    //     ys = (e.clientY - pointY.current) / scale.current,
+    //     delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+    //   (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
+    //   if (scale.current > 1.2**3) {return}
+    //   if (scale.current < 1.2**-3) {return}
+    //   pointX.current += 500;
+    //   //pointY.current = e.clientY - (ys) * scale.current;
 
-      setTransform();
-    }
+    //   setTransform();
+    // }
   }
 
   }, [zoom.current]);

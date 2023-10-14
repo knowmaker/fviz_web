@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 
 import TableUI from '../components/Table';
 import setStateFromGetAPI, {
-  getDataFromAPI, getAllCellDataFromAPI} from '../misc/api.js';
+  getDataFromAPI} from '../misc/api.js';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserProfile,TableContext } from '../misc/contexts.js';
 import { EditorState, convertToRaw , ContentState } from 'draft-js';

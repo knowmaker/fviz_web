@@ -16,6 +16,10 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   if (userInfoState.userProfile) {
     //isAdmin = userInfoState.userProfile.role
   }
+  let isAuthorized = false;
+  if (userInfoState.userProfile) {
+      isAuthorized = true;
+  }
   
   const intl = useIntl()
 
@@ -101,10 +105,13 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
               <div className="diminput footbar-input" id="outGK">
                 <div className="v-align" dangerouslySetInnerHTML={{__html: cellGK}}/>
               </div>
+              {isAuthorized ?
+              (<>
               <div className="nameinput footbar-input" id="outName">
                 <div className="v-align " dangerouslySetInnerHTML={{__html: tableViewState.tableView.title}}></div>
               </div>
               <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></div>
+              </>) : (null)}
               <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
               <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
                 {isAdmin ?

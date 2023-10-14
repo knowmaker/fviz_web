@@ -6,7 +6,7 @@ import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { convertMarkdownFromEditorState, convertToMLTI, showMessage } from '../pages/Home.js';
 import { Modal } from './Modal.js';
-import { RichTextEditor } from '../pages/RichTextEditor.js';
+import { RichTextEditor } from '../misc/RichTextEditor.js';
 
 export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates, gkColors, selectedCellState }) {
 

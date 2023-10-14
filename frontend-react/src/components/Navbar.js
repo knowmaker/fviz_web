@@ -51,12 +51,17 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
         modalsVisibility.regModalVisibility.setVisibility(true)
     }
 
-    const userInfo = useContext(UserProfile)    
+    const userInfoState = useContext(UserProfile)    
+
+    let isAuthorized = false;
+    if (userInfoState.userProfile) {
+        isAuthorized = true;
+    }
 
     const signOut = () => {
 
-        userInfo.setUserProfile(null)
-        userInfo.setUserToken(null)
+        userInfoState.setUserProfile(null)
+        userInfoState.setUserToken(null)
 
         toast.success(intl.formatMessage({id:`Сеанс завершен`,defaultMessage: `Сеанс завершен`}), {
             position: "top-center",
@@ -112,10 +117,10 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
 
     let loginButtons;
 
-    if (userInfo.userProfile) {
+    if (userInfoState.userProfile) {
         loginButtons = (
             <>
-                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfo.userProfile.email} (<FormattedMessage id='Мой профиль' defaultMessage="Мой профиль"/>)</span>
+                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfoState.userProfile.email} (<FormattedMessage id='Мой профиль' defaultMessage="Мой профиль"/>)</span>
                 <span style={{margin:10}}>/</span>
                 <span onClick={() => signOut()} style={{cursor: "pointer"}}><FormattedMessage id='Выход' defaultMessage="Выход"/></span>
             </>
@@ -142,6 +147,8 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className="navbar-nav">
+                        {isAuthorized ?
+                        (<>
                         <div className={`nav-link ${undoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={undo}>↺<FormattedMessage id='Отмена' defaultMessage="Отмена"/></div>
                         <div className={`nav-link ${redoStack.length === 0 ? "" : "active"}`} aria-current="page" onClick={redo}>↻<FormattedMessage id='Возврат' defaultMessage="Возврат"/></div>
                         <div className="nav-link active" aria-current="page" onClick={openEditForm}><FormattedMessage id='Редактирование ячейки' defaultMessage="Редактирование ячейки"/></div>
@@ -149,6 +156,7 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
                         <div className="nav-link active" aria-current="page" onClick={openLawsMenu}><FormattedMessage id='Законы' defaultMessage="Законы"/></div>
                         <div className="nav-link active" aria-current="page" onClick={openLawsGroupsForm}><FormattedMessage id='Группы законов' defaultMessage="Группы законов"/></div>
                         <div className="nav-link active" aria-current="page" onClick={openGKColorsEditForm}><FormattedMessage id='Цвета ячеек' defaultMessage="Цвета ячеек"/></div>
+                        </>) : (null)}
                     </div>
                 </div>
                 <div className="navbar-text">
