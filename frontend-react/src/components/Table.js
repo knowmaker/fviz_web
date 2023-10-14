@@ -332,19 +332,19 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
     zoom.current.onwheel = function (e) {
       e.preventDefault();
-      // var xs = (e.clientX - pointX.current) / scale.current,
-      //   ys = (e.clientY - pointY.current) / scale.current,
-      //   delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
-      // (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
-      // if (scale.current > 1.2**3) {scale.current = 1.2**3}
-      // if (scale.current < 1.2**-3) {scale.current = 1.2**-3}
-      // console.log(scale.current)
-      // console.log(pointX.current - (e.clientX - (xs) * scale.current))
-      // console.log(pointY.current - (e.clientY - (ys) * scale.current))
-      // pointX.current = e.clientX - (xs) * scale.current;
-      // pointY.current = e.clientY - (ys) * scale.current;
+      var xs = (e.clientX - pointX.current) / scale.current,
+        ys = (e.clientY - pointY.current) / scale.current,
+        delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+      (delta > 0) ? (scale.current *= 1.2) : (scale.current /= 1.2);
+      if (scale.current > 1.2**3) {return}
+      if (scale.current < 1.2**-3) {return}
+      console.log(scale.current)
+      console.log(pointX.current - (e.clientX - (150*scale.current) - (xs) * scale.current))
+      console.log(pointY.current - (e.clientY - (ys) * scale.current))
+      pointX.current = e.clientX - (150*scale.current) - (xs) * scale.current;
+      //pointY.current = e.clientY - (ys) * scale.current;
 
-      // setTransform();
+      setTransform();
     }
   }
 
