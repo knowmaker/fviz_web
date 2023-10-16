@@ -22,6 +22,10 @@ class User < ApplicationRecord
   validates :confirmation_token, presence: true, allow_nil: true
   validates :active_repr, presence: true, allow_nil: true
 
+  def as_json(options = {})
+    super(except: [:password, :confirmation_token])
+  end
+
   private
 
   def hash_user_password

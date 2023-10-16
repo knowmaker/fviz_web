@@ -128,7 +128,6 @@ class QuantitiesController < ApplicationController
 
     quantity_params.delete(:l_indicate)
     quantity_params.delete(:t_indicate)
-    p quantity_params
     quantity_params
   end
 end
