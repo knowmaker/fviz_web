@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class QuantityTranslation < ApplicationRecord
   self.table_name = 'quantity_translations'
 

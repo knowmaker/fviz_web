@@ -91,9 +91,14 @@ RSpec.describe 'users', type: :request do
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
-          last_name: { type: :string },
-          first_name: { type: :string },
-          patronymic: { type: :string }
+          user: {
+            type: :object,
+            properties: {
+              last_name: { type: :string },
+              first_name: { type: :string },
+              patronymic: { type: :string }
+            }
+          }
         }
       }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LawTypeTranslation < ApplicationRecord
   self.table_name = 'law_types_translations'
 

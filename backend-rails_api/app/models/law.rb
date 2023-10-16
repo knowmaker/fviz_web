@@ -20,7 +20,8 @@ class Law < ApplicationRecord
   validates :id_user, presence: true, numericality: { only_integer: true }
   validates :id_type, numericality: { only_integer: true }, allow_nil: true
   validates :combination, presence: true
-  validates :combination, uniqueness: { scope: :id_user, message: I18n.t('errors.messages.combination_user_combination_taken') }
+  validates :combination,
+            uniqueness: { scope: :id_user, message: I18n.t('errors.messages.combination_user_combination_taken') }
 
   private
 

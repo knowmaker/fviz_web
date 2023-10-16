@@ -23,7 +23,7 @@ class GkController < ApplicationController
   # Метод для обновления параметров системного уровня по его id
   def update
     unless @current_user.role
-      render json: {error: [I18n.t('errors.gk.admin_forbidden')]}, status: :forbidden
+      render json: { error: [I18n.t('errors.gk.admin_forbidden')] }, status: :forbidden
       return
     end
 

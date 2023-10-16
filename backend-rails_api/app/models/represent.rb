@@ -23,7 +23,7 @@ class Represent < ApplicationRecord
       number = quantity.to_i
 
       if number.to_s != quantity.to_s || number.zero?
-        errors.add(:active_quantities,  :not_a_number)
+        errors.add(:active_quantities, :not_a_number)
         break
       end
     end

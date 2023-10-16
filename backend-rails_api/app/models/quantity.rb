@@ -12,7 +12,8 @@ class Quantity < ApplicationRecord
   has_many :laws_as_third_element, class_name: 'Law', foreign_key: 'third_element'
   has_many :laws_as_fourth_element, class_name: 'Law', foreign_key: 'fourth_element'
   has_many :quantity_translations, foreign_key: 'id_value'
-  translates :value_name, :unit, foreign_key: 'id_value', table_name: 'quantity_translations', fallbacks_for_empty_translations: true
+  translates :value_name, :unit, foreign_key: 'id_value', table_name: 'quantity_translations',
+                                 fallbacks_for_empty_translations: true
 
   validates :value_name, length: { maximum: 200 }
   validates :symbol, length: { maximum: 100 }

@@ -33,7 +33,7 @@ module QuantitiesHelper
           <td>#{quantity.value_name}</td>
           <td>#{quantity.symbol}</td>
           <td>#{quantity.unit}</td>
-          <td>#{generate_mlti(quantity.m_indicate_auto,quantity.l_indicate_auto,quantity.t_indicate_auto,quantity.i_indicate_auto)}</td>
+          <td>#{generate_mlti(quantity.m_indicate_auto, quantity.l_indicate_auto, quantity.t_indicate_auto, quantity.i_indicate_auto)}</td>
         </tr>
         HTML
       end
@@ -46,26 +46,18 @@ module QuantitiesHelper
   end
 
   def generate_mlti(m_indicate, l_indicate, t_indicate, i_indicate)
-    mlti_string = ""
+    mlti_string = ''
 
-    if m_indicate != 0
-      mlti_string += "M<sup>#{m_indicate}</sup>"
-    end
+    mlti_string += "M<sup>#{m_indicate}</sup>" if m_indicate != 0
 
-    if l_indicate != 0
-      mlti_string += "L<sup>#{l_indicate}</sup>"
-    end
+    mlti_string += "L<sup>#{l_indicate}</sup>" if l_indicate != 0
 
-    if t_indicate != 0
-      mlti_string += "T<sup>#{t_indicate}</sup>"
-    end
+    mlti_string += "T<sup>#{t_indicate}</sup>" if t_indicate != 0
 
-    if i_indicate != 0
-      mlti_string += "I<sup>#{i_indicate}</sup>"
-    end
+    mlti_string += "I<sup>#{i_indicate}</sup>" if i_indicate != 0
 
-    if (m_indicate == 0 && l_indicate == 0 && t_indicate == 0 && i_indicate == 0)
-      mlti_string = "L<sup>0</sup>T<sup>0</sup>"
+    if m_indicate.zero? && l_indicate.zero? && t_indicate.zero? && i_indicate.zero?
+      mlti_string = 'L<sup>0</sup>T<sup>0</sup>'
     end
 
     mlti_string

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GkTranslation < ApplicationRecord
   self.table_name = 'gk_translations'
 

@@ -6,7 +6,8 @@ class LawType < ApplicationRecord
 
   has_many :laws, foreign_key: 'id_type'
   has_many :law_type_translations, foreign_key: 'id_type'
-  translates :type_name, foreign_key: 'id_type', table_name: 'law_types_translations', fallbacks_for_empty_translations: true
+  translates :type_name, foreign_key: 'id_type', table_name: 'law_types_translations',
+                         fallbacks_for_empty_translations: true
 
   validates :type_name, presence: true, length: { maximum: 100 }
   validates :color, presence: true, length: { maximum: 50 }

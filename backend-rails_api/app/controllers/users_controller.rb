@@ -8,18 +8,14 @@ class UsersController < ApplicationController
   # Метод регистрации пользователя
   def register
     user = User.new(user_params)
-    user.confirmation_token = SecureRandom.urlsafe_base64.to_s
 
     if user.save
-      user.password = hash_password(params[:user][:password])
-      user.save
-
       # Высылается письмо для подтверждения почты
       UserMailer.confirmation_email(user).deliver_now
       # Через 30 мин удаляется ссылка на подтверждение
       ResetConfirmationTokenJob.set(wait: 30.minutes).perform_later(user.id_user)
 
-      render json: { data: user }, status: :created
+      head :created
     else
       render json: { error: user.errors.full_messages }, status: :unprocessable_entity
     end
@@ -51,7 +47,7 @@ class UsersController < ApplicationController
   def update
     if @current_user.update(user_params)
       if params[:user][:password].present?
-        @current_user.password = hash_password(params[:user][:password])
+        @current_user.password = params[:user][:password]
         @current_user.save
       end
       render json: { data: @current_user }, status: :ok
@@ -99,7 +95,7 @@ class UsersController < ApplicationController
 
     if user
       new_password = generate_random_password
-      user.password = hash_password(new_password)
+      user.password = new_password
       user.confirmation_token = nil
       user.save
 
