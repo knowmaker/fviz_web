@@ -4,9 +4,12 @@ import { UserProfile, TableContext } from '../misc/contexts.js';
 import { Cell } from '../components/Table.js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { convertMarkdownFromEditorState, convertToMLTI, showMessage } from '../pages/Home.js';
+import { convertMarkdownFromEditorState } from '../pages/Home.js';
+import { showMessage } from '../misc/message.js';
+import { convertToMLTI } from '../misc/converters.js';
 import { Modal } from './Modal.js';
-import { RichTextEditor } from '../misc/RichTextEditor.js';
+import { RichTextEditor } from '../components/RichTextEditor.js';
+import { Button } from '../components/ButtonWithLoad.js';
 
 export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates, gkColors, selectedCellState }) {
 
@@ -314,8 +317,8 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       {isAdmin ?
         (<>
           <div className="modal-footer2">
-            <button type="button" className="btn btn-danger" onClick={() => deleteCell()}><FormattedMessage id='Удалить' defaultMessage="Удалить" /></button>
-            <button type="button" className="btn btn-success" onClick={() => saveButtonClick()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></button>
+            <Button type="button" className="btn btn-danger" onClick={(e) => deleteCell(e)}><FormattedMessage id='Удалить' defaultMessage="Удалить" /></Button>
+            <Button type="button" className="btn btn-success" onClick={(e) => saveButtonClick(e)}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></Button>
           </div>
         </>) : (null)}
     </Modal>

@@ -4,9 +4,12 @@ import { UserProfile, TableContext } from '../misc/contexts.js';
 import { EditorState } from 'draft-js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { RichTextEditor } from '../misc/RichTextEditor.js';
-import { convertMarkdownToEditorState, showMessage, convertMarkdownFromEditorState } from '../pages/Home.js';
+import { RichTextEditor } from '../components/RichTextEditor.js';
+import { convertMarkdownFromEditorState } from '../pages/Home.js';
+import { showMessage } from '../misc/message.js';
+import { convertMarkdownToEditorState } from '../misc/converters.js';
 import { Modal } from './Modal.js';
+import { Button } from '../components/ButtonWithLoad.js';
 
 export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, tableViewState }) {
 
@@ -157,10 +160,10 @@ export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, t
             <RichTextEditor editorState={tableViewEditorState} setEditorState={setTableViewEditorState} />
           </div>
           <div className="col-2">
-            <button type="button" className="btn btn-success" onClick={() => createTableView()}><FormattedMessage id='Создать' defaultMessage="Создать" /></button>
+            <Button type="button" className="btn btn-success" onClick={(e) => createTableView(e)}><FormattedMessage id='Создать' defaultMessage="Создать" /></Button>
           </div>
           <div className="col-3">
-            <button type="button" className="btn btn-info" onClick={() => updateTableView()}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></button>
+            <Button type="button" className="btn btn-info" onClick={(e) => updateTableView(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
           </div>
         </div>
         <table className="table">

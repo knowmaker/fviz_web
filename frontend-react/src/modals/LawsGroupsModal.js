@@ -4,9 +4,12 @@ import { UserProfile } from '../misc/contexts.js';
 import { EditorState } from 'draft-js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { RichTextEditor } from '../misc/RichTextEditor.js';
-import { convertMarkdownToEditorState, convertMarkdownFromEditorState, showMessage } from '../pages/Home.js';
+import { RichTextEditor } from '../components/RichTextEditor.js';
+import { convertMarkdownFromEditorState } from '../pages/Home.js';
+import { showMessage } from '../misc/message.js';
+import { convertMarkdownToEditorState } from '../misc/converters.js';
 import { Modal } from './Modal.js';
+import { Button } from '../components/ButtonWithLoad.js';
 
 export function LawsGroupsModal({ modalsVisibility, lawsGroupsState }) {
 
@@ -176,10 +179,10 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState }) {
 
               </div>
               <div className="col-2">
-                <button type="button" className="btn btn-success" onClick={() => createLawGroup()}><FormattedMessage id='Создать' defaultMessage="Создать" /></button>
+                <Button type="button" className="btn btn-success" onClick={(e) => createLawGroup(e)}><FormattedMessage id='Создать' defaultMessage="Создать" /></Button>
               </div>
               <div className="col-3">
-                <button type="button" className="btn btn-info" onClick={() => updateLawGroup()}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></button>
+                <Button type="button" className="btn btn-info" onClick={(e) => updateLawGroup(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
               </div>
             </div>
             <div className="row">

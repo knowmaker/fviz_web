@@ -4,9 +4,11 @@ import { UserProfile, TableContext } from '../misc/contexts.js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { checkLaw } from '../components/Table.js';
-import { RichTextEditor } from '../misc/RichTextEditor.js';
-import { showMessage, convertMarkdownFromEditorState } from '../pages/Home.js';
+import { RichTextEditor } from '../components/RichTextEditor.js';
+import { convertMarkdownFromEditorState } from '../pages/Home.js';
+import { showMessage } from '../misc/message.js';
 import { Modal } from './Modal.js';
+import { Button } from '../components/ButtonWithLoad.js';
 
 export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsGroupsState, lawEditorsStates }) {
 
@@ -221,10 +223,10 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
       </div>
 
       <div className="modal-footer2">
-        <button type="button" className="btn btn-success" onClick={() => saveButtonClick()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></button>
+        <Button type="button" className="btn btn-success" onClick={(e) => saveButtonClick(e)}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></Button>
         {selectedLaw.id_law ?
           (<>
-            <button type="button" className="btn btn-danger" onClick={() => deleteLaw()}><FormattedMessage id='Удалить' defaultMessage="Удалить" /></button>
+            <Button type="button" className="btn btn-danger" onClick={(e) => deleteLaw(e)}><FormattedMessage id='Удалить' defaultMessage="Удалить" /></Button>
           </>) : (null)}
       </div>
 

@@ -4,11 +4,12 @@ import { TableContext, UserProfile } from '../misc/contexts.js';
 
 import setStateFromGetAPI, {getAllCellDataFromAPI} from '../misc/api.js';
 import LawsCanvas from './LawsCanvas';
-import {showMessage} from '../pages/Home.js';
+import { showMessage } from '../misc/message';
 import { isResponseSuccessful } from '../misc/api';
-import { convertToMLTI } from '../pages/Home.js';
+import { convertToMLTI } from '../misc/converters';
 import {FormattedMessage,useIntl} from 'react-intl'
-import { convertMarkdownFromEditorState,convertMarkdownToEditorState } from '../pages/Home.js';
+import { convertMarkdownFromEditorState } from '../pages/Home.js';
+import { convertMarkdownToEditorState } from '../misc/converters';
 // const Color = require('color');
 
 const rowCount = 21

@@ -1,6 +1,6 @@
 import React,{useContext} from 'react';
 import { UserProfile,TableContext } from '../misc/contexts.js';
-import { showMessage } from '../pages/Home.js';
+import { showMessage } from '../misc/message.js';
 import setStateFromGetAPI,{ putDataToAPI,isResponseSuccessful } from '../misc/api.js';
 import {FormattedMessage,useIntl} from 'react-intl'
 

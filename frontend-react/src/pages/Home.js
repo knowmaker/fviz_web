@@ -3,13 +3,12 @@ import React,{useEffect,useState} from 'react';
 import TableUI from '../components/Table';
 import setStateFromGetAPI, {
   getDataFromAPI} from '../misc/api.js';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { UserProfile,TableContext } from '../misc/contexts.js';
-import { EditorState, convertToRaw , ContentState } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import Footbar from '../components/FootBar';
 import { useDownloadableScreenshot } from '../misc/Screenshot.js';
 import draftToMarkdown from 'draftjs-to-markdown';
-import htmlToDraft from 'html-to-draftjs';
 import { isResponseSuccessful } from '../misc/api';
 
 import {IntlProvider} from 'react-intl'
@@ -26,6 +25,8 @@ import { LawsGroupsModal } from '../modals/LawsGroupsModal';
 import { GKColorModal } from '../modals/GKColorModal';
 import { RegModal } from '../modals/RegModal';
 import { GKLayersImageModal } from '../modals/GKLayersImageModal';
+import { convertMarkdownToEditorState } from '../misc/converters';
+import { showMessage } from '../misc/message';
 
 function getTranslationMessages(locale) {
 
@@ -305,6 +306,7 @@ export default function Home() {
             return
           }
           const cellData = cellResponseData.data.data
+          console.log(cellData)
 
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
@@ -360,90 +362,10 @@ export default function Home() {
     );
 }
 
-export function showMessage(messages,type = "success") {
-
-  // check if passed argument is array and if not then put it into array
-  const messagesArray = Array.isArray(messages) ? messages : [messages]
-
-  messagesArray.forEach(message => {
-    if (type == "success") {
-      toast.success(message, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    }
-
-    if (type == "error") {
-      toast.error(message, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    }
-
-    if (type == "warn") {
-      toast.warn(message, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    }
-
-  })
-
-
-
-}
-
-export function convertMarkdownToEditorState(stateFunction, markdown) {
-
-  const blocksFromHtml = htmlToDraft(markdown);
-  const { contentBlocks, entityMap } = blocksFromHtml;
-  const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-  stateFunction(EditorState.createWithContent(contentState))
-
-}
-
 export function convertMarkdownFromEditorState(state) {
 
   const html = draftToMarkdown(convertToRaw(state.getCurrentContent())).replace('\n','');
   return html
-}
-
-export function convertToMLTI(M,L,T,I) {
-
-  let MLTIHTMLString = ""
-  if (M !== 0) {
-    MLTIHTMLString += `M<sup>${M}</sup>`
-  }
-  if (L !== 0) {
-    MLTIHTMLString += `L<sup>${L}</sup>`
-  }
-  if (T !== 0) {
-    MLTIHTMLString += `T<sup>${T}</sup>`
-  }
-  if (I !== 0) {
-    MLTIHTMLString += `I<sup>${I}</sup>`
-  }
-
-  if (M === 0 && L === 0 && T === 0 && I === 0) { 
-    MLTIHTMLString = 'L<sup>0</sup>T<sup>0</sup>'; 
-  }
-
-  return MLTIHTMLString
 }
 
 export function showPassword(inputElementRef,eyeElementRef) {

@@ -3,8 +3,10 @@ import { patchDataToAPI, deleteDataFromAPI } from '../misc/api.js';
 import { UserProfile } from '../misc/contexts.js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { showMessage, showPassword } from '../pages/Home.js';
+import { showPassword } from '../pages/Home.js';
+import { showMessage } from '../misc/message.js';
 import { Modal } from './Modal.js';
+import { Button } from '../components/ButtonWithLoad.js';
 
 export function EditProfileModal({ modalsVisibility, currentLocaleState }) {
 
@@ -111,8 +113,8 @@ export function EditProfileModal({ modalsVisibility, currentLocaleState }) {
         </select>
       </div>
       <div className="modal-footer2">
-        <button type="button" className="btn btn-danger" onClick={() => deleteUser()}><FormattedMessage id='Удалить аккаунт' defaultMessage="Удалить аккаунт" /></button>
-        <button type="button" className="btn btn-success" onClick={() => editProfile()}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></button>
+        <Button type="button" className="btn btn-danger" onClick={(e) => deleteUser(e)}><FormattedMessage id='Удалить аккаунт' defaultMessage="Удалить аккаунт" /></Button>
+        <Button type="button" className="btn btn-success" onClick={(e) => editProfile(e)}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></Button>
       </div>
 
     </Modal>

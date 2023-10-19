@@ -327,3 +327,28 @@ td button {
 .grey-background {
   background-color: #e9ecef;
 }
+
+.loading-button {
+  position: relative;
+  align-items: center;
+  text-align: center;
+}
+
+.loading-img {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-radius: 50%;
+}
+
+.loading-button .button-text {
+  visibility: hidden;
+  opacity: 0;
+}

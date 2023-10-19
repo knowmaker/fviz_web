@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { postDataToAPI } from '../misc/api.js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { showMessage, showPassword } from '../pages/Home.js';
+import { showPassword } from '../pages/Home.js';
+import { showMessage } from '../misc/message.js';
 import { Modal } from './Modal.js';
+import { Button } from '../components/ButtonWithLoad.js';
 
 export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) {
 
@@ -20,6 +22,7 @@ export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) 
   }, [modalVisibility.isVisible]);
 
   const register = async () => {
+
 
     // get email and password from fields
     const email = document.getElementById("InputEmail1").value;
@@ -44,10 +47,12 @@ export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) 
     // hide modal and show message
     modalVisibility.setVisibility(false);
     showMessage(intl.formatMessage({ id: `Письмо подтверждения почты`, defaultMessage: `Было выслано письмо подтверждения почты` }));
+
+
   };
 
   // on login function
-  const login = async () => {
+  const login = async (e) => {
 
     // get email and password from fields
     const email = document.getElementById("InputEmail2").value;
@@ -74,6 +79,7 @@ export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) 
     // hide modal and show message
     modalVisibility.setVisibility(false);
     showMessage(intl.formatMessage({ id: `Авторизация успешна`, defaultMessage: `Авторизация успешна` }));
+  
   };
 
 
@@ -144,7 +150,7 @@ export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) 
             </div>
 
             <div className="modal-footer2">
-              <button type="button" className="btn btn-primary" onClick={() => login()}><FormattedMessage id='Вход' defaultMessage="Вход" /></button>
+              <Button className="btn btn-primary" onClick={(e) => login(e)}><FormattedMessage id='Вход' defaultMessage="Вход" /></Button>
             </div>
           </div>
           <div className="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab" tabIndex="0">
@@ -162,7 +168,7 @@ export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) 
             </div>
 
             <div className="modal-footer2">
-              <button type="button" className="btn btn-primary" onClick={() => register()}><FormattedMessage id='Регистрация' defaultMessage="Регистрация" /></button>
+              <Button type="button" className="btn btn-primary" onClick={(e) => register(e)}><FormattedMessage id='Регистрация' defaultMessage="Регистрация" /></Button>
             </div>
           </div>
           <div className="tab-pane fade" id="forgot-password" role="tabpanel" aria-labelledby="forgot-password-tab" tabIndex="0">
@@ -173,7 +179,7 @@ export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) 
             </div>
 
             <div className="modal-footer2">
-              <button type="button" className="btn btn-primary" onClick={() => forgotPassword()}><FormattedMessage id='Сброс' defaultMessage="Сброс" /></button>
+              <Button type="button" className="btn btn-primary" onClick={(e) => forgotPassword(e)}><FormattedMessage id='Сброс' defaultMessage="Сброс" /></Button>
             </div>
           </div>
         </div>
@@ -182,4 +188,8 @@ export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) 
 
     </Modal>
   );
+
+
 }
+
+

@@ -90,10 +90,6 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
         modalsVisibility.tableViewsModalVisibility.setVisibility(true)
     }
 
-    const openLawsForm = () => {
-        modalsVisibility.lawsModalVisibility.setVisibility(true)
-    }
-
     const openLawsGroupsForm = () => {
         modalsVisibility.lawsGroupsModalVisibility.setVisibility(true)
     }
