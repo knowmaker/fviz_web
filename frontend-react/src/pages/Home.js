@@ -87,33 +87,6 @@ export default function Home() {
 
   useEffect(() => {
 
-    // get all required localized data without authorization
-    setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,testShow,undefined)
-    setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`,undefined,undefined)
-
-    if (userToken) {
-
-      // set header for API queries
-      const headers = {
-        Authorization: `Bearer ${userToken}`
-      }    
-
-
-      // get all required localized data
-      setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
-      setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
-      setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
-    
-
-
-    }
-
-  }, [currentLocale]);
-
-
-
-  useEffect(() => {
-
     // if user profile is not null set edit form
     if (userProfile) {
       document.getElementById("InputEmail3").value = userProfile.email
@@ -175,6 +148,31 @@ export default function Home() {
     const [tableView, setTableView] = useState({id_repr:1,title:intl.formatMessage({id:`Базовое`,defaultMessage: `Базовое`})}); 
     const tableViewState = {tableView,setTableView}
 
+    useEffect(() => {
+
+      // get all required localized data without authorization
+      setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`,undefined,undefined)
+  
+      if (userToken) {
+  
+        // set header for API queries
+        const headers = {
+          Authorization: `Bearer ${userToken}`
+        }    
+  
+        
+        // get all required localized data
+        setStateFromGetAPI(setTableViews, `${process.env.REACT_APP_API_LINK}/${intl.locale}/represents`,undefined,headers)
+        setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
+        setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
+        setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view/${tableView.id_repr}`,undefined,headers)
+  
+  
+      } else {
+        setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
+      }
+  
+    }, [currentLocale]);
 
 
     const setFullTableData = (result) => {
@@ -184,7 +182,7 @@ export default function Home() {
     }
     // get table and layers when page is loaded
     useEffect(() => {
-      setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`)
+      
       setStateFromGetAPI(setGKLayers,`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`)
 
       async function logInByLocalStorage() {
@@ -198,11 +196,13 @@ export default function Home() {
           const profileResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/users/profile`,headers)
           if (!isResponseSuccessful(profileResponseData)) {
             localStorage.removeItem('token')
+            setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`)
             return
           }
           showMessage(intl.formatMessage({id:`Авторизация успешна`,defaultMessage: `Авторизация успешна`}))
 
           setUserToken(storageToken)
+
 
         }
 
@@ -351,7 +351,7 @@ export default function Home() {
                 <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState} currentLocaleState={currentLocaleState}/>
                 <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState} lawEditorsStates={lawEditorsStates}/>
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
-                <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState}/>
+                <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
                 <GKColorModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
                 <GKLayersImageModal modalVisibility={modalsVisibility.GKLayersImageModalVisibility} />
 

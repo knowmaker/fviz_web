@@ -134,7 +134,7 @@ export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, t
         <tr key={tableView.id_repr}>
           <th scope="row" className='small-cell'>{isCurrent ? `+` : ''}</th>
           <td dangerouslySetInnerHTML={{ __html: tableView.title }}></td>
-          <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectTableView(tableView)}>↓</button></td>
+          <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectTableView(tableView)}>📝</button></td>
           <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteTableView(tableView)}>🗑</button></td>
         </tr>
       );

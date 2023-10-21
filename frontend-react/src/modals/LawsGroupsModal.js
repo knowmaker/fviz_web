@@ -11,7 +11,7 @@ import { convertMarkdownToEditorState } from '../misc/converters.js';
 import { Modal } from './Modal.js';
 import { Button } from '../components/ButtonWithLoad.js';
 
-export function LawsGroupsModal({ modalsVisibility, lawsGroupsState }) {
+export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState }) {
 
   const userInfoState = useContext(UserProfile);
 
@@ -93,8 +93,9 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState }) {
       return;
     }
 
-    // update current groups
+    // update current groups and laws
     setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`, undefined, headers);
+    setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
 
     // show message
     showMessage(intl.formatMessage({ id: `Группа была удалена`, defaultMessage: `Группа была удалена` }));
@@ -149,7 +150,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState }) {
           <td><input type="color" className="form-control form-control-color disabled" value={group.color} readOnly onClick={(e) => { e.preventDefault(); }} /></td>
           {isAdmin ?
             (<>
-              <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLawGroup(group)}>↓</button></td>
+              <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectLawGroup(group)}>📝</button></td>
               <td className='small-cell'><button type="button" className="btn btn-danger btn-sm" onClick={() => deleteLawGroup(group)}>🗑</button></td>
             </>) : (null)}
         </tr>

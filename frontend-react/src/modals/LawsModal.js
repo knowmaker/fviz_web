@@ -78,7 +78,7 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
         second_element: selectedLawCellId[1],
         third_element: selectedLawCellId[2],
         fourth_element: selectedLawCellId[3],
-        id_type: document.getElementById("inputLawGroup3").value
+        id_type: document.getElementById("inputLawGroup3").value !== "-1" ? document.getElementById("inputLawGroup3").value : null
       }
     };
 
@@ -92,7 +92,13 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
     // update laws
     setStateFromGetAPI(lawsState.setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`, undefined, headers);
 
-    selectedLawState.setSelectedLaw(newLawResponseData.data.data);
+    selectedLawState.setSelectedLaw(
+      {
+        ...newLawResponseData.data.data,
+        cells: selectedLawState.selectedLaw.cells,
+      } 
+    );
+
     // show message
     showMessage(intl.formatMessage({ id: `Закон создан`, defaultMessage: `Закон создан` }));
 
@@ -122,7 +128,7 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
         second_element: selectedLawCellId[1],
         third_element: selectedLawCellId[2],
         fourth_element: selectedLawCellId[3],
-        id_type: document.getElementById("inputLawGroup3").value
+        id_type: document.getElementById("inputLawGroup3").value !== "-1" ? document.getElementById("inputLawGroup3").value : null
       }
     };
 
@@ -141,7 +147,9 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
 
   };
 
-  const deleteLaw = async (law) => {
+  const deleteLaw = async (e) => {
+
+    const law = selectedLawState.selectedLaw
 
     // send delete law request
     const lawDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/laws/${law.id_law}`, undefined, headers);
@@ -155,6 +163,8 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
 
     // show message
     showMessage(intl.formatMessage({ id: `Закон удалён`, defaultMessage: `Закон удалён` }));
+
+    modalsVisibility.lawsModalVisibility.setVisibility(false)
 
   };
 

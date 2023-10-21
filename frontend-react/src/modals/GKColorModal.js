@@ -94,7 +94,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
           <td><input type="color" className="form-control form-control-color disabled" value={GKLayer.color} readOnly onClick={(e) => { e.preventDefault(); }} /></td>
           {isAdmin ?
             (<>
-              <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectGKLayer(GKLayer)}>↓</button></td>
+              <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectGKLayer(GKLayer)}>📝</button></td>
             </>) : (null)}
         </tr>
       );

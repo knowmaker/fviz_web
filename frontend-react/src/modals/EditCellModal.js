@@ -34,6 +34,11 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   // }, [modalVisibility.isVisible]);
   const saveButtonClick = () => {
 
+    if (!selectedCell) {
+      showMessage(intl.formatMessage({ id: `Выберите ячейку`, defaultMessage: `Сначала выберите ячейку на поле` }),"error")
+      return
+    }
+
     if (selectedCell.id_value === -1) {
       createCell();
       return;
@@ -43,6 +48,8 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   };
 
   const updateCell = async () => {
+
+
 
     // get all MLTI parameters
     const id_gk = parseInt(document.getElementById("inputGK3").value);
@@ -159,6 +166,12 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   };
 
   const deleteCell = async () => {
+
+    if (!selectedCell) {
+      showMessage(intl.formatMessage({ id: `Выберите ячейку`, defaultMessage: `Сначала выберите ячейку на поле` }),"error")
+      return
+    }
+
     if (!window.confirm(intl.formatMessage({ id: `Подтверждение действия`, defaultMessage: `Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей.` }))) {
       return;
     }

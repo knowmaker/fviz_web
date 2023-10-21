@@ -186,7 +186,7 @@ function LawOptions({lawsState,lawsGroupsState,selectedLawState,lawEditorsStates
     return null
   }
 
-  const lawOptions = [...lawsGroups,{ type_name:"Без группы",id_type:null}].map((lawGroup) => {
+  const lawOptions = [...lawsGroups,{ type_name:intl.formatMessage({id:`Без группы`,defaultMessage: `Без группы`}),id_type:null}].map((lawGroup) => {
 
   const lawsInThisGroup = lawsState.laws.filter(law => law.id_type === lawGroup.id_type)
       
@@ -208,7 +208,7 @@ function LawOptions({lawsState,lawsGroupsState,selectedLawState,lawEditorsStates
         <tr key={law.id_law}>
           <th scope="row" className='small-cell'>{isCurrent ?  `+` : ''}</th>
           <td onClick={() => {selectLaw(law)}} className="hover-table-cell" dangerouslySetInnerHTML={{__html: law.law_name}}/>
-          <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => editLaw(law)}>↓</button></td>
+          <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => editLaw(law)}>📝</button></td>
         </tr>
       )
     })
@@ -465,6 +465,11 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
 }
 
+let drag = false; 
+document.addEventListener( 'mousedown', () => drag = false); 
+
+document.addEventListener( 'mousemove', () => drag = true); 
+  
 export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = "",lawsState,lawEditorsStates}) {
 
   const cellFullId = cellFullData.cellFullId
@@ -478,6 +483,9 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
   }  
 
   const intl = useIntl()
+
+
+
 
   
   const handleCellRightClick = (event) => {
@@ -530,7 +538,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
         if (!fourthCellData) {
           selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
-          showMessage(intl.formatMessage({id:`Выбрана пустая ячейка`,defaultMessage: `Выбрана пустая ячейка`}))
+          showMessage(intl.formatMessage({id:`Выбрана пустая ячейка`,defaultMessage: `Выбрана пустая ячейка`}),"error")
   
           return
         }
@@ -605,6 +613,10 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
 
   const onClickEvent = (event) => {
+
+    if (drag) {
+      return
+    }
 
     if (selectedCells) {handleCellLeftClick(event, cellFullId)};
     if (selectedLawState) {handleLawSelection(event, cellFullId)};

@@ -3,7 +3,7 @@ import { UserProfile,TableContext } from '../misc/contexts.js';
 import { showMessage } from '../misc/message.js';
 import setStateFromGetAPI,{ putDataToAPI,isResponseSuccessful } from '../misc/api.js';
 import {FormattedMessage,useIntl} from 'react-intl'
-
+import { Button } from '../components/ButtonWithLoad.js';
 
 export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility}) {
   
@@ -110,13 +110,13 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
               <div className="nameinput footbar-input" id="outName">
                 <div className="v-align " dangerouslySetInnerHTML={{__html: tableViewState.tableView.title}}></div>
               </div>
-              <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={updateTableView}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></div>
+              <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => updateTableView(e)}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></Button>
               </>) : (null)}
               <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
-              <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={getImage}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></div>
+              <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => getImage(e)}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></Button>
                 {isAdmin ?
                     (<>
-                        <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={downloadPDF}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</div>
+                        <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => downloadPDF(e)}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</Button>
                     </>) : (null)}
             </div>
         </div>
