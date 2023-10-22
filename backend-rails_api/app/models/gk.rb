@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Модель для хранения слоев
+# Модель для хранения системных уровней
 class Gk < ApplicationRecord
   self.table_name = 'gk'
 

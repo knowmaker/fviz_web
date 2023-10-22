@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Модель для хранения сведений об активных величинах представления
+# Модель для хранения активных величинах представления
 class Represent < ApplicationRecord
   self.table_name = 'represents'
 

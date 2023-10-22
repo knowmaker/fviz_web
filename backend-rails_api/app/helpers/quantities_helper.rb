@@ -5,7 +5,7 @@ module QuantitiesHelper
   def generate_html_table(quantities)
     grouped_quantities = quantities.group_by { |quantity| [quantity.g_indicate, quantity.k_indicate] }
 
-    html = "<html lang='en'><head><meta charset='UTF-8'><title>Таблица всех физических величин в системе</title>"
+    html = "<html lang='en'><head><meta charset='UTF-8'><title>#{I18n.t('quantities_helper.title')}</title>"
     html += "<style>
               table {
                 border-collapse: collapse;
@@ -24,8 +24,13 @@ module QuantitiesHelper
 
     grouped_quantities.each do |indicates, quantities_group|
       g_indicate, k_indicate = indicates
-      html += "<h1>Таблица величин для G<sup>#{g_indicate}</sup>K<sup>#{k_indicate}</sup></h1>"
-      html += '<table><thead><tr><th>Название</th><th>Обозначение</th><th>Ед. измер.</th><th>MLTI</th></tr></thead><tbody>'
+      html += "<h1>#{I18n.t('quantities_helper.table_title')} G<sup>#{g_indicate}</sup>K<sup>#{k_indicate}</sup></h1>"
+      html += '<table><thead><tr>'
+      html += "<th>#{I18n.t('quantities_helper.headers.name')}</th>"
+      html += "<th>#{I18n.t('quantities_helper.headers.symbol')}</th>"
+      html += "<th>#{I18n.t('quantities_helper.headers.unit')}</th>"
+      html += '<th>MLTI</th>'
+      html += '</tr></thead><tbody>'
 
       quantities_group.each do |quantity|
         html += <<-HTML

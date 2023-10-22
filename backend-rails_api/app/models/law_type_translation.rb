@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Модель для хранения переводов типов закономерностей
 class LawTypeTranslation < ApplicationRecord
   self.table_name = 'law_types_translations'
 

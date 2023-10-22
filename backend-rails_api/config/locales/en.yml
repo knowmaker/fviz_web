@@ -244,6 +244,13 @@ en:
       header:
         one: "%{count} error prohibited this %{model} from being saved"
         other: "%{count} errors prohibited this %{model} from being saved"
+  quantities_helper:
+    title: "Table of all physical quantities in the system"
+    table_title: "Quantities Table for"
+    headers:
+      name: "Name"
+      symbol: "Symbol"
+      unit: "Unit"
   helpers:
     select:
       prompt: Please select

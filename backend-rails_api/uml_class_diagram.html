@@ -42,12 +42,12 @@
 ]
 [<class> ApplicationController |
    |
-  +authorize_request; -decode(token) |
+  +authorize_request(check_current_user); -decode(token) |
   
 ]
-[<class> GkSettingsController |
+[<class> GkController |
    |
-  +index; +show; +update; -set_gk_setting; -gk_setting_params |
+  +index; +show; +update; -set_gk; -gk_params |
   
 ]
 [<class> LawTypesController |
@@ -60,19 +60,24 @@
   +index; +show; +create; +update; +destroy; -set_law; -law_params |
   
 ]
+[<class> LtController |
+   |
+  +index |
+  
+]
 [<class> QuantitiesController |
    |
-  +index; +show; +create; +update; +destroy; -set_quantity; -quantity_params |
+  +index; +show; +create; +update; +destroy; +lt_values; -set_quantity; -quantity_params |
   
 ]
 [<class> RepresentsController |
    |
-  +index; +create; +update; +destroy; +represent_view_index; +represent_view_show; +lt_values; -set_represent; -represent_params; -format_active_quantities(active_quantities) |
+  +index; +show; +create; +update; +destroy; +represent_view_index; +represent_view_show; -set_represent; -represent_params |
   
 ]
 [<class> UsersController |
    |
-  +create; +login; +show; +update; +confirm; +reset; +new_password; +destroy; -user_params; -encode(payload, exp) |
+  +register; +login; +profile; +update; +confirm; +reset; +new_password; +destroy; -user_params; -encode(payload, exp) |
   
 ]
 [<class> ApplicationJob |
@@ -90,19 +95,9 @@
    |
   
 ]
-[<class> ConfirmationMailer |
+[<class> UserMailer |
    |
-  +confirmation_email(user) |
-  
-]
-[<class> NewPasswordMailer |
-   |
-  +new_password_email(user, new_password) |
-  
-]
-[<class> ResetPasswordMailer |
-   |
-  +reset_password_email(user) |
+  +confirmation_email(user); +new_password_email(user, new_password); +reset_password_email(user) |
   
 ]
 [<class> ApplicationRecord |
@@ -115,17 +110,22 @@
    |
   
 ]
-[<class> GkSetting |
+[<class> GkTranslation |
    |
    |
   
 ]
 [<class> Law |
    |
-   |
+  +as_json(options); -set_combination |
   
 ]
 [<class> LawType |
+   |
+   |
+  
+]
+[<class> LawTypeTranslation |
    |
    |
   
@@ -140,18 +140,27 @@
    |
   
 ]
+[<class> QuantityTranslation |
+   |
+   |
+  
+]
 [<class> Represent |
    |
-   |
+  -active_quantities_array; -check_user_represents_count |
   
 ]
 [<class> User |
    |
-   |
+  +as_json(options); -hash_user_password; -generate_confirmation_token |
   
 ]
 [<module> ApplicationCable |
    |
+  
+]
+[<module> Locale |
+  -extract_locale(attr) |
   
 ]
 [<module> ApplicationHelper |
@@ -159,7 +168,7 @@
   
 ]
 [<module> QuantitiesHelper |
-  +generate_html_table(quantities) |
+  +generate_html_table(quantities); +generate_mlti(m_indicate, l_indicate, t_indicate, i_indicate) |
   
 ]
 [<module> UserHelper |
@@ -169,9 +178,11 @@
 [Channel] inherits <:- [Base]
 [Connection] inherits <:- [Base]
 [ApplicationController] inherits <:- [API]
-[GkSettingsController] inherits <:- [ApplicationController]
+[ApplicationController] includes <- [Locale]
+[GkController] inherits <:- [ApplicationController]
 [LawTypesController] inherits <:- [ApplicationController]
 [LawsController] inherits <:- [ApplicationController]
+[LtController] inherits <:- [ApplicationController]
 [QuantitiesController] inherits <:- [ApplicationController]
 [QuantitiesController] includes <- [QuantitiesHelper]
 [RepresentsController] inherits <:- [ApplicationController]
@@ -180,18 +191,19 @@
 [ApplicationJob] inherits <:- [Base]
 [ResetConfirmationTokenJob] inherits <:- [ApplicationJob]
 [ApplicationMailer] inherits <:- [Base]
-[ConfirmationMailer] inherits <:- [ApplicationMailer]
-[NewPasswordMailer] inherits <:- [ApplicationMailer]
-[ResetPasswordMailer] inherits <:- [ApplicationMailer]
+[UserMailer] inherits <:- [ApplicationMailer]
 [ApplicationRecord] inherits <:- [Base]
 [Gk] inherits <:- [ApplicationRecord]
-[GkSetting] inherits <:- [ApplicationRecord]
+[GkTranslation] inherits <:- [ApplicationRecord]
 [Law] inherits <:- [ApplicationRecord]
 [LawType] inherits <:- [ApplicationRecord]
+[LawTypeTranslation] inherits <:- [ApplicationRecord]
 [Lt] inherits <:- [ApplicationRecord]
 [Quantity] inherits <:- [ApplicationRecord]
+[QuantityTranslation] inherits <:- [ApplicationRecord]
 [Represent] inherits <:- [ApplicationRecord]
 [User] inherits <:- [ApplicationRecord]
+[User] includes <- [UserHelper]
 `;
       nomnoml.draw(canvas, source);
   </script>

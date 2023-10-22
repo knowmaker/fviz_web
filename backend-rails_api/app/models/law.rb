@@ -23,7 +23,7 @@ class Law < ApplicationRecord
   validates :combination,
             uniqueness: { scope: :id_user, message: I18n.t('errors.messages.combination_user_combination_taken') }
 
-  def as_json(options = {})
+  def as_json(_options = {})
     super(except: [:combination])
   end
 

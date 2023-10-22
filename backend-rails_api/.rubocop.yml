@@ -137,4 +137,10 @@ Style/SwapValues: # new in 1.1
 
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 20
+Metrics/AbcSize:
+  Max: 25
+Metrics/CyclomaticComplexity:
+  Max: 10
+Metrics/PerceivedComplexity:
+  Max: 10

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Модель для хранения переводов системных уровней
 class GkTranslation < ApplicationRecord
   self.table_name = 'gk_translations'
 

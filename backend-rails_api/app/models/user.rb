@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Модель для хранения сведений о пользователе
+# Модель для хранения пользователей
 class User < ApplicationRecord
   include UserHelper
   self.table_name = 'users'
@@ -22,8 +22,8 @@ class User < ApplicationRecord
   validates :confirmation_token, presence: true, allow_nil: true
   validates :active_repr, presence: true, allow_nil: true
 
-  def as_json(options = {})
-    super(except: [:password, :confirmation_token])
+  def as_json(_options = {})
+    super(except: %i[password confirmation_token])
   end
 
   private

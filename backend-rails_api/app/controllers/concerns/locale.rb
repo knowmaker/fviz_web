@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Модуль для управления настройкой перевода локализации
 module Locale
   extend ActiveSupport::Concern
 

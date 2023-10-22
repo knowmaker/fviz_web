@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Модель для хранения сведений о всех физических величинах системы
+# Модель для хранения физических величин
 class Quantity < ApplicationRecord
   self.table_name = 'quantity'
 
