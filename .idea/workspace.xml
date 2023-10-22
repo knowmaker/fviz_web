@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="except DB fields">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/.rubocop.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/.rubocop.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/concerns/locale.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/concerns/locale.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/helpers/quantities_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/helpers/quantities_helper.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk_translation.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk_translation.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law_type_translation.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law_type_translation.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/quantity.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/quantity.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/quantity_translation.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/quantity_translation.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/represent.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/uml_class_diagram.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/uml_class_diagram.html" afterDir="false" />
-    </list>
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="translations" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -450,15 +434,7 @@
       <workItem from="1697661117765" duration="763000" />
       <workItem from="1697736981077" duration="2343000" />
       <workItem from="1697902233207" duration="6698000" />
-      <workItem from="1697972969813" duration="1880000" />
-    </task>
-    <task id="LOCAL-00097" summary="debug controllers after Artem last commit">
-      <option name="closed" value="true" />
-      <created>1695490286305</created>
-      <option name="number" value="00097" />
-      <option name="presentableId" value="LOCAL-00097" />
-      <option name="project" value="LOCAL" />
-      <updated>1695490286305</updated>
+      <workItem from="1697972969813" duration="2542000" />
     </task>
     <task id="LOCAL-00098" summary="change text names">
       <option name="closed" value="true" />
@@ -844,7 +820,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697487389410</updated>
     </task>
-    <option name="localTasksCounter" value="146" />
+    <task id="LOCAL-00146" summary="translations">
+      <option name="closed" value="true" />
+      <created>1697974925624</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1697974925624</updated>
+    </task>
+    <option name="localTasksCounter" value="147" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -862,7 +846,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Artyom: changed text" />
     <MESSAGE value="represent spec" />
     <MESSAGE value="user spec" />
     <MESSAGE value="user swagger" />
@@ -887,7 +870,8 @@
     <MESSAGE value="fallbacks" />
     <MESSAGE value="rubocop" />
     <MESSAGE value="except DB fields" />
-    <option name="LAST_COMMIT_MESSAGE" value="except DB fields" />
+    <MESSAGE value="translations" />
+    <option name="LAST_COMMIT_MESSAGE" value="translations" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1697973763572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
