@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="translations" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="Readme for backend pr" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -434,15 +434,7 @@
       <workItem from="1697661117765" duration="763000" />
       <workItem from="1697736981077" duration="2343000" />
       <workItem from="1697902233207" duration="6698000" />
-      <workItem from="1697972969813" duration="2542000" />
-    </task>
-    <task id="LOCAL-00098" summary="change text names">
-      <option name="closed" value="true" />
-      <created>1695491525129</created>
-      <option name="number" value="00098" />
-      <option name="presentableId" value="LOCAL-00098" />
-      <option name="project" value="LOCAL" />
-      <updated>1695491525129</updated>
+      <workItem from="1697972969813" duration="2838000" />
     </task>
     <task id="LOCAL-00099" summary="little fix">
       <option name="closed" value="true" />
@@ -828,7 +820,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697974925624</updated>
     </task>
-    <option name="localTasksCounter" value="147" />
+    <task id="LOCAL-00147" summary="Readme for backend pr">
+      <option name="closed" value="true" />
+      <created>1697977087071</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1697977087071</updated>
+    </task>
+    <option name="localTasksCounter" value="148" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -846,7 +846,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="represent spec" />
     <MESSAGE value="user spec" />
     <MESSAGE value="user swagger" />
     <MESSAGE value="user mailer" />
@@ -871,7 +870,8 @@
     <MESSAGE value="rubocop" />
     <MESSAGE value="except DB fields" />
     <MESSAGE value="translations" />
-    <option name="LAST_COMMIT_MESSAGE" value="translations" />
+    <MESSAGE value="Readme for backend pr" />
+    <option name="LAST_COMMIT_MESSAGE" value="Readme for backend pr" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1697973763572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
