@@ -352,3 +352,9 @@ td button {
   visibility: hidden;
   opacity: 0;
 }
+
+.tab-content-border {
+  border: 0.8px solid #dee2e6;
+  border-top: 0px;
+  padding: 10px;
+}

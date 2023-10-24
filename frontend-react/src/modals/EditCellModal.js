@@ -10,6 +10,7 @@ import { convertToMLTI } from '../misc/converters.js';
 import { Modal } from './Modal.js';
 import { RichTextEditor } from '../components/RichTextEditor.js';
 import { Button } from '../components/ButtonWithLoad.js';
+import setStateFromGetAPI from '../misc/api.js';
 
 export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates, gkColors, selectedCellState }) {
 
@@ -27,11 +28,28 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
   const intl = useIntl();
 
+  const [currentModalLocale, setCurrentModalLocale] = useState("ru");
+
   // useEffect(() => {
   //   if (modalVisibility.isVisible === false) {
   //     selectedCellState.setSelectedCell(null)
   //   }
   // }, [modalVisibility.isVisible]);
+
+  useEffect(() => {
+    if (modalVisibility.isVisible === true) {
+      setCurrentModalLocale(intl.locale)
+      if (intl.locale === "en") {
+        document.getElementById("nav-cell-language-en-tab").click()
+      }
+      if (intl.locale === "ru") {
+        document.getElementById("nav-cell-language-ru-tab").click()
+      }
+    }
+  }, [modalVisibility.isVisible]);
+
+  console.log(currentModalLocale)
+
   const saveButtonClick = () => {
 
     if (!selectedCell) {
@@ -82,7 +100,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     };
 
     // send cell update request
-    const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`, newCell, headers);
+    const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/quantities/${selectedCell.id_value}`, newCell, headers);
     if (!isResponseSuccessful(changedCellResponseData)) {
       showMessage(changedCellResponseData.data.error, "error");
       return;
@@ -147,7 +165,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     };
 
     // send cell create request
-    const createdCellResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities`, newCell, headers);
+    const createdCellResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/quantities`, newCell, headers);
     if (!isResponseSuccessful(createdCellResponseData)) {
       showMessage(createdCellResponseData.data.error, "error");
       return;
@@ -177,7 +195,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     }
 
     // send delete request
-    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`, undefined, headers);
+    const cellDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/quantities/${selectedCell.id_value}`, undefined, headers);
     if (!isResponseSuccessful(cellDeleteResponseData)) {
       showMessage(cellDeleteResponseData.data.error, "error");
       return;
@@ -272,6 +290,15 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
   };
 
+  const requestAlternativeCellData = (locale) => {
+
+    if (selectedCell) {
+    setStateFromGetAPI(selectedCellState.setSelectedCell,`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`,undefined,headers)
+    }
+    setCurrentModalLocale(locale)
+
+  }
+
   return (
     <Modal
       modalVisibility={modalVisibility}
@@ -280,39 +307,53 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       sizeX={650}
     >
       <div className="modal-content2">
-        <div className="row">
-          {isAdmin ?
+        {isAdmin ?
             (<>
+       
+        <div className="row">
+
               <details>
                 <summary><FormattedMessage id='Превью' defaultMessage="Превью" /></summary>
                 <Cell cellFullData={previewCell} />
               </details>
-            </>) : (null)}
-        </div>
-        <div className="row">
-          <div className="col-6">
-            <label className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя" /></label>
-            <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set} readOnly={!isAdmin} />
-          </div>
-          <div className="col-6">
-            <label className="form-label"><FormattedMessage id='Условное обозначение' defaultMessage="Условное обозначение" /></label>
-            <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set} readOnly={!isAdmin} />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-6">
-            <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Единица измерения' defaultMessage="Единица измерения" /></label>
-            <RichTextEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set} readOnly={!isAdmin} />
-          </div>
-          <div className="col">
-            <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Уровень' defaultMessage="Уровень" /> GK</label>
-            <select className="form-select" aria-label="Default select example" id='inputGK3' onChange={() => setGKoption(parseInt(document.getElementById("inputGK3").value))} disabled={!isAdmin}>
-              {cellList}
-            </select>
-
-          </div>
 
         </div>
+
+                    </>) : (null)}
+        <nav>
+          <div className="nav nav-tabs" id="nav-tab" role="tablist">
+            <button className="nav-link active" id="nav-cell-language-en-tab" data-bs-toggle="tab" data-bs-target="#cell-edit" type="button" role="tab" aria-controls="cell-edit" aria-selected="true" onClick={() => {requestAlternativeCellData("en")}}><FormattedMessage id='en' defaultMessage="en" /></button>
+            <button className="nav-link" id="nav-cell-language-ru-tab" data-bs-toggle="tab" data-bs-target="#cell-edit" type="button" role="tab" aria-controls="cell-edit" aria-selected="false" onClick={() => {requestAlternativeCellData("ru")}}><FormattedMessage id='ru' defaultMessage="ru" /></button>
+          </div>
+        </nav>
+        <div className="tab-content tab-content-border" id="nav-tabContent">
+          <div className="tab-pane fade active" id="cell-edit" role="tabpanel" aria-labelledby="nav-cell-language-tab" tabIndex="0">
+            <div className="row">
+              <div className="col-6">
+                <label className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя" /></label>
+                <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set} readOnly={!isAdmin} />
+              </div>
+              <div className="col-6">
+                <label className="form-label"><FormattedMessage id='Условное обозначение' defaultMessage="Условное обозначение" /></label>
+                <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set} readOnly={!isAdmin} />
+              </div>
+            </div>
+          <div className="row">
+            <div className="col">
+              <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Единица измерения' defaultMessage="Единица измерения" /></label>
+              <RichTextEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set} readOnly={!isAdmin} />
+            </div>
+          </div>
+          </div>
+        </div>
+        
+        <div className="col">
+              <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Уровень' defaultMessage="Уровень" /> GK</label>
+              <select className="form-select" aria-label="Default select example" id='inputGK3' onChange={() => setGKoption(parseInt(document.getElementById("inputGK3").value))} disabled={!isAdmin}>
+                {cellList}
+          </select>
+          </div>
+
         <div className="row">
           <div className="col">
             <label className="form-label">L</label>

@@ -9,7 +9,9 @@ export function convertMarkdownToEditorState(stateFunction, markdown) {
   const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
   stateFunction(EditorState.createWithContent(contentState));
 
-}export function convertToMLTI(M, L, T, I) {
+}
+
+export function convertToMLTI(M, L, T, I) {
 
   let MLTIHTMLString = "";
   if (M !== 0) {
@@ -29,7 +31,11 @@ export function convertMarkdownToEditorState(stateFunction, markdown) {
     MLTIHTMLString = 'L<sup>0</sup>T<sup>0</sup>';
   }
 
-  if (M === undefined && L === undefined && T === undefined && I === undefined) {
+  if (M === undefined || L === undefined || T === undefined || I === undefined) {
+    MLTIHTMLString = ""
+  }
+
+  if (isNaN(M) || isNaN(L) || isNaN(T) || isNaN(I)) {
     MLTIHTMLString = ""
   }
 

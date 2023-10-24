@@ -299,14 +299,20 @@ export default function Home() {
             return
           }
 
-          // get full data about cell
-          const cellResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`)
-          if (!isResponseSuccessful(cellResponseData)) {
-            showMessage(cellResponseData.data.error,"error")
-            return
-          }
-          const cellData = cellResponseData.data.data
-          console.log(cellData)
+          let cellData
+          // get full data about cell if it isn't requested
+          if (selectedCell.g_indicate === undefined) {
+
+            const cellResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`)
+            if (!isResponseSuccessful(cellResponseData)) {
+              showMessage(cellResponseData.data.error,"error")
+              return
+            }
+            cellData = cellResponseData.data.data
+            console.log("update")
+
+          } else {cellData = selectedCell}
+
 
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 

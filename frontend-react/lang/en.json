@@ -209,8 +209,18 @@
   "Формулы": {
     "defaultMessage": "Formulas"
   },
+  "en": {
+    "defaultMessage": "En"
+  },
+  "ru": {
+    "defaultMessage": "Ru"
+  },
+  "Без группы": {
+    "defaultMessage": "Without group"
+  },
   "Язык": {
     "defaultMessage": "Language"
   }
+  
 
 }
