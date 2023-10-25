@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import setStateFromGetAPI, { postDataToAPI, putDataToAPI, deleteDataFromAPI } from '../misc/api.js';
-import { UserProfile, TableContext } from '../misc/contexts.js';
+import { UserProfile } from '../misc/contexts.js';
 import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { checkLaw } from '../components/Table.js';
@@ -12,16 +12,15 @@ import { Button } from '../components/ButtonWithLoad.js';
 
 export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsGroupsState, lawEditorsStates }) {
 
-  const tableState = useContext(TableContext);
   const userInfoState = useContext(UserProfile);
   const headers = {
     Authorization: `Bearer ${userInfoState.userToken}`
   };
 
-  let isAdmin = false;
-  if (userInfoState.userProfile) {
-    isAdmin = userInfoState.userProfile.role;
-  }
+  // let isAdmin = false;
+  // if (userInfoState.userProfile) {
+  //   isAdmin = userInfoState.userProfile.role;
+  // }
 
   const intl = useIntl();
 

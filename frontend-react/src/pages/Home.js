@@ -83,6 +83,7 @@ export default function Home() {
       setUserProfile(null)
     }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userToken]);
 
   useEffect(() => {
@@ -172,6 +173,7 @@ export default function Home() {
         setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
       }
   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentLocale]);
 
 
@@ -210,6 +212,7 @@ export default function Home() {
       }
       logInByLocalStorage()
   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
   
@@ -325,17 +328,18 @@ export default function Home() {
       }
       setSelectedCell()
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCell]);
 
     const { ref, getImage } = useDownloadableScreenshot(intl);
 
     // DELETE LATER <------------------------
     
-    const testShow = (result,_,info) => {
+    // const testShow = (result,_,info) => {
 
-      console.log("input:",info)
-      console.log("result:",result)
-    }
+    //   console.log("input:",info)
+    //   console.log("result:",result)
+    // }
 
 
 

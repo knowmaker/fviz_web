@@ -42,3 +42,12 @@ export function convertToMLTI(M, L, T, I) {
   return MLTIHTMLString;
 }
 
+export function convertNumberToUnicodePower(number) {
+  const numberString = number.toString()
+  const unicodeString = numberString.replace("0", "⁰")
+  .replace("1", "¹").replace("2", "²").replace("3", "³")
+  .replace("4", "⁴").replace("5", "⁵").replace("6", "⁶")
+  .replace("7", "⁷").replace("8", "⁸").replace("9", "⁹")
+  .replace("-", "⁻")
+  return unicodeString
+}

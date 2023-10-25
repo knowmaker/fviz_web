@@ -8,7 +8,6 @@ import { showMessage } from '../misc/message';
 import { isResponseSuccessful } from '../misc/api';
 import { convertToMLTI } from '../misc/converters';
 import {FormattedMessage,useIntl} from 'react-intl'
-import { convertMarkdownFromEditorState } from '../pages/Home.js';
 import { convertMarkdownToEditorState } from '../misc/converters';
 // const Color = require('color');
 
@@ -27,7 +26,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
     setOnce(false)
   }
 
-  }, [tableState]);
+  }, [tableState,once]);
 
 
 
@@ -65,7 +64,7 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
     if (selectedCell) {
       setStateFromGetAPI(setCellAlternatives,`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`) 
     } else {setCellAlternatives(null)}
-  }, [selectedCell]);
+  }, [selectedCell,intl.locale]);
 
 
 
@@ -267,11 +266,11 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
   const isLoaded = tableData.length !== 0 && gkColors.length !== 0 && emptyCells.length !== 0 
 
-  const intl = useIntl()
+  //const intl = useIntl()
 
   useEffect(() => {
 
-    setStateFromGetAPI(setEmptyCells, `${process.env.REACT_APP_API_LINK}/${intl.locale}/lt`)
+    setStateFromGetAPI(setEmptyCells, `${process.env.REACT_APP_API_LINK}/lt`)
 
   }, []);
 
@@ -340,6 +339,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
     // }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [zoom.current]);
     
 

@@ -6,7 +6,7 @@ import { isResponseSuccessful } from '../misc/api.js';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { convertMarkdownFromEditorState } from '../pages/Home.js';
 import { showMessage } from '../misc/message.js';
-import { convertToMLTI } from '../misc/converters.js';
+import { convertToMLTI,convertNumberToUnicodePower } from '../misc/converters.js';
 import { Modal } from './Modal.js';
 import { RichTextEditor } from '../components/RichTextEditor.js';
 import { Button } from '../components/ButtonWithLoad.js';
@@ -46,9 +46,8 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
         document.getElementById("nav-cell-language-ru-tab").click()
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalVisibility.isVisible]);
-
-  console.log(currentModalLocale)
 
   const saveButtonClick = () => {
 
@@ -110,8 +109,10 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     // show message
     showMessage(intl.formatMessage({ id: `Ячейка была изменена`, defaultMessage: `Ячейка была изменена` }));
 
-    // remove old cell and set new one
-    tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData));
+    // remove old cell and set new one if current locale was changed
+    if (intl.locale === currentModalLocale) {
+      tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData));
+    }
 
     // send request to replace missing cell
     const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`, headers);
@@ -176,7 +177,9 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     showMessage(intl.formatMessage({ id: `Ячейка была изменена`, defaultMessage: `Ячейка была изменена` }));
 
     // set new cell
+    if (intl.locale === currentModalLocale) {
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData));
+    }
 
     // hide modal
     modalVisibility.setVisibility(false);
@@ -230,7 +233,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   const cellList = gkColors.map(gkLevel => {
 
 
-    const shownText = `${gkLevel.gk_name} G<sup>${gkLevel.g_indicate}</sup>K<sup>${gkLevel.k_indicate}</sup>`;
+    const shownText = `${gkLevel.gk_name} G${convertNumberToUnicodePower(gkLevel.g_indicate)}K<sup>${convertNumberToUnicodePower(gkLevel.k_indicate)}</sup>`;
 
     return (
       <option key={gkLevel.id_gk} value={gkLevel.id_gk} dangerouslySetInnerHTML={{ __html: shownText }} />
@@ -251,6 +254,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     // update preview cell when input happens
     updatePreviewCell();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cellEditorsStates, GKoption, selectedCell]);
 
   const updatePreviewCell = () => {
@@ -309,7 +313,6 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       <div className="modal-content2">
         {isAdmin ?
             (<>
-       
         <div className="row">
 
               <details>
@@ -318,16 +321,16 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
               </details>
 
         </div>
+        </>) : (null)}
 
-                    </>) : (null)}
         <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
-            <button className="nav-link active" id="nav-cell-language-en-tab" data-bs-toggle="tab" data-bs-target="#cell-edit" type="button" role="tab" aria-controls="cell-edit" aria-selected="true" onClick={() => {requestAlternativeCellData("en")}}><FormattedMessage id='en' defaultMessage="en" /></button>
-            <button className="nav-link" id="nav-cell-language-ru-tab" data-bs-toggle="tab" data-bs-target="#cell-edit" type="button" role="tab" aria-controls="cell-edit" aria-selected="false" onClick={() => {requestAlternativeCellData("ru")}}><FormattedMessage id='ru' defaultMessage="ru" /></button>
+            <button className="nav-link active" id="nav-cell-language-ru-tab" data-bs-toggle="tab" data-bs-target="#cell-edit" type="button" role="tab" aria-controls="cell-edit" aria-selected="false" onClick={() => {requestAlternativeCellData("ru")}}><FormattedMessage id='ru' defaultMessage="ru" /></button>
+            <button className="nav-link" id="nav-cell-language-en-tab" data-bs-toggle="tab" data-bs-target="#cell-edit" type="button" role="tab" aria-controls="cell-edit" aria-selected="true" onClick={() => {requestAlternativeCellData("en")}}><FormattedMessage id='en' defaultMessage="en" /></button>
           </div>
         </nav>
         <div className="tab-content tab-content-border" id="nav-tabContent">
-          <div className="tab-pane fade active" id="cell-edit" role="tabpanel" aria-labelledby="nav-cell-language-tab" tabIndex="0">
+          <div className="tab-pane fade show active" id="cell-edit" role="tabpanel" aria-labelledby="nav-cell-language-tab" tabIndex="0">
             <div className="row">
               <div className="col-6">
                 <label className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя" /></label>

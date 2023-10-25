@@ -7,7 +7,7 @@ export function showMessage(messages, type = "success") {
   const messagesArray = Array.isArray(messages) ? messages : [messages];
 
   messagesArray.forEach(message => {
-    if (type == "success") {
+    if (type === "success") {
       toast.success(message, {
         position: "top-center",
         autoClose: 5000,
@@ -19,7 +19,7 @@ export function showMessage(messages, type = "success") {
       });
     }
 
-    if (type == "error") {
+    if (type === "error") {
       toast.error(message, {
         position: "top-center",
         autoClose: 5000,
@@ -31,7 +31,7 @@ export function showMessage(messages, type = "success") {
       });
     }
 
-    if (type == "warn") {
+    if (type === "warn") {
       toast.warn(message, {
         position: "top-center",
         autoClose: 5000,

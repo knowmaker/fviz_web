@@ -7,6 +7,7 @@ export default function LawsCanvas({lawCells,color}) {
   
   useEffect(() => {
     drawLaw()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lawCells])
 
   const convertCellIdToCoords = (cellId) => {
