@@ -9,12 +9,13 @@ import { isResponseSuccessful } from '../misc/api';
 import { convertToMLTI } from '../misc/converters';
 import {FormattedMessage,useIntl} from 'react-intl'
 import { convertMarkdownToEditorState } from '../misc/converters';
+
 // const Color = require('color');
 
 const rowCount = 21
 const cellCount = 20
 
-export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState ,lawsState,currentLocaleState,lawEditorsStates}) {
+export default function TableUI({modalsVisibility, gkState, selectedCellState, revStates, selectedLawState,hoveredCellState,refTable,lawsGroupsState ,lawsState,currentLocaleState,lawEditorsStates,showModeState}) {
 
   const [once, setOnce] = useState(true);
   const tableState = useContext(TableContext)
@@ -34,7 +35,7 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
   return (
     <>
       <Navbar revStates={revStates} modalsVisibility={modalsVisibility} selectedCell={selectedCellState.selectedCell} currentLocaleState={currentLocaleState}/>
-      <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} />
+      <CellOptions selectedCellState={selectedCellState} gkColors={gkState.gkColors} revStates={revStates} modalsVisibility={modalsVisibility}/>
       <Table 
       gkColors={gkState.gkColors} 
       selectedCellState={selectedCellState} 
@@ -45,13 +46,14 @@ export default function TableUI({modalsVisibility, gkState, selectedCellState, r
       lawsGroupsState={lawsGroupsState} 
       lawsState={lawsState}
       lawEditorsStates={lawEditorsStates}
+      showModeState={showModeState}
       />
       <LawOptions lawsState={lawsState} lawsGroupsState={lawsGroupsState} selectedLawState={selectedLawState} lawEditorsStates={lawEditorsStates} modalsVisibility={modalsVisibility}/>
     </>  
     );
 }
 
-function CellOptions({selectedCellState ,gkColors, revStates}) {
+function CellOptions({selectedCellState ,gkColors, revStates,modalsVisibility}) {
 
   const selectedCell = selectedCellState.selectedCell
   const setSelectedCell = selectedCellState.setSelectedCell
@@ -61,12 +63,12 @@ function CellOptions({selectedCellState ,gkColors, revStates}) {
   const intl = useIntl()
 
   useEffect(() => {
-    if (selectedCell) {
+    if (selectedCell && !modalsVisibility.editCellModalVisibility.isVisible) {
       setStateFromGetAPI(setCellAlternatives,`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`) 
     } else {setCellAlternatives(null)}
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCell,intl.locale]);
-
-
 
   if (cellAlternatives !== null && selectedCell) {
 
@@ -255,7 +257,7 @@ function LawOptions({lawsState,lawsGroupsState,selectedLawState,lawEditorsStates
 
 }
 
-const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility,lawsGroupsState,lawsState,lawEditorsStates}, ref) => {
+const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selectedLawState,modalsVisibility,lawsGroupsState,lawsState,lawEditorsStates,showModeState}, ref) => {
 
 
   const tableState = useContext(TableContext)
@@ -379,6 +381,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
       emptyCellsData={emptyCells}
       lawsState={lawsState}
       lawEditorsStates={lawEditorsStates}
+      showModeState={showModeState}
       />
     });
       return (
@@ -401,7 +404,7 @@ const Table = forwardRef(({ gkColors, selectedCellState, hoveredCellState, selec
 
 })
 
-function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData,lawsState,lawEditorsStates}) {
+function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selectedLawState, modalsVisibility, emptyCellsData,lawsState,lawEditorsStates,showModeState}) {
 
   const isEven = (rowId % 2 === 0 ? 0 : 1)
   const setSelectedCell = selectedCellState.setSelectedCell
@@ -450,6 +453,7 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
             isEmpty={cellColor ? false:true}
             lawsState={lawsState}
             lawEditorsStates={lawEditorsStates}
+            showModeState={showModeState}
             />);
   });
 
@@ -470,7 +474,7 @@ document.addEventListener( 'mousedown', () => drag = false);
 
 document.addEventListener( 'mousemove', () => drag = true); 
   
-export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = "",lawsState,lawEditorsStates}) {
+export function Cell({cellFullData, cellRightClick, selectedCells, revStates, setSelectedCell, selectedLawState, modalsVisibility,hoverData,isEmpty = false, className = "",lawsState,lawEditorsStates,showModeState}) {
 
   const cellFullId = cellFullData.cellFullId
   const cellData = cellFullData.cellData
@@ -617,9 +621,16 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     if (drag) {
       return
     }
-
+    // showModeState
     if (selectedCells) {handleCellLeftClick(event, cellFullId)};
-    if (selectedLawState) {handleLawSelection(event, cellFullId)};
+    //console.log(selectedLawState && showModeState)
+    if (selectedLawState && !showModeState.showMode) {handleLawSelection(event, cellFullId)};
+    if (showModeState.showMode) {
+      cellRightClick(cellData)
+      modalsVisibility.editCellModalVisibility.setVisibility(true)
+
+    }
+
   }
 
   if (!isEmpty) {

@@ -264,6 +264,10 @@ export default function Home() {
     const [lawsGroups, setLawsGroups] = useState([])
     const lawsGroupsState = {lawsGroups, setLawsGroups}
 
+    const [showMode, setShowMode] = useState(false)
+    const showModeState = {showMode,setShowMode}
+    console.log(showMode)
+
     useEffect(() => {
 
       // add key handler for special actions
@@ -352,8 +356,8 @@ export default function Home() {
         <UserProfile.Provider value={userInfoState}>
           <TableContext.Provider value={tableState}>
 
-                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState} lawEditorsStates={lawEditorsStates}/>
-                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility}/>
+                <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState} lawEditorsStates={lawEditorsStates} showModeState={showModeState}/>
+                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility} showModeState={showModeState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               

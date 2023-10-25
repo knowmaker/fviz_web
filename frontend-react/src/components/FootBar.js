@@ -5,7 +5,7 @@ import setStateFromGetAPI,{ putDataToAPI,isResponseSuccessful } from '../misc/ap
 import {FormattedMessage,useIntl} from 'react-intl'
 import { Button } from '../components/ButtonWithLoad.js';
 
-export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility}) {
+export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility,showModeState}) {
   
   const userInfoState = useContext(UserProfile) 
   const tableState = useContext(TableContext)  
@@ -90,6 +90,11 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   const showGKLayersImageModal = () => {
     modalsVisibility.GKLayersImageModalVisibility.setVisibility(true)
   }
+
+  const setShowModeState = () => {
+    const isSwitchActive = document.getElementById("flexSwitchCheck").checked
+    showModeState.setShowMode(isSwitchActive)
+  }
   
   return (
   <nav className="navbar navbar-expand-lg fixed-bottom bg-body-tertiary">
@@ -118,6 +123,11 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
                     (<>
                         <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => downloadPDF(e)}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</Button>
                     </>) : (null)}
+
+                <div className="form-check form-switch">
+                  <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck" onClick={(e) => {setShowModeState(e)}}/>
+                  <label className="form-check-label" htmlFor="flexSwitchCheck"><FormattedMessage id='Режим просмотра' defaultMessage="Режим просмотра"/></label>
+                </div>  
             </div>
         </div>
         <div className="navbar-text">

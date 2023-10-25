@@ -45,6 +45,8 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       if (intl.locale === "ru") {
         document.getElementById("nav-cell-language-ru-tab").click()
       }
+    } else {
+      selectedCellState.setSelectedCell(null)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalVisibility.isVisible]);
