@@ -624,11 +624,14 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
     // showModeState
     if (selectedCells) {handleCellLeftClick(event, cellFullId)};
     //console.log(selectedLawState && showModeState)
-    if (selectedLawState && !showModeState.showMode) {handleLawSelection(event, cellFullId)};
-    if (showModeState.showMode) {
-      cellRightClick(cellData)
-      modalsVisibility.editCellModalVisibility.setVisibility(true)
+    if (showModeState) {
+      if (selectedLawState && !showModeState.showMode) {handleLawSelection(event, cellFullId)};
 
+      if (showModeState.showMode) {
+        cellRightClick(cellData)
+        modalsVisibility.editCellModalVisibility.setVisibility(true)
+
+      }
     }
 
   }
