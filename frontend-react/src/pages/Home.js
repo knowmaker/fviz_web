@@ -266,7 +266,6 @@ export default function Home() {
 
     const [showMode, setShowMode] = useState(false)
     const showModeState = {showMode,setShowMode}
-    console.log(showMode)
 
     useEffect(() => {
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import setStateFromGetAPI, { putDataToAPI } from '../misc/api.js';
+import setStateFromGetAPI, { putDataToAPI,getDataFromAPI } from '../misc/api.js';
 import { UserProfile } from '../misc/contexts.js';
 import { EditorState } from 'draft-js';
 import { isResponseSuccessful } from '../misc/api.js';
@@ -21,7 +21,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
   const GKLayers = GKLayersState.gkColors;
   const setGKLayers = GKLayersState.setGkColors;
 
-  const [selectedGKLayer, setSelectedGKLayer] = useState({ type_name: null, id_type: null });
+  const [selectedGKLayer, setSelectedGKLayer] = useState({ type_name: null, id_gk: null });
   const [GKLayerEditorState, setGKLayerEditorState] = useState(EditorState.createEmpty());
 
   let isAdmin = false;
@@ -31,10 +31,23 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
 
   const intl = useIntl();
 
+  const [currentModalLocale, setCurrentModalLocale] = useState("ru");
+
   useEffect(() => {
     if (modalsVisibility.GKColorsEditModalVisibility.isVisible === false && isAdmin) {
       convertMarkdownToEditorState(setGKLayerEditorState, "");
       document.getElementById("InputGKLayerColor3").value = "#000000";
+    }
+    if (modalsVisibility.GKColorsEditModalVisibility.isVisible === true) {
+      setCurrentModalLocale(intl.locale)
+      if (intl.locale === "en") {
+        document.getElementById("nav-layer-language-en-tab").click()
+      }
+      if (intl.locale === "ru") {
+        document.getElementById("nav-layer-language-ru-tab").click()
+      }
+    } else {
+      setSelectedGKLayer({ type_name: null, id_gk: null })
     }
   }, [modalsVisibility.GKColorsEditModalVisibility.isVisible]);
 
@@ -63,7 +76,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
     };
 
     // send group update request
-    const changedGKLayerResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/gk/${selectedGKLayer.id_gk}`, newLawGroup, headers);
+    const changedGKLayerResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/gk/${selectedGKLayer.id_gk}`, newLawGroup, headers);
     if (!isResponseSuccessful(changedGKLayerResponseData)) {
       showMessage(changedGKLayerResponseData.data.error, "error");
       return;
@@ -76,6 +89,29 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
     showMessage(intl.formatMessage({ id: `Системный уровень обновлен`, defaultMessage: `Системный уровень обновлен` }));
 
   };
+
+  const requestAlternativeLayerData = async (locale) => {
+
+    console.log(selectedGKLayer)
+    if (selectedGKLayer.id_gk) {
+    
+    const layerResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${locale}/gk`, headers);
+    if (!isResponseSuccessful(layerResponseData)) {
+      showMessage(layerResponseData.data.error, "error");
+      return;
+    }
+    const layers = layerResponseData.data.data
+
+    const translatedSelectedLayer = layers.find(layer => layer.id_gk === selectedGKLayer.id_gk)
+    console.log(layers,translatedSelectedLayer)
+    setSelectedGKLayer(translatedSelectedLayer);
+    convertMarkdownToEditorState(setGKLayerEditorState, translatedSelectedLayer.gk_name);
+    document.getElementById("InputGKLayerColor3").value = translatedSelectedLayer.color;
+    }
+
+    setCurrentModalLocale(locale)
+
+  }
 
   let GKLayersMarkup;
   if (GKLayers) {
@@ -101,8 +137,6 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
     });
   } else { GKLayersMarkup = null; }
 
-
-
   return (
     <Modal
       modalVisibility={modalsVisibility.GKColorsEditModalVisibility}
@@ -113,16 +147,27 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
       <div className="modal-content2">
         {isAdmin ?
           (<>
+            <nav>
+              <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                <button className="nav-link active" id="nav-layer-language-ru-tab" data-bs-toggle="tab" data-bs-target="#layer-edit" type="button" role="tab" aria-controls="layer-edit" aria-selected="false" onClick={() => {requestAlternativeLayerData("ru")}}><FormattedMessage id='ru' defaultMessage="ru" /></button>
+                <button className="nav-link" id="nav-layer-language-en-tab" data-bs-toggle="tab" data-bs-target="#layer-edit" type="button" role="tab" aria-controls="layer-edit" aria-selected="true" onClick={() => {requestAlternativeLayerData("en")}}><FormattedMessage id='en' defaultMessage="en" /></button>
+              </div>
+            </nav>
+
+
+            <div className="tab-content tab-content-border" id="nav-tabContent">
+            <div className="tab-pane fade show active" id="layer-edit" role="tabpanel" aria-labelledby="nav-layer-language-tab" tabIndex="0">
+
             <div className="row">
               <div className="col-2">
                 <FormattedMessage id='Название' defaultMessage="Название" />:
               </div>
-              <div className="col-5">
+              <div className="col">
                 <RichTextEditor editorState={GKLayerEditorState} setEditorState={setGKLayerEditorState} />
               </div>
-              <div className="col-2">
-                <Button type="button" className="btn btn-info" onClick={(e) => updateLawGroup(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
               </div>
+          </div>
+
             </div>
             <div className="row">
               <div className="col-2">
@@ -130,6 +175,11 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
               </div>
               <div className="col-5">
                 <input type="color" className="form-control form-control-color" id="InputGKLayerColor3" />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-2">
+                  <Button type="button" className="btn btn-info" onClick={(e) => updateLawGroup(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
               </div>
             </div>
           </>) : (null)}

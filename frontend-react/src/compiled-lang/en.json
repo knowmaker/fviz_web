@@ -293,6 +293,12 @@
       "value": "Edit cell"
     }
   ],
+  "Режим просмотра": [
+    {
+      "type": 0,
+      "value": "View mode"
+    }
+  ],
   "Сброс": [
     {
       "type": 0,

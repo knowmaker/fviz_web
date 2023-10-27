@@ -220,6 +220,9 @@
   },
   "Язык": {
     "defaultMessage": "Language"
+  },
+  "Режим просмотра": {
+    "defaultMessage": "View mode"
   }
   
 

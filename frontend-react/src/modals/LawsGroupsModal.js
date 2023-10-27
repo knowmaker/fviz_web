@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import setStateFromGetAPI, { postDataToAPI, putDataToAPI, deleteDataFromAPI } from '../misc/api.js';
+import setStateFromGetAPI, { postDataToAPI, putDataToAPI, deleteDataFromAPI,getDataFromAPI } from '../misc/api.js';
 import { UserProfile } from '../misc/contexts.js';
 import { EditorState } from 'draft-js';
 import { isResponseSuccessful } from '../misc/api.js';
@@ -32,12 +32,23 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
 
   const intl = useIntl();
 
-
+  const [currentModalLocale, setCurrentModalLocale] = useState("ru");
 
   useEffect(() => {
     if (modalsVisibility.lawsGroupsModalVisibility.isVisible === false && isAdmin) {
       convertMarkdownToEditorState(setLawGroupEditorState, "");
       document.getElementById("InputLawGroupColor3").value = "#000000";
+    }
+    if (modalsVisibility.lawsGroupsModalVisibility.isVisible === true) {
+      setCurrentModalLocale(intl.locale)
+      if (intl.locale === "en") {
+        document.getElementById("nav-group-language-en-tab").click()
+      }
+      if (intl.locale === "ru") {
+        document.getElementById("nav-group-language-ru-tab").click()
+      }
+    } else {
+      setSelectedLawGroup({ type_name: null, id_type: null })
     }
   }, [modalsVisibility.lawsGroupsModalVisibility.isVisible]);
 
@@ -66,7 +77,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     };
 
     // send group update request
-    const changedGroupResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types/${selectedLawGroup.id_type}`, newLawGroup, headers);
+    const changedGroupResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/law_types/${selectedLawGroup.id_type}`, newLawGroup, headers);
     if (!isResponseSuccessful(changedGroupResponseData)) {
       showMessage(changedGroupResponseData.data.error, "error");
       return;
@@ -116,7 +127,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     };
 
     // send create group request
-    const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`, newLawGroup, headers);
+    const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/law_types`, newLawGroup, headers);
     if (!isResponseSuccessful(newGroupResponseData)) {
       showMessage(newGroupResponseData.data.error, "error");
       return;
@@ -133,6 +144,30 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     showMessage(intl.formatMessage({ id: `Группа была создана`, defaultMessage: `Группа была создана` }));
 
   };
+
+  const requestAlternativeGroupData = async (locale) => {
+
+    if (selectedLawGroup.id_type) {
+    //setStateFromGetAPI(selectedCellState.setSelectedCell,`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`,undefined,headers)
+    //setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${locale}/law_types`, undefined, headers);
+    //setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
+    const groupResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${locale}/law_types`, headers);
+    if (!isResponseSuccessful(groupResponseData)) {
+      showMessage(groupResponseData.data.error, "error");
+      return;
+    }
+    const groups = groupResponseData.data.data
+
+    const translatedSelectedGroup = groups.find(group => group.id_type === selectedLawGroup.id_type)
+    console.log(groups,translatedSelectedGroup)
+    setSelectedLawGroup(translatedSelectedGroup)
+    convertMarkdownToEditorState(setLawGroupEditorState, translatedSelectedGroup.type_name);
+    document.getElementById("InputLawGroupColor3").value = translatedSelectedGroup.color;
+    }
+
+    setCurrentModalLocale(locale)
+
+  }
 
   let lawsGroupsMarkup;
   if (lawsGroups) {
@@ -171,22 +206,30 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
 
         {isAdmin ?
           (<>
-            <div className="row">
-              <div className="col-2">
-                <FormattedMessage id='Название' defaultMessage="Название" />:
-              </div>
-              <div className="col-5">
-                <RichTextEditor editorState={lawGroupEditorState} setEditorState={setLawGroupEditorState} />
 
-              </div>
-              <div className="col-2">
-                <Button type="button" className="btn btn-success" onClick={(e) => createLawGroup(e)}><FormattedMessage id='Создать' defaultMessage="Создать" /></Button>
-              </div>
-              <div className="col-3">
-                <Button type="button" className="btn btn-info" onClick={(e) => updateLawGroup(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
+              <nav>
+                <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                  <button className="nav-link active" id="nav-group-language-ru-tab" data-bs-toggle="tab" data-bs-target="#group-edit" type="button" role="tab" aria-controls="group-edit" aria-selected="false" onClick={() => {requestAlternativeGroupData("ru")}}><FormattedMessage id='ru' defaultMessage="ru" /></button>
+                  <button className="nav-link" id="nav-group-language-en-tab" data-bs-toggle="tab" data-bs-target="#group-edit" type="button" role="tab" aria-controls="group-edit" aria-selected="true" onClick={() => {requestAlternativeGroupData("en")}}><FormattedMessage id='en' defaultMessage="en" /></button>
+                </div>
+              </nav>
+
+          <div className="tab-content tab-content-border" id="nav-tabContent">
+            <div className="tab-pane fade show active" id="group-edit" role="tabpanel" aria-labelledby="nav-group-language-tab" tabIndex="0">
+
+              <div className="row">
+                <div className="col-2">
+                  <FormattedMessage id='Название' defaultMessage="Название" />:
+                </div>
+                <div className="col">
+                  <RichTextEditor editorState={lawGroupEditorState} setEditorState={setLawGroupEditorState} />
+
+                </div>
               </div>
             </div>
-            <div className="row">
+          </div>
+
+          <div className="row">
               <div className="col-2">
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>
@@ -194,6 +237,17 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
                 <input type="color" className="form-control form-control-color" id="InputLawGroupColor3" />
               </div>
             </div>
+
+              <div className="row">
+              <div className="col-2">
+                <Button type="button" className="btn btn-success" onClick={(e) => createLawGroup(e)}><FormattedMessage id='Создать' defaultMessage="Создать" /></Button>
+              </div>
+              <div className="col-3">
+                <Button type="button" className="btn btn-info" onClick={(e) => updateLawGroup(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
+              </div>
+              </div>
+ 
+ 
           </>) : (null)}
 
         <table className="table">
