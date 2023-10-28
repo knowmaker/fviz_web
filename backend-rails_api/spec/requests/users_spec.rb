@@ -7,6 +7,8 @@ RSpec.describe 'users', type: :request do
     post('user login') do
       tags 'Users'
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -22,6 +24,10 @@ RSpec.describe 'users', type: :request do
       }
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data: { type: :string }
+               }
         run_test!
       end
       response(401, 'not authorized') do
@@ -40,6 +46,8 @@ RSpec.describe 'users', type: :request do
     post('user register') do
       tags 'Users'
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -70,8 +78,26 @@ RSpec.describe 'users', type: :request do
     get('show user profile') do
       tags 'Users'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_user: { type: :integer },
+                     email: { type: :string },
+                     last_name: { type: :string },
+                     first_name: { type: :string },
+                     patronymic: { type: :string },
+                     role: { type: :boolean },
+                     confirmed: { type: :boolean },
+                     active_repr: { type: :integer },
+                     locale: { type: :string },
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -88,6 +114,8 @@ RSpec.describe 'users', type: :request do
       tags 'Users'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -103,6 +131,23 @@ RSpec.describe 'users', type: :request do
       }
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_user: { type: :integer },
+                     email: { type: :string },
+                     last_name: { type: :string },
+                     first_name: { type: :string },
+                     patronymic: { type: :string },
+                     role: { type: :boolean },
+                     confirmed: { type: :boolean },
+                     active_repr: { type: :integer },
+                     locale: { type: :string },
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -141,6 +186,7 @@ RSpec.describe 'users', type: :request do
     post('confirm email') do
       tags 'Users'
       produces 'application/json'
+      produces 'application/json'
 
       response(200, 'successful') do
         run_test!
@@ -158,6 +204,8 @@ RSpec.describe 'users', type: :request do
     post('Send reset password email') do
       tags 'Users'
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -172,9 +220,6 @@ RSpec.describe 'users', type: :request do
       }
 
       response(200, 'successful') do
-        run_test!
-      end
-      response(401, 'not authorized') do
         run_test!
       end
       response(404, 'not found') do
@@ -192,6 +237,7 @@ RSpec.describe 'users', type: :request do
 
     get('generate and send new password') do
       tags 'Users'
+      produces 'application/json'
       produces 'application/json'
 
       response(200, 'successful') do

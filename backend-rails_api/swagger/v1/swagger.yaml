@@ -12,6 +12,27 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    minItems: 5
+                    items:
+                      type: object
+                      properties:
+                        id_gk:
+                          type: integer
+                        gk_name:
+                          type: string
+                        g_indicate:
+                          type: integer
+                        k_indicate:
+                          type: integer
+                        color:
+                          type: string
         '500':
           description: server error
   "/api/gk/{id}":
@@ -31,6 +52,24 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_gk:
+                        type: integer
+                      gk_name:
+                        type: string
+                      g_indicate:
+                        type: integer
+                      k_indicate:
+                        type: integer
+                      color:
+                        type: string
         '404':
           description: not found
         '500':
@@ -45,6 +84,24 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_gk:
+                        type: integer
+                      gk_name:
+                        type: string
+                      g_indicate:
+                        type: integer
+                      k_indicate:
+                        type: integer
+                      color:
+                        type: string
         '404':
           description: not found
         '422':
@@ -74,6 +131,23 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    minItems: 5
+                    items:
+                      type: object
+                      properties:
+                        id_type:
+                          type: integer
+                        type_name:
+                          type: string
+                        color:
+                          type: string
         '500':
           description: server error
     post:
@@ -86,6 +160,20 @@ paths:
       responses:
         '201':
           description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_type:
+                        type: integer
+                      type_name:
+                        type: string
+                      color:
+                        type: string
         '422':
           description: unprocessable entity
         '500':
@@ -122,6 +210,20 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_type:
+                        type: integer
+                      type_name:
+                        type: string
+                      color:
+                        type: string
         '404':
           description: not found
         '500':
@@ -136,6 +238,20 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_type:
+                        type: integer
+                      type_name:
+                        type: string
+                      color:
+                        type: string
         '404':
           description: not found
         '422':
@@ -178,6 +294,33 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    minItems: 5
+                    items:
+                      type: object
+                      properties:
+                        id_law:
+                          type: integer
+                        law_name:
+                          type: string
+                        first_element:
+                          type: integer
+                        second_element:
+                          type: integer
+                        third_element:
+                          type: integer
+                        fourth_element:
+                          type: integer
+                        id_user:
+                          type: integer
+                        id_type:
+                          type: integer
         '500':
           description: server error
     post:
@@ -190,6 +333,30 @@ paths:
       responses:
         '201':
           description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_law:
+                        type: integer
+                      law_name:
+                        type: string
+                      first_element:
+                        type: integer
+                      second_element:
+                        type: integer
+                      third_element:
+                        type: integer
+                      fourth_element:
+                        type: integer
+                      id_user:
+                        type: integer
+                      id_type:
+                        type: integer
         '422':
           description: unprocessable entity
         '500':
@@ -239,6 +406,30 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_law:
+                        type: integer
+                      law_name:
+                        type: string
+                      first_element:
+                        type: integer
+                      second_element:
+                        type: integer
+                      third_element:
+                        type: integer
+                      fourth_element:
+                        type: integer
+                      id_user:
+                        type: integer
+                      id_type:
+                        type: integer
         '404':
           description: not found
         '500':
@@ -253,6 +444,30 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_law:
+                        type: integer
+                      law_name:
+                        type: string
+                      first_element:
+                        type: integer
+                      second_element:
+                        type: integer
+                      third_element:
+                        type: integer
+                      fourth_element:
+                        type: integer
+                      id_user:
+                        type: integer
+                      id_type:
+                        type: integer
         '404':
           description: not found
         '422':
@@ -293,6 +508,23 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    minItems: 5
+                    items:
+                      type: object
+                      properties:
+                        id_lt:
+                          type: integer
+                        l_indicate:
+                          type: integer
+                        t_indicate:
+                          type: integer
         '500':
           description: server error
   "/api/quantities":
@@ -305,6 +537,14 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/pdf:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    format: byte
         '500':
           description: server error
     post:
@@ -317,6 +557,44 @@ paths:
       responses:
         '201':
           description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_value:
+                        type: integer
+                      value_name:
+                        type: string
+                      symbol:
+                        type: string
+                      unit:
+                        type: string
+                      m_indicate_auto:
+                        type: integer
+                      l_indicate_auto:
+                        type: integer
+                      t_indicate_auto:
+                        type: integer
+                      i_indicate_auto:
+                        type: integer
+                      id_lt:
+                        type: integer
+                      l_indicate:
+                        type: integer
+                      t_indicate:
+                        type: integer
+                      id_gk:
+                        type: integer
+                      g_indicate:
+                        type: integer
+                      k_indicate:
+                        type: integer
+                      color:
+                        type: string
         '422':
           description: unprocessable entity
         '500':
@@ -376,6 +654,44 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_value:
+                        type: integer
+                      value_name:
+                        type: string
+                      symbol:
+                        type: string
+                      unit:
+                        type: string
+                      m_indicate_auto:
+                        type: integer
+                      l_indicate_auto:
+                        type: integer
+                      t_indicate_auto:
+                        type: integer
+                      i_indicate_auto:
+                        type: integer
+                      id_lt:
+                        type: integer
+                      l_indicate:
+                        type: integer
+                      t_indicate:
+                        type: integer
+                      id_gk:
+                        type: integer
+                      g_indicate:
+                        type: integer
+                      k_indicate:
+                        type: integer
+                      color:
+                        type: string
         '404':
           description: not found
         '500':
@@ -390,6 +706,44 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_value:
+                        type: integer
+                      value_name:
+                        type: string
+                      symbol:
+                        type: string
+                      unit:
+                        type: string
+                      m_indicate_auto:
+                        type: integer
+                      l_indicate_auto:
+                        type: integer
+                      t_indicate_auto:
+                        type: integer
+                      i_indicate_auto:
+                        type: integer
+                      id_lt:
+                        type: integer
+                      l_indicate:
+                        type: integer
+                      t_indicate:
+                        type: integer
+                      id_gk:
+                        type: integer
+                      g_indicate:
+                        type: integer
+                      k_indicate:
+                        type: integer
+                      color:
+                        type: string
         '404':
           description: not found
         '422':
@@ -464,6 +818,37 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    minItems: 5
+                    items:
+                      type: object
+                      properties:
+                        id_value:
+                          type: integer
+                        value_name:
+                          type: string
+                        symbol:
+                          type: string
+                        unit:
+                          type: string
+                        m_indicate_auto:
+                          type: integer
+                        l_indicate_auto:
+                          type: integer
+                        t_indicate_auto:
+                          type: integer
+                        i_indicate_auto:
+                          type: integer
+                        id_lt:
+                          type: integer
+                        id_gk:
+                          type: integer
         '404':
           description: not found
         '500':
@@ -478,6 +863,21 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    minItems: 5
+                    items:
+                      type: object
+                      properties:
+                        id_repr:
+                          type: integer
+                        title:
+                          type: string
         '500':
           description: server error
     post:
@@ -490,6 +890,25 @@ paths:
       responses:
         '201':
           description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_repr:
+                        type: integer
+                      title:
+                        type: string
+                      id_user:
+                        type: integer
+                      active_quantities:
+                        type: array
+                        minItems: 5
+                        items:
+                          type: integer
         '422':
           description: unprocessable entity
         '500':
@@ -507,6 +926,7 @@ paths:
                       type: string
                     active_quantities:
                       type: array
+                      minItems: 5
                       items:
                         type: integer
                   required:
@@ -527,6 +947,25 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_repr:
+                        type: integer
+                      title:
+                        type: string
+                      id_user:
+                        type: integer
+                      active_quantities:
+                        type: array
+                        minItems: 5
+                        items:
+                          type: integer
         '404':
           description: not found
         '500':
@@ -541,6 +980,25 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_repr:
+                        type: integer
+                      title:
+                        type: string
+                      id_user:
+                        type: integer
+                      active_quantities:
+                        type: array
+                        minItems: 5
+                        items:
+                          type: integer
         '404':
           description: not found
         '422':
@@ -560,6 +1018,7 @@ paths:
                       type: string
                     active_quantities:
                       type: array
+                      minItems: 5
                       items:
                         type: integer
     delete:
@@ -583,6 +1042,46 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_repr:
+                        type: integer
+                      title:
+                        type: string
+                      active_quantities:
+                        type: array
+                        minItems: 5
+                        items:
+                          type: object
+                          properties:
+                            id_value:
+                              type: integer
+                            value_name:
+                              type: string
+                            symbol:
+                              type: string
+                            unit:
+                              type: string
+                            m_indicate_auto:
+                              type: integer
+                            l_indicate_auto:
+                              type: integer
+                            t_indicate_auto:
+                              type: integer
+                            i_indicate_auto:
+                              type: integer
+                            id_lt:
+                              type: integer
+                            id_gk:
+                              type: integer
+        '500':
+          description: server error
   "/api/active_view/{id}":
     parameters:
     - name: id
@@ -600,8 +1099,48 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_repr:
+                        type: integer
+                      title:
+                        type: string
+                      active_quantities:
+                        type: array
+                        minItems: 5
+                        items:
+                          type: object
+                          properties:
+                            id_value:
+                              type: integer
+                            value_name:
+                              type: string
+                            symbol:
+                              type: string
+                            unit:
+                              type: string
+                            m_indicate_auto:
+                              type: integer
+                            l_indicate_auto:
+                              type: integer
+                            t_indicate_auto:
+                              type: integer
+                            i_indicate_auto:
+                              type: integer
+                            id_lt:
+                              type: integer
+                            id_gk:
+                              type: integer
         '404':
           description: not found
+        '500':
+          description: server error
   "/api/users/login":
     post:
       summary: user login
@@ -611,6 +1150,13 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
         '401':
           description: not authorized
         '404':
@@ -672,6 +1218,32 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_user:
+                        type: integer
+                      email:
+                        type: string
+                      last_name:
+                        type: string
+                      first_name:
+                        type: string
+                      patronymic:
+                        type: string
+                      role:
+                        type: boolean
+                      confirmed:
+                        type: boolean
+                      active_repr:
+                        type: integer
+                      locale:
+                        type: string
         '404':
           description: not found
         '500':
@@ -687,6 +1259,32 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id_user:
+                        type: integer
+                      email:
+                        type: string
+                      last_name:
+                        type: string
+                      first_name:
+                        type: string
+                      patronymic:
+                        type: string
+                      role:
+                        type: boolean
+                      confirmed:
+                        type: boolean
+                      active_repr:
+                        type: integer
+                      locale:
+                        type: string
         '404':
           description: not found
         '422':
@@ -756,8 +1354,6 @@ paths:
       responses:
         '200':
           description: successful
-        '401':
-          description: not authorized
         '404':
           description: not found
         '500':

@@ -7,8 +7,13 @@ RSpec.describe 'quantities', type: :request do
     get('list quantities') do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
+      produces 'application/pdf'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 file: { type: :string, format: :byte }
+               }
         run_test!
       end
       response(500, 'server error') do
@@ -20,6 +25,8 @@ RSpec.describe 'quantities', type: :request do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :quantity, in: :body, schema: {
         type: :object,
         properties: {
@@ -44,6 +51,29 @@ RSpec.describe 'quantities', type: :request do
       }
 
       response(201, 'created') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_value: { type: :integer },
+                     value_name: { type: :string },
+                     symbol: { type: :string },
+                     unit: { type: :string },
+                     m_indicate_auto: { type: :integer },
+                     l_indicate_auto: { type: :integer },
+                     t_indicate_auto: { type: :integer },
+                     i_indicate_auto: { type: :integer },
+                     id_lt: { type: :integer },
+                     l_indicate: { type: :integer },
+                     t_indicate: { type: :integer },
+                     id_gk: { type: :integer },
+                     g_indicate: { type: :integer },
+                     k_indicate: { type: :integer },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(422, 'unprocessable entity') do
@@ -60,8 +90,32 @@ RSpec.describe 'quantities', type: :request do
 
     get('show quantity') do
       tags 'Quantities'
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_value: { type: :integer },
+                     value_name: { type: :string },
+                     symbol: { type: :string },
+                     unit: { type: :string },
+                     m_indicate_auto: { type: :integer },
+                     l_indicate_auto: { type: :integer },
+                     t_indicate_auto: { type: :integer },
+                     i_indicate_auto: { type: :integer },
+                     id_lt: { type: :integer },
+                     l_indicate: { type: :integer },
+                     t_indicate: { type: :integer },
+                     id_gk: { type: :integer },
+                     g_indicate: { type: :integer },
+                     k_indicate: { type: :integer },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -76,6 +130,8 @@ RSpec.describe 'quantities', type: :request do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :quantity, in: :body, schema: {
         type: :object,
         properties: {
@@ -100,6 +156,29 @@ RSpec.describe 'quantities', type: :request do
       }
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_value: { type: :integer },
+                     value_name: { type: :string },
+                     symbol: { type: :string },
+                     unit: { type: :string },
+                     m_indicate_auto: { type: :integer },
+                     l_indicate_auto: { type: :integer },
+                     t_indicate_auto: { type: :integer },
+                     i_indicate_auto: { type: :integer },
+                     id_lt: { type: :integer },
+                     l_indicate: { type: :integer },
+                     t_indicate: { type: :integer },
+                     id_gk: { type: :integer },
+                     g_indicate: { type: :integer },
+                     k_indicate: { type: :integer },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -134,8 +213,31 @@ RSpec.describe 'quantities', type: :request do
 
     get('get quantities by lt id') do
       tags 'Quantities'
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data: {
+                   type: :array,
+                   minItems: 5,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id_value: { type: :integer },
+                       value_name: { type: :string },
+                       symbol: { type: :string },
+                       unit: { type: :string },
+                       m_indicate_auto: { type: :integer },
+                       l_indicate_auto: { type: :integer },
+                       t_indicate_auto: { type: :integer },
+                       i_indicate_auto: { type: :integer },
+                       id_lt: { type: :integer },
+                       id_gk: { type: :integer }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do

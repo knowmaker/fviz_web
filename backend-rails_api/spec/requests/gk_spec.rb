@@ -6,8 +6,26 @@ RSpec.describe 'gk', type: :request do
   path '/api/gk' do
     get('list gk') do
       tags 'GK'
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data: {
+                   type: :array,
+                   minItems: 5,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id_gk: { type: :integer },
+                       gk_name: { type: :string },
+                       g_indicate: { type: :integer },
+                       k_indicate: { type: :integer },
+                       color: { type: :string }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(500, 'server error') do
@@ -22,8 +40,22 @@ RSpec.describe 'gk', type: :request do
     get('show GK') do
       tags 'GK'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_gk: { type: :integer },
+                     gk_name: { type: :string },
+                     g_indicate: { type: :integer },
+                     k_indicate: { type: :integer },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -38,6 +70,8 @@ RSpec.describe 'gk', type: :request do
       tags 'GK'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :gk, in: :body, schema: {
         type: :object,
         properties: {
@@ -52,6 +86,19 @@ RSpec.describe 'gk', type: :request do
       }
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_gk: { type: :integer },
+                     gk_name: { type: :string },
+                     g_indicate: { type: :integer },
+                     k_indicate: { type: :integer },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
