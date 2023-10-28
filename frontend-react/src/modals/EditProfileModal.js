@@ -113,7 +113,7 @@ export function EditProfileModal({ modalsVisibility, currentLocaleState }) {
         </select>
       </div>
       <div className="modal-footer2">
-        <Button type="button" className="btn btn-danger" onClick={(e) => deleteUser(e)}><FormattedMessage id='Удалить аккаунт' defaultMessage="Удалить аккаунт" /></Button>
+        <Button type="button" className="btn btn-danger me-1" onClick={(e) => deleteUser(e)}><FormattedMessage id='Удалить аккаунт' defaultMessage="Удалить аккаунт" /></Button>
         <Button type="button" className="btn btn-success" onClick={(e) => editProfile(e)}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></Button>
       </div>
 

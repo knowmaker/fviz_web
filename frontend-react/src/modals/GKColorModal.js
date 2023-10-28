@@ -158,7 +158,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
             </nav>
 
 
-            <div className="tab-content tab-content-border" id="nav-tabContent">
+            <div className="tab-content tab-content-border  mb-2" id="nav-tabContent">
             <div className="tab-pane fade show active" id="layer-edit" role="tabpanel" aria-labelledby="nav-layer-language-tab" tabIndex="0">
 
             <div className="row">
@@ -172,7 +172,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
           </div>
 
             </div>
-            <div className="row">
+            <div className="row mb-2">
               <div className="col-2">
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>

@@ -199,7 +199,7 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
       sizeX={600}
     >
       <div className="modal-content2">
-        <div className="row">
+        <div className="row mb-1">
           <div className="col-2">
             <FormattedMessage id='Название' defaultMessage="Название" />:
           </div>

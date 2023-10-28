@@ -218,7 +218,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
                 </div>
               </nav>
 
-          <div className="tab-content tab-content-border" id="nav-tabContent">
+          <div className="tab-content tab-content-border mb-2" id="nav-tabContent">
             <div className="tab-pane fade show active" id="group-edit" role="tabpanel" aria-labelledby="nav-group-language-tab" tabIndex="0">
 
               <div className="row">
@@ -233,7 +233,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
             </div>
           </div>
 
-          <div className="row">
+          <div className="row mb-2">
               <div className="col-2">
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>
