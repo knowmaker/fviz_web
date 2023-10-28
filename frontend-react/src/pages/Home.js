@@ -73,6 +73,7 @@ export default function Home() {
       // fix later
       setStateFromGetAPI(setLaws, `${process.env.REACT_APP_API_LINK}/${intl.locale}/laws`,undefined,headers)
       setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
+      
       setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,headers)
 
       // set up localstorage to authenticate automatically
@@ -81,6 +82,11 @@ export default function Home() {
     } else {
       // if there is no user token delete user profile
       setUserProfile(null)
+      const storageToken = localStorage.getItem('token');
+      console.log(storageToken)
+      if (!storageToken) {
+        setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
+      }
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -170,7 +176,11 @@ export default function Home() {
   
   
       } else {
-        setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
+        const storageToken = localStorage.getItem('token');
+        console.log(storageToken)
+        if (!storageToken) {
+          setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
+        }
       }
   
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,7 +208,7 @@ export default function Home() {
           const profileResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/users/profile`,headers)
           if (!isResponseSuccessful(profileResponseData)) {
             localStorage.removeItem('token')
-            setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`)
+            //setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`)
             return
           }
           showMessage(intl.formatMessage({id:`Авторизация успешна`,defaultMessage: `Авторизация успешна`}))
@@ -214,6 +224,8 @@ export default function Home() {
   
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+
 
   
 
@@ -336,6 +348,7 @@ export default function Home() {
 
     const { ref, getImage } = useDownloadableScreenshot(intl);
 
+
     // DELETE LATER <------------------------
     
     // const testShow = (result,_,info) => {
@@ -356,7 +369,7 @@ export default function Home() {
           <TableContext.Provider value={tableState}>
 
                 <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState} lawEditorsStates={lawEditorsStates} showModeState={showModeState}/>
-                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility} showModeState={showModeState}/>
+                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility} showModeState={showModeState} selectedCellState={selectedCellState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               

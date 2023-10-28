@@ -39,27 +39,30 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
       document.getElementById("InputGKLayerColor3").value = "#000000";
     }
     if (modalsVisibility.GKColorsEditModalVisibility.isVisible === true) {
-      setCurrentModalLocale(intl.locale)
-      if (intl.locale === "en") {
-        document.getElementById("nav-layer-language-en-tab").click()
-      }
-      if (intl.locale === "ru") {
-        document.getElementById("nav-layer-language-ru-tab").click()
-      }
+      setCurrentTabsLocale(intl.locale)
     } else {
       setSelectedGKLayer({ type_name: null, id_gk: null })
     }
   }, [modalsVisibility.GKColorsEditModalVisibility.isVisible]);
 
-  const selectGKLayer = (layer) => {
+  const setCurrentTabsLocale = (locale) => {
+    setCurrentModalLocale(locale)
+    if (locale === "en") {
+      document.getElementById("nav-layer-language-en-tab").click()
+    }
+    if (locale === "ru") {
+      document.getElementById("nav-layer-language-ru-tab").click()
+    }
+  }
+
+
+  const selectGKLayer = async (layer) => {
 
     // set this group as selected
-    setSelectedGKLayer(layer);
+    await setSelectedGKLayer(layer);
 
-    // set input to this group values
-    convertMarkdownToEditorState(setGKLayerEditorState, layer.gk_name);
-    document.getElementById("InputGKLayerColor3").value = layer.color;
-
+    setCurrentTabsLocale(intl.locale)
+    
   };
 
   const updateLawGroup = async () => {
@@ -155,7 +158,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
             </nav>
 
 
-            <div className="tab-content tab-content-border" id="nav-tabContent">
+            <div className="tab-content tab-content-border  mb-2" id="nav-tabContent">
             <div className="tab-pane fade show active" id="layer-edit" role="tabpanel" aria-labelledby="nav-layer-language-tab" tabIndex="0">
 
             <div className="row">
@@ -169,7 +172,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
           </div>
 
             </div>
-            <div className="row">
+            <div className="row mb-2">
               <div className="col-2">
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>

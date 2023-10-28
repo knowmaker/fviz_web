@@ -40,26 +40,30 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
       document.getElementById("InputLawGroupColor3").value = "#000000";
     }
     if (modalsVisibility.lawsGroupsModalVisibility.isVisible === true) {
-      setCurrentModalLocale(intl.locale)
-      if (intl.locale === "en") {
-        document.getElementById("nav-group-language-en-tab").click()
-      }
-      if (intl.locale === "ru") {
-        document.getElementById("nav-group-language-ru-tab").click()
-      }
+      setCurrentTabsLocale(intl.locale)
     } else {
       setSelectedLawGroup({ type_name: null, id_type: null })
     }
   }, [modalsVisibility.lawsGroupsModalVisibility.isVisible]);
 
-  const selectLawGroup = (group) => {
+  const setCurrentTabsLocale = (locale) => {
+    setCurrentModalLocale(locale)
+    if (locale === "en") {
+      document.getElementById("nav-group-language-en-tab").click()
+    }
+    if (locale === "ru") {
+      document.getElementById("nav-group-language-ru-tab").click()
+    }
+  }
+
+  const selectLawGroup = async (group) => {
 
     // set this group as selected
-    setSelectedLawGroup(group);
+    await setSelectedLawGroup(group);
+    
+    setCurrentTabsLocale(intl.locale)
 
-    // set input to this group values
-    convertMarkdownToEditorState(setLawGroupEditorState, group.type_name);
-    document.getElementById("InputLawGroupColor3").value = group.color;
+
 
   };
 
@@ -214,7 +218,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
                 </div>
               </nav>
 
-          <div className="tab-content tab-content-border" id="nav-tabContent">
+          <div className="tab-content tab-content-border mb-2" id="nav-tabContent">
             <div className="tab-pane fade show active" id="group-edit" role="tabpanel" aria-labelledby="nav-group-language-tab" tabIndex="0">
 
               <div className="row">
@@ -229,7 +233,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
             </div>
           </div>
 
-          <div className="row">
+          <div className="row mb-2">
               <div className="col-2">
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>

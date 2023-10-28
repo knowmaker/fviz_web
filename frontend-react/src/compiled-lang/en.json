@@ -203,6 +203,12 @@
       "value": "Password reset email has been sent"
     }
   ],
+  "Подтверждение": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to do this?"
+    }
+  ],
   "Подтверждение действия": [
     {
       "type": 0,
