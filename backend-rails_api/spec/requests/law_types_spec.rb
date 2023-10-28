@@ -7,8 +7,24 @@ RSpec.describe 'law_types', type: :request do
     get('list law types') do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data: {
+                   type: :array,
+                   minItems: 5,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id_type: { type: :integer },
+                       type_name: { type: :string },
+                       color: { type: :string }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(500, 'server error') do
@@ -20,6 +36,8 @@ RSpec.describe 'law_types', type: :request do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :law_type, in: :body, schema: {
         type: :object,
         properties: {
@@ -35,6 +53,17 @@ RSpec.describe 'law_types', type: :request do
       }
 
       response(201, 'created') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_type: { type: :integer },
+                     type_name: { type: :string },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(422, 'unprocessable entity') do
@@ -52,8 +81,20 @@ RSpec.describe 'law_types', type: :request do
     get('show law type') do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_type: { type: :integer },
+                     type_name: { type: :string },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -68,6 +109,8 @@ RSpec.describe 'law_types', type: :request do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :law_type, in: :body, schema: {
         type: :object,
         properties: {
@@ -82,6 +125,17 @@ RSpec.describe 'law_types', type: :request do
       }
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_type: { type: :integer },
+                     type_name: { type: :string },
+                     color: { type: :string }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do

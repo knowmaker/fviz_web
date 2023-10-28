@@ -7,8 +7,23 @@ RSpec.describe 'represents', type: :request do
     get('list represents') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data: {
+                   type: :array,
+                   minItems: 5,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id_repr: { type: :integer },
+                       title: { type: :string }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(500, 'server error') do
@@ -20,6 +35,8 @@ RSpec.describe 'represents', type: :request do
       tags 'Represents'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :represent, in: :body, schema: {
         type: :object,
         properties: {
@@ -29,6 +46,7 @@ RSpec.describe 'represents', type: :request do
               title: { type: :string },
               active_quantities: {
                 type: :array,
+                minItems: 5,
                 items: { type: :integer }
               }
             },
@@ -38,6 +56,22 @@ RSpec.describe 'represents', type: :request do
       }
 
       response(201, 'created') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_repr: { type: :integer },
+                     title: { type: :string },
+                     id_user: { type: :integer },
+                     active_quantities: {
+                       type: :array,
+                       minItems: 5,
+                       items: { type: :integer }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(422, 'unprocessable entity') do
@@ -54,8 +88,25 @@ RSpec.describe 'represents', type: :request do
 
     get('show represent') do
       tags 'Represents'
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_repr: { type: :integer },
+                     title: { type: :string },
+                     id_user: { type: :integer },
+                     active_quantities: {
+                       type: :array,
+                       minItems: 5,
+                       items: { type: :integer }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -70,6 +121,8 @@ RSpec.describe 'represents', type: :request do
       security [{ bearerAuth: [] }]
       tags 'Represents'
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :represent, in: :body, schema: {
         type: :object,
         properties: {
@@ -79,6 +132,7 @@ RSpec.describe 'represents', type: :request do
               title: { type: :string },
               active_quantities: {
                 type: :array,
+                minItems: 5,
                 items: { type: :integer }
               }
             }
@@ -87,6 +141,22 @@ RSpec.describe 'represents', type: :request do
       }
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_repr: { type: :integer },
+                     title: { type: :string },
+                     id_user: { type: :integer },
+                     active_quantities: {
+                       type: :array,
+                       minItems: 5,
+                       items: { type: :integer }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -103,6 +173,7 @@ RSpec.describe 'represents', type: :request do
     delete('delete represent') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
         run_test!
@@ -119,7 +190,41 @@ RSpec.describe 'represents', type: :request do
   path '/api/active_view' do
     get('get active quantities for represent view') do
       tags 'Represents'
+      produces 'application/json'
+
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_repr: { type: :integer },
+                     title: { type: :string },
+                     active_quantities: {
+                       type: :array,
+                       minItems: 5,
+                       items: {
+                         type: :object,
+                         properties: {
+                           id_value: { type: :integer },
+                           value_name: { type: :string },
+                           symbol: { type: :string },
+                           unit: { type: :string },
+                           m_indicate_auto: { type: :integer },
+                           l_indicate_auto: { type: :integer },
+                           t_indicate_auto: { type: :integer },
+                           i_indicate_auto: { type: :integer },
+                           id_lt: { type: :integer },
+                           id_gk: { type: :integer }
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end
@@ -131,13 +236,44 @@ RSpec.describe 'represents', type: :request do
     get('get active quantities for specific represent view') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
-      response(200, 'successful') do
-        let(:id) { '123' }
+      produces 'application/json'
 
+      response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_repr: { type: :integer },
+                     title: { type: :string },
+                     active_quantities: {
+                       type: :array,
+                       minItems: 5,
+                       items: {
+                         type: :object,
+                         properties: {
+                           id_value: { type: :integer },
+                           value_name: { type: :string },
+                           symbol: { type: :string },
+                           unit: { type: :string },
+                           m_indicate_auto: { type: :integer },
+                           l_indicate_auto: { type: :integer },
+                           t_indicate_auto: { type: :integer },
+                           i_indicate_auto: { type: :integer },
+                           id_lt: { type: :integer },
+                           id_gk: { type: :integer }
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
-
       response(404, 'not found') do
+        run_test!
+      end
+      response(500, 'server error') do
         run_test!
       end
     end

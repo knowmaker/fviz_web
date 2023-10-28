@@ -7,8 +7,29 @@ RSpec.describe 'laws', type: :request do
     get('list laws') do
       tags 'Laws'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data: {
+                   type: :array,
+                   minItems: 5,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id_law: { type: :integer },
+                       law_name: { type: :string },
+                       first_element: { type: :integer },
+                       second_element: { type: :integer },
+                       third_element: { type: :integer },
+                       fourth_element: { type: :integer },
+                       id_user: { type: :integer },
+                       id_type: { type: :integer }
+                     }
+                   }
+                 }
+               }
         run_test!
       end
       response(500, 'server error') do
@@ -20,6 +41,8 @@ RSpec.describe 'laws', type: :request do
       tags 'Laws'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :law, in: :body, schema: {
         type: :object,
         properties: {
@@ -39,6 +62,22 @@ RSpec.describe 'laws', type: :request do
       }
 
       response(201, 'created') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_law: { type: :integer },
+                     law_name: { type: :string },
+                     first_element: { type: :integer },
+                     second_element: { type: :integer },
+                     third_element: { type: :integer },
+                     fourth_element: { type: :integer },
+                     id_user: { type: :integer },
+                     id_type: { type: :integer }
+                   }
+                 }
+               }
         run_test!
       end
       response(422, 'unprocessable entity') do
@@ -56,8 +95,25 @@ RSpec.describe 'laws', type: :request do
     get('show law') do
       tags 'Laws'
       security [{ bearerAuth: [] }]
+      produces 'application/json'
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_law: { type: :integer },
+                     law_name: { type: :string },
+                     first_element: { type: :integer },
+                     second_element: { type: :integer },
+                     third_element: { type: :integer },
+                     fourth_element: { type: :integer },
+                     id_user: { type: :integer },
+                     id_type: { type: :integer }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
@@ -72,6 +128,8 @@ RSpec.describe 'laws', type: :request do
       tags 'Laws'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
+      produces 'application/json'
+
       parameter name: :law, in: :body, schema: {
         type: :object,
         properties: {
@@ -86,6 +144,22 @@ RSpec.describe 'laws', type: :request do
       }
 
       response(200, 'successful') do
+        schema type: :object,
+               properties: {
+                 data:{
+                   type: :object,
+                   properties: {
+                     id_law: { type: :integer },
+                     law_name: { type: :string },
+                     first_element: { type: :integer },
+                     second_element: { type: :integer },
+                     third_element: { type: :integer },
+                     fourth_element: { type: :integer },
+                     id_user: { type: :integer },
+                     id_type: { type: :integer }
+                   }
+                 }
+               }
         run_test!
       end
       response(404, 'not found') do
