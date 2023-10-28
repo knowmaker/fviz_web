@@ -1,6 +1,5 @@
 import {createRef} from 'react';
 import {toJpeg} from "html-to-image";
-import {useIntl} from 'react-intl'
 
 export const useDownloadableScreenshot = (intl) => {
     const ref = createRef(null);

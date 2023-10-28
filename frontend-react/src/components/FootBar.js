@@ -5,7 +5,7 @@ import setStateFromGetAPI,{ putDataToAPI,isResponseSuccessful } from '../misc/ap
 import {FormattedMessage,useIntl} from 'react-intl'
 import { Button } from '../components/ButtonWithLoad.js';
 
-export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility,showModeState}) {
+export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility,showModeState,selectedCellState}) {
   
   const userInfoState = useContext(UserProfile) 
   const tableState = useContext(TableContext)  
@@ -23,8 +23,8 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   
   const intl = useIntl()
 
-  let cellLT = "?"
-  let cellGK = "?"
+  let cellLT = "-"
+  let cellGK = "-"
   if (hoveredCell) {
 
     cellLT = hoveredCell.l_indicate !== undefined ? `L<sup>${hoveredCell.l_indicate}</sup>T<sup>${hoveredCell.t_indicate}</sup>` : "?"
@@ -61,6 +61,16 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
 
       window.URL.revokeObjectURL(url);
   };
+
+  const downloadScreenshot = async (e) => {
+    //const selectedCell = selectedCellState.selectedCell
+    //await selectedCellState.setSelectedCell(null)
+    await getImage(e)
+    //await selectedCellState.setSelectedCell(selectedCell)
+  }
+
+
+
 
   const updateTableView = async () => {
 
@@ -118,7 +128,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
               <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => updateTableView(e)}><FormattedMessage id='Сохранить представление' defaultMessage="Сохранить представление"/></Button>
               </>) : (null)}
               <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={showGKLayersImageModal}><FormattedMessage id='Показать уровни GK' defaultMessage="Показать уровни GK"/></div>
-              <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => getImage(e)}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></Button>
+              <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => downloadScreenshot(e)}><FormattedMessage id='Скачать скриншот' defaultMessage="Скачать скриншот"/></Button>
                 {isAdmin ?
                     (<>
                         <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => downloadPDF(e)}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</Button>

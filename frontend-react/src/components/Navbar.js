@@ -116,7 +116,7 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
     if (userInfoState.userProfile) {
         loginButtons = (
             <>
-                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfoState.userProfile.email} (<FormattedMessage id='Мой профиль' defaultMessage="Мой профиль"/>)</span>
+                <span onClick={() => openProfileForm()} style={{cursor: "pointer"}}>{userInfoState.userProfile.first_name} (<FormattedMessage id='Мой профиль' defaultMessage="Мой профиль"/>)</span>
                 <span style={{margin:10}}>/</span>
                 <span onClick={() => signOut()} style={{cursor: "pointer"}}><FormattedMessage id='Выход' defaultMessage="Выход"/></span>
             </>

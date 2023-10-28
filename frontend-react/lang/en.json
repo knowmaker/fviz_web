@@ -223,6 +223,9 @@
   },
   "Режим просмотра": {
     "defaultMessage": "View mode"
+  },
+  "Подтверждение": {
+    "defaultMessage": "Are you sure you want to do this?"
   }
   
 

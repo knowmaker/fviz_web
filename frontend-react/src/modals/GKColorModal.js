@@ -39,27 +39,30 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
       document.getElementById("InputGKLayerColor3").value = "#000000";
     }
     if (modalsVisibility.GKColorsEditModalVisibility.isVisible === true) {
-      setCurrentModalLocale(intl.locale)
-      if (intl.locale === "en") {
-        document.getElementById("nav-layer-language-en-tab").click()
-      }
-      if (intl.locale === "ru") {
-        document.getElementById("nav-layer-language-ru-tab").click()
-      }
+      setCurrentTabsLocale(intl.locale)
     } else {
       setSelectedGKLayer({ type_name: null, id_gk: null })
     }
   }, [modalsVisibility.GKColorsEditModalVisibility.isVisible]);
 
-  const selectGKLayer = (layer) => {
+  const setCurrentTabsLocale = (locale) => {
+    setCurrentModalLocale(locale)
+    if (locale === "en") {
+      document.getElementById("nav-layer-language-en-tab").click()
+    }
+    if (locale === "ru") {
+      document.getElementById("nav-layer-language-ru-tab").click()
+    }
+  }
+
+
+  const selectGKLayer = async (layer) => {
 
     // set this group as selected
-    setSelectedGKLayer(layer);
+    await setSelectedGKLayer(layer);
 
-    // set input to this group values
-    convertMarkdownToEditorState(setGKLayerEditorState, layer.gk_name);
-    document.getElementById("InputGKLayerColor3").value = layer.color;
-
+    setCurrentTabsLocale(intl.locale)
+    
   };
 
   const updateLawGroup = async () => {

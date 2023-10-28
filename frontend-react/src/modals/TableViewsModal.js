@@ -80,6 +80,10 @@ export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, t
 
   const deleteTableView = async (tableView) => {
 
+    if (!window.confirm(intl.formatMessage({ id: `Подтверждение`, defaultMessage: `Вы уверены что хотите это сделать?` }))) {
+      return;
+    }
+
     // send delete request
     const tableViewDeleteResponseData = await deleteDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/represents/${tableView.id_repr}`, undefined, headers);
     if (!isResponseSuccessful(tableViewDeleteResponseData)) {
