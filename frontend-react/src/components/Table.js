@@ -604,7 +604,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
         showMessage(intl.formatMessage({id:`Закон выбран`,defaultMessage: `Закон выбран`}))
 
-        if (lawsState.laws) {
+        if (lawsState.laws && userInfoState.userToken) {
         modalsVisibility.lawsModalVisibility.setVisibility(true)
         }
       }
