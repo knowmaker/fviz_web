@@ -30,6 +30,8 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
   const [currentModalLocale, setCurrentModalLocale] = useState("ru");
 
+  const [currentModalLocaleFields,setCurrentModalLocaleFields] = useState(null);
+
   // useEffect(() => {
   //   if (modalVisibility.isVisible === false) {
   //     selectedCellState.setSelectedCell(null)
@@ -51,17 +53,34 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalVisibility.isVisible]);
 
-  const saveButtonClick = () => {
+  const saveButtonClick = async () => {
 
     if (!selectedCell) {
       showMessage(intl.formatMessage({ id: `Выберите ячейку`, defaultMessage: `Сначала выберите ячейку на поле` }),"error")
       return
     }
 
+    const currentModalLocaleFieldsUpdated = {
+      ...currentModalLocaleFields,
+      [currentModalLocale]: {
+        id_gk: parseInt(document.getElementById("inputGK3").value),
+        l_indicate: parseInt(document.getElementById("inputL3").value),
+        t_indicate: parseInt(document.getElementById("inputT3").value),
+        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
+        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
+        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
+      }
+    }
+
+    setCurrentModalLocaleFields(currentModalLocaleFieldsUpdated)
+
+    console.log(currentModalLocaleFieldsUpdated)
+
     if (selectedCell.id_value === -1) {
       createCell();
       return;
     }
+
     updateCell();
 
   };
@@ -298,8 +317,25 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
   const requestAlternativeCellData = (locale) => {
 
+    const currentModalLocaleFieldsUpdated = {
+      ...currentModalLocaleFields,
+      [currentModalLocale]: {
+        id_gk: parseInt(document.getElementById("inputGK3").value),
+        l_indicate: parseInt(document.getElementById("inputL3").value),
+        t_indicate: parseInt(document.getElementById("inputT3").value),
+        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
+        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
+        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
+      }
+    }
+
+    setCurrentModalLocaleFields(currentModalLocaleFieldsUpdated)
+    console.log(currentModalLocaleFieldsUpdated)
+
     if (selectedCell) {
     setStateFromGetAPI(selectedCellState.setSelectedCell,`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`,undefined,headers)
+    // merge data here
+  
     }
     setCurrentModalLocale(locale)
 
@@ -339,19 +375,20 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
                 <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set} readOnly={!isAdmin} />
               </div>
               <div className="col-6">
-                <label className="form-label"><FormattedMessage id='Условное обозначение' defaultMessage="Условное обозначение" /></label>
-                <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set} readOnly={!isAdmin} />
-              </div>
-            </div>
-          <div className="row">
-            <div className="col">
               <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Единица измерения' defaultMessage="Единица измерения" /></label>
               <RichTextEditor editorState={cellEditorsStates.cellUnitEditorState.value} setEditorState={cellEditorsStates.cellUnitEditorState.set} readOnly={!isAdmin} />
             </div>
-          </div>
+            </div>
           </div>
         </div>
         
+        <div className="row">
+          <div className="col">
+              <label className="form-label"><FormattedMessage id='Условное обозначение' defaultMessage="Условное обозначение" /></label>
+              <RichTextEditor editorState={cellEditorsStates.cellSymbolEditorState.value} setEditorState={cellEditorsStates.cellSymbolEditorState.set} readOnly={!isAdmin} />
+          </div>
+        </div>
+
         <div className="col">
               <label htmlFor="InputFirstName3" className="form-label"><FormattedMessage id='Уровень' defaultMessage="Уровень" /> GK</label>
               <select className="form-select" aria-label="Default select example" id='inputGK3' onChange={() => setGKoption(parseInt(document.getElementById("inputGK3").value))} disabled={!isAdmin}>

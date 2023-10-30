@@ -103,6 +103,8 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
     }
 
     const changeLocale = () => {
+        setUndoStack([])
+        setRedoStack([])
         if (currentLocaleState.currentLocale === "en") {
             currentLocaleState.setCurrentLocale("ru")
         } else {

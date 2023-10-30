@@ -140,9 +140,13 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
                 </div>  
             </div>
         </div>
+        {selectedLawState.selectedLaw.cells.length >= 1 ?
+              (<>
         <div className="navbar-text">
             <div className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={removeCurrentLaw}><FormattedMessage id='Стереть закон' defaultMessage="Стереть закон"/></div>
         </div>
+        </>) : (null)}
+
     </div>
   </nav>
     );

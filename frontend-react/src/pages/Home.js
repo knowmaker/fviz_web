@@ -83,7 +83,6 @@ export default function Home() {
       // if there is no user token delete user profile
       setUserProfile(null)
       const storageToken = localStorage.getItem('token');
-      console.log(storageToken)
       if (!storageToken) {
         setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
       }
@@ -177,7 +176,6 @@ export default function Home() {
   
       } else {
         const storageToken = localStorage.getItem('token');
-        console.log(storageToken)
         if (!storageToken) {
           setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
         }
@@ -327,7 +325,7 @@ export default function Home() {
               return
             }
             cellData = cellResponseData.data.data
-            console.log("update")
+   
 
           } else {cellData = selectedCell}
 
