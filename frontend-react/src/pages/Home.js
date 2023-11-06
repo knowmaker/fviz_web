@@ -296,6 +296,8 @@ export default function Home() {
 
     }, []);
 
+    console.log(selectedCell)
+
     useEffect(() => {
 
       // if selected cell changed
@@ -305,19 +307,20 @@ export default function Home() {
           // if it is an empty cell
           if (selectedCell.id_value === -1) {
 
-            convertMarkdownToEditorState(setCellNameEditor, "") 
-            convertMarkdownToEditorState(setCellSymbolEditor, "") 
-            convertMarkdownToEditorState(setCellUnitEditor, "") 
+            console.log(selectedCell)
+            convertMarkdownToEditorState(setCellNameEditor, selectedCell.value_name ? selectedCell.value_name :"") 
+            convertMarkdownToEditorState(setCellSymbolEditor, selectedCell.symbol ? selectedCell.symbol :"") 
+            convertMarkdownToEditorState(setCellUnitEditor, selectedCell.unit ? selectedCell.unit :"") 
             document.getElementById("inputL3").value = selectedCell.l_indicate
             document.getElementById("inputT3").value = selectedCell.t_indicate
-            document.getElementById("inputGK3").value = 0
+            document.getElementById("inputGK3").value = selectedCell.id_gk
 
             return
           }
 
           let cellData
           // get full data about cell if it isn't requested
-          if (selectedCell.g_indicate === undefined) {
+          if (selectedCell.g_indicate === undefined && selectedCell.id_value !== 1) {
 
             const cellResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/quantities/${selectedCell.id_value}`)
             if (!isResponseSuccessful(cellResponseData)) {

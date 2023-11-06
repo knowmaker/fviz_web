@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { convertMarkdownFromEditorState } from '../pages/Home.js';
 import { showMessage } from '../misc/message.js';
 import { convertToMLTI,convertNumberToUnicodePower } from '../misc/converters.js';
+import { convertMarkdownToEditorState } from '../misc/converters';
 import { Modal } from './Modal.js';
 import { RichTextEditor } from '../components/RichTextEditor.js';
 import { Button } from '../components/ButtonWithLoad.js';
@@ -39,6 +40,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   // }, [modalVisibility.isVisible]);
 
   useEffect(() => {
+    console.log(modalVisibility.isVisible)
     if (modalVisibility.isVisible === true) {
       setCurrentModalLocale(intl.locale)
       if (intl.locale === "en") {
@@ -48,7 +50,15 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
         document.getElementById("nav-cell-language-ru-tab").click()
       }
     } else {
+      console.log("clear")
       selectedCellState.setSelectedCell(null)
+      setCurrentModalLocaleFields(null)
+      convertMarkdownToEditorState(cellEditorsStates.cellNameEditorState.set, "") 
+      convertMarkdownToEditorState(cellEditorsStates.cellSymbolEditorState.set, "") 
+      convertMarkdownToEditorState(cellEditorsStates.cellUnitEditorState.set, "") 
+      document.getElementById("inputL3").value = null
+      document.getElementById("inputT3").value = null
+      document.getElementById("inputGK3").value = null
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalVisibility.isVisible]);
@@ -62,12 +72,13 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
     const currentModalLocaleFieldsUpdated = {
       ...currentModalLocaleFields,
+      id_gk: parseInt(document.getElementById("inputGK3").value),
+      l_indicate: parseInt(document.getElementById("inputL3").value),
+      t_indicate: parseInt(document.getElementById("inputT3").value),
+      symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
       [currentModalLocale]: {
-        id_gk: parseInt(document.getElementById("inputGK3").value),
-        l_indicate: parseInt(document.getElementById("inputL3").value),
-        t_indicate: parseInt(document.getElementById("inputT3").value),
+
         value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
-        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
         unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
       }
     }
@@ -77,25 +88,44 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     console.log(currentModalLocaleFieldsUpdated)
 
     if (selectedCell.id_value === -1) {
-      createCell();
+
+      console.log("here")
+      //console.log(currentModalLocaleFieldsUpdated,currentModalLocale)
+      const createdCellData = await createCell(currentModalLocaleFieldsUpdated,currentModalLocale);
+      //console.log({...currentModalLocaleFieldsUpdated, id_value:createdCellData.id_value},(currentModalLocale === "ru" ? "en" : "ru"))
+      updateCell({...currentModalLocaleFieldsUpdated, id_value:createdCellData.id_value},(currentModalLocale === "ru" ? "en" : "ru"),createdCellData.id_value)
       return;
     }
 
-    updateCell();
+    let updatedCellEn
+    let updatedCellRu
+    if (currentModalLocaleFieldsUpdated["en"]) {
+      updatedCellEn = await updateCell(currentModalLocaleFieldsUpdated,"en",selectedCell.id_value);
+    }
+    if (currentModalLocaleFieldsUpdated["ru"]) {
+      updatedCellRu = await updateCell(currentModalLocaleFieldsUpdated,"ru",selectedCell.id_value);
+    }
+
+    if (!updatedCellEn || !updatedCellRu) {
+      return
+    }
+
+    // show message
+    showMessage(intl.formatMessage({ id: `Ячейка была изменена`, defaultMessage: `Ячейка была изменена` }));
 
   };
 
-  const updateCell = async () => {
+  const updateCell = async (currentModalFields,locale,cellId) => {
 
 
 
     // get all MLTI parameters
-    const id_gk = parseInt(document.getElementById("inputGK3").value);
+    const id_gk = currentModalFields.id_gk;
 
     const G_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).g_indicate;
     const K_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).k_indicate;
-    const l_indicate = parseInt(document.getElementById("inputL3").value);
-    const t_indicate = parseInt(document.getElementById("inputT3").value);
+    const l_indicate = currentModalFields.l_indicate;
+    const t_indicate = currentModalFields.t_indicate;
 
     const M_indicate = 0 - (G_indicate * -1 + K_indicate);
     const L_indicate = l_indicate - G_indicate * 3;
@@ -105,9 +135,9 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     // create new cell
     const newCell = {
       quantity: {
-        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
-        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
-        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
+        value_name: currentModalFields[locale].value_name,
+        symbol: currentModalFields.symbol,
+        unit: currentModalFields[locale].unit,
         l_indicate: l_indicate,
         t_indicate: t_indicate,
         id_gk: id_gk,
@@ -119,50 +149,56 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       }
     };
 
+    console.log(newCell)
+
     // send cell update request
-    const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/quantities/${selectedCell.id_value}`, newCell, headers);
+    const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${cellId}`, newCell, headers);
     if (!isResponseSuccessful(changedCellResponseData)) {
       showMessage(changedCellResponseData.data.error, "error");
       return;
     }
     const cellData = changedCellResponseData.data.data;
 
-    // show message
-    showMessage(intl.formatMessage({ id: `Ячейка была изменена`, defaultMessage: `Ячейка была изменена` }));
+
 
     // remove old cell and set new one if current locale was changed
-    if (intl.locale === currentModalLocale) {
-      tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData));
+    if (intl.locale === locale) {
+      tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== cellData.id_value).concat(cellData));
+ 
+
+      // send request to replace missing cell
+      const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`, headers);
+      if (!isResponseSuccessful(cellAlternativesResponseData)) {
+        showMessage(cellAlternativesResponseData.data.error, "error");
+        return;
+      }
+
+      const cellAlternatives = cellAlternativesResponseData.data.data;
+
+      // replace missing cell if there is alternative
+      if (cellAlternatives.length > 0 && cellData.id_lt !== selectedCell.id_lt) {
+        tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== cellData.id_value).concat(cellData).filter(cell => cell.id_lt !== selectedCell.id_lt).concat(cellAlternatives[0]));
+      }
+
+      // hide modal
+      modalVisibility.setVisibility(false);
+
     }
 
-    // send request to replace missing cell
-    const cellAlternativesResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/layers/${selectedCell.id_lt}`, headers);
-    if (!isResponseSuccessful(cellAlternativesResponseData)) {
-      showMessage(cellAlternativesResponseData.data.error, "error");
-      return;
-    }
 
-    const cellAlternatives = cellAlternativesResponseData.data.data;
-
-    // replace missing cell if there is alternative
-    if (cellAlternatives.length > 0 && cellData.id_lt !== selectedCell.id_lt) {
-      tableState.setTableData(tableState.tableData.filter(cell => cell.id_value !== selectedCell.id_value).concat(cellAlternatives[0]));
-    }
-
-    // hide modal
-    modalVisibility.setVisibility(false);
+    return cellData
 
   };
 
-  const createCell = async () => {
+  const createCell = async (currentModalFields,locale) => {
 
     // get all MLTI parameters
-    const id_gk = parseInt(document.getElementById("inputGK3").value);
+    const id_gk = currentModalFields.id_gk;
 
     const G_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).g_indicate;
     const K_indicate = gkColors.find(gkLevel => gkLevel.id_gk === id_gk).k_indicate;
-    const l_indicate = parseInt(document.getElementById("inputL3").value);
-    const t_indicate = parseInt(document.getElementById("inputT3").value);
+    const l_indicate = currentModalFields.l_indicate;
+    const t_indicate = currentModalFields.t_indicate;
 
     const M_indicate = 0 - (G_indicate * -1 + K_indicate);
     const L_indicate = l_indicate - G_indicate * 3;
@@ -172,9 +208,9 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     // create new cell
     const newCell = {
       quantity: {
-        value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
-        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
-        unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
+        value_name: currentModalFields[locale].value_name,
+        symbol: currentModalFields.symbol,
+        unit: currentModalFields[locale].unit,
         l_indicate: l_indicate,
         t_indicate: t_indicate,
         id_gk: id_gk,
@@ -185,6 +221,8 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
         mlti_sign: convertToMLTI(M_indicate, L_indicate, T_indicate, I_indicate)
       }
     };
+
+    console.log(newCell)
 
     // send cell create request
     const createdCellResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/quantities`, newCell, headers);
@@ -194,16 +232,12 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     }
     const cellData = createdCellResponseData.data.data;
 
-    // show message
-    showMessage(intl.formatMessage({ id: `Ячейка была изменена`, defaultMessage: `Ячейка была изменена` }));
-
     // set new cell
     if (intl.locale === currentModalLocale) {
     tableState.setTableData(tableState.tableData.filter(cell => cell.id_lt !== cellData.id_lt).concat(cellData));
     }
 
-    // hide modal
-    modalVisibility.setVisibility(false);
+    return cellData
 
   };
 
@@ -315,29 +349,97 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
   };
 
-  const requestAlternativeCellData = (locale) => {
+  const requestAlternativeCellData = async (locale) => {
 
     const currentModalLocaleFieldsUpdated = {
       ...currentModalLocaleFields,
+      id_gk: parseInt(document.getElementById("inputGK3").value),
+      l_indicate: parseInt(document.getElementById("inputL3").value) ? parseInt(document.getElementById("inputL3").value) : selectedCellState.selectedCell.l_indicate,
+      t_indicate: parseInt(document.getElementById("inputT3").value) ?  parseInt(document.getElementById("inputT3").value) : selectedCellState.selectedCell.t_indicate,
+      symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
       [currentModalLocale]: {
-        id_gk: parseInt(document.getElementById("inputGK3").value),
-        l_indicate: parseInt(document.getElementById("inputL3").value),
-        t_indicate: parseInt(document.getElementById("inputT3").value),
         value_name: convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),
-        symbol: convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""),
         unit: convertMarkdownFromEditorState(cellEditorsStates.cellUnitEditorState.value).split("/n").join(""),
       }
     }
 
     setCurrentModalLocaleFields(currentModalLocaleFieldsUpdated)
-    console.log(currentModalLocaleFieldsUpdated)
-
-    if (selectedCell) {
-    setStateFromGetAPI(selectedCellState.setSelectedCell,`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`,undefined,headers)
-    // merge data here
-  
-    }
+    console.log(currentModalLocaleFieldsUpdated,locale,!currentModalLocaleFieldsUpdated[locale])
     setCurrentModalLocale(locale)
+
+    if (selectedCell ) {
+    //setStateFromGetAPI(selectedCellState.setSelectedCell,`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`,undefined,headers)
+    
+      if (selectedCell.id_value === -1) {
+
+
+
+        const value_name = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].value_name : ""
+        const unit = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].unit : ""
+        const id_gk = currentModalLocaleFieldsUpdated.id_gk
+        const l_indicate = currentModalLocaleFieldsUpdated.l_indicate
+        const t_indicate = currentModalLocaleFieldsUpdated.t_indicate
+        const symbol = currentModalLocaleFieldsUpdated.symbol
+
+        selectedCellState.setSelectedCell(
+          {
+            ...selectedCellState.selectedCell,
+            id_gk: id_gk,
+            l_indicate: l_indicate,
+            t_indicate: t_indicate,
+            symbol: symbol,
+            value_name: value_name,
+            unit: unit,
+          }
+        )
+
+        return
+      }
+
+    // merge data here
+    const selectedCellResponse = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`, headers);
+    if (!isResponseSuccessful(selectedCellResponse)) {
+      showMessage(selectedCellResponse.data.error, "error");
+
+
+      //selectedCellState.setSelectedCell(selectedCellEdited)
+      return;
+    }
+    const selectedCellFullData = selectedCellResponse.data.data
+
+    const value_name = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].value_name : selectedCellFullData.value_name
+    const unit = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].unit : selectedCellFullData.unit
+    const id_gk = currentModalLocaleFieldsUpdated.id_gk
+    const l_indicate = currentModalLocaleFieldsUpdated.l_indicate
+    const t_indicate = currentModalLocaleFieldsUpdated.t_indicate
+    const symbol = currentModalLocaleFieldsUpdated.symbol
+
+    let selectedCellEdited
+    if (value_name !== "" && unit !== "") {
+      selectedCellEdited = {
+        ...selectedCellFullData,
+        id_gk: id_gk,
+        l_indicate: l_indicate,
+        t_indicate: t_indicate,
+        symbol: symbol,
+        value_name: value_name,
+        unit: unit,
+      }
+    } else {
+      selectedCellEdited = {
+        ...selectedCellFullData,
+      }
+    }
+
+  
+    console.log(currentModalLocaleFieldsUpdated)
+    console.log(currentModalLocaleFieldsUpdated[locale])
+    console.log(selectedCellEdited)
+    console.log(selectedCell)
+    selectedCellState.setSelectedCell(selectedCellEdited)
+
+    }
+    
 
   }
 
