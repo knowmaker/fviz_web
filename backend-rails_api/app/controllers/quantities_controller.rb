@@ -24,9 +24,14 @@ class QuantitiesController < ApplicationController
 
   # Метод для получения одной величины. Параметр - id величины
   def show
+    locale_content = params[:locale_content] || I18n.locale
+    locale_content = locale_content.to_sym
+
     @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find_by(id_value: params[:id])
     if @quantity
-      render json: { data: @quantity }, status: :ok
+      Globalize.with_locale(locale_content) do
+        render json: { data: @quantity }, status: :ok
+      end
     else
       render json: { error: [I18n.t('errors.quantities.not_found')] }, status: :not_found
     end
@@ -57,6 +62,9 @@ class QuantitiesController < ApplicationController
 
   # Метод для обновления параметров величины. Параметр - id величины
   def update
+    locale_content = params[:locale_content] || I18n.locale
+    locale_content = locale_content.to_sym
+
     unless @current_user.role
       render json: { error: [I18n.t('errors.quantities.admin_forbidden')] }, status: :forbidden
       return
@@ -71,7 +79,9 @@ class QuantitiesController < ApplicationController
 
       if @quantity.update(quantity_params_result)
         @quantity.reload
-        render json: { data: @quantity }, status: :ok
+        Globalize.with_locale(locale_content) do
+          render json: { data: @quantity }, status: :ok
+        end
       else
         render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
       end
