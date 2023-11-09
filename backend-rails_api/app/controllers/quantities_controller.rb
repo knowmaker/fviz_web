@@ -77,13 +77,15 @@ class QuantitiesController < ApplicationController
         return
       end
 
-      if @quantity.update(quantity_params_result)
-        @quantity.reload
-        Globalize.with_locale(locale_content) do
+      Globalize.with_locale(locale_content) do
+        if @quantity.update(quantity_params_result)
+          @quantity.reload
           render json: { data: @quantity }, status: :ok
+        else
+          Globalize.with_locale(I18n.locale) do
+            render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
+          end
         end
-      else
-        render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
       end
     else
       render json: { error: [I18n.t('errors.quantities.not_found')] }, status: :not_found

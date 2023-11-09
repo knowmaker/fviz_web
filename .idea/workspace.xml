@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="response examples in swagger">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying locales">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
     </list>
@@ -442,15 +442,7 @@
       <workItem from="1698435186713" duration="2787000" />
       <workItem from="1698477731751" duration="4943000" />
       <workItem from="1698484601166" duration="616000" />
-      <workItem from="1699549459864" duration="1996000" />
-    </task>
-    <task id="LOCAL-00102" summary="represents_controller.rb add json_output in basic">
-      <option name="closed" value="true" />
-      <created>1696055271109</created>
-      <option name="number" value="00102" />
-      <option name="presentableId" value="LOCAL-00102" />
-      <option name="project" value="LOCAL" />
-      <updated>1696055271109</updated>
+      <workItem from="1699549459864" duration="2742000" />
     </task>
     <task id="LOCAL-00103" summary="represents_controller.rb add json_output in basic 2t">
       <option name="closed" value="true" />
@@ -836,7 +828,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698482004707</updated>
     </task>
-    <option name="localTasksCounter" value="151" />
+    <task id="LOCAL-00151" summary="trying locales">
+      <option name="closed" value="true" />
+      <created>1699554352185</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1699554352187</updated>
+    </task>
+    <option name="localTasksCounter" value="152" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -854,7 +854,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="user mailer" />
     <MESSAGE value="add comments &amp;&amp; rubocop" />
     <MESSAGE value="you cannot delete the last represent" />
     <MESSAGE value="law_types translations" />
@@ -879,7 +878,8 @@
     <MESSAGE value="Readme for backend pr" />
     <MESSAGE value="Readme for all project" />
     <MESSAGE value="response examples in swagger" />
-    <option name="LAST_COMMIT_MESSAGE" value="response examples in swagger" />
+    <MESSAGE value="trying locales" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying locales" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1699553643740" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
