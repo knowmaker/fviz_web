@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying locales">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="trying locales 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/quantities_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/gk_translation.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/gk_translation.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law_type_translation.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law_type_translation.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/quantity_translation.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/quantity_translation.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -442,15 +446,7 @@
       <workItem from="1698435186713" duration="2787000" />
       <workItem from="1698477731751" duration="4943000" />
       <workItem from="1698484601166" duration="616000" />
-      <workItem from="1699549459864" duration="2742000" />
-    </task>
-    <task id="LOCAL-00103" summary="represents_controller.rb add json_output in basic 2t">
-      <option name="closed" value="true" />
-      <created>1696055877088</created>
-      <option name="number" value="00103" />
-      <option name="presentableId" value="LOCAL-00103" />
-      <option name="project" value="LOCAL" />
-      <updated>1696055877088</updated>
+      <workItem from="1699549459864" duration="4987000" />
     </task>
     <task id="LOCAL-00104" summary="trying tests">
       <option name="closed" value="true" />
@@ -836,7 +832,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699554352187</updated>
     </task>
-    <option name="localTasksCounter" value="152" />
+    <task id="LOCAL-00152" summary="trying locales 2">
+      <option name="closed" value="true" />
+      <created>1699555582548</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1699555582548</updated>
+    </task>
+    <option name="localTasksCounter" value="153" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -854,7 +858,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add comments &amp;&amp; rubocop" />
     <MESSAGE value="you cannot delete the last represent" />
     <MESSAGE value="law_types translations" />
     <MESSAGE value="quantity translations" />
@@ -879,7 +882,8 @@
     <MESSAGE value="Readme for all project" />
     <MESSAGE value="response examples in swagger" />
     <MESSAGE value="trying locales" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying locales" />
+    <MESSAGE value="trying locales 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying locales 2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1699553643740" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

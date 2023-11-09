@@ -18,13 +18,11 @@ en:
         g_indicate: "G Indicator"
         k_indicate: "K Indicator"
         color: "System level color"
-      gk_translation:
         gk_name: "System level name"
         locale: "Language"
       law_type:
         id_type: "Law type"
         color: "Law type color"
-      law_type_translation:
         type_name: "Law type Name"
         locale: "Language"
       law:
@@ -50,11 +48,9 @@ en:
         i_indicate_auto: "I Indicator"
         id_lt: "Cell"
         id_gk: "System level"
-      quantity_translation:
         value_name: "Quantity Name"
         unit: "Unit"
         locale: "Language"
-        id_value: "Quantity"
       represent:
         id_repr: "Represent"
         title: "Represent title"
