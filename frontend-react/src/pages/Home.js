@@ -296,7 +296,7 @@ export default function Home() {
 
     }, []);
 
-    console.log(selectedCell)
+    
 
     useEffect(() => {
 
@@ -307,7 +307,7 @@ export default function Home() {
           // if it is an empty cell
           if (selectedCell.id_value === -1) {
 
-            console.log(selectedCell)
+            console.log("here")
             convertMarkdownToEditorState(setCellNameEditor, selectedCell.value_name ? selectedCell.value_name :"") 
             convertMarkdownToEditorState(setCellSymbolEditor, selectedCell.symbol ? selectedCell.symbol :"") 
             convertMarkdownToEditorState(setCellUnitEditor, selectedCell.unit ? selectedCell.unit :"") 
@@ -332,7 +332,7 @@ export default function Home() {
 
           } else {cellData = selectedCell}
 
-
+          console.log("there")
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
           convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
@@ -340,8 +340,15 @@ export default function Home() {
           document.getElementById("inputL3").value = cellData.l_indicate
           document.getElementById("inputT3").value = cellData.t_indicate
           document.getElementById("inputGK3").value = cellData.id_gk
-        }  
-      }
+        }  else {
+          convertMarkdownToEditorState(setCellNameEditor, "") 
+          convertMarkdownToEditorState(setCellSymbolEditor, "") 
+          convertMarkdownToEditorState(setCellUnitEditor, "") 
+          document.getElementById("inputL3").value = null
+          document.getElementById("inputT3").value = null
+          document.getElementById("inputGK3").value = null
+        }
+      } 
       setSelectedCell()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

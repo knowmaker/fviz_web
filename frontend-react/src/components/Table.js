@@ -72,7 +72,7 @@ function CellOptions({selectedCellState ,gkColors, revStates,modalsVisibility}) 
 
   if (cellAlternatives !== null && selectedCell) {
 
-    const emptyCellData = {id_lt:selectedCell.id_lt,id_value:-1,unit:""}  
+    const emptyCellData = {id_lt:selectedCell.id_lt,id_value:-1,unit:"",l_indicate:selectedCell.l_indicate, t_indicate: selectedCell.t_indicate}  
     const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:-1,unit:"",value_name:"<<Скрыть>>"}    
 
     let cells = cellAlternatives.filter(cellData => cellData.id_value !== selectedCell.id_value).map(cellData => {
@@ -518,7 +518,6 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
       setSelectedCell(null)
 
 
-
   };
 
   const handleLawSelection = async (event, cellId) => {
@@ -622,7 +621,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
       return
     }
     // showModeState
-    if (selectedCells) {handleCellLeftClick(event, cellFullId)};
+   
     //console.log(selectedLawState && showModeState)
     if (showModeState) {
       if (selectedLawState && !showModeState.showMode) {handleLawSelection(event, cellFullId)};
@@ -633,7 +632,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
 
       }
     }
-
+    if (selectedCells) {handleCellLeftClick(event, cellFullId)};
   }
 
   if (!isEmpty) {
