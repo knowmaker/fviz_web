@@ -347,6 +347,12 @@
       "value": "Download screenshot"
     }
   ],
+  "Скрыть": [
+    {
+      "type": 0,
+      "value": "Hide"
+    }
+  ],
   "Создать": [
     {
       "type": 0,
