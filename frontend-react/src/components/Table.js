@@ -72,6 +72,7 @@ function CellOptions({selectedCellState ,gkColors, revStates,modalsVisibility}) 
 
   if (cellAlternatives !== null && selectedCell) {
 
+    console.log(selectedCell)
     const emptyCellData = {id_lt:selectedCell.id_lt,id_value:-1,unit:"",l_indicate:selectedCell.l_indicate, t_indicate: selectedCell.t_indicate}  
     const emptyCellShowData = {id_lt:selectedCell.id_lt,id_value:-1,unit:"",value_name:"<<Скрыть>>"}    
 
@@ -416,10 +417,12 @@ function Row({rowId, fullTableData, selectedCellState, hoveredCellState, selecte
 
     const cellFullId = rowId * 19 + isEven + cellId + 1 + Math.floor(rowId / 2)
     let cellData = fullTableData.tableData.find(cell => cell.id_lt === cellFullId)
+    let cellIndicates = {t_indicate:emptyCellsData.find(cell => cell.id_lt === cellFullId).t_indicate,l_indicate:emptyCellsData.find(cell => cell.id_lt === cellFullId).l_indicate}
     let hoverData = emptyCellsData.find(cell => cell.id_lt === cellFullId)
     let cellColor
     let borderColor
     if (cellData) {
+      cellData = {...cellData,...cellIndicates}
       if (cellData.id_gk) {
         const cellGKLayer = fullTableData.Colors.find((setting) => setting.id_gk === cellData.id_gk)
         const cellNormalColor = cellGKLayer.color
