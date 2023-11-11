@@ -39,7 +39,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
       convertMarkdownToEditorState(setLawGroupEditorState, "");
       document.getElementById("InputLawGroupColor3").value = "#000000";
     }
-    if (modalsVisibility.lawsGroupsModalVisibility.isVisible === true) {
+    if (modalsVisibility.lawsGroupsModalVisibility.isVisible === true && isAdmin) {
       setCurrentTabsLocale(intl.locale)
     } else {
       setSelectedLawGroup({ type_name: null, id_type: null })
