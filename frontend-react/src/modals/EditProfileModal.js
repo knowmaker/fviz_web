@@ -7,6 +7,7 @@ import { showPassword } from '../pages/Home.js';
 import { showMessage } from '../misc/message.js';
 import { Modal } from './Modal.js';
 import { Button } from '../components/ButtonWithLoad.js';
+import setStateFromGetAPI from '../misc/api.js';
 
 export function EditProfileModal({ modalsVisibility, currentLocaleState }) {
 
@@ -60,6 +61,9 @@ export function EditProfileModal({ modalsVisibility, currentLocaleState }) {
 
     // change current locate acctording to user preferences
     currentLocaleState.setCurrentLocale(locale);
+
+    // get updated profile
+    setStateFromGetAPI(userInfoState.setUserProfile, `${process.env.REACT_APP_API_LINK}/${intl.locale}/users/profile`, undefined, headers )
 
   };
 

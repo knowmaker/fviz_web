@@ -18,13 +18,11 @@ ru:
         g_indicate: "Показатель степени G"
         k_indicate: "Показатель степени K"
         color: "Цвет системного уровня"
-      gk_translation:
         gk_name: "Название системного уровня"
         locale: "Язык"
       law_type:
         id_type: "Тип закона"
         color: "Цвет типа закона"
-      law_type_translation:
         type_name: "Имя типа закона"
         locale: "Язык"
       law:
@@ -50,11 +48,9 @@ ru:
         i_indicate_auto: "Показатель степени I"
         id_lt: "Ячейка"
         id_gk: "Системный уровень"
-      quantity_translation:
         value_name: "Название величины"
         unit: "Единица измерения"
         locale: "Язык"
-        id_value: "Величина"
       represent:
         id_repr: "Представление"
         title: "Название представления"

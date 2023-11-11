@@ -38,7 +38,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
       convertMarkdownToEditorState(setGKLayerEditorState, "");
       document.getElementById("InputGKLayerColor3").value = "#000000";
     }
-    if (modalsVisibility.GKColorsEditModalVisibility.isVisible === true) {
+    if (modalsVisibility.GKColorsEditModalVisibility.isVisible === true && isAdmin) {
       setCurrentTabsLocale(intl.locale)
     } else {
       setSelectedGKLayer({ type_name: null, id_gk: null })

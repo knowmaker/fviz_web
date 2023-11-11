@@ -16,7 +16,7 @@ export default function LawsCanvas({lawCells,color}) {
 
   const getCorrectDrawOrder = (lawCells) => {
 
-    const sortedCells = lawCells.sort()
+    const sortedCells = lawCells.sort((a,b)=>a-b)
 
     return [sortedCells[0],sortedCells[1],sortedCells[3],sortedCells[2]]
 
