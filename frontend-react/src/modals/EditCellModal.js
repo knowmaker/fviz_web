@@ -348,8 +348,12 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     }
 
   };
-
+  
+  // console.log(convertMarkdownFromEditorState(cellEditorsStates.cellNameEditorState.value).split("/n").join(""),convertMarkdownFromEditorState(cellEditorsStates.cellSymbolEditorState.value).split("/n").join(""))
   const requestAlternativeCellData = async (locale) => {
+
+    
+    console.log(selectedCellState.selectedCell)
 
     const currentModalLocaleFieldsUpdated = {
       ...currentModalLocaleFields,
@@ -364,15 +368,13 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     }
 
     setCurrentModalLocaleFields(currentModalLocaleFieldsUpdated)
-    console.log(currentModalLocaleFieldsUpdated,locale,!currentModalLocaleFieldsUpdated[locale])
+    console.log(currentModalLocaleFieldsUpdated,locale)
     setCurrentModalLocale(locale)
 
     if (selectedCell ) {
     //setStateFromGetAPI(selectedCellState.setSelectedCell,`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`,undefined,headers)
     
       if (selectedCell.id_value === -1) {
-
-
 
         const value_name = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].value_name : ""
         const unit = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].unit : ""
@@ -395,7 +397,6 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
         return
       }
-
     // merge data here
     const selectedCellResponse = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`, headers);
     if (!isResponseSuccessful(selectedCellResponse)) {

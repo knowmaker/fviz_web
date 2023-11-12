@@ -236,7 +236,7 @@ export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsG
       </div>
 
       <div className="modal-footer2">
-        <Button type="button" className="btn btn-success" onClick={(e) => saveButtonClick(e)}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></Button>
+        <Button type="button" className="btn btn-success me-1" onClick={(e) => saveButtonClick(e)}><FormattedMessage id='Сохранить' defaultMessage="Сохранить" /></Button>
         {selectedLaw.id_law ?
           (<>
             <Button type="button" className="btn btn-danger" onClick={(e) => deleteLaw(e)}><FormattedMessage id='Удалить' defaultMessage="Удалить" /></Button>

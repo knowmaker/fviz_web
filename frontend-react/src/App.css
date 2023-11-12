@@ -59,8 +59,8 @@ html {
 }
 
 .tables {
-  max-height: calc(100vh - 123px);
-  margin-top: 58px;
+  max-height: calc(100vh - 114px);
+  margin-top: 65px;
   /* margin-bottom: 43px; */
   overflow-y: scroll;
   overflow-x: scroll;

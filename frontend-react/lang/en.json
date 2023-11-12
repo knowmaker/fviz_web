@@ -226,6 +226,9 @@
   },
   "Подтверждение": {
     "defaultMessage": "Are you sure you want to do this?"
+  },
+  "Скрыть": {
+    "defaultMessage": "Hide"
   }
   
 
