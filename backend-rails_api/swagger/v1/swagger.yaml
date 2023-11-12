@@ -45,6 +45,12 @@ paths:
         type: string
     get:
       summary: show GK
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - GK
       security:
@@ -76,11 +82,16 @@ paths:
           description: server error
     patch:
       summary: update GK
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - GK
       security:
       - bearerAuth: []
-      parameters: []
       responses:
         '200':
           description: successful
@@ -152,11 +163,16 @@ paths:
           description: server error
     post:
       summary: create law type
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - Law Types
       security:
       - bearerAuth: []
-      parameters: []
       responses:
         '201':
           description: created
@@ -203,6 +219,12 @@ paths:
         type: string
     get:
       summary: show law type
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - Law Types
       security:
@@ -230,11 +252,16 @@ paths:
           description: server error
     put:
       summary: update law type
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - Law Types
       security:
       - bearerAuth: []
-      parameters: []
       responses:
         '200':
           description: successful
@@ -549,11 +576,16 @@ paths:
           description: server error
     post:
       summary: create quantity
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - Quantities
       security:
       - bearerAuth: []
-      parameters: []
       responses:
         '201':
           description: created
@@ -649,6 +681,12 @@ paths:
         type: string
     get:
       summary: show quantity
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - Quantities
       responses:
@@ -698,11 +736,16 @@ paths:
           description: server error
     put:
       summary: update quantity
+      parameters:
+      - name: locale_content
+        in: query
+        description: Locale Content
+        schema:
+          type: string
       tags:
       - Quantities
       security:
       - bearerAuth: []
-      parameters: []
       responses:
         '200':
           description: successful

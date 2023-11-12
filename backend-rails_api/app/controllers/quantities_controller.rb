@@ -5,6 +5,7 @@ class QuantitiesController < ApplicationController
   include QuantitiesHelper
   before_action :authorize_request, only: %i[index create update destroy]
   before_action :set_quantity, only: %i[update destroy]
+  before_action :set_locale_content, only: %i[show create update]
 
   # Метод для получения перечня физических величин
   # Сохраняется в виде PDF файла
@@ -24,12 +25,9 @@ class QuantitiesController < ApplicationController
 
   # Метод для получения одной величины. Параметр - id величины
   def show
-    locale_content = params[:locale_content] || I18n.locale
-    locale_content = locale_content.to_sym
-
     @quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find_by(id_value: params[:id])
     if @quantity
-      Globalize.with_locale(locale_content) do
+      Globalize.with_locale(@locale_content) do
         render json: { data: @quantity }, status: :ok
       end
     else
@@ -50,21 +48,20 @@ class QuantitiesController < ApplicationController
       return
     end
 
-    quantity = Quantity.new(quantity_params_result)
+    Globalize.with_locale(@locale_content) do
+      quantity = Quantity.new(quantity_params_result)
 
-    if quantity.save
-      merged_quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(quantity.id)
-      render json: { data: merged_quantity }, status: :created
-    else
-      render json: { error: quantity.errors.full_messages }, status: :unprocessable_entity
+      if quantity.save
+        merged_quantity = Quantity.joins(:gk, :lt).select('quantity.*, gk.*, lt.*').find(quantity.id)
+        render json: { data: merged_quantity }, status: :created
+      else
+        render json: { error: quantity.errors.full_messages }, status: :unprocessable_entity
+      end
     end
   end
 
   # Метод для обновления параметров величины. Параметр - id величины
   def update
-    locale_content = params[:locale_content] || I18n.locale
-    locale_content = locale_content.to_sym
-
     unless @current_user.role
       render json: { error: [I18n.t('errors.quantities.admin_forbidden')] }, status: :forbidden
       return
@@ -77,14 +74,12 @@ class QuantitiesController < ApplicationController
         return
       end
 
-      Globalize.with_locale(locale_content) do
+      Globalize.with_locale(@locale_content) do
         if @quantity.update(quantity_params_result)
           @quantity.reload
           render json: { data: @quantity }, status: :ok
         else
-          Globalize.with_locale(I18n.locale) do
-            render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
-          end
+          render json: { error: @quantity.errors.full_messages }, status: :unprocessable_entity
         end
       end
     else
@@ -141,5 +136,10 @@ class QuantitiesController < ApplicationController
     quantity_params.delete(:l_indicate)
     quantity_params.delete(:t_indicate)
     quantity_params
+  end
+
+  def set_locale_content
+    @locale_content = params[:locale_content] || I18n.locale
+    @locale_content = @locale_content.to_sym
   end
 end

@@ -50,6 +50,8 @@ module QuantitiesHelper
     html
   end
 
+  private
+
   def generate_mlti(m_indicate, l_indicate, t_indicate, i_indicate)
     mlti_string = ''
 

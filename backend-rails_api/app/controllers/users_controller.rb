@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   # Метод регистрации пользователя
   def register
     user = User.new(user_params)
+    user.confirmation_token = SecureRandom.urlsafe_base64.to_s
 
     if user.save
       # Высылается письмо для подтверждения почты
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
   def login
     @user = User.find_by(email: params[:user][:email])
 
-    if @user&.confirmed && validate_password(params[:user][:password], @user.password)
+    if @user&.confirmed && Argon2::Password.verify_password(params[:user][:password], @user.password)
 
       token = encode(id_user: @user.id_user)
       render json: { data: token }, status: :ok

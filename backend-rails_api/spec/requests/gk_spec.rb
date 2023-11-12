@@ -38,6 +38,8 @@ RSpec.describe 'gk', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show GK') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'GK'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -67,6 +69,8 @@ RSpec.describe 'gk', type: :request do
     end
 
     patch('update GK') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'GK'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
