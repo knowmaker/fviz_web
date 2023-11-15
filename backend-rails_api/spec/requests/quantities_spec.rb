@@ -22,6 +22,8 @@ RSpec.describe 'quantities', type: :request do
     end
 
     post('create quantity') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'Quantities'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
@@ -89,6 +91,8 @@ RSpec.describe 'quantities', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show quantity') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'Quantities'
       produces 'application/json'
 
@@ -127,6 +131,8 @@ RSpec.describe 'quantities', type: :request do
     end
 
     put('update quantity') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'Quantities'
       security [{ bearerAuth: [] }]
       consumes 'application/json'

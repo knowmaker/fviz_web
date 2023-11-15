@@ -33,6 +33,8 @@ RSpec.describe 'law_types', type: :request do
     end
 
     post('create law type') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'Law Types'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
@@ -79,6 +81,8 @@ RSpec.describe 'law_types', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show law type') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'Law Types'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -106,6 +110,8 @@ RSpec.describe 'law_types', type: :request do
     end
 
     put('update law type') do
+      parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
+
       tags 'Law Types'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
