@@ -43,6 +43,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
     } else {
       setSelectedGKLayer({ type_name: null, id_gk: null })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalsVisibility.GKColorsEditModalVisibility.isVisible]);
 
   const setCurrentTabsLocale = (locale) => {

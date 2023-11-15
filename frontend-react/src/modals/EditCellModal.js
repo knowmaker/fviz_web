@@ -11,7 +11,6 @@ import { convertMarkdownToEditorState } from '../misc/converters';
 import { Modal } from './Modal.js';
 import { RichTextEditor } from '../components/RichTextEditor.js';
 import { Button } from '../components/ButtonWithLoad.js';
-import setStateFromGetAPI from '../misc/api.js';
 
 export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates, gkColors, selectedCellState }) {
 
@@ -474,7 +473,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
           <div className="tab-pane fade show active" id="cell-edit" role="tabpanel" aria-labelledby="nav-cell-language-tab" tabIndex="0">
             <div className="row">
               <div className="col-6">
-                <label className="form-label"><FormattedMessage id='Имя' defaultMessage="Имя" /></label>
+                <label className="form-label"><FormattedMessage id='Название' defaultMessage="Название" /></label>
                 <RichTextEditor editorState={cellEditorsStates.cellNameEditorState.value} setEditorState={cellEditorsStates.cellNameEditorState.set} readOnly={!isAdmin} />
               </div>
               <div className="col-6">

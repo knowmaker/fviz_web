@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React from 'react';
 import { TableContext, UserProfile } from '../misc/contexts.js';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
@@ -169,8 +169,7 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
 
 export function closeAllModals(modalsVisibility) {
 
-    console.log(modalsVisibility)
-    for (const [name, modal] of Object.entries(modalsVisibility)) {
+    for (const [, modal] of Object.entries(modalsVisibility)) {
         modal.setVisibility(false)
     }
 
