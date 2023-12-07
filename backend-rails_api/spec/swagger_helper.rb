@@ -34,10 +34,12 @@ RSpec.configure do |config|
       # security: [{ bearerAuth: [] }], # Добавляем схему безопасности к документу
       servers: [
         {
-          url: 'http://{defaultHost}',
+          url: 'http://localhost:5000/api/{locale}',
           variables: {
-            defaultHost: {
-              default: 'localhost:5000/'
+            locale: {
+              default: 'ru',
+              enum: %w[ru en],
+              description: 'Locale parameter'
             }
           }
         }

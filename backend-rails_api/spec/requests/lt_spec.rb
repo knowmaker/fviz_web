@@ -3,8 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'lt', type: :request do
-  path '/api/lt' do
-    get('list lt') do
+  path '/lt' do
+    get('Get a list of lt (cells)') do
       tags 'LT'
       produces 'application/json'
 
@@ -13,19 +13,20 @@ RSpec.describe 'lt', type: :request do
                properties: {
                  data: {
                    type: :array,
-                   minItems: 5,
+                   minItems: 2,
                    items: {
                      type: :object,
                      properties: {
-                       id_lt: { type: :integer },
-                       l_indicate: { type: :integer },
-                       t_indicate: { type: :integer }
+                       id_lt: { type: :integer, example: 1 },
+                       l_indicate: { type: :integer, example: 5 },
+                       t_indicate: { type: :integer, example: 6 }
                      }
                    }
                  }
                }
         run_test!
       end
+
       response(500, 'server error') do
         run_test!
       end

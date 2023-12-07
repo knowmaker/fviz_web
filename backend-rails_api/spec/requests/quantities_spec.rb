@@ -3,8 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'quantities', type: :request do
-  path '/api/quantities' do
-    get('list quantities') do
+  path '/quantities' do
+    get('Get a list of physical quantities') do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
       produces 'application/pdf'
@@ -21,7 +21,7 @@ RSpec.describe 'quantities', type: :request do
       end
     end
 
-    post('create quantity') do
+    post('Create a new physical quantity') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'Quantities'
@@ -35,16 +35,16 @@ RSpec.describe 'quantities', type: :request do
           quantity: {
             type: :object,
             properties: {
-              value_name: { type: :string },
-              symbol: { type: :string },
-              m_indicate_auto: { type: :integer },
-              l_indicate_auto: { type: :integer },
-              t_indicate_auto: { type: :integer },
-              i_indicate_auto: { type: :integer },
-              unit: { type: :string },
-              l_indicate: { type: :integer },
-              t_indicate: { type: :integer },
-              id_gk: { type: :integer }
+              value_name: { type: :string, maxLength: 200, example: "Скорость" },
+              symbol: { type: :string, maxLength: 100, example: "V" },
+              unit: { type: :string, maxLength: 100, example: "м/с" },
+              m_indicate_auto: { type: :integer, example: 5 },
+              l_indicate_auto: { type: :integer, example: 6 },
+              t_indicate_auto: { type: :integer, example: 7 },
+              i_indicate_auto: { type: :integer, example: 8 },
+              l_indicate: { type: :integer, example: 0 },
+              t_indicate: { type: :integer, example: 0 },
+              id_gk: { type: :integer, example: 1 }
             },
             required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit
                          l_indicate t_indicate id_gk]
@@ -58,21 +58,21 @@ RSpec.describe 'quantities', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_value: { type: :integer },
-                     value_name: { type: :string },
-                     symbol: { type: :string },
-                     unit: { type: :string },
-                     m_indicate_auto: { type: :integer },
-                     l_indicate_auto: { type: :integer },
-                     t_indicate_auto: { type: :integer },
-                     i_indicate_auto: { type: :integer },
-                     id_lt: { type: :integer },
-                     l_indicate: { type: :integer },
-                     t_indicate: { type: :integer },
-                     id_gk: { type: :integer },
-                     g_indicate: { type: :integer },
-                     k_indicate: { type: :integer },
-                     color: { type: :string }
+                     id_value: { type: :integer, example: 1 },
+                     value_name: { type: :string, maxLength: 200, example: "Скорость" },
+                     symbol: { type: :string, maxLength: 100, example: "V" },
+                     unit: { type: :string, maxLength: 100, example: "м/с" },
+                     m_indicate_auto: { type: :integer, example: 5 },
+                     l_indicate_auto: { type: :integer, example: 6 },
+                     t_indicate_auto: { type: :integer, example: 7 },
+                     i_indicate_auto: { type: :integer, example: 8 },
+                     id_lt: { type: :integer, example: 1 },
+                     l_indicate: { type: :integer, example: 0 },
+                     t_indicate: { type: :integer, example: 0 },
+                     id_gk: { type: :integer, example: 1 },
+                     g_indicate: { type: :integer, example: 0 },
+                     k_indicate: { type: :integer, example: 0 },
+                     color: { type: :string, maxLength: 100, example: "#FFFFFF" }
                    }
                  }
                }
@@ -87,10 +87,10 @@ RSpec.describe 'quantities', type: :request do
     end
   end
 
-  path '/api/quantities/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/quantities/{id_value}' do
+    parameter name: 'id_value', in: :path, type: :string, description: 'id_value'
 
-    get('show quantity') do
+    get('Get the physical quantity') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'Quantities'
@@ -102,21 +102,21 @@ RSpec.describe 'quantities', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_value: { type: :integer },
-                     value_name: { type: :string },
-                     symbol: { type: :string },
-                     unit: { type: :string },
-                     m_indicate_auto: { type: :integer },
-                     l_indicate_auto: { type: :integer },
-                     t_indicate_auto: { type: :integer },
-                     i_indicate_auto: { type: :integer },
-                     id_lt: { type: :integer },
-                     l_indicate: { type: :integer },
-                     t_indicate: { type: :integer },
-                     id_gk: { type: :integer },
-                     g_indicate: { type: :integer },
-                     k_indicate: { type: :integer },
-                     color: { type: :string }
+                     id_value: { type: :integer, example: 1 },
+                     value_name: { type: :string, maxLength: 200, example: "Скорость" },
+                     symbol: { type: :string, maxLength: 100, example: "V" },
+                     unit: { type: :string, maxLength: 100, example: "м/с" },
+                     m_indicate_auto: { type: :integer, example: 5 },
+                     l_indicate_auto: { type: :integer, example: 6 },
+                     t_indicate_auto: { type: :integer, example: 7 },
+                     i_indicate_auto: { type: :integer, example: 8 },
+                     id_lt: { type: :integer, example: 1 },
+                     l_indicate: { type: :integer, example: 0 },
+                     t_indicate: { type: :integer, example: 0 },
+                     id_gk: { type: :integer, example: 1 },
+                     g_indicate: { type: :integer, example: 0 },
+                     k_indicate: { type: :integer, example: 0 },
+                     color: { type: :string, maxLength: 100, example: "#FFFFFF" }
                    }
                  }
                }
@@ -130,7 +130,7 @@ RSpec.describe 'quantities', type: :request do
       end
     end
 
-    put('update quantity') do
+    put('Update the physical quantity') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'Quantities'
@@ -144,19 +144,17 @@ RSpec.describe 'quantities', type: :request do
           quantity: {
             type: :object,
             properties: {
-              value_name: { type: :string },
-              symbol: { type: :string },
-              m_indicate_auto: { type: :integer },
-              l_indicate_auto: { type: :integer },
-              t_indicate_auto: { type: :integer },
-              i_indicate_auto: { type: :integer },
-              unit: { type: :string },
-              l_indicate: { type: :integer },
-              t_indicate: { type: :integer },
-              id_gk: { type: :integer }
-            },
-            required: %w[value_name symbol m_indicate_auto l_indicate_auto t_indicate_auto i_indicate_auto unit
-                         l_indicate t_indicate id_gk]
+              value_name: { type: :string, maxLength: 200, example: "Скорость" },
+              symbol: { type: :string, maxLength: 100, example: "V" },
+              unit: { type: :string, maxLength: 100, example: "м/с" },
+              m_indicate_auto: { type: :integer, example: 5 },
+              l_indicate_auto: { type: :integer, example: 6 },
+              t_indicate_auto: { type: :integer, example: 7 },
+              i_indicate_auto: { type: :integer, example: 8 },
+              l_indicate: { type: :integer, example: 0 },
+              t_indicate: { type: :integer, example: 0 },
+              id_gk: { type: :integer, example: 1 }
+            }
           }
         }
       }
@@ -167,21 +165,21 @@ RSpec.describe 'quantities', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_value: { type: :integer },
-                     value_name: { type: :string },
-                     symbol: { type: :string },
-                     unit: { type: :string },
-                     m_indicate_auto: { type: :integer },
-                     l_indicate_auto: { type: :integer },
-                     t_indicate_auto: { type: :integer },
-                     i_indicate_auto: { type: :integer },
-                     id_lt: { type: :integer },
-                     l_indicate: { type: :integer },
-                     t_indicate: { type: :integer },
-                     id_gk: { type: :integer },
-                     g_indicate: { type: :integer },
-                     k_indicate: { type: :integer },
-                     color: { type: :string }
+                     id_value: { type: :integer, example: 1 },
+                     value_name: { type: :string, maxLength: 200, example: "Скорость" },
+                     symbol: { type: :string, maxLength: 100, example: "V" },
+                     unit: { type: :string, maxLength: 100, example: "м/с" },
+                     m_indicate_auto: { type: :integer, example: 5 },
+                     l_indicate_auto: { type: :integer, example: 6 },
+                     t_indicate_auto: { type: :integer, example: 7 },
+                     i_indicate_auto: { type: :integer, example: 8 },
+                     id_lt: { type: :integer, example: 1 },
+                     l_indicate: { type: :integer, example: 0 },
+                     t_indicate: { type: :integer, example: 0 },
+                     id_gk: { type: :integer, example: 1 },
+                     g_indicate: { type: :integer, example: 0 },
+                     k_indicate: { type: :integer, example: 0 },
+                     color: { type: :string, maxLength: 100, example: "#FFFFFF" }
                    }
                  }
                }
@@ -198,7 +196,7 @@ RSpec.describe 'quantities', type: :request do
       end
     end
 
-    delete('delete quantity') do
+    delete('Delete the physical quantity') do
       tags 'Quantities'
       security [{ bearerAuth: [] }]
 
@@ -214,10 +212,10 @@ RSpec.describe 'quantities', type: :request do
     end
   end
 
-  path '/api/layers/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/layers/{id_lt}' do
+    parameter name: 'id_lt', in: :path, type: :string, description: 'id_lt'
 
-    get('get quantities by lt id') do
+    get('Get a list of physical quantities by lt id') do
       tags 'Quantities'
       produces 'application/json'
 
@@ -230,16 +228,16 @@ RSpec.describe 'quantities', type: :request do
                    items: {
                      type: :object,
                      properties: {
-                       id_value: { type: :integer },
-                       value_name: { type: :string },
-                       symbol: { type: :string },
-                       unit: { type: :string },
-                       m_indicate_auto: { type: :integer },
-                       l_indicate_auto: { type: :integer },
-                       t_indicate_auto: { type: :integer },
-                       i_indicate_auto: { type: :integer },
-                       id_lt: { type: :integer },
-                       id_gk: { type: :integer }
+                       id_value: { type: :integer, example: 1 },
+                       value_name: { type: :string, maxLength: 200, example: "Скорость" },
+                       symbol: { type: :string, maxLength: 100, example: "V" },
+                       unit: { type: :string, maxLength: 100, example: "м/с" },
+                       m_indicate_auto: { type: :integer, example: 5 },
+                       l_indicate_auto: { type: :integer, example: 6 },
+                       t_indicate_auto: { type: :integer, example: 7 },
+                       i_indicate_auto: { type: :integer, example: 8 },
+                       id_lt: { type: :integer, example: 1 },
+                       id_gk: { type: :integer, example: 1 }
                      }
                    }
                  }

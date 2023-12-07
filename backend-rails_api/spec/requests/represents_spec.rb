@@ -3,8 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'represents', type: :request do
-  path '/api/represents' do
-    get('list represents') do
+  path '/represents' do
+    get('Get a list of represents') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -18,8 +18,8 @@ RSpec.describe 'represents', type: :request do
                    items: {
                      type: :object,
                      properties: {
-                       id_repr: { type: :integer },
-                       title: { type: :string }
+                       id_repr: { type: :integer, example: 1 },
+                       title: { type: :string, maxLength: 100, example: "Базовое" }
                      }
                    }
                  }
@@ -31,7 +31,7 @@ RSpec.describe 'represents', type: :request do
       end
     end
 
-    post('create represent') do
+    post('Create a new represent') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
@@ -43,11 +43,11 @@ RSpec.describe 'represents', type: :request do
           represent: {
             type: :object,
             properties: {
-              title: { type: :string },
+              title: { type: :string, maxLength: 100, example: "Базовое" },
               active_quantities: {
                 type: :array,
                 minItems: 5,
-                items: { type: :integer }
+                items: { type: :integer, example: 1 }
               }
             },
             required: %w[title active_quantities]
@@ -61,13 +61,13 @@ RSpec.describe 'represents', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_repr: { type: :integer },
-                     title: { type: :string },
-                     id_user: { type: :integer },
+                     id_repr: { type: :integer, example: 1 },
+                     title: { type: :string, maxLength: 100, example: "Базовое" },
+                     id_user: { type: :integer, example: 1 },
                      active_quantities: {
                        type: :array,
                        minItems: 5,
-                       items: { type: :integer }
+                       items: { type: :integer, example: 1}
                      }
                    }
                  }
@@ -83,10 +83,10 @@ RSpec.describe 'represents', type: :request do
     end
   end
 
-  path '/api/represents/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/represents/{id_repr}' do
+    parameter name: 'id_repr', in: :path, type: :string, description: 'id_repr'
 
-    get('show represent') do
+    get('Get the represent') do
       tags 'Represents'
       produces 'application/json'
 
@@ -96,13 +96,13 @@ RSpec.describe 'represents', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_repr: { type: :integer },
-                     title: { type: :string },
-                     id_user: { type: :integer },
+                     id_repr: { type: :integer, example: 1 },
+                     title: { type: :string, maxLength: 100, example: "Базовое" },
+                     id_user: { type: :integer, example: 1 },
                      active_quantities: {
                        type: :array,
                        minItems: 5,
-                       items: { type: :integer }
+                       items: { type: :integer, example: 1 }
                      }
                    }
                  }
@@ -117,7 +117,7 @@ RSpec.describe 'represents', type: :request do
       end
     end
 
-    put('update represent') do
+    put('Update the represent') do
       security [{ bearerAuth: [] }]
       tags 'Represents'
       consumes 'application/json'
@@ -129,11 +129,11 @@ RSpec.describe 'represents', type: :request do
           represent: {
             type: :object,
             properties: {
-              title: { type: :string },
+              title: { type: :string, maxLength: 100, example: "Базовое" },
               active_quantities: {
                 type: :array,
                 minItems: 5,
-                items: { type: :integer }
+                items: { type: :integer, example: 1 }
               }
             }
           }
@@ -146,13 +146,13 @@ RSpec.describe 'represents', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_repr: { type: :integer },
-                     title: { type: :string },
-                     id_user: { type: :integer },
+                     id_repr: { type: :integer, example: 1 },
+                     title: { type: :string, maxLength: 100, example: "Базовое" },
+                     id_user: { type: :integer, example: 1 },
                      active_quantities: {
                        type: :array,
                        minItems: 5,
-                       items: { type: :integer }
+                       items: { type: :integer, example: 1 }
                      }
                    }
                  }
@@ -170,7 +170,7 @@ RSpec.describe 'represents', type: :request do
       end
     end
 
-    delete('delete represent') do
+    delete('Delete the represent') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -187,8 +187,8 @@ RSpec.describe 'represents', type: :request do
     end
   end
 
-  path '/api/active_view' do
-    get('get active quantities for represent view') do
+  path '/active_view' do
+    get('Get active quantities for represent view') do
       tags 'Represents'
       produces 'application/json'
 
@@ -198,24 +198,24 @@ RSpec.describe 'represents', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_repr: { type: :integer },
-                     title: { type: :string },
+                     id_repr: { type: :integer, example: 1 },
+                     title: { type: :string, maxLength: 100, example: "Базовое" },
                      active_quantities: {
                        type: :array,
                        minItems: 5,
                        items: {
                          type: :object,
                          properties: {
-                           id_value: { type: :integer },
-                           value_name: { type: :string },
-                           symbol: { type: :string },
-                           unit: { type: :string },
-                           m_indicate_auto: { type: :integer },
-                           l_indicate_auto: { type: :integer },
-                           t_indicate_auto: { type: :integer },
-                           i_indicate_auto: { type: :integer },
-                           id_lt: { type: :integer },
-                           id_gk: { type: :integer }
+                           id_value: { type: :integer, example: 1 },
+                           value_name: { type: :string, maxLength: 200, example: "Скорость" },
+                           symbol: { type: :string, maxLength: 100, example: "V" },
+                           unit: { type: :string, maxLength: 100, example: "м/с" },
+                           m_indicate_auto: { type: :integer, example: 5 },
+                           l_indicate_auto: { type: :integer, example: 6 },
+                           t_indicate_auto: { type: :integer, example: 7 },
+                           i_indicate_auto: { type: :integer, example: 8 },
+                           id_lt: { type: :integer, example: 1 },
+                           id_gk: { type: :integer, example: 1 }
                          }
                        }
                      }
@@ -230,10 +230,10 @@ RSpec.describe 'represents', type: :request do
     end
   end
 
-  path '/api/active_view/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/active_view/{id_repr}' do
+    parameter name: 'id_repr', in: :path, type: :string, description: 'id_repr'
 
-    get('get active quantities for specific represent view') do
+    get('Get active quantities for specific represent view') do
       tags 'Represents'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -244,24 +244,24 @@ RSpec.describe 'represents', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_repr: { type: :integer },
-                     title: { type: :string },
+                     id_repr: { type: :integer, example: 1 },
+                     title: { type: :string, example: "Базовое" },
                      active_quantities: {
                        type: :array,
                        minItems: 5,
                        items: {
                          type: :object,
                          properties: {
-                           id_value: { type: :integer },
-                           value_name: { type: :string },
-                           symbol: { type: :string },
-                           unit: { type: :string },
-                           m_indicate_auto: { type: :integer },
-                           l_indicate_auto: { type: :integer },
-                           t_indicate_auto: { type: :integer },
-                           i_indicate_auto: { type: :integer },
-                           id_lt: { type: :integer },
-                           id_gk: { type: :integer }
+                           id_value: { type: :integer, example: 1 },
+                           value_name: { type: :string, maxLength: 200, example: "Скорость" },
+                           symbol: { type: :string, maxLength: 100, example: "V" },
+                           unit: { type: :string, maxLength: 100, example: "м/с" },
+                           m_indicate_auto: { type: :integer, example: 5 },
+                           l_indicate_auto: { type: :integer, example: 6 },
+                           t_indicate_auto: { type: :integer, example: 7 },
+                           i_indicate_auto: { type: :integer, example: 8 },
+                           id_lt: { type: :integer, example: 1 },
+                           id_gk: { type: :integer, example: 1 }
                          }
                        }
                      }

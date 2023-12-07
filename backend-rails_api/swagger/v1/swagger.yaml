@@ -4,9 +4,9 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/gk":
+  "/gk":
     get:
-      summary: list gk
+      summary: Get a list of gk (system levels)
       tags:
       - GK
       responses:
@@ -19,32 +19,39 @@ paths:
                 properties:
                   data:
                     type: array
-                    minItems: 5
+                    minItems: 14
                     items:
                       type: object
                       properties:
                         id_gk:
                           type: integer
+                          example: 1
                         gk_name:
                           type: string
+                          maxLength: 100
+                          example: Базовые ФВ
                         g_indicate:
                           type: integer
+                          example: 2
                         k_indicate:
                           type: integer
+                          example: 3
                         color:
                           type: string
+                          maxLength: 50
+                          example: "#FFFFFF"
         '500':
           description: server error
-  "/api/gk/{id}":
+  "/gk/{id_gk}":
     parameters:
-    - name: id
+    - name: id_gk
       in: path
-      description: id
+      description: id_gk
       required: true
       schema:
         type: string
     get:
-      summary: show GK
+      summary: Get the gk (system level)
       parameters:
       - name: locale_content
         in: query
@@ -68,20 +75,27 @@ paths:
                     properties:
                       id_gk:
                         type: integer
+                        example: 1
                       gk_name:
                         type: string
+                        maxLength: 100
+                        example: Базовые ФВ
                       g_indicate:
                         type: integer
+                        example: 2
                       k_indicate:
                         type: integer
+                        example: 3
                       color:
                         type: string
+                        maxLength: 50
+                        example: "#FFFFFF"
         '404':
           description: not found
         '500':
           description: server error
     patch:
-      summary: update GK
+      summary: Update the gk (system level)
       parameters:
       - name: locale_content
         in: query
@@ -105,14 +119,21 @@ paths:
                     properties:
                       id_gk:
                         type: integer
+                        example: 1
                       gk_name:
                         type: string
+                        maxLength: 100
+                        example: Базовые ФВ
                       g_indicate:
                         type: integer
+                        example: 2
                       k_indicate:
                         type: integer
+                        example: 3
                       color:
                         type: string
+                        maxLength: 50
+                        example: "#FFFFFF"
         '404':
           description: not found
         '422':
@@ -130,11 +151,15 @@ paths:
                   properties:
                     gk_name:
                       type: string
+                      maxLength: 100
+                      example: Базовые ФВ
                     color:
                       type: string
-  "/api/law_types":
+                      maxLength: 50
+                      example: "#FFFFFF"
+  "/law_types":
     get:
-      summary: list law types
+      summary: Get a list of law types
       tags:
       - Law Types
       security:
@@ -155,14 +180,19 @@ paths:
                       properties:
                         id_type:
                           type: integer
+                          example: 1
                         type_name:
                           type: string
+                          maxLength: 100
+                          example: Законы механики
                         color:
                           type: string
+                          maxLength: 50
+                          example: "#FFFFFF"
         '500':
           description: server error
     post:
-      summary: create law type
+      summary: Create a new law type
       parameters:
       - name: locale_content
         in: query
@@ -186,10 +216,15 @@ paths:
                     properties:
                       id_type:
                         type: integer
+                        example: 1
                       type_name:
                         type: string
+                        maxLength: 100
+                        example: Законы механики
                       color:
                         type: string
+                        maxLength: 50
+                        example: "#FFFFFF"
         '422':
           description: unprocessable entity
         '500':
@@ -208,17 +243,18 @@ paths:
                     color:
                       type: string
                   required:
-                  - type_name, color
-  "/api/law_types/{id}":
+                  - type_name
+                  - color
+  "/law_types/{id_type}":
     parameters:
-    - name: id
+    - name: id_type
       in: path
-      description: id
+      description: id_type
       required: true
       schema:
         type: string
     get:
-      summary: show law type
+      summary: Get the law type
       parameters:
       - name: locale_content
         in: query
@@ -242,16 +278,21 @@ paths:
                     properties:
                       id_type:
                         type: integer
+                        example: 1
                       type_name:
                         type: string
+                        maxLength: 100
+                        example: Законы механики
                       color:
                         type: string
+                        maxLength: 50
+                        example: "#FFFFFF"
         '404':
           description: not found
         '500':
           description: server error
     put:
-      summary: update law type
+      summary: Update the law type
       parameters:
       - name: locale_content
         in: query
@@ -275,10 +316,15 @@ paths:
                     properties:
                       id_type:
                         type: integer
+                        example: 1
                       type_name:
                         type: string
+                        maxLength: 100
+                        example: Законы механики
                       color:
                         type: string
+                        maxLength: 50
+                        example: "#FFFFFF"
         '404':
           description: not found
         '422':
@@ -296,10 +342,14 @@ paths:
                   properties:
                     type_name:
                       type: string
+                      maxLength: 100
+                      example: Законы механики
                     color:
                       type: string
+                      maxLength: 50
+                      example: "#FFFFFF"
     delete:
-      summary: delete law type
+      summary: Delete the law type
       tags:
       - Law Types
       security:
@@ -311,9 +361,9 @@ paths:
           description: not found
         '500':
           description: server error
-  "/api/laws":
+  "/laws":
     get:
-      summary: list laws
+      summary: Get a list of laws
       tags:
       - Laws
       security:
@@ -334,24 +384,33 @@ paths:
                       properties:
                         id_law:
                           type: integer
+                          example: 1
                         law_name:
                           type: string
+                          maxLength: 100
+                          example: 2-й Закон Ньютона
                         first_element:
                           type: integer
+                          example: 1
                         second_element:
                           type: integer
+                          example: 2
                         third_element:
                           type: integer
+                          example: 3
                         fourth_element:
                           type: integer
+                          example: 4
                         id_user:
                           type: integer
+                          example: 20
                         id_type:
                           type: integer
+                          example: 10
         '500':
           description: server error
     post:
-      summary: create law
+      summary: Create a new law
       tags:
       - Laws
       security:
@@ -370,20 +429,29 @@ paths:
                     properties:
                       id_law:
                         type: integer
+                        example: 1
                       law_name:
                         type: string
+                        maxLength: 100
+                        example: 2-й Закон Ньютона
                       first_element:
                         type: integer
+                        example: 1
                       second_element:
                         type: integer
+                        example: 2
                       third_element:
                         type: integer
+                        example: 3
                       fourth_element:
                         type: integer
+                        example: 4
                       id_user:
                         type: integer
+                        example: 20
                       id_type:
                         type: integer
+                        example: 10
         '422':
           description: unprocessable entity
         '500':
@@ -399,16 +467,23 @@ paths:
                   properties:
                     law_name:
                       type: string
+                      maxLength: 100
+                      example: 2-й Закон Ньютона
                     first_element:
                       type: integer
+                      example: 1
                     second_element:
                       type: integer
+                      example: 2
                     third_element:
                       type: integer
+                      example: 3
                     fourth_element:
                       type: integer
+                      example: 4
                     id_type:
                       type: integer
+                      example: 10
                   required:
                   - law_name
                   - first_element
@@ -416,16 +491,16 @@ paths:
                   - third_element
                   - fourth_element
                   - id_type
-  "/api/laws/{id}":
+  "/laws/{id_law}":
     parameters:
-    - name: id
+    - name: id_law
       in: path
-      description: id
+      description: id_law
       required: true
       schema:
         type: string
     get:
-      summary: show law
+      summary: Get the law
       tags:
       - Laws
       security:
@@ -443,26 +518,35 @@ paths:
                     properties:
                       id_law:
                         type: integer
+                        example: 1
                       law_name:
                         type: string
+                        maxLength: 100
+                        example: 2-й Закон Ньютона
                       first_element:
                         type: integer
+                        example: 1
                       second_element:
                         type: integer
+                        example: 2
                       third_element:
                         type: integer
+                        example: 3
                       fourth_element:
                         type: integer
+                        example: 4
                       id_user:
                         type: integer
+                        example: 20
                       id_type:
                         type: integer
+                        example: 10
         '404':
           description: not found
         '500':
           description: server error
     patch:
-      summary: update law
+      summary: Update the law
       tags:
       - Laws
       security:
@@ -481,20 +565,29 @@ paths:
                     properties:
                       id_law:
                         type: integer
+                        example: 1
                       law_name:
                         type: string
+                        maxLength: 100
+                        example: 2-й Закон Ньютона
                       first_element:
                         type: integer
+                        example: 1
                       second_element:
                         type: integer
+                        example: 2
                       third_element:
                         type: integer
+                        example: 3
                       fourth_element:
                         type: integer
+                        example: 4
                       id_user:
                         type: integer
+                        example: 20
                       id_type:
                         type: integer
+                        example: 10
         '404':
           description: not found
         '422':
@@ -512,10 +605,13 @@ paths:
                   properties:
                     law_name:
                       type: string
+                      maxLength: 100
+                      example: 2-й Закон Ньютона
                     id_type:
                       type: integer
+                      example: 10
     delete:
-      summary: delete law
+      summary: Delete the law
       tags:
       - Laws
       security:
@@ -527,9 +623,9 @@ paths:
           description: not found
         '500':
           description: server error
-  "/api/lt":
+  "/lt":
     get:
-      summary: list lt
+      summary: Get a list of lt (cells)
       tags:
       - LT
       responses:
@@ -542,21 +638,24 @@ paths:
                 properties:
                   data:
                     type: array
-                    minItems: 5
+                    minItems: 2
                     items:
                       type: object
                       properties:
                         id_lt:
                           type: integer
+                          example: 1
                         l_indicate:
                           type: integer
+                          example: 5
                         t_indicate:
                           type: integer
+                          example: 6
         '500':
           description: server error
-  "/api/quantities":
+  "/quantities":
     get:
-      summary: list quantities
+      summary: Get a list of physical quantities
       tags:
       - Quantities
       security:
@@ -575,7 +674,7 @@ paths:
         '500':
           description: server error
     post:
-      summary: create quantity
+      summary: Create a new physical quantity
       parameters:
       - name: locale_content
         in: query
@@ -599,34 +698,53 @@ paths:
                     properties:
                       id_value:
                         type: integer
+                        example: 1
                       value_name:
                         type: string
+                        maxLength: 200
+                        example: Скорость
                       symbol:
                         type: string
+                        maxLength: 100
+                        example: V
                       unit:
                         type: string
+                        maxLength: 100
+                        example: м/с
                       m_indicate_auto:
                         type: integer
+                        example: 5
                       l_indicate_auto:
                         type: integer
+                        example: 6
                       t_indicate_auto:
                         type: integer
+                        example: 7
                       i_indicate_auto:
                         type: integer
+                        example: 8
                       id_lt:
                         type: integer
+                        example: 1
                       l_indicate:
                         type: integer
+                        example: 0
                       t_indicate:
                         type: integer
+                        example: 0
                       id_gk:
                         type: integer
+                        example: 1
                       g_indicate:
                         type: integer
+                        example: 0
                       k_indicate:
                         type: integer
+                        example: 0
                       color:
                         type: string
+                        maxLength: 100
+                        example: "#FFFFFF"
         '422':
           description: unprocessable entity
         '500':
@@ -642,24 +760,37 @@ paths:
                   properties:
                     value_name:
                       type: string
+                      maxLength: 200
+                      example: Скорость
                     symbol:
                       type: string
-                    m_indicate_auto:
-                      type: integer
-                    l_indicate_auto:
-                      type: integer
-                    t_indicate_auto:
-                      type: integer
-                    i_indicate_auto:
-                      type: integer
+                      maxLength: 100
+                      example: V
                     unit:
                       type: string
+                      maxLength: 100
+                      example: м/с
+                    m_indicate_auto:
+                      type: integer
+                      example: 5
+                    l_indicate_auto:
+                      type: integer
+                      example: 6
+                    t_indicate_auto:
+                      type: integer
+                      example: 7
+                    i_indicate_auto:
+                      type: integer
+                      example: 8
                     l_indicate:
                       type: integer
+                      example: 0
                     t_indicate:
                       type: integer
+                      example: 0
                     id_gk:
                       type: integer
+                      example: 1
                   required:
                   - value_name
                   - symbol
@@ -671,16 +802,16 @@ paths:
                   - l_indicate
                   - t_indicate
                   - id_gk
-  "/api/quantities/{id}":
+  "/quantities/{id_value}":
     parameters:
-    - name: id
+    - name: id_value
       in: path
-      description: id
+      description: id_value
       required: true
       schema:
         type: string
     get:
-      summary: show quantity
+      summary: Get the physical quantity
       parameters:
       - name: locale_content
         in: query
@@ -702,40 +833,59 @@ paths:
                     properties:
                       id_value:
                         type: integer
+                        example: 1
                       value_name:
                         type: string
+                        maxLength: 200
+                        example: Скорость
                       symbol:
                         type: string
+                        maxLength: 100
+                        example: V
                       unit:
                         type: string
+                        maxLength: 100
+                        example: м/с
                       m_indicate_auto:
                         type: integer
+                        example: 5
                       l_indicate_auto:
                         type: integer
+                        example: 6
                       t_indicate_auto:
                         type: integer
+                        example: 7
                       i_indicate_auto:
                         type: integer
+                        example: 8
                       id_lt:
                         type: integer
+                        example: 1
                       l_indicate:
                         type: integer
+                        example: 0
                       t_indicate:
                         type: integer
+                        example: 0
                       id_gk:
                         type: integer
+                        example: 1
                       g_indicate:
                         type: integer
+                        example: 0
                       k_indicate:
                         type: integer
+                        example: 0
                       color:
                         type: string
+                        maxLength: 100
+                        example: "#FFFFFF"
         '404':
           description: not found
         '500':
           description: server error
     put:
-      summary: update quantity
+      summary: Update the physical quantity
       parameters:
       - name: locale_content
         in: query
@@ -759,34 +909,53 @@ paths:
                     properties:
                       id_value:
                         type: integer
+                        example: 1
                       value_name:
                         type: string
+                        maxLength: 200
+                        example: Скорость
                       symbol:
                         type: string
+                        maxLength: 100
+                        example: V
                       unit:
                         type: string
+                        maxLength: 100
+                        example: м/с
                       m_indicate_auto:
                         type: integer
+                        example: 5
                       l_indicate_auto:
                         type: integer
+                        example: 6
                       t_indicate_auto:
                         type: integer
+                        example: 7
                       i_indicate_auto:
                         type: integer
+                        example: 8
                       id_lt:
                         type: integer
+                        example: 1
                       l_indicate:
                         type: integer
+                        example: 0
                       t_indicate:
                         type: integer
+                        example: 0
                       id_gk:
                         type: integer
+                        example: 1
                       g_indicate:
                         type: integer
+                        example: 0
                       k_indicate:
                         type: integer
+                        example: 0
                       color:
                         type: string
+                        maxLength: 100
+                        example: "#FFFFFF"
         '404':
           description: not found
         '422':
@@ -804,37 +973,39 @@ paths:
                   properties:
                     value_name:
                       type: string
+                      maxLength: 200
+                      example: Скорость
                     symbol:
                       type: string
-                    m_indicate_auto:
-                      type: integer
-                    l_indicate_auto:
-                      type: integer
-                    t_indicate_auto:
-                      type: integer
-                    i_indicate_auto:
-                      type: integer
+                      maxLength: 100
+                      example: V
                     unit:
                       type: string
+                      maxLength: 100
+                      example: м/с
+                    m_indicate_auto:
+                      type: integer
+                      example: 5
+                    l_indicate_auto:
+                      type: integer
+                      example: 6
+                    t_indicate_auto:
+                      type: integer
+                      example: 7
+                    i_indicate_auto:
+                      type: integer
+                      example: 8
                     l_indicate:
                       type: integer
+                      example: 0
                     t_indicate:
                       type: integer
+                      example: 0
                     id_gk:
                       type: integer
-                  required:
-                  - value_name
-                  - symbol
-                  - m_indicate_auto
-                  - l_indicate_auto
-                  - t_indicate_auto
-                  - i_indicate_auto
-                  - unit
-                  - l_indicate
-                  - t_indicate
-                  - id_gk
+                      example: 1
     delete:
-      summary: delete quantity
+      summary: Delete the physical quantity
       tags:
       - Quantities
       security:
@@ -846,16 +1017,16 @@ paths:
           description: not found
         '500':
           description: server error
-  "/api/layers/{id}":
+  "/layers/{id_lt}":
     parameters:
-    - name: id
+    - name: id_lt
       in: path
-      description: id
+      description: id_lt
       required: true
       schema:
         type: string
     get:
-      summary: get quantities by lt id
+      summary: Get a list of physical quantities by lt id
       tags:
       - Quantities
       responses:
@@ -874,31 +1045,44 @@ paths:
                       properties:
                         id_value:
                           type: integer
+                          example: 1
                         value_name:
                           type: string
+                          maxLength: 200
+                          example: Скорость
                         symbol:
                           type: string
+                          maxLength: 100
+                          example: V
                         unit:
                           type: string
+                          maxLength: 100
+                          example: м/с
                         m_indicate_auto:
                           type: integer
+                          example: 5
                         l_indicate_auto:
                           type: integer
+                          example: 6
                         t_indicate_auto:
                           type: integer
+                          example: 7
                         i_indicate_auto:
                           type: integer
+                          example: 8
                         id_lt:
                           type: integer
+                          example: 1
                         id_gk:
                           type: integer
+                          example: 1
         '404':
           description: not found
         '500':
           description: server error
-  "/api/represents":
+  "/represents":
     get:
-      summary: list represents
+      summary: Get a list of represents
       tags:
       - Represents
       security:
@@ -919,12 +1103,15 @@ paths:
                       properties:
                         id_repr:
                           type: integer
+                          example: 1
                         title:
                           type: string
+                          maxLength: 100
+                          example: Базовое
         '500':
           description: server error
     post:
-      summary: create represent
+      summary: Create a new represent
       tags:
       - Represents
       security:
@@ -943,15 +1130,20 @@ paths:
                     properties:
                       id_repr:
                         type: integer
+                        example: 1
                       title:
                         type: string
+                        maxLength: 100
+                        example: Базовое
                       id_user:
                         type: integer
+                        example: 1
                       active_quantities:
                         type: array
                         minItems: 5
                         items:
                           type: integer
+                          example: 1
         '422':
           description: unprocessable entity
         '500':
@@ -967,24 +1159,27 @@ paths:
                   properties:
                     title:
                       type: string
+                      maxLength: 100
+                      example: Базовое
                     active_quantities:
                       type: array
                       minItems: 5
                       items:
                         type: integer
+                        example: 1
                   required:
                   - title
                   - active_quantities
-  "/api/represents/{id}":
+  "/represents/{id_repr}":
     parameters:
-    - name: id
+    - name: id_repr
       in: path
-      description: id
+      description: id_repr
       required: true
       schema:
         type: string
     get:
-      summary: show represent
+      summary: Get the represent
       tags:
       - Represents
       responses:
@@ -1000,21 +1195,26 @@ paths:
                     properties:
                       id_repr:
                         type: integer
+                        example: 1
                       title:
                         type: string
+                        maxLength: 100
+                        example: Базовое
                       id_user:
                         type: integer
+                        example: 1
                       active_quantities:
                         type: array
                         minItems: 5
                         items:
                           type: integer
+                          example: 1
         '404':
           description: not found
         '500':
           description: server error
     put:
-      summary: update represent
+      summary: Update the represent
       security:
       - bearerAuth: []
       tags:
@@ -1033,15 +1233,20 @@ paths:
                     properties:
                       id_repr:
                         type: integer
+                        example: 1
                       title:
                         type: string
+                        maxLength: 100
+                        example: Базовое
                       id_user:
                         type: integer
+                        example: 1
                       active_quantities:
                         type: array
                         minItems: 5
                         items:
                           type: integer
+                          example: 1
         '404':
           description: not found
         '422':
@@ -1059,13 +1264,16 @@ paths:
                   properties:
                     title:
                       type: string
+                      maxLength: 100
+                      example: Базовое
                     active_quantities:
                       type: array
                       minItems: 5
                       items:
                         type: integer
+                        example: 1
     delete:
-      summary: delete represent
+      summary: Delete the represent
       tags:
       - Represents
       security:
@@ -1077,9 +1285,9 @@ paths:
           description: not found
         '500':
           description: server error
-  "/api/active_view":
+  "/active_view":
     get:
-      summary: get active quantities for represent view
+      summary: Get active quantities for represent view
       tags:
       - Represents
       responses:
@@ -1095,8 +1303,11 @@ paths:
                     properties:
                       id_repr:
                         type: integer
+                        example: 1
                       title:
                         type: string
+                        maxLength: 100
+                        example: Базовое
                       active_quantities:
                         type: array
                         minItems: 5
@@ -1105,36 +1316,49 @@ paths:
                           properties:
                             id_value:
                               type: integer
+                              example: 1
                             value_name:
                               type: string
+                              maxLength: 200
+                              example: Скорость
                             symbol:
                               type: string
+                              maxLength: 100
+                              example: V
                             unit:
                               type: string
+                              maxLength: 100
+                              example: м/с
                             m_indicate_auto:
                               type: integer
+                              example: 5
                             l_indicate_auto:
                               type: integer
+                              example: 6
                             t_indicate_auto:
                               type: integer
+                              example: 7
                             i_indicate_auto:
                               type: integer
+                              example: 8
                             id_lt:
                               type: integer
+                              example: 1
                             id_gk:
                               type: integer
+                              example: 1
         '500':
           description: server error
-  "/api/active_view/{id}":
+  "/active_view/{id_repr}":
     parameters:
-    - name: id
+    - name: id_repr
       in: path
-      description: id
+      description: id_repr
       required: true
       schema:
         type: string
     get:
-      summary: get active quantities for specific represent view
+      summary: Get active quantities for specific represent view
       tags:
       - Represents
       security:
@@ -1152,8 +1376,10 @@ paths:
                     properties:
                       id_repr:
                         type: integer
+                        example: 1
                       title:
                         type: string
+                        example: Базовое
                       active_quantities:
                         type: array
                         minItems: 5
@@ -1162,31 +1388,44 @@ paths:
                           properties:
                             id_value:
                               type: integer
+                              example: 1
                             value_name:
                               type: string
+                              maxLength: 200
+                              example: Скорость
                             symbol:
                               type: string
+                              maxLength: 100
+                              example: V
                             unit:
                               type: string
+                              maxLength: 100
+                              example: м/с
                             m_indicate_auto:
                               type: integer
+                              example: 5
                             l_indicate_auto:
                               type: integer
+                              example: 6
                             t_indicate_auto:
                               type: integer
+                              example: 7
                             i_indicate_auto:
                               type: integer
+                              example: 8
                             id_lt:
                               type: integer
+                              example: 1
                             id_gk:
                               type: integer
+                              example: 1
         '404':
           description: not found
         '500':
           description: server error
-  "/api/users/login":
+  users/login:
     post:
-      summary: user login
+      summary: User login
       tags:
       - Users
       parameters: []
@@ -1217,14 +1456,16 @@ paths:
                   properties:
                     email:
                       type: string
+                      example: example@example.com
                     password:
                       type: string
+                      example: PaSS567099
                   required:
                   - email
                   - password
-  "/api/users/register":
+  "/users/register":
     post:
-      summary: user register
+      summary: User registration
       tags:
       - Users
       parameters: []
@@ -1246,14 +1487,20 @@ paths:
                   properties:
                     email:
                       type: string
+                      maxLength: 100
+                      pattern: "\\A[\\w+\\-.]+@[a-z\\d\\-.]+\\.[a-z]+\\z"
+                      example: example@example.com
                     password:
                       type: string
+                      minLength: 8
+                      pattern: "\\A(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\\z"
+                      example: PaSS567099
                   required:
                   - email
                   - password
-  "/api/users/profile":
+  "/users/profile":
     get:
-      summary: show user profile
+      summary: Get the user profile
       tags:
       - Users
       security:
@@ -1273,27 +1520,39 @@ paths:
                         type: integer
                       email:
                         type: string
+                        maxLength: 100
+                        example: example@example.com
                       last_name:
                         type: string
+                        maxLength: 100
+                        example: Иванов
                       first_name:
                         type: string
+                        maxLength: 100
+                        example: Иван
                       patronymic:
                         type: string
+                        maxLength: 100
+                        example: Иванович
                       role:
                         type: boolean
+                        example: false
                       confirmed:
                         type: boolean
+                        example: true
                       active_repr:
                         type: integer
+                        example: 5
                       locale:
                         type: string
+                        example: ru
         '404':
           description: not found
         '500':
           description: server error
-  "/api/users/update":
+  "/users/update":
     patch:
-      summary: update user
+      summary: Update the user
       tags:
       - Users
       security:
@@ -1314,20 +1573,32 @@ paths:
                         type: integer
                       email:
                         type: string
+                        maxLength: 100
+                        example: example@example.com
                       last_name:
                         type: string
+                        maxLength: 100
+                        example: Иванов
                       first_name:
                         type: string
+                        maxLength: 100
+                        example: Иван
                       patronymic:
                         type: string
+                        maxLength: 100
+                        example: Иванович
                       role:
                         type: boolean
+                        example: false
                       confirmed:
                         type: boolean
+                        example: true
                       active_repr:
                         type: integer
+                        example: 5
                       locale:
                         type: string
+                        example: ru
         '404':
           description: not found
         '422':
@@ -1345,13 +1616,19 @@ paths:
                   properties:
                     last_name:
                       type: string
+                      maxLength: 100
+                      example: Иванов
                     first_name:
                       type: string
+                      maxLength: 100
+                      example: Иван
                     patronymic:
                       type: string
-  "/api/users/delete":
+                      maxLength: 100
+                      example: Иванович
+  "/users/delete":
     delete:
-      summary: delete user
+      summary: Delete the user
       tags:
       - Users
       security:
@@ -1363,11 +1640,11 @@ paths:
           description: not found
         '500':
           description: server error
-  "/api/users/{id}/confirm":
+  "/users/{id_user}/confirm":
     parameters:
-    - name: id
+    - name: id_user
       in: path
-      description: id
+      description: id_user
       required: true
       schema:
         type: string
@@ -1378,7 +1655,7 @@ paths:
       schema:
         type: string
     post:
-      summary: confirm email
+      summary: Confirm email
       tags:
       - Users
       responses:
@@ -1388,7 +1665,7 @@ paths:
           description: unprocessable entity
         '500':
           description: server error
-  "/api/users/reset":
+  "/users/reset":
     post:
       summary: Send reset password email
       tags:
@@ -1412,13 +1689,14 @@ paths:
                   properties:
                     email:
                       type: string
+                      example: example@example.com
                   required:
                   - email
-  "/api/users/{id}/new_password":
+  "/users/{id_user}/new_password":
     parameters:
-    - name: id
+    - name: id_user
       in: path
-      description: id
+      description: id_user
       required: true
       schema:
         type: string
@@ -1429,7 +1707,7 @@ paths:
       schema:
         type: string
     get:
-      summary: generate and send new password
+      summary: Generate and send new password
       tags:
       - Users
       responses:
@@ -1446,7 +1724,11 @@ components:
       scheme: bearer
       bearerFormat: JWT
 servers:
-- url: http://{defaultHost}
+- url: http://localhost:5000/api/{locale}
   variables:
-    defaultHost:
-      default: localhost:5000/
+    locale:
+      default: ru
+      enum:
+      - ru
+      - en
+      description: Locale parameter

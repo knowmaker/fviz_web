@@ -3,8 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'law_types', type: :request do
-  path '/api/law_types' do
-    get('list law types') do
+  path '/law_types' do
+    get('Get a list of law types') do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -18,9 +18,9 @@ RSpec.describe 'law_types', type: :request do
                    items: {
                      type: :object,
                      properties: {
-                       id_type: { type: :integer },
-                       type_name: { type: :string },
-                       color: { type: :string }
+                       id_type: { type: :integer, example: 1 },
+                       type_name: { type: :string, maxLength: 100, example: "Законы механики" },
+                       color: { type: :string, maxLength: 50, example: "#FFFFFF" }
                      }
                    }
                  }
@@ -32,7 +32,7 @@ RSpec.describe 'law_types', type: :request do
       end
     end
 
-    post('create law type') do
+    post('Create a new law type') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'Law Types'
@@ -49,7 +49,7 @@ RSpec.describe 'law_types', type: :request do
               type_name: { type: :string },
               color: { type: :string }
             },
-            required: ['type_name, color']
+            required: %w[type_name color]
           }
         }
       }
@@ -60,9 +60,9 @@ RSpec.describe 'law_types', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_type: { type: :integer },
-                     type_name: { type: :string },
-                     color: { type: :string }
+                     id_type: { type: :integer, example: 1 },
+                     type_name: { type: :string, maxLength: 100, example: "Законы механики" },
+                     color: { type: :string, maxLength: 50, example: "#FFFFFF" }
                    }
                  }
                }
@@ -77,10 +77,10 @@ RSpec.describe 'law_types', type: :request do
     end
   end
 
-  path '/api/law_types/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/law_types/{id_type}' do
+    parameter name: 'id_type', in: :path, type: :string, description: 'id_type'
 
-    get('show law type') do
+    get('Get the law type') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'Law Types'
@@ -93,9 +93,9 @@ RSpec.describe 'law_types', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_type: { type: :integer },
-                     type_name: { type: :string },
-                     color: { type: :string }
+                     id_type: { type: :integer, example: 1 },
+                     type_name: { type: :string, maxLength: 100, example: "Законы механики" },
+                     color: { type: :string, maxLength: 50, example: "#FFFFFF" }
                    }
                  }
                }
@@ -109,7 +109,7 @@ RSpec.describe 'law_types', type: :request do
       end
     end
 
-    put('update law type') do
+    put('Update the law type') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'Law Types'
@@ -123,8 +123,8 @@ RSpec.describe 'law_types', type: :request do
           law_type: {
             type: :object,
             properties: {
-              type_name: { type: :string },
-              color: { type: :string }
+              type_name: { type: :string, maxLength: 100, example: "Законы механики" },
+              color: { type: :string, maxLength: 50, example: "#FFFFFF" }
             }
           }
         }
@@ -136,9 +136,9 @@ RSpec.describe 'law_types', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_type: { type: :integer },
-                     type_name: { type: :string },
-                     color: { type: :string }
+                     id_type: { type: :integer, example: 1 },
+                     type_name: { type: :string, maxLength: 100, example: "Законы механики" },
+                     color: { type: :string, maxLength: 50, example: "#FFFFFF" }
                    }
                  }
                }
@@ -155,7 +155,7 @@ RSpec.describe 'law_types', type: :request do
       end
     end
 
-    delete('delete law type') do
+    delete('Delete the law type') do
       tags 'Law Types'
       security [{ bearerAuth: [] }]
 

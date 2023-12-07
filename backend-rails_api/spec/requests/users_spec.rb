@@ -3,8 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'users', type: :request do
-  path '/api/users/login' do
-    post('user login') do
+  path 'users/login' do
+    post('User login') do
       tags 'Users'
       consumes 'application/json'
       produces 'application/json'
@@ -15,8 +15,8 @@ RSpec.describe 'users', type: :request do
           user: {
             type: :object,
             properties: {
-              email: { type: :string },
-              password: { type: :string }
+              email: { type: :string, example: "example@example.com" },
+              password: { type: :string, example: "PaSS567099" }
             },
             required: %w[email password]
           }
@@ -42,8 +42,8 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/register' do
-    post('user register') do
+  path '/users/register' do
+    post('User registration') do
       tags 'Users'
       consumes 'application/json'
       produces 'application/json'
@@ -54,8 +54,8 @@ RSpec.describe 'users', type: :request do
           user: {
             type: :object,
             properties: {
-              email: { type: :string },
-              password: { type: :string }
+              email: { type: :string, maxLength: 100, pattern: '\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z', example: "example@example.com" },
+              password: { type: :string, minLength: 8, pattern: '\A(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\z', example: "PaSS567099" }
             },
             required: %w[email password]
           }
@@ -74,8 +74,8 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/profile' do
-    get('show user profile') do
+  path '/users/profile' do
+    get('Get the user profile') do
       tags 'Users'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -87,14 +87,14 @@ RSpec.describe 'users', type: :request do
                    type: :object,
                    properties: {
                      id_user: { type: :integer },
-                     email: { type: :string },
-                     last_name: { type: :string },
-                     first_name: { type: :string },
-                     patronymic: { type: :string },
-                     role: { type: :boolean },
-                     confirmed: { type: :boolean },
-                     active_repr: { type: :integer },
-                     locale: { type: :string },
+                     email: { type: :string, maxLength: 100, example: "example@example.com" },
+                     last_name: { type: :string, maxLength: 100, example: "Иванов" },
+                     first_name: { type: :string, maxLength: 100, example: "Иван" },
+                     patronymic: { type: :string, maxLength: 100, example: "Иванович" },
+                     role: { type: :boolean, example: false },
+                     confirmed: { type: :boolean, example: true },
+                     active_repr: { type: :integer, example: 5 },
+                     locale: { type: :string, example: "ru" }
                    }
                  }
                }
@@ -109,8 +109,8 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/update' do
-    patch('update user') do
+  path '/users/update' do
+    patch('Update the user') do
       tags 'Users'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
@@ -122,9 +122,9 @@ RSpec.describe 'users', type: :request do
           user: {
             type: :object,
             properties: {
-              last_name: { type: :string },
-              first_name: { type: :string },
-              patronymic: { type: :string }
+              last_name: { type: :string, maxLength: 100, example: "Иванов" },
+              first_name: { type: :string, maxLength: 100, example: "Иван" },
+              patronymic: { type: :string, maxLength: 100, example: "Иванович" }
             }
           }
         }
@@ -137,14 +137,14 @@ RSpec.describe 'users', type: :request do
                    type: :object,
                    properties: {
                      id_user: { type: :integer },
-                     email: { type: :string },
-                     last_name: { type: :string },
-                     first_name: { type: :string },
-                     patronymic: { type: :string },
-                     role: { type: :boolean },
-                     confirmed: { type: :boolean },
-                     active_repr: { type: :integer },
-                     locale: { type: :string },
+                     email: { type: :string, maxLength: 100, example: "example@example.com" },
+                     last_name: { type: :string, maxLength: 100, example: "Иванов" },
+                     first_name: { type: :string, maxLength: 100, example: "Иван" },
+                     patronymic: { type: :string, maxLength: 100, example: "Иванович" },
+                     role: { type: :boolean, example: false },
+                     confirmed: { type: :boolean, example: true },
+                     active_repr: { type: :integer, example: 5 },
+                     locale: { type: :string, example: "ru" }
                    }
                  }
                }
@@ -162,8 +162,8 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/delete' do
-    delete('delete user') do
+  path '/users/delete' do
+    delete('Delete the user') do
       tags 'Users'
       security [{ bearerAuth: [] }]
 
@@ -179,11 +179,11 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/{id}/confirm' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/users/{id_user}/confirm' do
+    parameter name: 'id_user', in: :path, type: :string, description: 'id_user'
     parameter name: 'confirmation_token', in: :query, type: :string, description: 'confirmation token', required: true
 
-    post('confirm email') do
+    post('Confirm email') do
       tags 'Users'
       produces 'application/json'
       produces 'application/json'
@@ -200,7 +200,7 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/reset' do
+  path '/users/reset' do
     post('Send reset password email') do
       tags 'Users'
       consumes 'application/json'
@@ -212,7 +212,7 @@ RSpec.describe 'users', type: :request do
           user: {
             type: :object,
             properties: {
-              email: { type: :string }
+              email: { type: :string, example: "example@example.com" }
             },
             required: ['email']
           }
@@ -231,11 +231,11 @@ RSpec.describe 'users', type: :request do
     end
   end
 
-  path '/api/users/{id}/new_password' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/users/{id_user}/new_password' do
+    parameter name: 'id_user', in: :path, type: :string, description: 'id_user'
     parameter name: 'confirmation_token', in: :query, type: :string, description: 'confirmation token', required: true
 
-    get('generate and send new password') do
+    get('Generate and send new password') do
       tags 'Users'
       produces 'application/json'
       produces 'application/json'
