@@ -347,12 +347,6 @@
       "value": "Download screenshot"
     }
   ],
-  "Скрыть": [
-    {
-      "type": 0,
-      "value": "Hide"
-    }
-  ],
   "Создать": [
     {
       "type": 0,
@@ -459,6 +453,12 @@
     {
       "type": 0,
       "value": "Not chosen"
+    }
+  ],
+  "скрыть": [
+    {
+      "type": 0,
+      "value": "hide"
     }
   ]
 }

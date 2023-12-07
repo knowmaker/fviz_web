@@ -44,6 +44,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     } else {
       setSelectedLawGroup({ type_name: null, id_type: null })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalsVisibility.lawsGroupsModalVisibility.isVisible]);
 
   const setCurrentTabsLocale = (locale) => {
