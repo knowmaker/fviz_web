@@ -3,8 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'gk', type: :request do
-  path '/api/gk' do
-    get('list gk') do
+  path '/gk' do
+    get('Get a list of gk (system levels)') do
       tags 'GK'
       produces 'application/json'
 
@@ -13,15 +13,15 @@ RSpec.describe 'gk', type: :request do
                properties: {
                  data: {
                    type: :array,
-                   minItems: 5,
+                   minItems: 14,
                    items: {
                      type: :object,
                      properties: {
-                       id_gk: { type: :integer },
-                       gk_name: { type: :string },
-                       g_indicate: { type: :integer },
-                       k_indicate: { type: :integer },
-                       color: { type: :string }
+                       id_gk: { type: :integer, example: 1 },
+                       gk_name: { type: :string, maxLength: 100, example: "Базовые ФВ" },
+                       g_indicate: { type: :integer, example: 2 },
+                       k_indicate: { type: :integer, example: 3 },
+                       color: { type: :string, maxLength: 50, example: "#FFFFFF" }
                      }
                    }
                  }
@@ -34,10 +34,10 @@ RSpec.describe 'gk', type: :request do
     end
   end
 
-  path '/api/gk/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/gk/{id_gk}' do
+    parameter name: 'id_gk', in: :path, type: :string, description: 'id_gk'
 
-    get('show GK') do
+    get('Get the gk (system level)') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'GK'
@@ -50,11 +50,11 @@ RSpec.describe 'gk', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_gk: { type: :integer },
-                     gk_name: { type: :string },
-                     g_indicate: { type: :integer },
-                     k_indicate: { type: :integer },
-                     color: { type: :string }
+                     id_gk: { type: :integer, example: 1 },
+                     gk_name: { type: :string, maxLength: 100, example: "Базовые ФВ" },
+                     g_indicate: { type: :integer, example: 2 },
+                     k_indicate: { type: :integer, example: 3 },
+                     color: { type: :string, maxLength: 50, example: "#FFFFFF" }
                    }
                  }
                }
@@ -68,7 +68,7 @@ RSpec.describe 'gk', type: :request do
       end
     end
 
-    patch('update GK') do
+    patch('Update the gk (system level)') do
       parameter name: 'locale_content', in: :query, type: :string, description: 'Locale Content'
 
       tags 'GK'
@@ -82,8 +82,8 @@ RSpec.describe 'gk', type: :request do
           gk: {
             type: :object,
             properties: {
-              gk_name: { type: :string },
-              color: { type: :string }
+              gk_name: { type: :string, maxLength: 100, example: "Базовые ФВ" },
+              color: { type: :string, maxLength: 50, example: "#FFFFFF" }
             }
           }
         }
@@ -95,11 +95,11 @@ RSpec.describe 'gk', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_gk: { type: :integer },
-                     gk_name: { type: :string },
-                     g_indicate: { type: :integer },
-                     k_indicate: { type: :integer },
-                     color: { type: :string }
+                     id_gk: { type: :integer, example: 1 },
+                     gk_name: { type: :string, maxLength: 100, example: "Базовые ФВ" },
+                     g_indicate: { type: :integer, example: 2 },
+                     k_indicate: { type: :integer, example: 3 },
+                     color: { type: :string, maxLength: 50, example: "#FFFFFF" }
                    }
                  }
                }

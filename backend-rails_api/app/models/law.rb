@@ -14,7 +14,7 @@ class Law < ApplicationRecord
   belongs_to :third_element_quantity, class_name: 'Quantity', foreign_key: 'third_element'
   belongs_to :fourth_element_quantity, class_name: 'Quantity', foreign_key: 'fourth_element'
 
-  validates :law_name, presence: true
+  validates :law_name, presence: true, length: { maximum: 100 }
   validates :first_element, :second_element, :third_element, :fourth_element, presence: true,
                                                                               numericality: { only_integer: true }
   validates :id_user, presence: true, numericality: { only_integer: true }

@@ -3,8 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'laws', type: :request do
-  path '/api/laws' do
-    get('list laws') do
+  path '/laws' do
+    get('Get a list of laws') do
       tags 'Laws'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -18,14 +18,14 @@ RSpec.describe 'laws', type: :request do
                    items: {
                      type: :object,
                      properties: {
-                       id_law: { type: :integer },
-                       law_name: { type: :string },
-                       first_element: { type: :integer },
-                       second_element: { type: :integer },
-                       third_element: { type: :integer },
-                       fourth_element: { type: :integer },
-                       id_user: { type: :integer },
-                       id_type: { type: :integer }
+                       id_law: { type: :integer, example: 1 },
+                       law_name: { type: :string, maxLength: 100, example: "2-й Закон Ньютона" },
+                       first_element: { type: :integer, example: 1 },
+                       second_element: { type: :integer, example: 2 },
+                       third_element: { type: :integer, example: 3 },
+                       fourth_element: { type: :integer, example: 4 },
+                       id_user: { type: :integer, example: 20 },
+                       id_type: { type: :integer, example: 10 }
                      }
                    }
                  }
@@ -37,7 +37,7 @@ RSpec.describe 'laws', type: :request do
       end
     end
 
-    post('create law') do
+    post('Create a new law') do
       tags 'Laws'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
@@ -49,12 +49,12 @@ RSpec.describe 'laws', type: :request do
           law: {
             type: :object,
             properties: {
-              law_name: { type: :string },
-              first_element: { type: :integer },
-              second_element: { type: :integer },
-              third_element: { type: :integer },
-              fourth_element: { type: :integer },
-              id_type: { type: :integer }
+              law_name: { type: :string, maxLength: 100, example: "2-й Закон Ньютона" },
+              first_element: { type: :integer, example: 1 },
+              second_element: { type: :integer, example: 2 },
+              third_element: { type: :integer, example: 3 },
+              fourth_element: { type: :integer, example: 4 },
+              id_type: { type: :integer, example: 10 }
             },
             required: %w[law_name first_element second_element third_element fourth_element id_type]
           }
@@ -67,14 +67,14 @@ RSpec.describe 'laws', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_law: { type: :integer },
-                     law_name: { type: :string },
-                     first_element: { type: :integer },
-                     second_element: { type: :integer },
-                     third_element: { type: :integer },
-                     fourth_element: { type: :integer },
-                     id_user: { type: :integer },
-                     id_type: { type: :integer }
+                     id_law: { type: :integer, example: 1 },
+                     law_name: { type: :string, maxLength: 100, example: "2-й Закон Ньютона" },
+                     first_element: { type: :integer, example: 1 },
+                     second_element: { type: :integer, example: 2 },
+                     third_element: { type: :integer, example: 3 },
+                     fourth_element: { type: :integer, example: 4 },
+                     id_user: { type: :integer, example: 20 },
+                     id_type: { type: :integer, example: 10 }
                    }
                  }
                }
@@ -89,10 +89,10 @@ RSpec.describe 'laws', type: :request do
     end
   end
 
-  path '/api/laws/{id}' do
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+  path '/laws/{id_law}' do
+    parameter name: 'id_law', in: :path, type: :string, description: 'id_law'
 
-    get('show law') do
+    get('Get the law') do
       tags 'Laws'
       security [{ bearerAuth: [] }]
       produces 'application/json'
@@ -103,14 +103,14 @@ RSpec.describe 'laws', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_law: { type: :integer },
-                     law_name: { type: :string },
-                     first_element: { type: :integer },
-                     second_element: { type: :integer },
-                     third_element: { type: :integer },
-                     fourth_element: { type: :integer },
-                     id_user: { type: :integer },
-                     id_type: { type: :integer }
+                     id_law: { type: :integer, example: 1 },
+                     law_name: { type: :string, maxLength: 100, example: "2-й Закон Ньютона" },
+                     first_element: { type: :integer, example: 1 },
+                     second_element: { type: :integer, example: 2 },
+                     third_element: { type: :integer, example: 3 },
+                     fourth_element: { type: :integer, example: 4 },
+                     id_user: { type: :integer, example: 20 },
+                     id_type: { type: :integer, example: 10 }
                    }
                  }
                }
@@ -124,7 +124,7 @@ RSpec.describe 'laws', type: :request do
       end
     end
 
-    patch('update law') do
+    patch('Update the law') do
       tags 'Laws'
       security [{ bearerAuth: [] }]
       consumes 'application/json'
@@ -136,8 +136,8 @@ RSpec.describe 'laws', type: :request do
           law: {
             type: :object,
             properties: {
-              law_name: { type: :string },
-              id_type: { type: :integer }
+              law_name: { type: :string, maxLength: 100, example: "2-й Закон Ньютона" },
+              id_type: { type: :integer, example: 10 }
             }
           }
         }
@@ -149,14 +149,14 @@ RSpec.describe 'laws', type: :request do
                  data:{
                    type: :object,
                    properties: {
-                     id_law: { type: :integer },
-                     law_name: { type: :string },
-                     first_element: { type: :integer },
-                     second_element: { type: :integer },
-                     third_element: { type: :integer },
-                     fourth_element: { type: :integer },
-                     id_user: { type: :integer },
-                     id_type: { type: :integer }
+                     id_law: { type: :integer, example: 1 },
+                     law_name: { type: :string, maxLength: 100, example: "2-й Закон Ньютона" },
+                     first_element: { type: :integer, example: 1 },
+                     second_element: { type: :integer, example: 2 },
+                     third_element: { type: :integer, example: 3 },
+                     fourth_element: { type: :integer, example: 4 },
+                     id_user: { type: :integer, example: 20 },
+                     id_type: { type: :integer, example: 10 }
                    }
                  }
                }
@@ -173,7 +173,7 @@ RSpec.describe 'laws', type: :request do
       end
     end
 
-    delete('delete law') do
+    delete('Delete the law') do
       tags 'Laws'
       security [{ bearerAuth: [] }]
 
