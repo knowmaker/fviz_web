@@ -156,8 +156,6 @@ export default function Home() {
     const [tableView, setTableView] = useState({id_repr:1,title:intl.formatMessage({id:`Базовое`,defaultMessage: `Базовое`})}); 
     const tableViewState = {tableView,setTableView}
 
-    console.log(tableData)
-
     useEffect(() => {
 
       // get all required localized data without authorization

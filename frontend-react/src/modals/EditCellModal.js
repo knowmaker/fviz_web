@@ -88,7 +88,6 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
     if (selectedCell.id_value === -1) {
 
-      console.log("here")
       //console.log(currentModalLocaleFieldsUpdated,currentModalLocale)
       const createdCellData = await createCell(currentModalLocaleFieldsUpdated,currentModalLocale);
       //console.log({...currentModalLocaleFieldsUpdated, id_value:createdCellData.id_value},(currentModalLocale === "ru" ? "en" : "ru"))
@@ -430,13 +429,6 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
         ...selectedCellFullData,
       }
     }
-
-  
-    console.log(currentModalLocaleFieldsUpdated)
-    console.log(currentModalLocaleFieldsUpdated[locale])
-    console.log(selectedCellEdited)
-    console.log(selectedCell)
-    selectedCellState.setSelectedCell(selectedCellEdited)
 
     }
     
