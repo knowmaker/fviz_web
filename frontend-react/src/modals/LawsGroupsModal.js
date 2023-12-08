@@ -248,6 +248,14 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
 
   }
 
+  const updateColor = async () => {
+    console.log("works")
+    setSelectedLawGroup({
+      ...selectedLawGroup,
+      color:  document.getElementById("InputLawGroupColor3").value 
+    })
+  }
+
   let lawsGroupsMarkup;
   if (lawsGroups) {
     lawsGroupsMarkup = lawsGroups.map(group => {
@@ -313,7 +321,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>
               <div className="col-5">
-                <input type="color" className="form-control form-control-color" id="InputLawGroupColor3" />
+                <input type="color" className="form-control form-control-color" id="InputLawGroupColor3" onChange={updateColor}/>
               </div>
             </div>
 

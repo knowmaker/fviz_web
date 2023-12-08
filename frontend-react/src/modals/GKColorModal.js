@@ -135,6 +135,7 @@ export function GKLayersModal({ modalsVisibility, GKLayersState }) {
       return;
     }
     const layers = layerResponseData.data.data
+   
 
     const translatedSelectedLayer = layers.find(layer => layer.id_gk === selectedGKLayer.id_gk)
 
@@ -145,7 +146,7 @@ export function GKLayersModal({ modalsVisibility, GKLayersState }) {
         gk_name: convertMarkdownFromEditorState(GKLayerEditorState).split("/n").join("")
       },
       [locale]: {
-        gk_name: selectedGKLayer[locale]? selectedGKLayer[locale].gk_name : translatedSelectedLayer.gk_name
+        gk_name: selectedGKLayer[locale] ? selectedGKLayer[locale].gk_name : translatedSelectedLayer.gk_name
       }
     }
 
@@ -157,6 +158,14 @@ export function GKLayersModal({ modalsVisibility, GKLayersState }) {
 
     setCurrentModalLocale(locale)
 
+  }
+
+  const updateColor = async () => {
+    console.log("works")
+    setSelectedGKLayer({
+      ...selectedGKLayer,
+      color: document.getElementById("InputGKLayerColor3").value
+    })
   }
 
   let GKLayersMarkup;
@@ -173,7 +182,7 @@ export function GKLayersModal({ modalsVisibility, GKLayersState }) {
             </>) : (null)}
           <td dangerouslySetInnerHTML={{ __html: GKLayer.gk_name }}></td>
           <td>G<sup>{GKLayer.g_indicate}</sup>K<sup>{GKLayer.k_indicate}</sup></td>
-          <td><input type="color" className="form-control form-control-color disabled" value={GKLayer.color} readOnly onClick={(e) => { e.preventDefault(); }} /></td>
+          <td><input type="color" className="form-control form-control-color disabled" value={GKLayer.color} readOnly onClick={(e) => { e.preventDefault();  }}/></td>
           {isAdmin ?
             (<>
               <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectGKLayer(GKLayer)}>📝</button></td>
@@ -220,7 +229,7 @@ export function GKLayersModal({ modalsVisibility, GKLayersState }) {
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>
               <div className="col-5">
-                <input type="color" className="form-control form-control-color" id="InputGKLayerColor3" />
+                <input type="color" className="form-control form-control-color" id="InputGKLayerColor3" onChange={updateColor} />
               </div>
             </div>
             <div className="row">
