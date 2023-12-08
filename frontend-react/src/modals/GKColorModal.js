@@ -11,7 +11,7 @@ import { convertMarkdownToEditorState } from '../misc/converters.js';
 import { Modal } from './Modal.js';
 import { Button } from '../components/ButtonWithLoad.js';
 
-export function GKColorModal({ modalsVisibility, GKLayersState }) {
+export function GKLayersModal({ modalsVisibility, GKLayersState }) {
 
   const userInfoState = useContext(UserProfile);
 
