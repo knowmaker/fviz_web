@@ -11,7 +11,7 @@ import { convertMarkdownToEditorState } from '../misc/converters.js';
 import { Modal } from './Modal.js';
 import { Button } from '../components/ButtonWithLoad.js';
 
-export function GKColorModal({ modalsVisibility, GKLayersState }) {
+export function GKLayersModal({ modalsVisibility, GKLayersState }) {
 
   const userInfoState = useContext(UserProfile);
 
@@ -21,7 +21,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
   const GKLayers = GKLayersState.gkColors;
   const setGKLayers = GKLayersState.setGkColors;
 
-  const [selectedGKLayer, setSelectedGKLayer] = useState({ type_name: null, id_gk: null });
+  const [selectedGKLayer, setSelectedGKLayer] = useState({ en:{gk_name: null},ru:{gk_name:null}, id_gk: null,color:null });
   const [GKLayerEditorState, setGKLayerEditorState] = useState(EditorState.createEmpty());
 
   let isAdmin = false;
@@ -41,7 +41,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
     if (modalsVisibility.GKColorsEditModalVisibility.isVisible === true && isAdmin) {
       setCurrentTabsLocale(intl.locale)
     } else {
-      setSelectedGKLayer({ type_name: null, id_gk: null })
+      setSelectedGKLayer({ en:{gk_name: null},ru:{gk_name:null}, id_gk: null,color:null })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalsVisibility.GKColorsEditModalVisibility.isVisible]);
@@ -60,17 +60,52 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
   const selectGKLayer = async (layer) => {
 
     // set this group as selected
-    await setSelectedGKLayer(layer);
+    const selectedLayer = {
+      ...layer,
+      gk_name: null,
+      [currentModalLocale]: {
+        gk_name: layer.gk_name,
+      }
+    }
 
-    setCurrentTabsLocale(intl.locale)
+    convertMarkdownToEditorState(setGKLayerEditorState, selectedLayer[currentModalLocale].gk_name);
+    document.getElementById("InputGKLayerColor3").value = selectedLayer.color;
+
+    setSelectedGKLayer(selectedLayer);
     
   };
 
-  const updateLawGroup = async () => {
+  const updateButtonClick = async () => {
+
+    const selectedLayerUpdated = {
+      ...selectedGKLayer,
+      [currentModalLocale]: {
+        gk_name: convertMarkdownFromEditorState(GKLayerEditorState).split("/n").join("")
+      },
+    }
+
+    if (selectedLayerUpdated.en) {
+      if (!await updateLayer(selectedLayerUpdated,"en")) {return}
+    }
+    
+    if (selectedLayerUpdated.ru) {
+      if (!await updateLayer(selectedLayerUpdated,"ru")) {return}
+    }
+
+    // update current groups
+    setStateFromGetAPI(setGKLayers, `${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`, undefined, headers);
+
+    // show message
+    showMessage(intl.formatMessage({ id: `Системный уровень обновлен`, defaultMessage: `Системный уровень обновлен` }));
+
+  }
+
+  const updateLayer = async (layer,locale) => {
 
     // get current input values
-    const GKLayerName = convertMarkdownFromEditorState(GKLayerEditorState);
-    const GKLayerColor = document.getElementById("InputGKLayerColor3").value;
+
+    const GKLayerColor = layer.color;
+    const GKLayerName = layer[locale].gk_name;
 
     const newLawGroup = {
       gk: {
@@ -80,23 +115,18 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
     };
 
     // send group update request
-    const changedGKLayerResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/gk/${selectedGKLayer.id_gk}`, newLawGroup, headers);
+    const changedGKLayerResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${locale}/gk/${selectedGKLayer.id_gk}`, newLawGroup, headers);
     if (!isResponseSuccessful(changedGKLayerResponseData)) {
       showMessage(changedGKLayerResponseData.data.error, "error");
-      return;
+      return false;
     }
 
-    // update current groups
-    setStateFromGetAPI(setGKLayers, `${process.env.REACT_APP_API_LINK}/${intl.locale}/gk`, undefined, headers);
-
-    // show message
-    showMessage(intl.formatMessage({ id: `Системный уровень обновлен`, defaultMessage: `Системный уровень обновлен` }));
+    return true;
 
   };
 
   const requestAlternativeLayerData = async (locale) => {
 
-    console.log(selectedGKLayer)
     if (selectedGKLayer.id_gk) {
     
     const layerResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${locale}/gk`, headers);
@@ -105,16 +135,37 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
       return;
     }
     const layers = layerResponseData.data.data
+   
 
     const translatedSelectedLayer = layers.find(layer => layer.id_gk === selectedGKLayer.id_gk)
-    console.log(layers,translatedSelectedLayer)
-    setSelectedGKLayer(translatedSelectedLayer);
-    convertMarkdownToEditorState(setGKLayerEditorState, translatedSelectedLayer.gk_name);
-    document.getElementById("InputGKLayerColor3").value = translatedSelectedLayer.color;
+
+
+    const selectedLayerUpdated = {
+      ...selectedGKLayer,
+      [currentModalLocale]: {
+        gk_name: convertMarkdownFromEditorState(GKLayerEditorState).split("/n").join("")
+      },
+      [locale]: {
+        gk_name: selectedGKLayer[locale] ? selectedGKLayer[locale].gk_name : translatedSelectedLayer.gk_name
+      }
+    }
+
+    console.log(selectedLayerUpdated)
+    setSelectedGKLayer(selectedLayerUpdated);
+    convertMarkdownToEditorState(setGKLayerEditorState, selectedLayerUpdated[locale].gk_name);
+    document.getElementById("InputGKLayerColor3").value = selectedLayerUpdated.color;
     }
 
     setCurrentModalLocale(locale)
 
+  }
+
+  const updateColor = async () => {
+    console.log("works")
+    setSelectedGKLayer({
+      ...selectedGKLayer,
+      color: document.getElementById("InputGKLayerColor3").value
+    })
   }
 
   let GKLayersMarkup;
@@ -131,7 +182,7 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
             </>) : (null)}
           <td dangerouslySetInnerHTML={{ __html: GKLayer.gk_name }}></td>
           <td>G<sup>{GKLayer.g_indicate}</sup>K<sup>{GKLayer.k_indicate}</sup></td>
-          <td><input type="color" className="form-control form-control-color disabled" value={GKLayer.color} readOnly onClick={(e) => { e.preventDefault(); }} /></td>
+          <td><input type="color" className="form-control form-control-color disabled" value={GKLayer.color} readOnly onClick={(e) => { e.preventDefault();  }}/></td>
           {isAdmin ?
             (<>
               <td className='small-cell'><button type="button" className="btn btn-primary btn-sm" onClick={() => selectGKLayer(GKLayer)}>📝</button></td>
@@ -178,12 +229,12 @@ export function GKColorModal({ modalsVisibility, GKLayersState }) {
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>
               <div className="col-5">
-                <input type="color" className="form-control form-control-color" id="InputGKLayerColor3" />
+                <input type="color" className="form-control form-control-color" id="InputGKLayerColor3" onChange={updateColor} />
               </div>
             </div>
             <div className="row">
               <div className="col-2">
-                  <Button type="button" className="btn btn-info" onClick={(e) => updateLawGroup(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
+                  <Button type="button" className="btn btn-info" onClick={(e) => updateButtonClick(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
               </div>
             </div>
           </>) : (null)}

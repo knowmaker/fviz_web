@@ -27,7 +27,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
   }
 
   // define current law group and editor state
-  const [selectedLawGroup, setSelectedLawGroup] = useState({ type_name: null, id_type: null });
+  const [selectedLawGroup, setSelectedLawGroup] = useState({ en:{type_name: null},ru:{type_name:null}, id_type: null,color:null });
   const [lawGroupEditorState, setLawGroupEditorState] = useState(EditorState.createEmpty());
 
   const intl = useIntl();
@@ -42,7 +42,7 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     if (modalsVisibility.lawsGroupsModalVisibility.isVisible === true && isAdmin) {
       setCurrentTabsLocale(intl.locale)
     } else {
-      setSelectedLawGroup({ type_name: null, id_type: null })
+      setSelectedLawGroup({ en:{type_name: null},ru:{type_name:null}, id_type: null,color:null })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalsVisibility.lawsGroupsModalVisibility.isVisible]);
@@ -60,19 +60,97 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
   const selectLawGroup = async (group) => {
 
     // set this group as selected
-    await setSelectedLawGroup(group);
+
+    const selectedGroup = {
+      ...group,
+      type_name: null,
+      [currentModalLocale]: {
+        type_name: group.type_name,
+      }
+    }
+    convertMarkdownToEditorState(setLawGroupEditorState, selectedGroup[currentModalLocale].type_name);
+    document.getElementById("InputLawGroupColor3").value = selectedGroup.color;
+
+    console.log(selectedGroup)
+    setSelectedLawGroup(selectedGroup);
     
-    setCurrentTabsLocale(intl.locale)
 
 
 
   };
 
-  const updateLawGroup = async () => {
+  const updateButtonClick = async () => {
+
+    const selectedLawGroupUpdated = {
+      ...selectedLawGroup,
+      [currentModalLocale]: {
+        type_name: convertMarkdownFromEditorState(lawGroupEditorState).split("/n").join("")
+      },
+    }
+
+    if (selectedLawGroupUpdated.en) {
+      if (!await updateLawGroup(selectedLawGroupUpdated,"en")) {return}
+    }
+    
+    if (selectedLawGroupUpdated.ru) {
+      if (!await updateLawGroup(selectedLawGroupUpdated,"ru")) {return}
+    }
+
+    // update current groups
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`, undefined, headers);
+
+    // show message
+    showMessage(intl.formatMessage({ id: `Группа была обновлена`, defaultMessage: `Группа была обновлена` }));
+
+  }
+
+  const createButtonClick = async () => {
+
+    let selectedLawGroupUpdated = {
+      ...selectedLawGroup,
+      color: document.getElementById("InputLawGroupColor3").value,
+      [currentModalLocale]: {
+        type_name: convertMarkdownFromEditorState(lawGroupEditorState).split("/n").join("")
+      },
+    }
+
+    console.log(selectedLawGroupUpdated)
+    const createResult = await createLawGroup(selectedLawGroupUpdated,currentModalLocale)
+
+    if (!createResult) {return}
+
+    selectedLawGroupUpdated = {
+      ...selectedLawGroupUpdated,
+      id_type: createResult.id_type
+    }
+
+    console.log(selectedLawGroupUpdated)
+    if (selectedLawGroupUpdated.en) {
+      if (!await updateLawGroup(selectedLawGroupUpdated,"en")) {return}
+    }
+    
+    if (selectedLawGroupUpdated.ru) {
+      if (!await updateLawGroup(selectedLawGroupUpdated,"ru")) {return}
+    }
+
+    // update groups
+    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`, undefined, headers);
+
+    // reset group editors
+    setLawGroupEditorState(EditorState.createEmpty());
+    document.getElementById("InputLawGroupColor3").value = "#FF0000";
+
+    // show message 
+    showMessage(intl.formatMessage({ id: `Группа была создана`, defaultMessage: `Группа была создана` }));
+  }
+
+  const updateLawGroup = async (lawGroup,locale) => {
+
+
 
     // get current input values
-    const lawGroupName = convertMarkdownFromEditorState(lawGroupEditorState);
-    const lawGroupColor = document.getElementById("InputLawGroupColor3").value;
+    const lawGroupColor = lawGroup.color;
+    const lawGroupName = lawGroup[locale].type_name;
 
     const newLawGroup = {
       law_type: {
@@ -82,18 +160,13 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     };
 
     // send group update request
-    const changedGroupResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/law_types/${selectedLawGroup.id_type}`, newLawGroup, headers);
+    const changedGroupResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${locale}/law_types/${lawGroup.id_type}`, newLawGroup, headers);
     if (!isResponseSuccessful(changedGroupResponseData)) {
       showMessage(changedGroupResponseData.data.error, "error");
-      return;
+      return false;
     }
 
-    // update current groups
-    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`, undefined, headers);
-
-    // show message
-    showMessage(intl.formatMessage({ id: `Группа была обновлена`, defaultMessage: `Группа была обновлена` }));
-
+    return true;
   };
 
   const deleteLawGroup = async (group) => {
@@ -118,11 +191,11 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
 
   };
 
-  const createLawGroup = async () => {
+  const createLawGroup = async (lawGroup,locale) => {
 
     // get current input values
-    const lawGroupName = convertMarkdownFromEditorState(lawGroupEditorState);
-    const lawGroupColor = document.getElementById("InputLawGroupColor3").value;
+    const lawGroupColor = lawGroup.color;
+    const lawGroupName = lawGroup[locale].type_name;
 
     const newLawGroup = {
       law_type: {
@@ -132,30 +205,16 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     };
 
     // send create group request
-    const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${currentModalLocale}/law_types`, newLawGroup, headers);
+    const newGroupResponseData = await postDataToAPI(`${process.env.REACT_APP_API_LINK}/${locale}/law_types`, newLawGroup, headers);
     if (!isResponseSuccessful(newGroupResponseData)) {
       showMessage(newGroupResponseData.data.error, "error");
-      return;
+      return false
     }
-
-    // update groups
-    setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`, undefined, headers);
-
-    // reset group editors
-    setLawGroupEditorState(EditorState.createEmpty());
-    document.getElementById("InputLawGroupColor3").value = "#FF0000";
-
-    // show message 
-    showMessage(intl.formatMessage({ id: `Группа была создана`, defaultMessage: `Группа была создана` }));
-
+    return newGroupResponseData.data.data;
   };
 
   const requestAlternativeGroupData = async (locale) => {
-
-    if (selectedLawGroup.id_type) {
-    //setStateFromGetAPI(selectedCellState.setSelectedCell,`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`,undefined,headers)
-    //setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${locale}/law_types`, undefined, headers);
-    //setStateFromGetAPI(setLawsGroups, `${process.env.REACT_APP_API_LINK}/${intl.locale}/law_types`,undefined,headers)
+   
     const groupResponseData = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${locale}/law_types`, headers);
     if (!isResponseSuccessful(groupResponseData)) {
       showMessage(groupResponseData.data.error, "error");
@@ -164,14 +223,37 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
     const groups = groupResponseData.data.data
 
     const translatedSelectedGroup = groups.find(group => group.id_type === selectedLawGroup.id_type)
-    console.log(groups,translatedSelectedGroup)
-    setSelectedLawGroup(translatedSelectedGroup)
-    convertMarkdownToEditorState(setLawGroupEditorState, translatedSelectedGroup.type_name);
-    document.getElementById("InputLawGroupColor3").value = translatedSelectedGroup.color;
+
+    //setSelectedLawGroup(translatedSelectedGroup)
+
+    const selectedLawGroupUpdated = {
+      ...selectedLawGroup,
+      [currentModalLocale]: {
+        type_name: convertMarkdownFromEditorState(lawGroupEditorState).split("/n").join("")
+      },
+      [locale]: {
+        type_name: selectedLawGroup[locale]? selectedLawGroup[locale].type_name : translatedSelectedGroup.type_name
+      }
     }
+
+    setSelectedLawGroup(selectedLawGroupUpdated)
+    console.log(selectedLawGroup)
+    console.log(selectedLawGroupUpdated)
+
+    convertMarkdownToEditorState(setLawGroupEditorState, selectedLawGroupUpdated[locale].type_name);
+    document.getElementById("InputLawGroupColor3").value = selectedLawGroupUpdated.color;
+
 
     setCurrentModalLocale(locale)
 
+  }
+
+  const updateColor = async () => {
+    console.log("works")
+    setSelectedLawGroup({
+      ...selectedLawGroup,
+      color:  document.getElementById("InputLawGroupColor3").value 
+    })
   }
 
   let lawsGroupsMarkup;
@@ -239,16 +321,16 @@ export function LawsGroupsModal({ modalsVisibility, lawsGroupsState,lawsState })
                 <FormattedMessage id='Цвет' defaultMessage="Цвет" />:
               </div>
               <div className="col-5">
-                <input type="color" className="form-control form-control-color" id="InputLawGroupColor3" />
+                <input type="color" className="form-control form-control-color" id="InputLawGroupColor3" onChange={updateColor}/>
               </div>
             </div>
 
               <div className="row">
               <div className="col-2">
-                <Button type="button" className="btn btn-success" onClick={(e) => createLawGroup(e)}><FormattedMessage id='Создать' defaultMessage="Создать" /></Button>
+                <Button type="button" className="btn btn-success" onClick={(e) => createButtonClick(e)}><FormattedMessage id='Создать' defaultMessage="Создать" /></Button>
               </div>
               <div className="col-3">
-                <Button type="button" className="btn btn-info" onClick={(e) => updateLawGroup(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
+                <Button type="button" className="btn btn-info" onClick={(e) => updateButtonClick(e)}><FormattedMessage id='Обновить' defaultMessage="Обновить" /></Button>
               </div>
               </div>
  

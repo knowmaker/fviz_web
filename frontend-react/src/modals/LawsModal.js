@@ -10,7 +10,7 @@ import { showMessage } from '../misc/message.js';
 import { Modal } from './Modal.js';
 import { Button } from '../components/ButtonWithLoad.js';
 
-export function LawsModal({ modalsVisibility, lawsState, selectedLawState, lawsGroupsState, lawEditorsStates }) {
+export function EditLawsModal({ modalsVisibility, lawsState, selectedLawState, lawsGroupsState, lawEditorsStates }) {
 
   const userInfoState = useContext(UserProfile);
   const headers = {

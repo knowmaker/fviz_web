@@ -19,11 +19,11 @@ import translationEN from '../compiled-lang/en.json';
 import translationRU from '../compiled-lang/ru.json';
 import { EditCellModal } from '../modals/EditCellModal';
 import { EditProfileModal } from '../modals/EditProfileModal';
-import { LawsModal } from '../modals/LawsModal';
+import { EditLawsModal } from '../modals/LawsModal';
 import { TableViewsModal } from '../modals/TableViewsModal';
 import { LawsGroupsModal } from '../modals/LawsGroupsModal';
-import { GKColorModal } from '../modals/GKColorModal';
-import { RegModal } from '../modals/RegModal';
+import { GKLayersModal } from '../modals/GKColorModal';
+import { RegistrationModal } from '../modals/RegModal';
 import { GKLayersImageModal } from '../modals/GKLayersImageModal';
 import { convertMarkdownToEditorState } from '../misc/converters';
 import { showMessage } from '../misc/message';
@@ -85,11 +85,13 @@ export default function Home() {
       const storageToken = localStorage.getItem('token');
       if (!storageToken) {
         setStateFromGetAPI(setFullTableData,`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view`,undefined,undefined)
+        console.log()
       }
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userToken]);
+
 
   useEffect(() => {
 
@@ -286,6 +288,7 @@ export default function Home() {
         if (event.key === 'Escape') {
           event.preventDefault();
           setSelectedLaw({law_name: null,cells:[],id_type: null})
+          modalsVisibility.lawsModalVisibility.setVisibility(false)
         }
       };
       document.addEventListener('keydown', keyDownHandler);
@@ -332,7 +335,7 @@ export default function Home() {
 
           } else {cellData = selectedCell}
 
-          console.log("there")
+
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
           convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 
@@ -380,13 +383,13 @@ export default function Home() {
                 <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility} showModeState={showModeState} selectedCellState={selectedCellState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
-                <RegModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               
+                <RegistrationModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               
                 <EditCellModal modalVisibility={modalsVisibility.editCellModalVisibility} selectedCell={selectedCell} selectedCellState={selectedCellState} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
                 <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState} currentLocaleState={currentLocaleState}/>
-                <LawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState} lawEditorsStates={lawEditorsStates}/>
+                <EditLawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState} lawEditorsStates={lawEditorsStates}/>
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
                 <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
-                <GKColorModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
+                <GKLayersModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
                 <GKLayersImageModal modalVisibility={modalsVisibility.GKLayersImageModalVisibility} />
 
                 <ToastContainer />
@@ -411,6 +414,6 @@ export function showPassword(inputElementRef,eyeElementRef) {
     inputElementRef.current.setAttribute('type', 'text');
     eyeElementRef.current.classList.remove( "fa-eye-slash" );
     eyeElementRef.current.classList.add( "fa-eye" );
-}
+  }
 }
 

@@ -230,7 +230,7 @@
   "Превью": [
     {
       "type": 0,
-      "value": "Previev"
+      "value": "Preview"
     }
   ],
   "Представление обновлено": [
@@ -299,6 +299,12 @@
       "value": "Edit cell"
     }
   ],
+  "Режим законов": [
+    {
+      "type": 0,
+      "value": "Law mode"
+    }
+  ],
   "Режим просмотра": [
     {
       "type": 0,
@@ -345,6 +351,12 @@
     {
       "type": 0,
       "value": "Download screenshot"
+    }
+  ],
+  "Скрыть": [
+    {
+      "type": 0,
+      "value": "Hide"
     }
   ],
   "Создать": [
@@ -453,12 +465,6 @@
     {
       "type": 0,
       "value": "Not chosen"
-    }
-  ],
-  "скрыть": [
-    {
-      "type": 0,
-      "value": "hide"
     }
   ]
 }

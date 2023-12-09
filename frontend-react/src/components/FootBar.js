@@ -134,6 +134,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
                         <Button className="btn-sm btn-primary btn footbar-button" aria-current="page" onClick={(e) => downloadPDF(e)}><FormattedMessage id='Скачать ' defaultMessage="Скачать "/> pdf</Button>
                     </>) : (null)}
 
+                  <label className="form-check-label"><FormattedMessage id='Режим законов' defaultMessage="Режим законов"/></label>
                 <div className="form-check form-switch">
                   <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheck" onClick={(e) => {setShowModeState(e)}}/>
                   <label className="form-check-label" htmlFor="flexSwitchCheck"><FormattedMessage id='Режим просмотра' defaultMessage="Режим просмотра"/></label>

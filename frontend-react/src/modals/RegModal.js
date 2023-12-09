@@ -7,7 +7,7 @@ import { showMessage } from '../misc/message.js';
 import { Modal } from './Modal.js';
 import { Button } from '../components/ButtonWithLoad.js';
 
-export function RegModal({ modalVisibility, setUserToken, currentLocaleState }) {
+export function RegistrationModal({ modalVisibility, setUserToken, currentLocaleState }) {
 
   const intl = useIntl();
 

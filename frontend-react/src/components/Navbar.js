@@ -110,7 +110,7 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
         } else {
             currentLocaleState.setCurrentLocale("en")
         }
-
+        closeAllModals(modalsVisibility)
     }
 
     let loginButtons;
