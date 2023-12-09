@@ -39,7 +39,7 @@ class GkController < ApplicationController
         end
       end
     else
-      render json: { error: [I18n.t('errors.represents.not_found')] }, status: :not_found
+      render json: { error: [I18n.t('errors.gk.not_found')] }, status: :not_found
     end
   end
 

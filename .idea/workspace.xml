@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="final edit of swagger UI">
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="edited any bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/law_types_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/law_types_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/represents_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/represents_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -466,15 +458,7 @@
       <workItem from="1701975490219" duration="1754000" />
       <workItem from="1702055956531" duration="1992000" />
       <workItem from="1702118904479" duration="1297000" />
-      <workItem from="1702149445070" duration="912000" />
-    </task>
-    <task id="LOCAL-00107" summary="debug quantity rspec">
-      <option name="closed" value="true" />
-      <created>1696187466439</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1696187466439</updated>
+      <workItem from="1702149445070" duration="2525000" />
     </task>
     <task id="LOCAL-00108" summary="debug quantity rspec 2">
       <option name="closed" value="true" />
@@ -860,7 +844,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701975560213</updated>
     </task>
-    <option name="localTasksCounter" value="156" />
+    <task id="LOCAL-00156" summary="edited any bugs">
+      <option name="closed" value="true" />
+      <created>1702150843226</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1702150843227</updated>
+    </task>
+    <option name="localTasksCounter" value="157" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -878,7 +870,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="user add language" />
     <MESSAGE value="drop all &quot;_sign&quot; columns in DB" />
     <MESSAGE value="ru and en yml files" />
     <MESSAGE value="update ru and en yml files" />
@@ -903,7 +894,8 @@
     <MESSAGE value="translations for attributes" />
     <MESSAGE value="translations for attributes for all requirements" />
     <MESSAGE value="final edit of swagger UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="final edit of swagger UI" />
+    <MESSAGE value="edited any bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="edited any bugs" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1702150070366" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
