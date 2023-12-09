@@ -209,6 +209,7 @@ ru:
       incorrect_link: "Некорректная ссылка"
       confirmation_email_sent: "Email успешно подтвержден"
       new_password_generated: "Новый пароль сгенерирован и выслан на почту"
+      email_blank: "Email не может быть пустым"
     represents:
       not_found: "Представление не найдено"
     laws:

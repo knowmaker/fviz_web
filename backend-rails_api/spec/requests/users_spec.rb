@@ -3,7 +3,7 @@
 require 'swagger_helper'
 
 RSpec.describe 'users', type: :request do
-  path 'users/login' do
+  path '/users/login' do
     post('User login') do
       tags 'Users'
       consumes 'application/json'

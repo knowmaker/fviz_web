@@ -240,8 +240,12 @@ paths:
                   properties:
                     type_name:
                       type: string
+                      maxLength: 100
+                      example: Законы механики
                     color:
                       type: string
+                      maxLength: 50
+                      example: "#FFFFFF"
                   required:
                   - type_name
                   - color
@@ -1026,7 +1030,7 @@ paths:
       schema:
         type: string
     get:
-      summary: Get a list of physical quantities by lt id
+      summary: Get a file of physical quantities by lt id
       tags:
       - Quantities
       responses:
@@ -1182,6 +1186,8 @@ paths:
       summary: Get the represent
       tags:
       - Represents
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
@@ -1215,10 +1221,10 @@ paths:
           description: server error
     put:
       summary: Update the represent
-      security:
-      - bearerAuth: []
       tags:
       - Represents
+      security:
+      - bearerAuth: []
       parameters: []
       responses:
         '200':
@@ -1423,7 +1429,7 @@ paths:
           description: not found
         '500':
           description: server error
-  users/login:
+  "/users/login":
     post:
       summary: User login
       tags:

@@ -46,8 +46,8 @@ RSpec.describe 'law_types', type: :request do
           law_type: {
             type: :object,
             properties: {
-              type_name: { type: :string },
-              color: { type: :string }
+              type_name: { type: :string, maxLength: 100, example: "Законы механики" },
+              color: { type: :string, maxLength: 50, example: "#FFFFFF" }
             },
             required: %w[type_name color]
           }

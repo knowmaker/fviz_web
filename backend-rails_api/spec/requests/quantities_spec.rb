@@ -215,7 +215,7 @@ RSpec.describe 'quantities', type: :request do
   path '/layers/{id_lt}' do
     parameter name: 'id_lt', in: :path, type: :string, description: 'id_lt'
 
-    get('Get a list of physical quantities by lt id') do
+    get('Get a file of physical quantities by lt id') do
       tags 'Quantities'
       produces 'application/json'
 

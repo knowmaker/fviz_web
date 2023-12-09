@@ -4,19 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="translations for attributes for all requirements">
-      <change beforePath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/backend-rails_api.iml" afterDir="false" />
+    <list default="true" id="7f6946f6-a0e3-478a-85c1-b0d802641d47" name="Changes" comment="final edit of swagger UI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/models/law.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/gk_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/gk_spec.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/app/controllers/users_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/en.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/config/locales/ru.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/law_types_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/law_types_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/laws_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/laws_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/lt_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/lt_spec.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/quantities_spec.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/represents_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/represents_spec.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/requests/users_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-rails_api/spec/swagger_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/spec/swagger_helper.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-rails_api/swagger/v1/swagger.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -467,14 +463,10 @@
       <workItem from="1701882471798" duration="7753000" />
       <workItem from="1701942333605" duration="605000" />
       <workItem from="1701963459705" duration="7132000" />
-    </task>
-    <task id="LOCAL-00106" summary="debug user register">
-      <option name="closed" value="true" />
-      <created>1696166879049</created>
-      <option name="number" value="00106" />
-      <option name="presentableId" value="LOCAL-00106" />
-      <option name="project" value="LOCAL" />
-      <updated>1696166879050</updated>
+      <workItem from="1701975490219" duration="1754000" />
+      <workItem from="1702055956531" duration="1992000" />
+      <workItem from="1702118904479" duration="1297000" />
+      <workItem from="1702149445070" duration="912000" />
     </task>
     <task id="LOCAL-00107" summary="debug quantity rspec">
       <option name="closed" value="true" />
@@ -860,7 +852,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699816620842</updated>
     </task>
-    <option name="localTasksCounter" value="155" />
+    <task id="LOCAL-00155" summary="final edit of swagger UI">
+      <option name="closed" value="true" />
+      <created>1701975560213</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1701975560213</updated>
+    </task>
+    <option name="localTasksCounter" value="156" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -878,7 +878,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="quantity translations" />
     <MESSAGE value="user add language" />
     <MESSAGE value="drop all &quot;_sign&quot; columns in DB" />
     <MESSAGE value="ru and en yml files" />
@@ -903,10 +902,11 @@
     <MESSAGE value="trying locales 2" />
     <MESSAGE value="translations for attributes" />
     <MESSAGE value="translations for attributes for all requirements" />
-    <option name="LAST_COMMIT_MESSAGE" value="translations for attributes for all requirements" />
+    <MESSAGE value="final edit of swagger UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="final edit of swagger UI" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1701969628180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
+    <SUITE FILE_PATH="coverage/fviz_web@backend_rails_api.rcov" NAME="backend-rails_api Coverage Results" MODIFIED="1702150070366" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@RepresentsController_GET__represent_view_index_returns_the_active_quantities_for_the_current_user_s_active_represent.rcov" NAME="RepresentsController GET #represent_view_index returns the active quantities for the current user's active represent Coverage Results" MODIFIED="1696498578558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@LawTypesController.rcov" NAME="LawTypesController Coverage Results" MODIFIED="1696449558509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />
     <SUITE FILE_PATH="coverage/fviz_web@Gk.rcov" NAME="Gk Coverage Results" MODIFIED="1701622105578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend-rails_api" MODULE_NAME="backend-rails_api" />

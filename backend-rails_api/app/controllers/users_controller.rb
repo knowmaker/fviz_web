@@ -24,15 +24,21 @@ class UsersController < ApplicationController
 
   # Метод авторизации пользователя
   def login
-    @user = User.find_by(email: params[:user][:email])
+    email = params[:user][:email]
+    if email.blank?
+      render json: { error: [I18n.t('errors.users.email_blank')] }, status: :unprocessable_entity
+      return
+    end
 
-    if @user&.confirmed && Argon2::Password.verify_password(params[:user][:password], @user.password)
+    user = User.find_by(email: email)
 
-      token = encode(id_user: @user.id_user)
+    if user&.confirmed && Argon2::Password.verify_password(params[:user][:password], user.password)
+
+      token = encode(id_user: user.id_user)
       render json: { data: token }, status: :ok
-    elsif !@user
+    elsif !user
       render json: { error: [I18n.t('errors.users.not_found')] }, status: :not_found
-    elsif !@user.confirmed
+    elsif !user.confirmed
       render json: { error: [I18n.t('errors.users.unauthorized')] }, status: :unauthorized
     else
       render json: { error: [I18n.t('errors.users.invalid_credentials')] }, status: :unauthorized
@@ -71,7 +77,13 @@ class UsersController < ApplicationController
 
   # Метод для сброса пароля по почте пользователя
   def reset
-    user = User.find_by(email: params[:user][:email])
+    email = params[:user][:email]
+    if email.blank?
+      render json: { error: [I18n.t('errors.users.email_blank')] }, status: :unprocessable_entity
+      return
+    end
+
+    user = User.find_by(email: email)
 
     if user&.confirmed
       user.confirmation_token = SecureRandom.urlsafe_base64.to_s

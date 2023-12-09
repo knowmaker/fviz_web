@@ -185,6 +185,7 @@ en:
       incorrect_link: "Incorrect link"
       confirmation_email_sent: "Email successfully confirmed"
       new_password_generated: "New password generated and sent to email"
+      email_blank: "Email can't be blank"
     represents:
       not_found: "Representation not found"
     laws:

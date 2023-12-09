@@ -88,6 +88,7 @@ RSpec.describe 'represents', type: :request do
 
     get('Get the represent') do
       tags 'Represents'
+      security [{ bearerAuth: [] }]
       produces 'application/json'
 
       response(200, 'successful') do
@@ -118,8 +119,8 @@ RSpec.describe 'represents', type: :request do
     end
 
     put('Update the represent') do
-      security [{ bearerAuth: [] }]
       tags 'Represents'
+      security [{ bearerAuth: [] }]
       consumes 'application/json'
       produces 'application/json'
 
