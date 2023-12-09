@@ -39,6 +39,26 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   // }, [modalVisibility.isVisible]);
 
   useEffect(() => {
+
+    if (selectedCellState.selectedCell) {
+      setCurrentModalLocaleFields({
+
+        id_gk: selectedCellState.selectedCell.id_gk,
+        l_indicate: selectedCellState.selectedCell.l_indicate,
+        t_indicate: selectedCellState.selectedCell.t_indicate,
+        symbol: selectedCellState.selectedCell.symbol,
+        [currentModalLocale]: {
+          value_name: selectedCellState.selectedCell.value_name,
+          unit: selectedCellState.selectedCell.unit,
+        }
+        
+      })
+    }
+
+
+  }, [selectedCellState.selectedCell]);
+
+  useEffect(() => {
     console.log(modalVisibility.isVisible)
     if (modalVisibility.isVisible === true) {
       setCurrentModalLocale(intl.locale)
@@ -95,15 +115,15 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       return;
     }
 
-    let updatedCellEn
-    let updatedCellRu
+    let updatedCellEn = true
+    let updatedCellRu = true
     if (currentModalLocaleFieldsUpdated["en"]) {
       updatedCellEn = await updateCell(currentModalLocaleFieldsUpdated,"en",selectedCell.id_value);
     }
     if (currentModalLocaleFieldsUpdated["ru"]) {
       updatedCellRu = await updateCell(currentModalLocaleFieldsUpdated,"ru",selectedCell.id_value);
     }
-
+    console.log(updatedCellEn,updatedCellRu)
     if (!updatedCellEn || !updatedCellRu) {
       return
     }
@@ -147,7 +167,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       }
     };
 
-    console.log(newCell)
+
 
     // send cell update request
     const changedCellResponseData = await putDataToAPI(`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${cellId}`, newCell, headers);
@@ -351,7 +371,6 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
   const requestAlternativeCellData = async (locale) => {
 
     
-    console.log(selectedCellState.selectedCell)
 
     const currentModalLocaleFieldsUpdated = {
       ...currentModalLocaleFields,
@@ -365,8 +384,9 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       }
     }
 
+    console.log(currentModalLocaleFieldsUpdated)
     setCurrentModalLocaleFields(currentModalLocaleFieldsUpdated)
-    console.log(currentModalLocaleFieldsUpdated,locale)
+    //console.log(currentModalLocaleFieldsUpdated,locale)
     setCurrentModalLocale(locale)
 
     if (selectedCell ) {
@@ -399,12 +419,11 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
     const selectedCellResponse = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${locale}/quantities/${selectedCell.id_value}`, headers);
     if (!isResponseSuccessful(selectedCellResponse)) {
       showMessage(selectedCellResponse.data.error, "error");
-
-
       //selectedCellState.setSelectedCell(selectedCellEdited)
       return;
     }
     const selectedCellFullData = selectedCellResponse.data.data
+
 
     const value_name = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].value_name : selectedCellFullData.value_name
     const unit = currentModalLocaleFieldsUpdated[locale] ? currentModalLocaleFieldsUpdated[locale].unit : selectedCellFullData.unit
@@ -429,6 +448,8 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
         ...selectedCellFullData,
       }
     }
+
+    selectedCellState.setSelectedCell(selectedCellEdited)
 
     }
     

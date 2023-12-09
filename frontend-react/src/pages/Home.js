@@ -335,7 +335,7 @@ export default function Home() {
 
           } else {cellData = selectedCell}
 
-          console.log("there")
+
           // set cell editor for this cell
           convertMarkdownToEditorState(setCellNameEditor, cellData.value_name) 
           convertMarkdownToEditorState(setCellSymbolEditor, cellData.symbol) 

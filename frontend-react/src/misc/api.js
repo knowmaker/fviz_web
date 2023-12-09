@@ -16,6 +16,7 @@ export function postDataToAPI(adress,data, headers = undefined) {
   return new Promise(async function(resolve) {
     try {
       const response = await axios.post(adress, data, {headers: headers})
+      console.log(adress,headers,response)
       resolve(response)
     } catch (error) {
       resolve(error.response)

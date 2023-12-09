@@ -623,7 +623,7 @@ export function Cell({cellFullData, cellRightClick, selectedCells, revStates, se
       return
     }
     // showModeState
-   
+
     //console.log(selectedLawState && showModeState)
     if (showModeState) {
       if (selectedLawState && !showModeState.showMode) {handleLawSelection(event, cellFullId)};

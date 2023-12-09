@@ -1,237 +1,269 @@
 {
-  "Авторизация": {
-    "defaultMessage": "Authorization"
-  },
-  "Авторизация успешна": {
-    "defaultMessage": "Authorization successful"
-  },
-  "Аккаунт удалён": {
-    "defaultMessage": "Account deleted"
-  },
-  "Алфавит": {
-    "defaultMessage": "Greek Alphabet"
-  },
-  "Базовое": {
-    "defaultMessage": "Base"
-  },
-  "Величины.pdf": {
-    "defaultMessage": "Variables.pdf"
-  },
-  "Возврат": {
-    "defaultMessage": "Return"
-  },
-  "Вход": {
-    "defaultMessage": "Login"
-  },
-  "Выберите опцию": {
-    "defaultMessage": "Select an option"
-  },
-  "Выбрать": {
-    "defaultMessage": "Select"
-  },
-  "Выход": {
-    "defaultMessage": "Sign out"
-  },
-  "Группа была обновлена": {
-    "defaultMessage": "Group has been updated"
-  },
-  "Группа была создана": {
-    "defaultMessage": "Group has been created"
-  },
-  "Группа была удалена": {
-    "defaultMessage": "Group has been deleted"
-  },
-  "Группы": {
-    "defaultMessage": "Groups"
-  },
-  "Группы законов": {
-    "defaultMessage": "Law groups"
-  },
-  "Другие уровни": {
-    "defaultMessage": "Other layers"
-  },
-  "Единица измерения": {
-    "defaultMessage": "Unit of measurement"
-  },
-  "Законы": {
-    "defaultMessage": "Laws"
-  },
-  "Имя": {
-    "defaultMessage": "Name"
-  },
-  "Мой профиль": {
-    "defaultMessage": "My profile"
-  },
-  "Название": {
-    "defaultMessage": "Name"
-  },
-  "Новый пароль": {
-    "defaultMessage": "New password"
-  },
-  "Обновить": {
-    "defaultMessage": "Update"
-  },
-  "Отмена": {
-    "defaultMessage": "Cancel"
-  },
-  "Отчество": {
-    "defaultMessage": "Middle name"
-  },
-  "Пароль": {
-    "defaultMessage": "Password"
-  },
-  "Письмо подтверждения почты": {
-    "defaultMessage": "A confirmation email has been sent"
-  },
-  "Письмо сброса пароля": {
-    "defaultMessage": "Password reset email has been sent"
-  },
-  "Подтверждение действия": {
-    "defaultMessage": "Are you sure you want to do this? This will lead to consequences for other users."
-  },
-  "Почта": {
-    "defaultMessage": "Email"
-  },
-  "Превью": {
-    "defaultMessage": "Previev"
-  },
-  "Представление обновлено": {
-    "defaultMessage": "Table view has been updated"
-  },
-  "Представление создано": {
-    "defaultMessage": "Table view has been created"
-  },
-  "Представление удалено": {
-    "defaultMessage": "Table view has been deleted"
-  },
-  "Представление.png": {
-    "defaultMessage": "Table_view.png"
-  },
-  "Представления": {
-    "defaultMessage": "Table views"
-  },
-  "Представления ФВ": {
-    "defaultMessage": "Table views FV"
-  },
-  "Профиль обновлён": {
-    "defaultMessage": "Profile has been updated"
-  },
-  "Регистрация": {
-    "defaultMessage": "Registration"
-  },
-  "Редактирование величины": {
-    "defaultMessage": "Edit value"
-  },
-  "Редактирование профиля": {
-    "defaultMessage": "Edit profile"
-  },
-  "Редактирование ячейки": {
-    "defaultMessage": "Edit cell"
-  },
-  "Сброс": {
-    "defaultMessage": "Reset"
-  },
-  "Сброс пароля": {
-    "defaultMessage": "Reset password"
-  },
-  "Сеанс завершен": {
-    "defaultMessage": "Session ended"
-  },
-  "Системные уровни": {
-    "defaultMessage": "System levels"
-  },
-  "Системный уровень обновлен": {
-    "defaultMessage": "System level has been updated"
-  },
-  "Скачать ": {
-    "defaultMessage": "Download"
-  },
-  "Скачать скриншот": {
-    "defaultMessage": "Download screenshot"
-  },
-  "Создать": {
-    "defaultMessage": "Create"
-  },
-  "Сохранить": {
-    "defaultMessage": "Save"
-  },
-  "Сохранить представление": {
-    "defaultMessage": "Save table view"
-  },
-  "Стереть закон": {
-    "defaultMessage": "Erase current law"
-  },
-  "Удалить": {
-    "defaultMessage": "Delete"
-  },
-  "Удалить аккаунт": {
-    "defaultMessage": "Delete account"
-  },
-  "Уровень": {
-    "defaultMessage": "Layer"
-  },
-  "Условное обозначение": {
-    "defaultMessage": "Symbol"
-  },
-  "ФВиЗ": {
-    "defaultMessage": "FViZ"
-  },
-  "Фамилия": {
-    "defaultMessage": "Surname"
-  },
-  "Цвет": {
-    "defaultMessage": "Color"
-  },
-  "Цвета ячеек": {
-    "defaultMessage": "Cells color"
-  },
-  "Ячейка была изменена": {
-    "defaultMessage": "Cell has been updated"
-  },
-  "Ячейка удалена": {
-    "defaultMessage": "Cell has been deleted"
-  },
-  "не выбрано": {
-    "defaultMessage": "Not chosen"
-  },
-  "Соотношение уровней GK": {
-    "defaultMessage": "GK ratios"
-  },
-  "Авторизация / Регистрация": {
-    "defaultMessage": "Authorization / Registration"
-  },
-  "Показать уровни GK": {
-    "defaultMessage": "Show GK levels"
-  },
-  "Нет альтернативных ячеек": {
-    "defaultMessage": "No cell alternatives"
-  },
-  "Формулы": {
-    "defaultMessage": "Formulas"
-  },
   "en": {
-    "defaultMessage": "En"
+    "defaultMessage": "en"
   },
   "ru": {
-    "defaultMessage": "Ru"
+    "defaultMessage": "ru"
+  },
+  "Авторизация": {
+    "defaultMessage": "Авторизация"
+  },
+  "Авторизация / Регистрация": {
+    "defaultMessage": "Авторизация / Регистрация"
+  },
+  "Авторизация успешна": {
+    "defaultMessage": "Авторизация успешна"
+  },
+  "Аккаунт удалён": {
+    "defaultMessage": "Аккаунт удалён"
+  },
+  "Алфавит": {
+    "defaultMessage": "Алфавит"
+  },
+  "Базовое": {
+    "defaultMessage": "Базовое"
   },
   "Без группы": {
-    "defaultMessage": "Without group"
+    "defaultMessage": "Без группы"
   },
-  "Язык": {
-    "defaultMessage": "Language"
+  "Величины.pdf": {
+    "defaultMessage": "Величины.pdf"
   },
-  "Режим просмотра": {
-    "defaultMessage": "View mode"
+  "Возврат": {
+    "defaultMessage": "Возврат"
+  },
+  "Вход": {
+    "defaultMessage": "Вход"
+  },
+  "Выберите опцию": {
+    "defaultMessage": "Выберите опцию"
+  },
+  "Выберите ячейку": {
+    "defaultMessage": "Сначала выберите ячейку на поле"
+  },
+  "Выбор закона": {
+    "defaultMessage": "Выбор закона"
+  },
+  "Выбран некорректный закон": {
+    "defaultMessage": "выбран некорректный закон"
+  },
+  "Выбрана пустая ячейка": {
+    "defaultMessage": "Выбрана пустая ячейка"
+  },
+  "Выбрать": {
+    "defaultMessage": "Выбрать"
+  },
+  "Выбрать 4 ячейки": {
+    "defaultMessage": "Для закона нужно выбрать 4 ячейки"
+  },
+  "Выход": {
+    "defaultMessage": "Выход"
+  },
+  "Группа была обновлена": {
+    "defaultMessage": "Группа была обновлена"
+  },
+  "Группа была создана": {
+    "defaultMessage": "Группа была создана"
+  },
+  "Группа была удалена": {
+    "defaultMessage": "Группа была удалена"
+  },
+  "Группы": {
+    "defaultMessage": "Группы"
+  },
+  "Группы законов": {
+    "defaultMessage": "Группы законов"
+  },
+  "Данного закона не существует": {
+    "defaultMessage": "Данного закона не существует"
+  },
+  "Другие уровни": {
+    "defaultMessage": "Другие уровни"
+  },
+  "Единица измерения": {
+    "defaultMessage": "Единица измерения"
+  },
+  "Закон выбран": {
+    "defaultMessage": "Закон выбран"
+  },
+  "Закон обновлён": {
+    "defaultMessage": "Закон обновлён"
+  },
+  "Закон создан": {
+    "defaultMessage": "Закон создан"
+  },
+  "Закон существует": {
+    "defaultMessage": "Этот закон уже существует"
+  },
+  "Закон удалён": {
+    "defaultMessage": "Закон удалён"
+  },
+  "Законов нет": {
+    "defaultMessage": "Законов нет"
+  },
+  "Законы": {
+    "defaultMessage": "Законы"
+  },
+  "Имя": {
+    "defaultMessage": "Имя"
+  },
+  "Мой профиль": {
+    "defaultMessage": "Мой профиль"
+  },
+  "Название": {
+    "defaultMessage": "Название"
+  },
+  "Нет альтернативных ячеек": {
+    "defaultMessage": "Нет альтернативных ячеек"
+  },
+  "Новый пароль": {
+    "defaultMessage": "Новый пароль"
+  },
+  "Обновить": {
+    "defaultMessage": "Обновить"
+  },
+  "Отмена": {
+    "defaultMessage": "Отмена"
+  },
+  "Отчество": {
+    "defaultMessage": "Отчество"
+  },
+  "Пароль": {
+    "defaultMessage": "Пароль"
+  },
+  "Письмо подтверждения почты": {
+    "defaultMessage": "Было выслано письмо подтверждения почты"
+  },
+  "Письмо сброса пароля": {
+    "defaultMessage": "Письмо сброса пароля выслано"
   },
   "Подтверждение": {
-    "defaultMessage": "Are you sure you want to do this?"
+    "defaultMessage": "Вы уверены что хотите это сделать?"
   },
-  "Скрыть": {
-    "defaultMessage": "Hide"
+  "Подтверждение действия": {
+    "defaultMessage": "Вы уверены что хотите это сделать? Это приведёт к последствиям для других пользователей."
+  },
+  "Показать уровни GK": {
+    "defaultMessage": "Показать уровни GK"
+  },
+  "Почта": {
+    "defaultMessage": "Почта"
+  },
+  "Превью": {
+    "defaultMessage": "Превью"
+  },
+  "Представление обновлено": {
+    "defaultMessage": "Представление обновлено"
+  },
+  "Представление создано": {
+    "defaultMessage": "Представление создано"
+  },
+  "Представление удалено": {
+    "defaultMessage": "Представление удалено"
+  },
+  "Представление.png": {
+    "defaultMessage": "Представление.png"
+  },
+  "Представления": {
+    "defaultMessage": "Представления"
+  },
+  "Представления ФВ": {
+    "defaultMessage": "Представления ФВ"
+  },
+  "Профиль обновлён": {
+    "defaultMessage": "Профиль обновлён"
+  },
+  "Регистрация": {
+    "defaultMessage": "Регистрация"
+  },
+  "Редактирование величины": {
+    "defaultMessage": "Редактирование величины"
+  },
+  "Редактирование профиля": {
+    "defaultMessage": "Редактирование профиля"
   },
   "Режим законов": {
-    "defaultMessage": "Law mode"
+    "defaultMessage": "Режим законов"
+  },
+  "Режим просмотра": {
+    "defaultMessage": "Режим просмотра"
+  },
+  "Сброс": {
+    "defaultMessage": "Сброс"
+  },
+  "Сброс пароля": {
+    "defaultMessage": "Сброс пароля"
+  },
+  "Сеанс завершен": {
+    "defaultMessage": "Сеанс завершен"
+  },
+  "Системные уровни": {
+    "defaultMessage": "Системные уровни"
+  },
+  "Системный уровень обновлен": {
+    "defaultMessage": "Системный уровень обновлен"
+  },
+  "Скачать ": {
+    "defaultMessage": "Скачать"
+  },
+  "Скачать скриншот": {
+    "defaultMessage": "Скачать скриншот"
+  },
+  "Скрыть": {
+    "defaultMessage": "Скрыть"
+  },
+  "Создать": {
+    "defaultMessage": "Создать"
+  },
+  "Соотношение уровней GK": {
+    "defaultMessage": "Соотношение уровней GK"
+  },
+  "Сохранить": {
+    "defaultMessage": "Сохранить"
+  },
+  "Сохранить представление": {
+    "defaultMessage": "Сохранить представление"
+  },
+  "Стереть закон": {
+    "defaultMessage": "Стереть закон"
+  },
+  "Удалить": {
+    "defaultMessage": "Удалить"
+  },
+  "Удалить аккаунт": {
+    "defaultMessage": "Удалить аккаунт"
+  },
+  "Уровень": {
+    "defaultMessage": "Уровень"
+  },
+  "Условное обозначение": {
+    "defaultMessage": "Условное обозначение"
+  },
+  "ФВиЗ": {
+    "defaultMessage": "ФВиЗ"
+  },
+  "Фамилия": {
+    "defaultMessage": "Фамилия"
+  },
+  "Формулы": {
+    "defaultMessage": "Формулы"
+  },
+  "Цвет": {
+    "defaultMessage": "Цвет"
+  },
+  "Цвета ячеек": {
+    "defaultMessage": "Цвета ячеек"
+  },
+  "Язык": {
+    "defaultMessage": "Язык"
+  },
+  "Ячейка была изменена": {
+    "defaultMessage": "Ячейка была изменена"
+  },
+  "Ячейка удалена": {
+    "defaultMessage": "Ячейка удалена"
+  },
+  "не выбрано": {
+    "defaultMessage": "не выбрано"
   }
-
 }
