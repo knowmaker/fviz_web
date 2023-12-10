@@ -387,7 +387,7 @@ export default function Home() {
                 <EditCellModal modalVisibility={modalsVisibility.editCellModalVisibility} selectedCell={selectedCell} selectedCellState={selectedCellState} cellEditorsStates={cellEditorsStates} gkColors={GKLayers}/>
                 <EditProfileModal modalsVisibility={modalsVisibility} userInfoState={userInfoState} currentLocaleState={currentLocaleState}/>
                 <EditLawsModal modalsVisibility={modalsVisibility} lawsState={lawsState} selectedLawState={selectedLawState} lawsGroupsState={lawsGroupsState} lawEditorsStates={lawEditorsStates}/>
-                <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState}/>
+                <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState} revStates={revStates} selectedLawState={selectedLawState}/>
                 <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
                 <GKLayersModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
                 <GKLayersImageModal modalVisibility={modalsVisibility.GKLayersImageModalVisibility} />

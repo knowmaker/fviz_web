@@ -466,5 +466,23 @@
       "type": 0,
       "value": "Not chosen"
     }
+  ],
+  "Законов нет": [
+    {
+      "type": 0,
+      "value": "No laws in this group"
+    }
+  ],
+  "Закон существует": [
+    {
+      "type": 0,
+      "value": "Law already exists"
+    }
+  ],
+  "Выбор закона": [
+    {
+      "type": 0,
+      "value": "Choose law"
+    }
   ]
 }

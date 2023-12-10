@@ -11,7 +11,7 @@ import { convertMarkdownToEditorState } from '../misc/converters.js';
 import { Modal } from './Modal.js';
 import { Button } from '../components/ButtonWithLoad.js';
 
-export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, tableViewState }) {
+export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, tableViewState, revStates, selectedLawState }) {
 
 
   const userInfoState = useContext(UserProfile);
@@ -27,11 +27,18 @@ export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, t
   useEffect(() => {
     if (modalsVisibility.tableViewsModalVisibility.isVisible === false) {
       convertMarkdownToEditorState(setTableViewEditorState, "");
+    } else {
+      convertMarkdownToEditorState(setTableViewEditorState, tableViewState.tableView.title)
     }
-  }, [modalsVisibility.tableViewsModalVisibility.isVisible]);
+  }, [modalsVisibility.tableViewsModalVisibility.isVisible,tableViewState.tableView.title]);
 
 
   const selectTableView = async (tableView) => {
+
+    revStates.setUndoStack([])
+    revStates.setRedoStack([])
+
+    selectedLawState.setSelectedLaw({law_name: null,cells:[],id_type: null})
 
     // send full table view data request
     const tableViewDataResponse = await getDataFromAPI(`${process.env.REACT_APP_API_LINK}/${intl.locale}/active_view/${tableView.id_repr}`, headers);
@@ -53,7 +60,7 @@ export function TableViewsModal({ modalsVisibility, tableViews, setTableViews, t
   const updateTableView = async () => {
 
     // get all current visible cells ids
-    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value);
+    const cellIds = Object.values(tableState)[0].map(cell => cell.id_value).filter(id => id !== -1);
 
     // get new table view name
     const tableViewTitle = convertMarkdownFromEditorState(tableViewEditorState);

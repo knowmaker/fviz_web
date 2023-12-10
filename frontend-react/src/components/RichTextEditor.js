@@ -29,7 +29,7 @@ export function RichTextEditor({ editorState, setEditorState, readOnly = false }
         },
         emoji: {
           icon: '/svg.svg',
-          title: intl.formatMessage({ id: `Алфавит`, defaultMessage: `Алфавит` }),
+          title: 'Alphabet',
           emojis: [
             "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ",
             "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω",
