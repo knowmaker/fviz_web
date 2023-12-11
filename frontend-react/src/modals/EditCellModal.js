@@ -42,7 +42,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
 
     if (selectedCellState.selectedCell) {
       setCurrentModalLocaleFields({
-
+        ...currentModalLocaleFields,
         id_gk: selectedCellState.selectedCell.id_gk,
         l_indicate: selectedCellState.selectedCell.l_indicate,
         t_indicate: selectedCellState.selectedCell.t_indicate,
@@ -384,6 +384,7 @@ export function EditCellModal({ modalVisibility, selectedCell, cellEditorsStates
       }
     }
 
+    console.log(currentModalLocaleFields,currentModalLocale)
     console.log(currentModalLocaleFieldsUpdated)
     setCurrentModalLocaleFields(currentModalLocaleFieldsUpdated)
     //console.log(currentModalLocaleFieldsUpdated,locale)

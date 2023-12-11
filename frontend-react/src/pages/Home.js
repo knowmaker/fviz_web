@@ -310,7 +310,6 @@ export default function Home() {
           // if it is an empty cell
           if (selectedCell.id_value === -1) {
 
-            console.log("here")
             convertMarkdownToEditorState(setCellNameEditor, selectedCell.value_name ? selectedCell.value_name :"") 
             convertMarkdownToEditorState(setCellSymbolEditor, selectedCell.symbol ? selectedCell.symbol :"") 
             convertMarkdownToEditorState(setCellUnitEditor, selectedCell.unit ? selectedCell.unit :"") 
