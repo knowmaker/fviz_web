@@ -78,27 +78,27 @@ export default function Navbar({revStates, modalsVisibility,currentLocaleState})
     }
 
     const openProfileForm = () => {
-       
+        closeAllModals(modalsVisibility)
         modalsVisibility.editProfileModalVisibility.setVisibility(true)
     }
 
     const openTableViewsForm = () => {
-    
+        closeAllModals(modalsVisibility)
         modalsVisibility.tableViewsModalVisibility.setVisibility(true)
     }
 
     const openLawsGroupsForm = () => {
-      
+        closeAllModals(modalsVisibility)
         modalsVisibility.lawsGroupsModalVisibility.setVisibility(true)
     }
 
     const openGKColorsEditForm = () => {
-     
+        closeAllModals(modalsVisibility)
         modalsVisibility.GKColorsEditModalVisibility.setVisibility(true)
     }
 
     const openLawsMenu = () => {
-  
+        closeAllModals(modalsVisibility)
         modalsVisibility.LawsMenuVisibility.setVisibility(true)
     }
 

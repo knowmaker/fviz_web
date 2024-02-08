@@ -24,7 +24,7 @@ import { TableViewsModal } from '../modals/TableViewsModal';
 import { LawsGroupsModal } from '../modals/LawsGroupsModal';
 import { GKLayersModal } from '../modals/GKColorModal';
 import { RegistrationModal } from '../modals/RegModal';
-import { GKLayersImageModal } from '../modals/GKLayersImageModal';
+import { GKLayersImage } from '../modals/GKLayersImageModal';
 import { convertMarkdownToEditorState } from '../misc/converters';
 import { showMessage } from '../misc/message';
 
@@ -389,7 +389,7 @@ export default function Home() {
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState} revStates={revStates} selectedLawState={selectedLawState}/>
                 <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
                 <GKLayersModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
-                <GKLayersImageModal modalVisibility={modalsVisibility.GKLayersImageModalVisibility} />
+                <GKLayersImage modalVisibility={modalsVisibility.GKLayersImageModalVisibility} />
 
                 <ToastContainer />
           </TableContext.Provider>

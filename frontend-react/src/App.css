@@ -137,6 +137,11 @@ sup, sub {
   max-width: 279px;
 }
 
+.data-window-bottom {
+  top: calc(100% - 406px);
+  left: 225px;
+}
+
 .data-window-top {
   display: flex;
   padding: 1rem;
