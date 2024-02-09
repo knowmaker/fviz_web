@@ -5,7 +5,7 @@ import setStateFromGetAPI,{ putDataToAPI,isResponseSuccessful } from '../misc/ap
 import {FormattedMessage,useIntl} from 'react-intl'
 import { Button } from '../components/ButtonWithLoad.js';
 
-export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility,showModeState,selectedCellState}) {
+export default function Footbar({hoveredCell,selectedLawState,getImage,tableViewState,setTableViews,modalsVisibility,showModeState,selectedCellState,GKLayersImageModalVisibility}) {
   
   const userInfoState = useContext(UserProfile) 
   const tableState = useContext(TableContext)  
@@ -98,7 +98,7 @@ export default function Footbar({hoveredCell,selectedLawState,getImage,tableView
   }
 
   const showGKLayersImageModal = () => {
-    modalsVisibility.GKLayersImageModalVisibility.setVisibility(true)
+    GKLayersImageModalVisibility.setVisibility(true)
   }
 
   const setShowModeState = () => {

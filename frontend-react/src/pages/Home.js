@@ -144,7 +144,7 @@ export default function Home() {
     const modalsVisibility={regModalVisibility,editProfileModalVisibility,
                             editCellModalVisibility,lawsModalVisibility,
                             tableViewsModalVisibility,lawsGroupsModalVisibility
-                            ,GKColorsEditModalVisibility,GKLayersImageModalVisibility,
+                            ,GKColorsEditModalVisibility,
                             LawsMenuVisibility}
 
 
@@ -379,7 +379,8 @@ export default function Home() {
           <TableContext.Provider value={tableState}>
 
                 <TableUI modalsVisibility={modalsVisibility} selectedCellState={selectedCellState} revStates={revStates} gkState={GKLayersState} selectedLawState={selectedLawState} hoveredCellState={hoveredCellState} refTable={ref} lawsGroupsState={lawsGroupsState} lawsState={lawsState} currentLocaleState={currentLocaleState} lawEditorsStates={lawEditorsStates} showModeState={showModeState}/>
-                <Footbar hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility} showModeState={showModeState} selectedCellState={selectedCellState}/>
+                <GKLayersImage modalVisibility={GKLayersImageModalVisibility} />
+                <Footbar GKLayersImageModalVisibility={GKLayersImageModalVisibility} hoveredCell={hoveredCell} selectedLawState={selectedLawState} getImage={getImage} tableViewState={tableViewState} setTableViews={setTableViews} modalsVisibility={modalsVisibility} showModeState={showModeState} selectedCellState={selectedCellState}/>
 
                 <div id="modal-mask" className='hidden'></div>                  
                 <RegistrationModal modalVisibility={modalsVisibility.regModalVisibility} setUserToken={setUserToken} currentLocaleState={currentLocaleState}/>               
@@ -389,7 +390,6 @@ export default function Home() {
                 <TableViewsModal modalsVisibility={modalsVisibility} tableViews={tableViews} setTableViews={setTableViews} tableViewState={tableViewState} revStates={revStates} selectedLawState={selectedLawState}/>
                 <LawsGroupsModal modalsVisibility={modalsVisibility} lawsGroupsState={lawsGroupsState} lawsState={lawsState}/>
                 <GKLayersModal modalsVisibility={modalsVisibility} GKLayersState={GKLayersState}/>
-                <GKLayersImage modalVisibility={modalsVisibility.GKLayersImageModalVisibility} />
 
                 <ToastContainer />
           </TableContext.Provider>
