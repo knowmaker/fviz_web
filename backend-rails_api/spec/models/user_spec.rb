@@ -7,13 +7,13 @@ RSpec.describe User, type: :model do
     it 'is valid with valid attributes' do
       user = User.new(
         email: 'user@example.com',
-        password: 'password123'
+        password: 'Password123'
       )
       expect(user).to be_valid
     end
 
     it 'is not valid without an email' do
-      user = User.new(password: 'password123')
+      user = User.new(password: 'Password123')
       expect(user).to_not be_valid
     end
 
@@ -33,47 +33,47 @@ RSpec.describe User, type: :model do
     end
 
     it 'is valid without a last name' do
-      user = User.new(email: 'user@example.com', password: 'password123', first_name: 'John')
+      user = User.new(email: 'user@example.com', password: 'Password123', first_name: 'John')
       expect(user).to be_valid
     end
 
     it 'is valid without a patronymic' do
-      user = User.new(email: 'user@example.com', password: 'password123', last_name: 'Doe', first_name: 'John')
+      user = User.new(email: 'user@example.com', password: 'Password123', last_name: 'Doe', first_name: 'John')
       expect(user).to be_valid
     end
 
     it 'is valid with role set to true' do
-      user = User.new(email: 'user@example.com', password: 'password123', role: true)
+      user = User.new(email: 'user@example.com', password: 'Password123', role: true)
       expect(user).to be_valid
     end
 
     it 'is valid with role set to false' do
-      user = User.new(email: 'user@example.com', password: 'password123', role: false)
+      user = User.new(email: 'user@example.com', password: 'Password123', role: false)
       expect(user).to be_valid
     end
 
     it 'is not valid with role set to nil' do
-      user = User.new(email: 'user@example.com', password: 'password123', role: nil)
+      user = User.new(email: 'user@example.com', password: 'Password123', role: nil)
       expect(user).to_not be_valid
     end
 
     it 'is valid with confirmed set to true' do
-      user = User.new(email: 'user@example.com', password: 'password123', confirmed: true)
+      user = User.new(email: 'user@example.com', password: 'Password123', confirmed: true)
       expect(user).to be_valid
     end
 
     it 'is valid with confirmed set to false' do
-      user = User.new(email: 'user@example.com', password: 'password123', confirmed: false)
+      user = User.new(email: 'user@example.com', password: 'Password123', confirmed: false)
       expect(user).to be_valid
     end
 
     it 'is not valid with confirmed set to nil' do
-      user = User.new(email: 'user@example.com', password: 'password123', confirmed: nil)
+      user = User.new(email: 'user@example.com', password: 'Password123', confirmed: nil)
       expect(user).to_not be_valid
     end
 
     it 'is valid with active_repr set to nil' do
-      user = User.new(email: 'user@example.com', password: 'password123', active_repr: nil)
+      user = User.new(email: 'user@example.com', password: 'Password123', active_repr: nil)
       expect(user).to be_valid
     end
   end

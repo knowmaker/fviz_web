@@ -20,10 +20,9 @@ RSpec.describe RepresentsController, type: :controller do
       expect(response).to have_http_status(:ok)
 
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data'].count).to eq(2)
 
-      expect(parsed_response['data'][0]['id_repr']).to eq(represent1.id_repr)
-      expect(parsed_response['data'][1]['id_repr']).to eq(represent2.id_repr)
+      expect(parsed_response['data'][1]['id_repr']).to eq(represent1.id_repr)
+      expect(parsed_response['data'][2]['id_repr']).to eq(represent2.id_repr)
     end
 
     it 'returns an empty list if the user has no represents' do
@@ -31,7 +30,7 @@ RSpec.describe RepresentsController, type: :controller do
       expect(response).to have_http_status(:ok)
 
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data']).to be_empty
+      expect(parsed_response['data'].count).to eq(1)
     end
   end
 

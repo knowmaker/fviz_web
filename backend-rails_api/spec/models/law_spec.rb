@@ -15,12 +15,12 @@ RSpec.describe Law, type: :model do
       User.create(
         id_user: 1,
         email: 'example1@ru.com',
-        password: '12345678'
+        password: 'Pa12345678'
       )
       User.create(
         id_user: 2,
         email: 'example2@ru.com',
-        password: '12345678'
+        password: 'Pa12345678'
       )
     end
 

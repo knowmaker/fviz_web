@@ -9,7 +9,7 @@ RSpec.describe Represent, type: :model do
       User.create(
         id_user: 1,
         email: 'example1@ru.com',
-        password: '12345678'
+        password: 'Pa12345678'
       )
     end
     it 'is valid with valid attributes' do

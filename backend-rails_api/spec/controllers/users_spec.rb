@@ -8,7 +8,7 @@ RSpec.describe UsersController, type: :controller do
       let(:valid_attributes) do
         {
           email: 'test@example.com',
-          password: 'password'
+          password: 'Password123'
         }
       end
 
@@ -47,12 +47,12 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'POST #login' do
     let!(:user) do
-      User.create(email: 'test@example.com', password: Argon2::Password.create('password'), confirmed: true)
+      User.create(email: 'test@example.com', password: Argon2::Password.create('Password123'), confirmed: true)
     end
 
     context 'with valid credentials' do
       it 'returns a token' do
-        post :login, params: { user: { email: 'test@example.com', password: 'password' } }
+        post :login, params: { user: { email: 'test@example.com', password: 'Password123' } }
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)).to have_key('data')
       end
@@ -68,7 +68,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'GET #profile' do
     before do
-      @user = User.create(email: 'test@example.com', password: Argon2::Password.create('password'), confirmed: true)
+      @user = User.create(email: 'test@example.com', password: Argon2::Password.create('Password123'), confirmed: true)
       @token = user_login(@user.id_user)
       request.headers['Authorization'] = "Bearer #{@token}"
     end
@@ -80,14 +80,14 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'PUT #update' do
     before do
-      @user = User.create(email: 'test@example.com', password: Argon2::Password.create('password'), confirmed: true)
+      @user = User.create(email: 'test@example.com', password: Argon2::Password.create('Password123'), confirmed: true)
       @token = user_login(@user.id_user)
       request.headers['Authorization'] = "Bearer #{@token}"
     end
     context 'with valid parameters' do
       let(:valid_attributes) do
         {
-          password: 'newpassword',
+          password: 'Newpassword123',
           last_name: 'UpdatedDoe',
           first_name: 'UpdatedJohn',
           patronymic: 'UpdatedSmith'
@@ -130,7 +130,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe 'GET #confirm' do
-    let!(:user) { User.create(email: 'test@example.com', password: 'password', confirmation_token: 'valid_token') }
+    let!(:user) { User.create(email: 'test@example.com', password: 'Password123', confirmation_token: 'valid_token') }
 
     context 'with valid confirmation token' do
       it 'confirms the user' do
@@ -154,7 +154,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe 'POST #reset' do
-    let!(:user) { User.create(email: 'test@example.com', password: 'password', confirmed: true) }
+    let!(:user) { User.create(email: 'test@example.com', password: 'Password123', confirmed: true) }
 
     context 'with valid email' do
       it 'sends reset password email' do
@@ -177,7 +177,7 @@ RSpec.describe UsersController, type: :controller do
     end
 
     context 'with unconfirmed email' do
-      let!(:unconfirmed_user) { User.create(email: 'unconfirmed@example.com', password: 'password', confirmed: false) }
+      let!(:unconfirmed_user) { User.create(email: 'unconfirmed@example.com', password: 'Password123', confirmed: false) }
 
       it 'returns an unauthorized status code' do
         post :reset, params: { user: { email: 'unconfirmed@example.com' } }
@@ -215,7 +215,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'DELETE #destroy' do
     before do
-      @user = User.create(email: 'test@example.com', password: Argon2::Password.create('password'), confirmed: true)
+      @user = User.create(email: 'test@example.com', password: Argon2::Password.create('Password123'), confirmed: true)
       @token = user_login(@user.id_user)
       request.headers['Authorization'] = "Bearer #{@token}"
     end
